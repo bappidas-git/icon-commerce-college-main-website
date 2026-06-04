@@ -4,6 +4,64 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 0.4 — Multi-page routing scaffold
+
+Fourth prompt of the rebuild (`prompts/04-routing-scaffold.md`). Converts the single-page
+app into a proper multi-page router: a shared public layout, lazy-loaded page shells,
+route-change scroll handling and a friendly 404 — so later prompts only need to fill in
+each page's content.
+
+**Layout & routing infrastructure (`src/components/layout/`)**
+- `PublicLayout.jsx` — shared public chrome: `<Header/>` + `<main>` (`<Outlet/>` wrapped in
+  a `<Suspense>` boundary with the shared `<PageLoader/>`) + `<Footer/>` + global lead
+  drawer + floating enquiry/WhatsApp + back-to-top + mobile bottom nav/drawer.
+- `ScrollToTop.jsx` — on navigation, scrolls to top on PUSH/REPLACE, defers to the browser
+  on back/forward (POP), and smooth-scrolls to a hash anchor (with header offset, retrying
+  once for lazily-mounted targets).
+- `PageLoader.jsx` — shared navy-spinner `<Suspense>` fallback.
+
+**Reusable chrome (`src/components/common/`)**
+- `BackToTop/` — extracted from the old inline App.jsx button.
+- `FloatingActions/` — desktop-only floating WhatsApp + Enquiry stack (hidden on mobile,
+  where the bottom nav covers these actions).
+- `PageHero/` — lightweight navy hero **placeholder** (same `eyebrow`/`title`/`subtitle`
+  prop shape the full prompt-07 hero will use).
+- `ComingSoon/` — shared "under construction" body for the page shells.
+
+**Page shells (`src/pages/<Name>/<Name>.jsx`)** — Home, About, Leadership, Courses,
+CourseDetail, Departments, Faculty, Facilities, Gallery, Admissions, Notices, Events,
+Contact and NotFound. Each renders `<PageHero/>` + `<ComingSoon/>` and sets its
+`document.title` via the new `src/hooks/useDocumentTitle.js`. `CourseDetail` reads the
+`:slug` param via `getCourseBySlug()` and renders the 404 for unknown slugs.
+
+**Router (`src/App.jsx`)** — refactored to nest all public routes under `<PublicLayout/>`
+with `React.lazy` code-splitting (route list below); `/thank-you` and `/admin/*` stay as
+standalone Suspense-wrapped routes; `*` → `<NotFound/>`. Removed the old all-in-one
+`HomePageContent`, the inline back-to-top button and the global lead-drawer wrapper (now
+in `PublicLayout`). `ScrollProgressIndicator`, the skip-link, `SEOHead` and
+`EngagementTracker` are retained.
+
+**Route list**
+
+| Path | Page | Notes |
+|------|------|-------|
+| `/` | Home | index route |
+| `/about` | About | |
+| `/leadership` | Leadership | |
+| `/courses` | Courses | |
+| `/courses/:slug` | CourseDetail | `b-com` / `bba` / `bca` / `b-a`; unknown slug → 404 |
+| `/departments` | Departments | |
+| `/faculty` | Faculty | |
+| `/facilities` | Facilities | |
+| `/gallery` | Gallery | |
+| `/admissions` | Admissions | |
+| `/notices` | Notices | |
+| `/events` | Events | |
+| `/contact` | Contact | |
+| `/thank-you` | ThankYou | noindex, standalone |
+| `/admin/login`, `/admin/*` | Admin | protected, noindex |
+| `*` | NotFound | friendly 404 |
+
 ### Phase 0.3 — Content data layer
 
 Third prompt of the rebuild (`prompts/03-content-data-layer.md`). Encodes ALL college

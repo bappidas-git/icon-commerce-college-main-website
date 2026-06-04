@@ -1,0 +1,60 @@
+/* ============================================
+   FloatingActions styles — Icon Commerce College
+   ============================================ */
+
+.stack {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: var(--shadow-md, 0 8px 30px rgba(20, 35, 61, 0.18));
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+.fabIcon {
+  font-size: 1.5rem;
+}
+
+/* Round WhatsApp button */
+.whatsapp {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  background-color: #25d366;
+  color: #ffffff;
+}
+
+/* Pill Enquire button (Warm-Red primary CTA, design-system §2) */
+.enquire {
+  height: 52px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background-color: var(--color-cta, #e0301e);
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.enquireLabel {
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab {
+    transition: none;
+  }
+}

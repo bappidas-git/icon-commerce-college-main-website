@@ -406,14 +406,19 @@
   }
 }
 
-/* Program cards + CTA steps: → single / 2-up. */
+/* CTA steps: 4 → 2-up on tablet. */
 @media (max-width: 768px) {
-  .cardGrid {
-    grid-template-columns: 1fr;
-  }
-
   .steps {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Program cards: keep 2-up through tablet-portrait (avoids an oversized
+   full-width card + media), and stack to one column only on phone widths,
+   where a 2-up split would leave the card actions too cramped. */
+@media (max-width: 700px) {
+  .cardGrid {
+    grid-template-columns: 1fr;
   }
 }
 

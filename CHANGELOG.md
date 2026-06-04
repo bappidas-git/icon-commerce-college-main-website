@@ -54,6 +54,15 @@ pages. Every figure renders from `coursesData` / `admissionData` / `collegeInfo`
   desktop/tablet/mobile (headless screenshots) — all four programmes, fees and
   slug links render correctly. `npm run build` stays green.
 
+**Visual QA fix (multi-viewport screenshot review — desktop/tablet/mobile + edge widths)**
+- **Program-card grid breakpoint** — the grid previously dropped to a single
+  column at ≤768px (coupled to the CTA-steps breakpoint), so tablet-portrait
+  (768px) rendered oversized full-width cards with a ~440px-tall media block.
+  Decoupled the two and now stack the cards to one column only at ≤700px, so
+  tablet-portrait keeps a clean 2-up grid (~340px cards, actions uncramped) while
+  phones still get a comfortable single column. Re-verified at 360/414/680/720/
+  768px: no horizontal overflow and the card actions never wrap.
+
 ### Phase 2.6 — Leadership page
 
 Sixteenth prompt of the rebuild (`prompts/16-leadership-desks-page.md`). Replaces

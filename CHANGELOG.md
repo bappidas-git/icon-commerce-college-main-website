@@ -4,6 +4,45 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 0.3 — Content data layer
+
+Third prompt of the rebuild (`prompts/03-content-data-layer.md`). Encodes ALL college
+content from `prompts/00-DESIGN-SYSTEM.md` §6 as structured, pure (no-React) data
+modules so pages stay data-driven. Every image field references a §7 placeholder via
+`placeholder()` from `src/utils/assets.js`; unknown values use `'TODO: …'` literals.
+
+**New `src/data/` modules**
+- `collegeInfo.js` — identity & contact object (name, Assamese name, taglines,
+  established 2004, Icon Academy Trust, Gauhati University, Samarth code 842 + portal
+  URL, full address + parts, phones, email, maps query, hours). Helpers `phoneHref`,
+  `whatsappHref`, `emailHref`.
+- `navigation.js` — header menu tree (About & Courses dropdowns), `navCta` (Apply Now),
+  and footer link groups, matching the §5 site map.
+- `coursesData.js` — 4 FYUGP programs (B.Com / BBA / BCA / B.A.) with exact §6 fees
+  breakdowns (totals ₹10,900 / ₹11,000, monthly ₹1,800/₹2,000, application ₹300),
+  eligibility, highlights, careers, documents and badges. `getCourseBySlug()` helper.
+- `departmentsData.js` — `streams[]` (Arts 7 / Commerce 7 / Science 4 subjects) with
+  blurbs and slugged subjects.
+- `leadershipData.js` — 7 "From the Desk of …" holders (President & Principal
+  `featured`); message copy stubbed as `TODO` until prompt 37.
+- `facilitiesData.js` — 10 campus facilities (Iconify icon + title + blurb).
+- `statsData.js` — 6 animated counters; soft numbers flagged `approximate`.
+- `admissionData.js` — 4-step Samarth process, eligibility/fees notes, prospectus info.
+- `facultyData.js` — 8 seed staff (full list in prompt 37); placeholder photos.
+- `testimonialsData.js` — 6 alumni voices (one `TODO` quote pending transcription).
+- `galleryData.js` — 12 placeholder photos (categorised) + 3 seed videos
+  (`youtubeId: 'TODO'`).
+- `seedNotices.js` / `seedEvents.js` — fallback content matching the prompt 28/30 API
+  record shapes (2 seed notices; the 4 signature events — College Week, Cooking
+  Competition, ICON Shield, ICON Trophy).
+- Removed superseded generic stub files (`featuresData.js`, `locationData.js`,
+  `servicesData.js`, `serviceDetailsData.js`) — replaced by the named modules above.
+
+**TODO values needing client input:** social URLs (Facebook / YouTube / Instagram),
+gallery YouTube video IDs, prospectus PDF URL, leadership message excerpts, remaining
+faculty qualifications & list, one alumni quote. Soft stats (18+ departments, 40+
+faculty, 1000s alumni) flagged `approximate` for verification.
+
 ### Phase 0.2 — Design tokens, typography & placeholder system
 
 Second prompt of the rebuild (`prompts/02-design-system-tokens.md`). Implements the

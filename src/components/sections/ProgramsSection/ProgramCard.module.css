@@ -110,6 +110,29 @@
   color: var(--color-primary);
 }
 
+/* ---------- Eligibility one-liner (opt-in, larger /courses cards) ---------- */
+.eligibility {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--color-text-muted);
+}
+
+.eligibilityIcon {
+  flex-shrink: 0;
+  margin-top: 0.1em;
+  font-size: 1.1rem;
+  color: var(--color-accent-dark);
+}
+
+.eligibilityLabel {
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
 /* ---------- Highlight ticks ---------- */
 .ticks {
   display: grid;

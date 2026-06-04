@@ -403,6 +403,35 @@ export function generateCourseSchema(course) {
 }
 
 /**
+ * Generate an ItemList schema for the UG programs (the /courses overview page).
+ * Each entry is a Course provided by the college, in catalogue order.
+ * @param {Array} [courses] - course records (defaults to all of coursesData)
+ * @returns {Object} JSON-LD ItemList of Course items
+ */
+export function generateCourseListSchema(courses = coursesData) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Undergraduate Programs',
+    itemListElement: courses.map((course, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Course',
+        name: course.name,
+        description: course.summary || course.description,
+        url: `${seoConfig.siteUrl}/courses/${course.slug}`,
+        provider: {
+          '@type': 'CollegeOrUniversity',
+          name: seoConfig.organization.name,
+          sameAs: seoConfig.organization.url,
+        },
+      },
+    })),
+  };
+}
+
+/**
  * Generate Service schema for a list of services/plans.
  * @param {Array<{name: string, description: string, id: string}>} services - Service data
  * @returns {Object} JSON-LD Service schema (ItemList)

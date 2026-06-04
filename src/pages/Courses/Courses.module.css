@@ -1,0 +1,529 @@
+/* ============================================
+   Courses page styles — Icon Commerce College
+   Intro structure band · large program-card grid · comparison table ·
+   navy Admission CTA (design-system §2–§4, §6). Section background tones
+   come from the shared <Section> component; this module lays out the
+   bodies and styles the bare CTA band.
+   ============================================ */
+
+/* Screen-reader-only utility (table <caption>). */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   2 — Intro band: FYUGP structure facts
+   ============================================ */
+.structureGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Reveal wrapper fills its cell so cards size evenly. */
+.structureCell {
+  display: flex;
+}
+
+.structureCard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: var(--space-6);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.structureCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+}
+
+/* Gold icon chip (gold = emphasis only, §2). */
+.structureChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-size: 26px;
+}
+
+.structureLabel {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+.structureText {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   3 — Program cards grid (large cards, 2-up)
+   ============================================ */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* Reveal wrapper fills its cell so ProgramCards stretch to equal height. */
+.cardCell {
+  display: flex;
+}
+
+/* ============================================
+   4 — Comparison table
+   ============================================ */
+.tableScroll {
+  /* Horizontal-scroll safe on narrower viewports (keyboard-focusable region). */
+  overflow-x: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  -webkit-overflow-scrolling: touch;
+}
+
+.tableScroll:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  font-size: var(--fs-sm);
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  text-align: left;
+  white-space: nowrap;
+  padding: var(--space-4) var(--space-5);
+}
+
+.table tbody th,
+.table tbody td {
+  padding: var(--space-4) var(--space-5);
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr {
+  transition: background var(--transition-base);
+}
+
+.table tbody tr:hover {
+  background: rgba(26, 42, 82, 0.03);
+}
+
+/* Program (row header) cell — navy, bold, linked. */
+.tableProgram {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+
+.tableLink {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+.tableLink:hover {
+  color: var(--color-accent-dark);
+  border-bottom-color: var(--color-accent);
+}
+
+.tableLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* 1st-semester total fee — emphasised. */
+.tableFee {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+/* Footnote (extra GU fees / application fee). */
+.tableNote {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: var(--space-5) 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+.tableNote svg {
+  flex-shrink: 0;
+  margin-top: 0.15em;
+  font-size: 1.1rem;
+  color: var(--color-accent-dark);
+}
+
+/* ============================================
+   5 — Admission CTA band (navy + gold glow)
+   ============================================ */
+.cta {
+  position: relative;
+  overflow: hidden;
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+  background: var(--gradient-navy);
+  color: #ffffff;
+  isolation: isolate;
+}
+
+/* Soft gold glow accent (gold = emphasis only — never a full fill behind text). */
+.ctaGlow {
+  position: absolute;
+  inset: -50% auto auto -10%;
+  width: clamp(320px, 50vw, 640px);
+  height: clamp(320px, 50vw, 640px);
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle,
+    rgba(200, 160, 77, 0.26) 0%,
+    rgba(200, 160, 77, 0) 70%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ctaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.ctaEyebrow {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.ctaHeading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: #ffffff;
+}
+
+/* ---------- 4-step summary ---------- */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  width: 100%;
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(200, 160, 77, 0.28);
+}
+
+.stepNo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: var(--color-primary-dark);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-base);
+}
+
+.stepTitle {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ---------- Samarth pill ---------- */
+.samarthPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-8);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  background: rgba(200, 160, 77, 0.14);
+  border: 1px solid rgba(200, 160, 77, 0.45);
+  color: #ffffff;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  transition: background var(--transition-base), border-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.samarthPill:hover {
+  background: rgba(200, 160, 77, 0.22);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.samarthPill:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.samarthPill strong {
+  font-weight: var(--fw-bold);
+  color: var(--color-accent);
+}
+
+.samarthPill > svg:first-child {
+  font-size: 1.2em;
+  color: var(--color-accent);
+}
+
+.samarthExternal {
+  font-size: 1em;
+  opacity: 0.8;
+}
+
+/* ---------- Actions + tertiary link ---------- */
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.ctaLinkRow {
+  margin-top: var(--space-6);
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+.ctaLink:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.ctaLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.ctaLink svg {
+  font-size: 1.05em;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+/* Structure facts: 4 → 2 columns. */
+@media (max-width: 860px) {
+  .structureGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Program cards + CTA steps: → single / 2-up. */
+@media (max-width: 768px) {
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Comparison table → stacked cards on phones (still scroll-safe above this). */
+@media (max-width: 600px) {
+  .table {
+    font-size: var(--fs-base);
+  }
+
+  .table thead {
+    /* Visually hidden but kept in the accessibility tree. */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .table tbody tr {
+    display: block;
+    margin: 0 var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+
+  .table tbody tr:first-child {
+    margin-top: var(--space-3);
+  }
+
+  .table tbody tr:last-child {
+    margin-bottom: var(--space-3);
+  }
+
+  .table tbody th,
+  .table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Label each value from its data-label (the hidden column header). */
+  .table tbody td::before {
+    content: attr(data-label);
+    font-family: var(--font-heading);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* Program row-header becomes the stacked card's title bar. */
+  .tableProgram {
+    background: var(--color-primary);
+    border-bottom: none;
+  }
+
+  .tableProgram .tableLink {
+    color: #ffffff;
+    font-size: var(--fs-lg);
+  }
+
+  .tableProgram .tableLink:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  /* Last value in each stacked card has no inner divider (card edge). */
+  .table tbody td:last-child {
+    border-bottom: none;
+  }
+}
+
+/* Phones: structure facts + steps stack, CTA buttons go full-width. */
+@media (max-width: 480px) {
+  .structureGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .ctaActions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .samarthPill {
+    text-align: left;
+  }
+}
+
+/* ============================================
+   Reduced motion — drop hover transforms (§4)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .structureCard:hover,
+  .samarthPill:hover {
+    transform: none;
+  }
+}

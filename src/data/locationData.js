@@ -1,2 +1,0 @@
-// Location / contact data — populated in prompt 03 (content-data-layer).
-export const locationData = {};

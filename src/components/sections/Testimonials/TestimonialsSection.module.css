@@ -1,0 +1,102 @@
+/* ============================================
+   TestimonialsSection styles — Icon Commerce College
+   Swiper carousel of navy alumni cards (design-system §2–§4).
+   ============================================ */
+
+.carousel {
+  /* Room for the pagination bullets that sit beneath the track. */
+  padding-bottom: var(--space-2);
+}
+
+/* Let each slide stretch so every card in a row is the same height. */
+.carousel :global(.swiper) {
+  padding: var(--space-2) var(--space-1) var(--space-10);
+}
+
+.slide {
+  height: auto;
+  display: flex;
+}
+
+/* ---------- Navy quote card ---------- */
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: var(--space-8) var(--space-6) var(--space-6);
+  border-radius: var(--radius-card);
+  background: var(--gradient-navy);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+/* Gold quote mark (gold = emphasis, design-system §2). */
+.quoteMark {
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+
+.quote {
+  flex: 1 1 auto;
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* ---------- Person ---------- */
+.person {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--color-accent);
+  background: var(--color-primary-light);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-base);
+  color: #fff;
+}
+
+.role {
+  font-size: var(--fs-sm);
+  color: var(--color-accent);
+}
+
+/* ---------- Swiper pagination bullets ---------- */
+.carousel :global(.swiper-pagination-bullet) {
+  width: 9px;
+  height: 9px;
+  background: var(--color-primary);
+  opacity: 0.28;
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.carousel :global(.swiper-pagination-bullet-active) {
+  opacity: 1;
+  background: var(--color-accent);
+  transform: scale(1.15);
+}

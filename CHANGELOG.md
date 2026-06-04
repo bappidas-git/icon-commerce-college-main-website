@@ -4,6 +4,61 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.6 — Leadership page
+
+Sixteenth prompt of the rebuild (`prompts/16-leadership-desks-page.md`). Replaces
+the `/leadership` placeholder with a dignified "Messages from the Desks" page
+presenting all seven desk-holders. Identity, qualifications, photos and the
+(interim) message copy are read from `leadershipData` — no fabricated facts; the
+verbatim prospectus messages land in prompt 37.
+
+**Leadership data (`src/data/leadershipData.js`)**
+- Reordered to the canonical design-system §6 sequence (President → Advisor →
+  Principal → Rector → Director (Academic) → Director → Academic Advisor) so the
+  page can map the array directly. The Home `LeadershipTeaser` is unaffected (it
+  resolves desks by name).
+- Swapped the raw `TODO:` message strings for short, dignified, display-ready
+  *interim* excerpts grounded in real college facts (Estd. 2004, Icon Academy
+  Trust, Gauhati University / NEP 2020 FYUGP). A file-level `TODO (prompt 37)`
+  marks them for replacement with the full prospectus copy.
+
+**Leadership page (`src/pages/Leadership/Leadership.jsx` + `Leadership.module.css`)**
+- **PageHero** — "Messages from the Desks" over the `about-college-building`
+  placeholder, with a Home / Leadership breadcrumb and a "Leadership" eyebrow.
+- **Leadership directory** — a responsive grid (4 → 3 → 2 → 1) of gold-ringed
+  ProfileCards, one per desk, each a router `<Link>` to that desk's anchor
+  (`/leadership#<slug>`, `slug = slugify(name)`) with a "Read message →"
+  affordance.
+- **"From the Desk of …" blocks** — seven alternating left/right message
+  sections, each a plain `<section id={slug}>` (a stable, non-transformed scroll
+  target with `scroll-margin-top` for the fixed header) carrying a portrait
+  placeholder (gold quote disc), name, role, qualifications, the interim message
+  with a gold quote accent, and a gold-ruled signature line. This makes the
+  deep-links from the Home teaser (e.g. `/leadership#dr-mandira-saha`) land on
+  the right message via the shared `<ScrollToTop>`.
+- **Governing Body note** — a closing navy band on the `Icon Academy Trust`
+  governance, with quick links to `/about` and `/admissions`.
+- Reveal-on-scroll via `<Reveal>/<RevealGroup>` (reduced-motion safe; hover
+  lifts are CSS-only and dropped under `prefers-reduced-motion`). SEO uses
+  `useSeo()` (the `/leadership` route defaults live in `src/config/seo.js`) and
+  contributes `Person` schema for the President and Principal. Removes the
+  `ComingSoon` placeholder. `npm run build` stays green.
+
+**Visual QA fixes (multi-viewport screenshot review — desktop/tablet/mobile)**
+- **Directory grid** — switched from a fixed 4-column CSS grid to a centred
+  flex layout (`flex: 1 1 260px; max-width: 300px`). Seven desks never divide
+  evenly, so the old grid left an awkward incomplete final row — most visibly a
+  lonely left-aligned card on tablet. The trailing row now centres at every
+  width (desktop 4+3, tablet 2+2+2+1, phones full-width single column) while all
+  cards keep a uniform width.
+- **Reversed message blocks** — the gold quote disc now mirrors to the inner,
+  text-facing corner of the portrait (it previously sat on the outer page-edge
+  corner on right-hand portraits).
+- Re-verified after the fixes: `npm run build` green, and the Home-teaser
+  deep-links land correctly (direct `/leadership#dr-mandira-saha` load and an
+  in-page card click both scroll the target desk to exactly the fixed-header
+  offset).
+
 ### Phase 2.5 — About page
 
 Fifteenth prompt of the rebuild (`prompts/15-about-page.md`). Replaces the

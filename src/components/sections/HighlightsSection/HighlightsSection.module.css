@@ -1,0 +1,90 @@
+/* ============================================
+   HighlightsSection styles — Icon Commerce College
+   Thin icon-card strip under the hero (design-system §2–§4).
+   ============================================ */
+
+.highlights {
+  background: var(--color-bg);
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+}
+
+/* Reveal wrapper occupies the grid cell; the card fills it. */
+.cell {
+  display: flex;
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base),
+    box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+/* Hover lift (design-system §4). */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent-soft);
+}
+
+/* Gold icon chip. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-size: 26px;
+}
+
+.text {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+.blurb {
+  margin: var(--space-2) 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   Responsive — 4 → 2 → 1 columns
+   ============================================ */
+@media (max-width: 992px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

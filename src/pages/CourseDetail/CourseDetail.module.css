@@ -1,0 +1,861 @@
+/* ============================================
+   CourseDetail page styles — Icon Commerce College
+   Hero meta pills · two-column body (sticky tabs + sticky rail) ·
+   tab panels (overview / eligibility / fees / curriculum / careers) ·
+   navy bottom CTA · "explore other programmes" grid.
+   Tokens from design-system §2–§4; CTA band mirrors the Courses page.
+   ============================================ */
+
+/* Screen-reader-only utility (table <caption>). */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   1 — Hero meta pills (rendered inside PageHero)
+   ============================================ */
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: var(--color-primary-dark);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-wide);
+}
+
+.heroPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.heroPill svg {
+  font-size: 1.1em;
+  color: var(--accent-gold-light);
+}
+
+/* ============================================
+   2 — Body layout (main + side rail)
+   ============================================ */
+.body {
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+  background: var(--color-surface);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.main {
+  min-width: 0; /* let wide tables shrink instead of overflowing the grid */
+}
+
+/* Side rail sticks below the fixed header on desktop. */
+.rail {
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+@media (min-width: 981px) {
+  .rail {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-5));
+  }
+}
+
+/* ============================================
+   3 — Shared panel building blocks
+   ============================================ */
+.panelBlock {
+  display: block;
+}
+
+.lead {
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+}
+
+.muted {
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+.blockTitle {
+  margin: var(--space-8) 0 var(--space-4);
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+/* Three-up facts strip (Overview) */
+.factRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.factRow li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.factLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.factValue {
+  font-family: var(--font-heading);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+/* Tick list (highlights) */
+.ticks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tick {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--fs-base);
+  line-height: var(--lh-snug);
+  color: var(--color-text);
+}
+
+.tickIcon {
+  flex-shrink: 0;
+  margin-top: 0.15em;
+  font-size: 1.2rem;
+  color: var(--color-success);
+}
+
+/* Footnote (fees N.B.) */
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: var(--space-6) 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+.note svg {
+  flex-shrink: 0;
+  margin-top: 0.15em;
+  font-size: 1.1rem;
+  color: var(--color-accent-dark);
+}
+
+/* ============================================
+   4 — Eligibility
+   ============================================ */
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  background: var(--color-accent-soft);
+  border: 1px solid rgba(200, 160, 77, 0.4);
+}
+
+.calloutIcon {
+  flex-shrink: 0;
+  font-size: 1.8rem;
+  color: var(--color-accent-dark);
+}
+
+.calloutTitle {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.calloutText {
+  margin: 0;
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+}
+
+.checklist {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  font-size: var(--fs-base);
+  color: var(--color-text);
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  margin-top: 0.1em;
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+/* ============================================
+   5 — Fees
+   ============================================ */
+.feeTableWrap {
+  overflow-x: auto;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  -webkit-overflow-scrolling: touch;
+}
+
+.feeTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  font-size: var(--fs-base);
+}
+
+.feeTable thead th {
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  text-align: left;
+  padding: var(--space-3) var(--space-5);
+}
+
+.feeTable thead th:last-child,
+.feeTable tbody td,
+.feeTable tfoot td {
+  text-align: right;
+}
+
+.feeTable tbody th,
+.feeTable tfoot th {
+  text-align: left;
+  font-weight: var(--fw-regular);
+}
+
+.feeTable tbody th,
+.feeTable tbody td {
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.feeTotal th,
+.feeTotal td {
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-accent-soft);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+}
+
+.feeFacts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feeFacts li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+/* ============================================
+   6 — Curriculum
+   ============================================ */
+.componentGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.componentCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.componentCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+}
+
+.componentChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-size: 22px;
+}
+
+.componentTitle {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.componentText {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--color-text-muted);
+}
+
+/* Multiple-entry / multiple-exit awards */
+.exitList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exitItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.exitAfter {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.exitArrow {
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  color: var(--color-accent-dark);
+}
+
+.exitAward {
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.syllabusRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.syllabusNote {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.syllabusNote svg {
+  font-size: 1.1em;
+  color: var(--color-accent-dark);
+}
+
+/* ============================================
+   7 — Careers
+   ============================================ */
+.careerGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.careerCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-heading);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--color-primary);
+  transition: transform var(--transition-base), border-color var(--transition-base);
+}
+
+.careerCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-accent);
+}
+
+.careerIcon {
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  color: var(--color-accent-dark);
+}
+
+/* ============================================
+   8 — Side rail
+   ============================================ */
+.railCard {
+  padding: var(--space-6);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+.railTitle {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.facts {
+  margin: 0 0 var(--space-5);
+}
+
+.factsRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.factsRow:last-child {
+  border-bottom: none;
+}
+
+.factsRow dt {
+  flex-shrink: 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-muted);
+}
+
+.factsRow dd {
+  margin: 0;
+  text-align: right;
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.factsRow .factsStrong {
+  font-size: var(--fs-base);
+  color: var(--color-accent-dark);
+}
+
+.railActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.railPhone {
+  display: block;
+  margin-top: var(--space-3);
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.railPhone:hover {
+  color: var(--color-accent-dark);
+}
+
+.railPhone:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Related programmes */
+.railSubTitle {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-heading);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.relatedList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.relatedLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  transition: transform var(--transition-base), border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.relatedLink:hover {
+  transform: translateX(2px);
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.relatedLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.relatedBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 52px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-family: var(--font-heading);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+}
+
+.relatedName {
+  flex: 1;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--color-text);
+}
+
+.relatedChevron {
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   9 — Bottom CTA band (navy + gold glow) — mirrors Courses page
+   ============================================ */
+.cta {
+  position: relative;
+  overflow: hidden;
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+  background: var(--gradient-navy);
+  color: #ffffff;
+  isolation: isolate;
+}
+
+.ctaGlow {
+  position: absolute;
+  inset: -50% auto auto -10%;
+  width: clamp(320px, 50vw, 640px);
+  height: clamp(320px, 50vw, 640px);
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle,
+    rgba(200, 160, 77, 0.26) 0%,
+    rgba(200, 160, 77, 0) 70%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ctaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.ctaEyebrow {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.ctaHeading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: #ffffff;
+}
+
+.ctaSubtitle {
+  margin: var(--space-4) 0 0;
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.samarthPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-7);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  background: rgba(200, 160, 77, 0.14);
+  border: 1px solid rgba(200, 160, 77, 0.45);
+  color: #ffffff;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  transition: background var(--transition-base), border-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.samarthPill:hover {
+  background: rgba(200, 160, 77, 0.22);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.samarthPill:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.samarthPill strong {
+  font-weight: var(--fw-bold);
+  color: var(--color-accent);
+}
+
+.samarthPill > svg:first-child {
+  font-size: 1.2em;
+  color: var(--color-accent);
+}
+
+.samarthExternal {
+  font-size: 1em;
+  opacity: 0.8;
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-7);
+}
+
+.ctaLinkRow {
+  margin-top: var(--space-6);
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+.ctaLink:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.ctaLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.ctaLink svg {
+  font-size: 1.05em;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   10 — Explore other programmes grid
+   ============================================ */
+.exploreGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.exploreCell {
+  display: flex;
+}
+
+/* ============================================
+   11 — Responsive
+   ============================================ */
+
+/* Tablet/desktop boundary: collapse to a single column; rail stacks below. */
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* The bottom "Explore" cards already surface other programmes on stacked
+     layouts, so drop the rail's related-programmes block to avoid duplication. */
+  .railRelated {
+    display: none;
+  }
+}
+
+/* Two-up content grids → single column on small tablets / phones. */
+@media (max-width: 640px) {
+  .factRow,
+  .ticks,
+  .componentGrid,
+  .exitList,
+  .careerGrid,
+  .feeFacts {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaActions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ============================================
+   12 — Reduced motion (drop hover transforms, §4)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .componentCard:hover,
+  .careerCard:hover,
+  .relatedLink:hover,
+  .samarthPill:hover {
+    transform: none;
+  }
+}

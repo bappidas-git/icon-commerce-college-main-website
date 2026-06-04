@@ -27,6 +27,8 @@ import styles from './Tabs.module.css';
  * @param {(index: number) => void} onChange  Fired on selection change.
  * @param {'underline'|'pill'} variant  Visual style of the tablist.
  * @param {'left'|'center'} align  Tablist alignment.
+ * @param {boolean} sticky  Pin the tablist below the fixed header while its
+ *                          panel scrolls (used by the Course detail sub-nav).
  */
 const Tabs = ({
   tabs = [],
@@ -34,6 +36,7 @@ const Tabs = ({
   onChange,
   variant = 'underline',
   align = 'left',
+  sticky = false,
   className = '',
 }) => {
   const [active, setActive] = useState(defaultIndex);
@@ -78,7 +81,13 @@ const Tabs = ({
     [active, tabs.length, select]
   );
 
-  const classNames = [styles.tabs, styles[variant], styles[`align-${align}`], className]
+  const classNames = [
+    styles.tabs,
+    styles[variant],
+    styles[`align-${align}`],
+    sticky ? styles.sticky : '',
+    className,
+  ]
     .filter(Boolean)
     .join(' ');
 

@@ -4,6 +4,60 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.8 — Course detail template
+
+Eighteenth prompt of the rebuild (`prompts/18-course-detail-pages.md`). Replaces the
+`/courses/:slug` `ComingSoon` placeholder with one reusable, data-driven detail
+template that renders distinct, professional pages for all four UG programmes
+(B.Com · BBA · BCA · B.A.). Every figure (fees, eligibility, careers, curriculum)
+comes from `coursesData` — no per-course markup, no fabricated data.
+
+**Courses data (`src/data/coursesData.js`)**
+- Added a shared, exported `fyugpCurriculum` (NEP-2020 / FYUGP structure summary,
+  course-component cards and the multiple-entry / multiple-exit awards) — the
+  generic, framework-level curriculum common to every programme, kept as a single
+  swappable source of truth.
+- Added a per-course `syllabusUrl` (currently a `TODO` for the Gauhati University
+  syllabus PDF — client to supply). The `@typedef` was updated to match. Purely
+  additive; existing consumers (cards, SEO, comparison table) are unaffected.
+
+**PageHero (`src/components/common/PageHero/PageHero.jsx` + css)**
+- Added an optional `children` slot rendered under the title (used here for the
+  course meta-pill row: shortName badge · duration · affiliation). Backward
+  compatible — pages that pass no children are unchanged.
+
+**Tabs (`src/components/common/Tabs/Tabs.jsx` + css)**
+- Added an opt-in `sticky` prop that pins the tablist below the fixed header while
+  its panel scrolls (the course sub-nav). Default `false`, so the existing
+  Departments/UIKit usages are unaffected.
+
+**Course detail page (`src/pages/CourseDetail/CourseDetail.jsx` + `.module.css`)**
+- **PageHero** — course name, a gold shortName badge + duration + affiliation
+  pills, a Home / Courses / `<shortName>` breadcrumb and a single warm-red
+  "Apply for `<shortName>`" CTA (opens the lead drawer preset to this programme).
+- **Sticky Tabs sub-nav** — Overview · Eligibility · Fees · Curriculum · Careers
+  (accessible WAI-ARIA tablist, gold "shuttle" underline):
+  - *Overview* — summary, level/duration/affiliation facts and highlight ticks.
+  - *Eligibility* — the per-programme HS (10+2) requirement (with BCA's Maths/CS
+    preference and B.A. Honours 45% note) plus the document-verification checklist.
+  - *Fees* — the full breakdown table (Admission/Library/ID-Card/Misc → Total),
+    monthly tuition, application fee and the GU / non-refundable N.B. note.
+  - *Curriculum* — the NEP-2020 FYUGP structure (course components + exit awards)
+    and a "Detailed syllabus" button; while the GU link is a `TODO` it renders a
+    disabled "coming soon" state rather than a broken link or embedded Drive viewer.
+  - *Careers* — the career paths from data.
+- **Sticky side rail (desktop)** — a quick-facts card (duration, eligibility,
+  1st-sem fees, monthly tuition, intake, affiliation), Apply / Download Prospectus
+  / "Talk to admissions" (tel:) actions and a related-programmes list.
+- **Bottom CTA** — navy + gold-glow band with a Samarth "College Code 842" pill
+  and Apply / Prospectus, plus an "Explore other programmes" `ProgramCard` grid of
+  the remaining three programmes.
+- Per-course SEO + the `Course` JSON-LD schema are applied by `useSeo()` via the
+  `/courses/:slug` route resolver (`src/utils/seo.js`); an unknown slug renders the
+  404 page. Reveal-on-scroll is reduced-motion safe; card/hover lifts are CSS-only.
+  Verified all four slugs + a bad slug render correct, distinct content (SSR smoke
+  render). `npm run build` stays green.
+
 ### Phase 2.7 — Courses overview
 
 Seventeenth prompt of the rebuild (`prompts/17-courses-overview-page.md`). Replaces

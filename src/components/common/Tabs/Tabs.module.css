@@ -82,6 +82,21 @@
   color: #ffffff;
 }
 
+/* Sticky sub-nav: pin the tablist below the fixed header while the active
+   panel scrolls underneath it. The opaque surface keeps panel content from
+   showing through; z-index sits below the header (var(--z-sticky)). */
+.sticky .tablist {
+  position: sticky;
+  top: var(--header-height);
+  z-index: var(--z-above);
+  background: var(--color-surface);
+}
+
+.sticky.underline .tablist {
+  /* A touch of breathing room so pinned tabs aren't flush to the header. */
+  padding-top: var(--space-2);
+}
+
 /* Panel */
 .panel {
   padding-top: var(--space-6);

@@ -1,28 +1,158 @@
 /* ============================================
-   Footer Component Styles - Landing Page Boilerplate
-   Multi-column footer with dark theme
+   Footer — Icon Commerce College
+   Multi-column navy footer (Deep Navy + Gold).
+   Rebuilt in prompt 06. Tokens: design-system §2–4.
    ============================================ */
 
-/* Footer Base */
 .footer {
-  background: var(--primary-dark);
-  color: var(--white);
+  background: var(--gradient-navy);
+  color: var(--color-white);
   margin-top: auto;
 }
 
-/* Main Footer */
-.mainFooter {
-  padding: var(--space-12) 0 var(--space-8);
+/* ============================================
+   Inline enquiry mini-strip (source: footer)
+   ============================================ */
+.enquiryStrip {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  padding: var(--space-6) 0;
 }
 
-/* Footer Grid - 3 columns (Brand, Quick Links, Contact) */
+.enquiryInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.enquiryCopy {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 240px;
+}
+
+.enquiryIcon {
+  font-size: 2rem;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.enquiryTitle {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-white);
+  margin: 0;
+}
+
+.enquiryText {
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.65);
+  margin: 2px 0 0;
+}
+
+.enquiryForm {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-3);
+  flex: 1 1 420px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.enquiryFields {
+  display: flex;
+  gap: var(--space-3);
+  flex: 1 1 320px;
+  flex-wrap: wrap;
+}
+
+.enquiryInput {
+  flex: 1 1 150px;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-input);
+  padding: 0 var(--space-4);
+  height: 46px;
+  transition: border-color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.enquiryInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.enquiryInput:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.enquiryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 46px;
+  padding: 0 var(--space-6);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-white);
+  background: var(--color-cta);
+  border: none;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--shadow-button);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.enquiryButton:hover:not(:disabled) {
+  background: var(--color-cta-dark);
+  transform: scale(1.02);
+}
+
+.enquiryButton:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.enquiryFeedback {
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.enquiryFeedbackOk {
+  color: var(--success-light);
+}
+
+.enquiryFeedbackErr {
+  color: var(--accent-orange-light);
+}
+
+/* ============================================
+   Main footer band
+   ============================================ */
+.mainFooter {
+  padding: var(--space-16) 0 var(--space-12);
+}
+
 .footerGrid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1.4fr;
+  grid-template-columns: 1.6fr 1fr 1fr 1.4fr 1.3fr;
   gap: var(--space-10);
 }
 
-/* Brand Column */
+/* Brand / About column */
 .footerBrand {
   display: flex;
   flex-direction: column;
@@ -30,26 +160,35 @@
 }
 
 .logoWrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--space-3);
+  text-decoration: none;
 }
 
-/* Footer sits on a dark navy background — render the brand logo in white */
-.logoWrapper img {
+.logo {
+  height: 44px;
+  width: auto;
+  /* Footer sits on dark navy — render the brand logo in white */
   filter: brightness(0) invert(1);
 }
 
-.logoIcon {
-  font-size: 2.5rem;
-  color: var(--accent-gold);
+.brandText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
 }
 
-.logoText {
+.brandName {
   font-family: var(--font-heading);
-  font-size: var(--fs-2xl);
+  font-size: var(--fs-base);
   font-weight: var(--fw-bold);
-  color: var(--white);
+  color: var(--color-white);
+}
+
+.brandSub {
+  font-size: var(--fs-xs);
+  color: var(--color-accent);
 }
 
 .tagline {
@@ -57,14 +196,13 @@
   color: rgba(255, 255, 255, 0.65);
   line-height: var(--lh-relaxed);
   margin: 0;
-  max-width: 280px;
+  max-width: 300px;
 }
 
-/* Social Icons */
 .socialIcons {
   display: flex;
   gap: var(--space-3);
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .socialIcon {
@@ -76,20 +214,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
+  color: var(--color-white);
   font-size: 1.25rem;
   text-decoration: none;
   transition: all var(--transition-base);
 }
 
 .socialIcon:hover {
-  background: var(--accent-gold);
-  border-color: var(--accent-gold);
-  color: var(--white);
+  background: var(--gradient-gold);
+  border-color: var(--color-accent);
+  color: var(--color-primary-dark);
   transform: translateY(-3px);
 }
 
-/* Footer Columns */
+/* Link columns */
 .footerColumn {
   display: flex;
   flex-direction: column;
@@ -98,15 +236,14 @@
 .columnTitle {
   font-family: var(--font-heading);
   font-size: var(--fs-base);
-  font-weight: var(--fw-bold);
-  color: var(--white);
+  font-weight: var(--fw-semibold);
+  color: var(--color-white);
   margin: 0 0 var(--space-5) 0;
   padding-bottom: var(--space-3);
-  border-bottom: 2px solid var(--accent-gold);
-  display: inline-block;
+  border-bottom: 2px solid var(--color-accent);
+  align-self: flex-start;
 }
 
-/* Footer Links */
 .footerLinks {
   list-style: none;
   padding: 0;
@@ -117,20 +254,34 @@
 }
 
 .footerLink {
+  position: relative;
   font-size: var(--fs-sm);
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  transition: all var(--transition-fast);
-  display: inline-block;
-  margin-bottom: unset;
+  transition: color var(--transition-fast);
+  align-self: flex-start;
+}
+
+.footerLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: var(--color-accent);
+  transition: width var(--transition-fast);
 }
 
 .footerLink:hover {
-  color: var(--accent-gold);
-  transform: translateX(3px);
+  color: var(--color-accent);
 }
 
-/* Contact List */
+.footerLink:hover::after {
+  width: 100%;
+}
+
+/* Contact list (Reach Us) */
 .contactList {
   list-style: none;
   padding: 0;
@@ -141,100 +292,195 @@
 }
 
 .contactItem {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.contactLabelRow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: start;
+  gap: 10px;
 }
 
 .contactIcon {
   font-size: 1.1rem;
-  color: var(--accent-gold);
-  flex-shrink: 0;
-}
-
-.contactLabel {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.45);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  margin-top: 2px;
 }
 
 .contactValue {
-  display: block;
   font-size: var(--fs-sm);
   color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
   text-decoration: none;
   transition: color var(--transition-fast);
-  line-height: 1.5;
 }
 
 a.contactValue:hover {
-  color: var(--accent-amber);
+  color: var(--color-accent);
 }
 
-/* Unified Contact Chips (Call + WhatsApp) */
-.contactChipRow {
-  display: inline-flex;
-  gap: 8px;
-  margin-top: 6px;
-  flex-wrap: wrap;
+.contactInlineLink {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-.contactChip {
+.contactInlineLink:hover {
+  color: var(--color-accent);
+}
+
+.dot {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.whatsappChip {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
+  gap: 6px;
+  margin-top: var(--space-4);
+  padding: 8px 14px;
   border-radius: var(--radius-full);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
   text-decoration: none;
-  letter-spacing: 0.02em;
-  transition: all var(--transition-fast);
-  border: 1px solid transparent;
-  line-height: 1;
-}
-
-.contactChip svg {
-  font-size: 0.9rem;
-}
-
-.contactChipCall {
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.85);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.contactChipCall:hover {
-  background: var(--accent-gold);
-  color: var(--white);
-  border-color: var(--accent-gold);
-}
-
-.contactChipWhatsapp {
-  background: rgba(37, 211, 102, 0.15);
+  align-self: flex-start;
   color: #4ade80;
-  border-color: rgba(37, 211, 102, 0.3);
+  background: rgba(37, 211, 102, 0.12);
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  transition: all var(--transition-fast);
 }
 
-.contactChipWhatsapp:hover {
+.whatsappChip:hover {
   background: #25d366;
-  color: var(--white);
+  color: var(--color-white);
   border-color: #25d366;
 }
 
-/* Accreditation Strip */
+/* Admissions column */
+.samarthPill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-white);
+  background: rgba(200, 160, 77, 0.12);
+  border: 1px solid var(--color-accent);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  transition: background var(--transition-fast);
+}
+
+.samarthPill > svg:first-child {
+  font-size: 1.3rem;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.samarthPill > svg:last-child {
+  font-size: 1rem;
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.6);
+  flex-shrink: 0;
+}
+
+.samarthPill:hover {
+  background: rgba(200, 160, 77, 0.2);
+}
+
+.samarthCode {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 1px;
+}
+
+.ghostButton,
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 46px;
+  padding: 0 var(--space-4);
+  margin-bottom: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.ghostButton {
+  color: var(--color-white);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.ghostButton:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.ctaButton {
+  color: var(--color-white);
+  background: var(--color-cta);
+  border: none;
+  box-shadow: var(--shadow-button);
+}
+
+.ctaButton:hover {
+  background: var(--color-cta-dark);
+  transform: scale(1.02);
+}
+
+/* Map thumbnail */
+.mapThumb {
+  position: relative;
+  display: block;
+  margin-top: var(--space-2);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  aspect-ratio: 16 / 9;
+}
+
+.mapThumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mapThumbOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--color-white);
+  background: rgba(17, 29, 58, 0.45);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.mapThumb:hover .mapThumbOverlay,
+.mapThumb:focus-visible .mapThumbOverlay {
+  opacity: 1;
+}
+
+/* ============================================
+   Affiliation / accreditation strip
+   ============================================ */
 .accreditationStrip {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
-  padding: var(--space-4) 0;
+  background: rgba(0, 0, 0, 0.15);
+  padding: var(--space-5) 0;
 }
 
 .accreditationList {
@@ -245,26 +491,30 @@ a.contactValue:hover {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3) var(--space-5);
+  gap: var(--space-3) var(--space-4);
 }
 
 .accreditationItem {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid rgba(200, 160, 77, 0.5);
+  border-radius: var(--radius-full);
   font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.78);
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .accreditationIcon {
-  font-size: 1.05rem;
-  color: var(--accent-amber, var(--accent-orange));
+  font-size: 1rem;
+  color: var(--color-accent);
 }
 
-/* Bottom Bar */
+/* ============================================
+   Bottom bar
+   ============================================ */
 .bottomBar {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: var(--space-5) 0;
@@ -290,20 +540,26 @@ a.contactValue:hover {
   gap: var(--space-3);
 }
 
-.legalLink {
-  font-family: var(--font-primary);
+.legalLink,
+.adminLink {
+  font-family: var(--font-body);
   font-size: var(--fs-sm);
   color: rgba(255, 255, 255, 0.6);
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: color var(--transition-fast);
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-.legalLink:hover {
-  color: var(--accent-amber);
+.legalLink:hover,
+.adminLink:hover {
+  color: var(--color-accent);
+}
+
+.adminLink {
+  color: rgba(255, 255, 255, 0.38);
 }
 
 .linkDivider {
@@ -311,49 +567,18 @@ a.contactValue:hover {
   font-size: var(--fs-xs);
 }
 
-/* Developer Credit Bar */
-.developerBar {
-  background: rgba(0, 0, 0, 0.3);
-  padding: var(--space-2) 0;
-}
-
-.developerText {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
-  margin: 0;
-  text-align: center;
-}
-
-.developerLink {
-  background: var(--accent-amber-gradient, var(--accent-orange-gradient));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: var(--fw-semibold);
-  text-decoration: none;
-  transition: filter var(--transition-fast);
-}
-
-.developerLink:hover {
-  filter: brightness(1.2);
-}
-
 /* ============================================
-   Legal Modal Styles
+   Legal Modal
    ============================================ */
-
 .modalBackdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: var(--z-modal-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-4);
-  background: rgba(13, 23, 84, 0.85);
+  background: rgba(17, 29, 58, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -366,7 +591,7 @@ a.contactValue:hover {
   width: 100%;
   max-width: 800px;
   max-height: 90vh;
-  background: var(--white);
+  background: var(--color-surface);
   border-radius: var(--radius-2xl);
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
   overflow: hidden;
@@ -377,20 +602,20 @@ a.contactValue:hover {
   align-items: center;
   justify-content: space-between;
   padding: var(--space-5) var(--space-6);
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-dark-alt) 100%);
-  border-bottom: 3px solid var(--accent-gold);
+  background: var(--gradient-navy);
+  border-bottom: 3px solid var(--color-accent);
 }
 
 .modalTitle {
   font-family: var(--font-heading);
   font-size: var(--fs-2xl);
   font-weight: var(--fw-bold);
-  color: var(--white);
+  color: var(--color-white);
   margin: 0;
 }
 
 .modalCloseBtn {
-  color: var(--white) !important;
+  color: var(--color-white) !important;
   background: rgba(255, 255, 255, 0.1) !important;
   width: 40px !important;
   height: 40px !important;
@@ -409,9 +634,8 @@ a.contactValue:hover {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Legal Content Styles */
 .legalContent {
-  color: var(--text-dark-gray);
+  color: var(--color-text);
 }
 
 .legalSection {
@@ -426,10 +650,10 @@ a.contactValue:hover {
   font-family: var(--font-heading);
   font-size: var(--fs-lg);
   font-weight: var(--fw-bold);
-  color: var(--primary-dark);
+  color: var(--color-primary-dark);
   margin: 0 0 var(--space-3) 0;
   padding-bottom: var(--space-2);
-  border-bottom: 2px solid var(--accent-gold);
+  border-bottom: 2px solid var(--color-accent);
   display: inline-block;
 }
 
@@ -437,7 +661,7 @@ a.contactValue:hover {
   font-size: var(--fs-sm);
   line-height: var(--lh-relaxed);
   margin: 0 0 var(--space-3) 0;
-  color: var(--text-gray);
+  color: var(--color-text-muted);
 }
 
 .legalSection ul {
@@ -449,11 +673,11 @@ a.contactValue:hover {
   font-size: var(--fs-sm);
   line-height: var(--lh-relaxed);
   margin-bottom: var(--space-2);
-  color: var(--text-gray);
+  color: var(--color-text-muted);
 }
 
 .legalSection li strong {
-  color: var(--primary-dark);
+  color: var(--color-primary-dark);
 }
 
 .legalSection li:last-child {
@@ -462,15 +686,14 @@ a.contactValue:hover {
 
 .lastUpdated {
   font-size: var(--fs-xs);
-  color: var(--text-gray);
+  color: var(--color-text-muted);
   font-style: italic;
   text-align: right;
   padding-top: var(--space-4);
-  border-top: 1px solid var(--border-gray);
+  border-top: 1px solid var(--color-border);
   margin-top: var(--space-4);
 }
 
-/* Modal Scrollbar */
 .modalBody::-webkit-scrollbar {
   width: 6px;
 }
@@ -481,59 +704,59 @@ a.contactValue:hover {
 }
 
 .modalBody::-webkit-scrollbar-thumb {
-  background: var(--border-gray);
+  background: var(--color-border);
   border-radius: 3px;
 }
 
 .modalBody::-webkit-scrollbar-thumb:hover {
-  background: var(--text-gray);
+  background: var(--color-text-muted);
 }
 
 /* ============================================
-   Responsive Styles
+   Responsive
    ============================================ */
-
-/* 3 columns -> 2 columns */
 @media (max-width: 1024px) {
   .footerGrid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: var(--space-8);
   }
 
   .footerBrand {
     grid-column: 1 / -1;
-    text-align: center;
-    align-items: center;
   }
 
   .tagline {
-    max-width: 480px;
-  }
-
-  .socialIcons {
-    justify-content: center;
+    max-width: 520px;
   }
 }
 
-/* 2 columns -> 1 column */
+@media (max-width: 768px) {
+  .footerGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .enquiryForm {
+    justify-content: stretch;
+  }
+
+  .enquiryButton {
+    flex: 1 1 100%;
+  }
+}
+
 @media (max-width: 640px) {
   .mainFooter {
-    padding: var(--space-8) 0 var(--space-6);
+    padding: var(--space-12) 0 var(--space-8);
   }
 
   .footerGrid {
     grid-template-columns: 1fr;
-    gap: 0;
+    gap: var(--space-8);
     text-align: center;
-    margin-top: 20px;
   }
 
   .footerBrand {
     align-items: center;
-  }
-
-  .logoWrapper {
-    justify-content: center;
   }
 
   .tagline {
@@ -545,29 +768,35 @@ a.contactValue:hover {
   }
 
   .columnTitle {
-    display: inline-block;
-    margin-top: 30px;
+    align-self: center;
   }
 
   .footerLinks {
     align-items: center;
-    gap: 0;
   }
 
   .footerLink {
-    margin-bottom: -15px;
-  }
-
-  .footerLink:hover {
-    transform: none;
+    align-self: center;
   }
 
   .contactList {
-    align-items: center;
+    text-align: left;
+    max-width: 320px;
+    margin: 0 auto;
   }
 
-  .contactItem {
-    justify-content: center;
+  .whatsappChip {
+    align-self: center;
+  }
+
+  .enquiryInner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .enquiryCopy {
+    flex-direction: column;
+    text-align: center;
   }
 
   .bottomContent {
@@ -577,10 +806,6 @@ a.contactValue:hover {
 
   .legalLinks {
     flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .contactLabelRow {
     justify-content: center;
   }
 }
@@ -596,145 +821,74 @@ a.contactValue:hover {
     border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
   }
 
-  .modalHeader {
-    padding: var(--space-4) var(--space-5);
-  }
-
   .modalTitle {
     font-size: var(--fs-xl);
   }
+}
 
-  .modalBody {
-    padding: var(--space-5);
+/* ============================================
+   Reduced motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .socialIcon,
+  .enquiryButton,
+  .ctaButton,
+  .footerLink::after,
+  .modalCloseBtn {
+    transition: none !important;
   }
 
-  .legalSection h3 {
-    font-size: var(--fs-base);
-  }
-
-  .legalSection p,
-  .legalSection li {
-    font-size: var(--fs-xs);
-  }
-
-  .contactLabelRow {
-    justify-content: center;
+  .socialIcon:hover,
+  .enquiryButton:hover:not(:disabled),
+  .ctaButton:hover {
+    transform: none;
   }
 }
 
-@media (max-width: 480px) {
-  .mainFooter {
-    padding: var(--space-6) 0 var(--space-4);
-  }
-
-  .logoIcon {
-    font-size: 2rem;
-  }
-
-  .logoText {
-    font-size: var(--fs-xl);
-  }
-
-  .bottomBar {
-    padding: var(--space-4) 0;
-  }
-
-  .copyright {
-    font-size: var(--fs-xs);
-  }
-
-  .legalLink {
-    font-size: var(--fs-xs);
-  }
-
-  .developerBar {
-    padding: var(--space-2) var(--space-3);
-  }
-
-  .developerText {
-    font-size: 10px;
-  }
-
-  .socialIcon {
-    width: 36px;
-    height: 36px;
-    font-size: 1.1rem;
-  }
-
-  .modalHeader {
-    padding: var(--space-3) var(--space-4);
-  }
-
-  .modalBody {
-    padding: var(--space-4);
-  }
-
-  .legalSection {
-    margin-bottom: var(--space-5);
-  }
-
-  .contactLabelRow {
-    justify-content: center;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .footer {
-    background: white;
-    color: black;
-    padding: var(--space-4) 0;
-  }
-
-  .socialIcons {
-    display: none;
-  }
-
-  .tagline,
-  .footerLink,
-  .contactValue,
-  .copyright,
-  .legalLink {
-    color: var(--text-dark-gray);
-  }
-
-  .columnTitle {
-    color: var(--primary-dark);
-  }
-
-  .developerBar {
-    background: var(--light-gray);
-  }
-
-  .developerText,
-  .developerLink {
-    color: var(--text-dark-gray);
-    -webkit-text-fill-color: var(--text-dark-gray);
-  }
-
-  .modalBackdrop {
-    display: none;
-  }
-}
-
-/* Accessibility */
-.legalLink:focus-visible {
-  outline: 2px solid var(--accent-gold);
+/* ============================================
+   Accessibility — focus states
+   ============================================ */
+.footerLink:focus-visible,
+.contactInlineLink:focus-visible,
+.legalLink:focus-visible,
+.adminLink:focus-visible,
+.socialIcon:focus-visible,
+.samarthPill:focus-visible,
+.ghostButton:focus-visible,
+.ctaButton:focus-visible,
+.enquiryButton:focus-visible,
+.whatsappChip:focus-visible,
+.mapThumb:focus-visible,
+.enquiryInput:focus-visible {
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
-.footerLink:focus-visible {
-  outline: 2px solid var(--accent-gold);
-  outline-offset: 2px;
-}
-
-.socialIcon:focus-visible {
-  outline: 2px solid var(--accent-gold);
-  outline-offset: 2px;
-}
-
 .modalCloseBtn:focus-visible {
-  outline: 2px solid var(--white) !important;
+  outline: 2px solid var(--color-white) !important;
   outline-offset: 2px;
+}
+
+/* ============================================
+   Print
+   ============================================ */
+@media print {
+  .footer {
+    background: var(--color-white);
+    color: var(--color-text);
+  }
+
+  .enquiryStrip,
+  .socialIcons,
+  .mapThumb,
+  .modalBackdrop {
+    display: none;
+  }
+
+  .columnTitle,
+  .legalLink,
+  .adminLink {
+    color: var(--color-primary-dark);
+  }
 }

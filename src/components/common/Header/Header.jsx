@@ -1,367 +1,311 @@
 /* ============================================
-   Header Component
-   Fixed header with scroll behavior and navigation
+   Header — Icon Commerce College
+   --------------------------------------------
+   Professional, sticky, responsive multi-page header:
+   - Slim navy utility bar (address / phone · email / social /
+     Samarth portal pill) — desktop only.
+   - Main bar: logo + wordmark, route-based desktop nav with
+     accessible animated dropdowns ("shuttle" underline), and a
+     warm-red "Apply Now" CTA that opens the lead drawer.
+   - Transparent over the Home hero at the top, solidifies to white
+     with a shadow on scroll; always solid on inner routes.
+   - Below the `lg` breakpoint the nav collapses to a hamburger that
+     toggles the shared MobileDrawer (owned by PublicLayout).
+   Built per prompt 05 + design-system §1/§2/§5.
    ============================================ */
 
-import React, { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Container, IconButton, useMediaQuery, useTheme } from "@mui/material";
-import { Icon } from "@iconify/react";
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Container } from '@mui/material';
+import { Icon } from '@iconify/react';
+
+import { mainNav } from '../../../data/navigation';
+import {
+  collegeInfo,
+  phoneHref,
+  emailHref,
+} from '../../../data/collegeInfo';
+import { useModal } from '../../../context/ModalContext';
 import {
   trackPhoneClick,
-  trackNavigation,
   trackCTAClick,
-} from "../../../utils/gtm";
-import { useModal } from "../../../context/ModalContext";
-import styles from "./Header.module.css";
+  trackNavigation,
+} from '../../../utils/gtm';
+import styles from './Header.module.css';
 
-const logoUrl = "/images/placeholders/logo-icon-commerce.svg";
+const LOGO_URL = '/images/placeholders/logo-icon-commerce.svg';
+const SCROLL_THRESHOLD = 24;
 
-const PRIMARY_PHONE = "+919365375782";
-const PRIMARY_PHONE_DISPLAY = "+91 93653 75782";
+/** Returns true for absolute http(s) URLs (placeholder TODOs resolve to false). */
+const isHttpUrl = (value) => /^https?:\/\//i.test(String(value || ''));
 
-// Navigation items. NOTE: the real multi-page navigation is built in prompt 05;
-// these anchors are placeholders for the Phase-0 foundation state.
-const navItems = [
-  { label: "About", href: "#about" },
-  { label: "Courses", href: "#courses" },
-  { label: "Facilities", href: "#facilities" },
-  { label: "Contact", href: "#contact" },
-];
+/* ------------------------------------------------------------------
+   Desktop dropdown (About ▾ / Courses ▾) — hover + keyboard accessible.
+   ------------------------------------------------------------------ */
+const NavDropdown = ({ item, reduceMotion }) => {
+  const [open, setOpen] = useState(false);
+  const liRef = useRef(null);
+  const closeTimer = useRef(null);
 
-const Header = ({ forceCloseMenu = false }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { openLeadDrawer } = useModal();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
-
-  // Close mobile menu when bottom drawer opens
-  useEffect(() => {
-    if (forceCloseMenu && isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-    }
-  }, [forceCloseMenu, isMobileMenuOpen]);
-
-  // Handle scroll event
-  const handleScroll = useCallback(() => {
-    const scrollPosition = window.scrollY;
-    setIsScrolled(scrollPosition > 50);
-
-    // Determine active section. When scrolled back above the first section
-    // (e.g. the hero), no section is in range and we reset to none so the
-    // previously clicked nav item doesn't stay highlighted.
-    const sections = navItems.map((item) => item.href.substring(1));
-    let currentSection = "";
-    for (let i = sections.length - 1; i >= 0; i--) {
-      const section = document.getElementById(sections[i]);
-      if (section) {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= 150) {
-          currentSection = sections[i];
-          break;
-        }
-      }
-    }
-    setActiveSection(currentSection);
+  const openMenu = useCallback(() => {
+    clearTimeout(closeTimer.current);
+    setOpen(true);
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  // Small delay on mouse-leave so a diagonal cursor path doesn't snap shut.
+  const scheduleClose = useCallback(() => {
+    clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setOpen(false), 120);
+  }, []);
 
-  // Smooth scroll to section (for desktop navigation)
-  const scrollToSection = (e, href) => {
-    e.preventDefault();
-    const targetId = href.substring(1);
-    const targetElement = document.getElementById(targetId);
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
 
-    if (targetElement) {
-      const headerOffset = 80;
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition =
-        elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    } else if (targetId === "home") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape' && open) {
+      setOpen(false);
     }
-
-    setIsMobileMenuOpen(false);
   };
 
-  // Handle mobile menu item click (close menu first, then scroll with delay)
-  const handleMobileMenuClick = (e, href) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Store the target href before closing
-    const targetHref = href;
-
-    // Close menu first
-    setIsMobileMenuOpen(false);
-
-    // Scroll after a brief delay to allow menu close animation to start
-    setTimeout(() => {
-      const targetId = targetHref.substring(1);
-      const targetElement = document.getElementById(targetId);
-
-      if (targetElement) {
-        const headerOffset = 80;
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition =
-          elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-      }
-    }, 50);
+  // Close when focus leaves the whole item (keyboard tab-out).
+  const handleBlur = (event) => {
+    if (!liRef.current?.contains(event.relatedTarget)) {
+      setOpen(false);
+    }
   };
 
-  const handleApplyClick = (source) => {
-    trackCTAClick(`header_apply_now_${source}`, "header", "Apply Now");
-    openLeadDrawer("apply-now");
-    setIsMobileMenuOpen(false);
-  };
-
-  // Animation variants
-  const headerVariants = {
-    initial: { y: -100, opacity: 0 },
-    animate: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
-  };
-
-  const navItemVariants = {
-    initial: { opacity: 0, y: -10 },
-    animate: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.3 },
-    }),
-  };
-
-  const logoVariants = {
-    initial: { opacity: 0, x: -20 },
-    animate: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.5, delay: 0.2 },
-    },
-  };
+  const menuVariants = reduceMotion
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
+    : {
+        initial: { opacity: 0, y: 8 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: 8 },
+      };
 
   return (
-    <motion.header
-      className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}
-      variants={headerVariants}
-      initial="initial"
-      animate="animate"
+    <li
+      ref={liRef}
+      className={styles.navItem}
+      onMouseEnter={openMenu}
+      onMouseLeave={scheduleClose}
+      onFocus={openMenu}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
     >
-      <Container maxWidth="xl" className={styles.headerContainer}>
-        {/* Logo Section */}
-        <motion.div
-          className={styles.logoSection}
-          variants={logoVariants}
-          initial="initial"
-          animate="animate"
-        >
-          <a
-            href="#home"
-            onClick={(e) => scrollToSection(e, "#home")}
-            className={styles.logoLink}
-            aria-label="Icon Commerce College home — scroll to top"
-          >
-            <div className={styles.logoWrapper}>
-              <img
-                src={logoUrl}
-                alt="Icon Commerce College"
-                className={styles.mainLogo}
-                style={{
-                  height: "40px",
-                  width: "auto",
-                }}
-              />
-              {!isMobile && (
-                <span
-                  className={styles.accreditationStrip}
-                  aria-label="Affiliated to Gauhati University"
-                >
-                  Affiliated to Gauhati University
-                </span>
-              )}
-            </div>
-          </a>
-        </motion.div>
+      <NavLink
+        to={item.path}
+        end={item.path === '/'}
+        className={({ isActive }) =>
+          `${styles.navLink} ${styles.hasChildren} ${isActive ? styles.active : ''}`
+        }
+        aria-haspopup="true"
+        aria-expanded={open}
+        onClick={() => {
+          trackNavigation('desktop_nav', 'click', item.label);
+          setOpen(false);
+        }}
+      >
+        {item.label}
+        <Icon
+          icon="mdi:chevron-down"
+          className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`}
+          aria-hidden="true"
+        />
+      </NavLink>
 
-        {/* Desktop Navigation */}
-        {!isMobile && (
-          <nav className={styles.desktopNav} aria-label="Primary">
-            <ul className={styles.navList}>
-              {navItems.map((item, index) => (
-                <motion.li
-                  key={item.label}
-                  variants={navItemVariants}
-                  initial="initial"
-                  animate="animate"
-                  custom={index}
-                >
-                  <a
-                    href={item.href}
-                    onClick={(e) => {
-                      trackNavigation("desktop_nav", "click", item.label);
-                      scrollToSection(e, item.href);
-                    }}
-                    className={`${styles.navLink} ${activeSection === item.href.substring(1) ? styles.active : ""}`}
-                  >
-                    {item.label}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-          </nav>
-        )}
-
-        {/* Right Section - Phone + Apply Now CTA */}
-        <div className={styles.rightSection}>
-          {!isMobile && (
-            <>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.45, duration: 0.3 }}
-              >
-                <a
-                  href={`tel:${PRIMARY_PHONE}`}
-                  className={styles.callButton}
-                  onClick={() =>
-                    trackPhoneClick(PRIMARY_PHONE, "header_desktop")
-                  }
-                  aria-label={`Call Icon Commerce College on ${PRIMARY_PHONE_DISPLAY}`}
-                >
-                  <Icon icon="mdi:phone" className={styles.callButtonIcon} />
-                  {PRIMARY_PHONE_DISPLAY}
-                </a>
-              </motion.div>
-              <motion.button
-                type="button"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.55, duration: 0.3 }}
-                onClick={() => handleApplyClick("desktop")}
-                className={styles.applyButton}
-                aria-label="Enquire about admission"
-              >
-                <Icon icon="mdi:school-outline" className={styles.applyButtonIcon} />
-                Apply Now
-              </motion.button>
-            </>
-          )}
-
-          {/* Mobile Menu Button */}
-          {isMobile && (
-            <IconButton
-              className={styles.menuButton}
-              onClick={() => {
-                const newState = !isMobileMenuOpen;
-                trackNavigation("mobile_menu", newState ? "open" : "close");
-                setIsMobileMenuOpen(newState);
-              }}
-              aria-label="Toggle menu"
-              aria-expanded={isMobileMenuOpen}
-            >
-              <Icon
-                icon={isMobileMenuOpen ? "mdi:close" : "mdi:menu"}
-                className={styles.menuIcon}
-              />
-            </IconButton>
-          )}
-        </div>
-      </Container>
-
-      {/* Mobile Navigation Drawer */}
       <AnimatePresence>
-        {isMobile && isMobileMenuOpen && (
-          <motion.div
-            className={styles.mobileNav}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+        {open && (
+          <motion.ul
+            className={styles.dropdown}
+            role="menu"
+            aria-label={item.label}
+            variants={menuVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
           >
-            <nav className={styles.mobileNavContent} aria-label="Mobile primary">
-              <ul className={styles.mobileNavList}>
-                {navItems.map((item, index) => (
-                  <motion.li
-                    key={item.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <button
-                      type="button"
-                      onClick={(e) => handleMobileMenuClick(e, item.href)}
-                      className={`${styles.mobileNavLink} ${activeSection === item.href.substring(1) ? styles.active : ""}`}
-                    >
-                      <Icon
-                        icon={getNavIcon(item.label)}
-                        className={styles.mobileNavIcon}
-                      />
-                      {item.label}
-                    </button>
-                  </motion.li>
-                ))}
-              </ul>
-              <div className={styles.mobileNavCTA}>
-                <button
-                  type="button"
-                  onClick={() => handleApplyClick("mobile_menu")}
-                  className={styles.mobileApplyButton}
-                  aria-label="Enquire about admission"
-                >
-                  <Icon
-                    icon="mdi:school-outline"
-                    className={styles.callButtonIcon}
-                  />
-                  Apply Now
-                </button>
-                <a
-                  href={`tel:${PRIMARY_PHONE}`}
-                  className={styles.mobileCallButton}
+            {item.children.map((child) => (
+              <li key={child.path} role="none">
+                <NavLink
+                  to={child.path}
+                  end
+                  role="menuitem"
+                  className={({ isActive }) =>
+                    `${styles.dropdownLink} ${isActive ? styles.active : ''}`
+                  }
                   onClick={() => {
-                    trackPhoneClick(PRIMARY_PHONE, "header_mobile_menu");
-                    setIsMobileMenuOpen(false);
+                    trackNavigation('desktop_nav_dropdown', 'click', child.label);
+                    setOpen(false);
                   }}
                 >
-                  <Icon icon="mdi:phone" className={styles.callButtonIcon} />
-                  {PRIMARY_PHONE_DISPLAY}
-                </a>
-              </div>
-            </nav>
-          </motion.div>
+                  {child.label}
+                </NavLink>
+              </li>
+            ))}
+          </motion.ul>
         )}
       </AnimatePresence>
-    </motion.header>
+    </li>
   );
 };
 
-// Helper function to get navigation icons
-const getNavIcon = (label) => {
-  const icons = {
-    About: "mdi:information-outline",
-    Courses: "mdi:book-open-variant",
-    Facilities: "mdi:office-building-outline",
-    Contact: "mdi:phone-outline",
+const Header = ({ mobileMenuOpen = false, onMobileMenuToggle }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { openLeadDrawer } = useModal();
+  const reduceMotion = useReducedMotion();
+  const { pathname } = useLocation();
+
+  const isHome = pathname === '/';
+  // Transparent only at the top of the Home hero; solid everywhere else.
+  const solid = !isHome || isScrolled;
+
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
+  }, []);
+
+  useEffect(() => {
+    handleScroll(); // sync on mount / route change
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  const handleApplyClick = () => {
+    trackCTAClick('header_apply_now', 'header', 'Apply Now');
+    openLeadDrawer('apply-now');
   };
-  return icons[label] || "mdi:circle-outline";
+
+  const { facebook, youtube, instagram } = collegeInfo.social;
+  const socialLinks = [
+    { id: 'facebook', icon: 'mdi:facebook', label: 'Facebook', url: facebook },
+    { id: 'youtube', icon: 'mdi:youtube', label: 'YouTube', url: youtube },
+    { id: 'instagram', icon: 'mdi:instagram', label: 'Instagram', url: instagram },
+  ];
+
+  return (
+    <motion.header
+      className={`${styles.header} ${solid ? styles.solid : styles.transparent} ${
+        isScrolled ? styles.scrolled : ''
+      }`}
+      initial={reduceMotion ? false : { y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {/* ── Utility bar (desktop, slim, navy) ───────────────────── */}
+      <div className={styles.utilityBar} aria-hidden={isScrolled}>
+        <Container maxWidth="xl" className={styles.utilityInner}>
+          <div className={styles.utilityLeft}>
+            <span className={styles.utilityItem}>
+              <Icon icon="mdi:map-marker" aria-hidden="true" />
+              {collegeInfo.address.parts.line1}, {collegeInfo.address.parts.area},{' '}
+              {collegeInfo.address.parts.city}
+            </span>
+            <a
+              href={phoneHref()}
+              className={styles.utilityItem}
+              onClick={() => trackPhoneClick(collegeInfo.phones[0], 'header_utility')}
+            >
+              <Icon icon="mdi:phone" aria-hidden="true" />
+              {collegeInfo.phones[0]}
+            </a>
+          </div>
+
+          <div className={styles.utilityRight}>
+            <a href={emailHref()} className={styles.utilityItem}>
+              <Icon icon="mdi:email-outline" aria-hidden="true" />
+              {collegeInfo.email}
+            </a>
+
+            <span className={styles.utilitySocials}>
+              {socialLinks.map((social) => (
+                <a
+                  key={social.id}
+                  href={isHttpUrl(social.url) ? social.url : '#'}
+                  className={styles.socialIcon}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Icon Commerce College on ${social.label}`}
+                >
+                  <Icon icon={social.icon} aria-hidden="true" />
+                </a>
+              ))}
+            </span>
+
+            <a
+              href={collegeInfo.samarthUrl}
+              className={styles.samarthPill}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackCTAClick('samarth_portal', 'header_utility', 'Samarth Admission Portal')}
+            >
+              Samarth Admission Portal
+              <Icon icon="mdi:open-in-new" aria-hidden="true" />
+            </a>
+          </div>
+        </Container>
+      </div>
+
+      {/* ── Main bar ────────────────────────────────────────────── */}
+      <div className={styles.mainBar}>
+        <Container maxWidth="xl" className={styles.mainInner}>
+          {/* Logo + wordmark */}
+          <NavLink to="/" className={styles.brand} aria-label="Icon Commerce College — Home">
+            <img src={LOGO_URL} alt="Icon Commerce College logo" className={styles.logo} />
+            <span className={styles.wordmark}>
+              <span className={styles.wordmarkName}>Icon Commerce College</span>
+              <span className={styles.wordmarkSub}>{collegeInfo.assameseName}</span>
+            </span>
+          </NavLink>
+
+          {/* Desktop navigation */}
+          <nav className={styles.desktopNav} aria-label="Primary">
+            <ul className={styles.navList}>
+              {mainNav.map((item) =>
+                item.children ? (
+                  <NavDropdown key={item.label} item={item} reduceMotion={reduceMotion} />
+                ) : (
+                  <li key={item.label} className={styles.navItem}>
+                    <NavLink
+                      to={item.path}
+                      end={item.path === '/'}
+                      className={({ isActive }) =>
+                        `${styles.navLink} ${isActive ? styles.active : ''}`
+                      }
+                      onClick={() => trackNavigation('desktop_nav', 'click', item.label)}
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                ),
+              )}
+            </ul>
+          </nav>
+
+          {/* Right cluster: Apply Now + mobile hamburger */}
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.applyButton}
+              onClick={handleApplyClick}
+            >
+              <Icon icon="mdi:school-outline" aria-hidden="true" />
+              Apply Now
+            </button>
+
+            <button
+              type="button"
+              className={styles.menuToggle}
+              onClick={onMobileMenuToggle}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileMenuOpen}
+            >
+              <Icon icon={mobileMenuOpen ? 'mdi:close' : 'mdi:menu'} />
+            </button>
+          </div>
+        </Container>
+      </div>
+    </motion.header>
+  );
 };
 
 export default Header;

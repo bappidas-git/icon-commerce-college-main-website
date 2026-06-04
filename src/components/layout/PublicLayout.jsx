@@ -27,15 +27,19 @@ import { useModal } from '../../context/ModalContext';
 
 const PublicLayout = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  // The desktop nav collapses to the hamburger + bottom nav below `lg`.
+  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const { openLeadDrawer, isDrawerOpen, drawerConfig, closeLeadDrawer } = useModal();
 
-  const handleEnquiryClick = () => openLeadDrawer('default');
+  const handleEnquiryClick = () => openLeadDrawer('apply-now');
 
   return (
     <>
-      <Header forceCloseMenu={isMobileDrawerOpen} />
+      <Header
+        mobileMenuOpen={isMobileDrawerOpen}
+        onMobileMenuToggle={() => setIsMobileDrawerOpen((open) => !open)}
+      />
 
       <main id="main-content" className="main-content">
         {/* Shared Suspense boundary for all lazy public page chunks */}
@@ -65,15 +69,14 @@ const PublicLayout = () => {
       {isMobile && (
         <>
           <MobileNavigation
-            onMenuClick={() => setIsMobileDrawerOpen(true)}
+            onMenuClick={() => setIsMobileDrawerOpen((open) => !open)}
             onEnquiryClick={handleEnquiryClick}
             isDrawerOpen={isMobileDrawerOpen}
           />
           <MobileDrawer
             open={isMobileDrawerOpen}
             onClose={() => setIsMobileDrawerOpen(false)}
-            onOpen={() => setIsMobileDrawerOpen(true)}
-            onBookConsultation={handleEnquiryClick}
+            onApply={handleEnquiryClick}
           />
         </>
       )}

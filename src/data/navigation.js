@@ -33,6 +33,7 @@ export const mainNav = [
     label: 'Courses',
     path: '/courses',
     children: [
+      { label: 'All Programs', path: '/courses' },
       { label: 'B.Com.', path: '/courses/b-com' },
       { label: 'BBA', path: '/courses/bba' },
       { label: 'BCA', path: '/courses/bca' },

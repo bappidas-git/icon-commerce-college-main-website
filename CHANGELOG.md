@@ -4,6 +4,45 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 0.5 — Header, dropdown nav & mobile menu
+
+Fifth prompt of the rebuild (`prompts/05-header-navigation.md`). Replaces the temporary
+hash-based CIT header with a professional, route-based, sticky multi-page header plus a
+rebuilt mobile drawer and bottom nav — all driven by `src/data/navigation.js` and
+`collegeInfo`, in the Navy + Gold system.
+
+**Header (`src/components/common/Header/`)** — full rebuild
+- Slim navy **utility bar** (desktop): address + click-to-call phone on the left; email,
+  Facebook/YouTube/Instagram social icons and a gold **"Samarth Admission Portal ↗"** pill
+  on the right. Collapses (and drops out of the tab order) once the user scrolls.
+- **Main bar**: logo placeholder + wordmark "Icon Commerce College" with the Assamese
+  subtitle; centred desktop nav from `navigation.js` using `NavLink` with an animated
+  gold **"shuttle" underline** for the active/hover item.
+- Accessible **dropdowns** (About ▾ / Courses ▾): open on hover *and* keyboard focus,
+  `aria-haspopup`/`aria-expanded`, Esc to close, close on focus-out, Framer-Motion
+  fade/slide (static when `prefers-reduced-motion`).
+- Warm-red **"Apply Now"** CTA opens the lead drawer (`openLeadDrawer('apply-now')`).
+- **Sticky behaviour**: transparent over the Home hero at the top, solidifies to white +
+  shadow on scroll (scroll listener); always solid on inner routes (via `useLocation`).
+- Below `lg` the nav collapses to a hamburger that toggles the shared `MobileDrawer`.
+
+**MobileDrawer (`src/components/common/MobileDrawer/`)** — full rebuild
+- Slide-in (right) MUI `Drawer` (focus-trapped) with the full route nav tree, **collapsible
+  submenus** (single-open accordion, auto-expands the section for the current route),
+  contact block (phone / email / WhatsApp / address), Samarth pill and the Apply Now CTA.
+- Closes on route change (`useLocation`); honours `prefers-reduced-motion`.
+
+**MobileNavigation (`src/components/common/MobileNavigation/`)** — full rebuild
+- Sticky bottom bar: **Home · Courses · Apply (centre warm-red CTA) · Notices · Menu**.
+  Route items use `NavLink` with a gold active state; Apply opens the lead drawer, Menu
+  toggles the drawer.
+
+**Wiring & data**
+- `PublicLayout.jsx` — passes the new Header props, switches the mobile breakpoint to `lg`
+  (so the header hamburger, bottom nav and drawer appear together) and updates the drawer
+  props (`onApply`, single toggle).
+- `navigation.js` — added an "All Programs" overview entry to the Courses dropdown.
+
 ### Phase 0.4 — Multi-page routing scaffold
 
 Fourth prompt of the rebuild (`prompts/04-routing-scaffold.md`). Converts the single-page

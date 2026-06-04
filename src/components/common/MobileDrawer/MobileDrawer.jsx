@@ -1,352 +1,211 @@
 /* ============================================
-   MobileDrawer Component
-   Slide-up menu drawer for mobile navigation
+   MobileDrawer — Icon Commerce College
+   --------------------------------------------
+   Slide-in (right) navigation drawer for small screens:
+   the full route-based nav tree with collapsible submenus,
+   a contact block, the Samarth portal pill and the warm-red
+   "Apply Now" CTA. Focus-trapped (MUI modal Drawer), closes
+   on route change. Built per prompt 05.
    ============================================ */
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useState } from 'react';
+import { Drawer, Collapse, IconButton } from '@mui/material';
+import { useLocation, NavLink } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Icon } from '@iconify/react';
+
+import { mainNav } from '../../../data/navigation';
 import {
-  SwipeableDrawer,
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  IconButton,
-  Divider,
-} from "@mui/material";
-import { motion, AnimatePresence } from "framer-motion";
-import { Icon } from "@iconify/react";
-import { trackPhoneClick, trackWhatsAppClick } from "../../../utils/gtm";
-import styles from "./MobileDrawer.module.css";
+  collegeInfo,
+  phoneHref,
+  emailHref,
+  whatsappHref,
+} from '../../../data/collegeInfo';
+import { trackPhoneClick, trackCTAClick, trackNavigation } from '../../../utils/gtm';
+import styles from './MobileDrawer.module.css';
 
-// Primary admissions contact (Icon Commerce College)
-const PRIMARY_PHONE = "+919365375782";
-const PRIMARY_PHONE_DISPLAY = "+91 93653 75782";
-const PRIMARY_PHONE_DIGITS = "919365375782";
-const WHATSAPP_HREF = `https://api.whatsapp.com/send?phone=${PRIMARY_PHONE_DIGITS}&text=Hello%20Icon%20Commerce%20College%2C%20I%27d%20like%20to%20know%20more%20about%20admissions.`;
+const LOGO_URL = '/images/placeholders/logo-icon-commerce.svg';
 
-const LOGO_URL = "/images/placeholders/logo-icon-commerce.svg";
+const MobileDrawer = ({ open, onClose, onApply }) => {
+  const { pathname } = useLocation();
+  const reduceMotion = useReducedMotion();
+  // Which submenu is expanded (single-open accordion).
+  const [openSubmenu, setOpenSubmenu] = useState(null);
 
-// Navigation menu items — match Header anchors
-const menuItems = [
-  { id: "home", label: "Home", icon: "ic:outline-home", href: "#home" },
-  { id: "about", label: "About", icon: "mdi:information-outline", href: "#about" },
-  { id: "courses", label: "Courses", icon: "mdi:book-open-variant", href: "#courses" },
-  { id: "facilities", label: "Facilities", icon: "mdi:office-building-outline", href: "#facilities" },
-  { id: "contact", label: "Contact", icon: "mdi:phone-outline", href: "#contact" },
-];
-
-const MobileDrawer = ({ open, onClose, onOpen, onBookConsultation, activeSection = "home" }) => {
-  // iOS detection for SwipeableDrawer optimization
-  const iOS =
-    typeof navigator !== "undefined" &&
-    /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-  // Handle escape key to close drawer
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    },
-    [onClose],
-  );
-
+  // Close the drawer whenever the route changes.
   useEffect(() => {
-    if (open) {
-      document.addEventListener("keydown", handleKeyDown);
-      // Prevent body scroll when drawer is open
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-    }
+    if (open) onClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-    };
-  }, [open, handleKeyDown]);
+  // Auto-expand the submenu containing the current route when opening.
+  useEffect(() => {
+    if (!open) return;
+    const parent = mainNav.find(
+      (item) => item.children?.some((c) => c.path === pathname),
+    );
+    setOpenSubmenu(parent ? parent.label : null);
+  }, [open, pathname]);
 
-  // Handle menu item click
-  const handleMenuClick = (item) => {
-    // Store the target href before closing
-    const targetHref = item.href;
+  const toggleSubmenu = (label) =>
+    setOpenSubmenu((prev) => (prev === label ? null : label));
 
-    // Close drawer first
+  const handleApply = () => {
     onClose();
-
-    // Reset body overflow immediately to enable scrolling
-    document.body.style.overflow = "";
-    document.body.style.position = "";
-    document.body.style.width = "";
-
-    // Scroll after a brief delay to allow drawer close animation to start
-    setTimeout(() => {
-      const element = document.querySelector(targetHref);
-      if (element) {
-        const headerOffset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition =
-          elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-      }
-    }, 50);
+    if (onApply) onApply();
   };
 
-  // Animation variants for staggered menu items
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.1,
-      },
-    },
-    exit: {
-      opacity: 0,
-      transition: {
-        staggerChildren: 0.03,
-        staggerDirection: -1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      x: -20,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 24,
-      },
-    },
-    exit: {
-      opacity: 0,
-      x: -20,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-
-  // Drawer content
-  const drawerContent = (
-    <Box
-      className={styles.drawerContent}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Navigation menu"
-    >
-      {/* Drawer Handle */}
-      <div className={styles.drawerHandle}>
-        <div className={styles.handleBar} />
-      </div>
-
-      {/* Header */}
-      <Box className={styles.drawerHeader}>
-        <Box className={styles.logoSection}>
-          <img
-            src={LOGO_URL}
-            alt="Icon Commerce College"
-            style={{ height: "36px", width: "auto" }}
-          />
-        </Box>
-        <IconButton
-          onClick={onClose}
-          className={styles.closeButton}
-          aria-label="Close menu"
-        >
-          <Icon icon="ic:baseline-close" />
-        </IconButton>
-      </Box>
-
-      <Divider className={styles.divider} />
-
-      {/* Navigation Menu */}
-      <AnimatePresence mode="wait">
-        {open && (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <List className={styles.menuList}>
-              {menuItems.map((item, index) => (
-                <motion.div key={item.id} variants={itemVariants}>
-                  <ListItem disablePadding className={styles.menuItem}>
-                    <ListItemButton
-                      onClick={() => handleMenuClick(item)}
-                      className={`${styles.menuButton} ${
-                        activeSection === item.id ? styles.activeItem : ""
-                      }`}
-                      sx={{
-                        borderRadius: "12px",
-                        mx: 1,
-                        mb: 0.5,
-                        py: 1.5,
-                        transition: "all 0.2s ease",
-                        "&:hover": {
-                          backgroundColor: "rgba(12, 45, 72, 0.08)",
-                        },
-                      }}
-                    >
-                      <ListItemIcon
-                        className={styles.menuIcon}
-                        sx={{
-                          minWidth: 44,
-                          color:
-                            activeSection === item.id ? "#1A2A52" : "#6B7280",
-                        }}
-                      >
-                        <Icon icon={item.icon} style={{ fontSize: 22 }} />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={item.label}
-                        className={styles.menuText}
-                        sx={{
-                          "& .MuiTypography-root": {
-                            fontWeight: activeSection === item.id ? 600 : 500,
-                            color:
-                              activeSection === item.id ? "#1A2A52" : "#374151",
-                            fontSize: "0.95rem",
-                          },
-                        }}
-                      />
-                      {activeSection === item.id && (
-                        <motion.div
-                          className={styles.activeIndicator}
-                          layoutId="activeIndicator"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 500,
-                            damping: 30,
-                          }}
-                        />
-                      )}
-                    </ListItemButton>
-                  </ListItem>
-                </motion.div>
-              ))}
-            </List>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Footer Contact Info */}
-      <Box className={styles.drawerFooter}>
-        <Divider className={styles.divider} />
-        <Box className={styles.contactInfo}>
-          <Typography variant="caption" className={styles.contactLabel}>
-            Admissions Desk
-          </Typography>
-
-          {/* Contact Details */}
-          <Box className={styles.contactDetails}>
-            <Box className={styles.unifiedContact}>
-              <Box className={styles.unifiedContactHeader}>
-                <Icon
-                  icon="mdi:phone-in-talk-outline"
-                  style={{ color: '#1A2A52', fontSize: 18 }}
-                />
-                <span className={styles.unifiedContactNumber}>
-                  {PRIMARY_PHONE_DISPLAY}
-                </span>
-              </Box>
-              <Box className={styles.unifiedContactActions}>
-                <a
-                  href={`tel:${PRIMARY_PHONE}`}
-                  className={`${styles.unifiedActionBtn} ${styles.unifiedActionCall}`}
-                  onClick={() =>
-                    trackPhoneClick(PRIMARY_PHONE, 'mobile_drawer')
-                  }
-                  aria-label={`Call ${PRIMARY_PHONE_DISPLAY}`}
-                >
-                  <Icon icon="mdi:phone" style={{ fontSize: 16 }} />
-                  <span>Call</span>
-                </a>
-                <a
-                  href={WHATSAPP_HREF}
-                  className={`${styles.unifiedActionBtn} ${styles.unifiedActionWhatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackWhatsAppClick('mobile_drawer')}
-                  aria-label={`Chat on WhatsApp with ${PRIMARY_PHONE_DISPLAY}`}
-                >
-                  <Icon icon="mdi:whatsapp" style={{ fontSize: 16 }} />
-                  <span>WhatsApp</span>
-                </a>
-              </Box>
-            </Box>
-          </Box>
-
-          {/* Apply Now CTA — opens unified lead drawer */}
-          <motion.button
-            className={styles.bookConsultationCta}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => {
-              onClose();
-              if (onBookConsultation) {
-                setTimeout(() => onBookConsultation(), 300);
-              }
-            }}
-            aria-label="Enquire about admission"
-          >
-            <Icon icon="mdi:school-outline" style={{ fontSize: 20 }} />
-            <span>Enquire Now</span>
-          </motion.button>
-        </Box>
-      </Box>
-    </Box>
-  );
+  const itemTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.3, ease: [0.22, 1, 0.36, 1] };
 
   return (
-    <SwipeableDrawer
-      anchor="bottom"
+    <Drawer
+      anchor="right"
       open={open}
       onClose={onClose}
-      onOpen={onOpen}
-      disableBackdropTransition={!iOS}
-      disableDiscovery={iOS}
-      swipeAreaWidth={30}
-      ModalProps={{
-        keepMounted: true,
-      }}
-      PaperProps={{
-        className: styles.drawerPaper,
-        sx: {
-          borderRadius: "24px 24px 0 0",
-          maxHeight: "85vh",
-          overflow: "visible",
-        },
-      }}
-      BackdropProps={{
-        className: styles.backdrop,
-      }}
+      transitionDuration={reduceMotion ? 0 : 300}
+      ModalProps={{ keepMounted: true }}
+      PaperProps={{ className: styles.paper }}
+      BackdropProps={{ className: styles.backdrop }}
     >
-      {drawerContent}
-    </SwipeableDrawer>
+      <div className={styles.drawer} role="dialog" aria-label="Site navigation">
+        {/* Header row */}
+        <div className={styles.header}>
+          <NavLink to="/" className={styles.brand} aria-label="Icon Commerce College — Home">
+            <img src={LOGO_URL} alt="Icon Commerce College logo" className={styles.logo} />
+            <span className={styles.brandText}>
+              <span className={styles.brandName}>Icon Commerce College</span>
+              <span className={styles.brandSub}>{collegeInfo.assameseName}</span>
+            </span>
+          </NavLink>
+          <IconButton onClick={onClose} aria-label="Close menu" className={styles.close}>
+            <Icon icon="mdi:close" />
+          </IconButton>
+        </div>
+
+        {/* Navigation tree */}
+        <nav className={styles.nav} aria-label="Mobile primary">
+          <ul className={styles.navList}>
+            {mainNav.map((item, index) => {
+              const hasChildren = Boolean(item.children);
+              const expanded = openSubmenu === item.label;
+
+              return (
+                <motion.li
+                  key={item.label}
+                  className={styles.navItem}
+                  initial={reduceMotion ? false : { opacity: 0, x: 24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ ...itemTransition, delay: reduceMotion ? 0 : index * 0.04 }}
+                >
+                  {hasChildren ? (
+                    <>
+                      <button
+                        type="button"
+                        className={styles.navLink}
+                        onClick={() => toggleSubmenu(item.label)}
+                        aria-expanded={expanded}
+                      >
+                        {item.label}
+                        <Icon
+                          icon="mdi:chevron-down"
+                          className={`${styles.chevron} ${expanded ? styles.chevronOpen : ''}`}
+                          aria-hidden="true"
+                        />
+                      </button>
+                      <Collapse in={expanded} timeout={reduceMotion ? 0 : 250}>
+                        <ul className={styles.subList}>
+                          {item.children.map((child) => (
+                            <li key={child.path}>
+                              <NavLink
+                                to={child.path}
+                                end
+                                className={({ isActive }) =>
+                                  `${styles.subLink} ${isActive ? styles.active : ''}`
+                                }
+                                onClick={() =>
+                                  trackNavigation('mobile_drawer', 'click', child.label)
+                                }
+                              >
+                                {child.label}
+                              </NavLink>
+                            </li>
+                          ))}
+                        </ul>
+                      </Collapse>
+                    </>
+                  ) : (
+                    <NavLink
+                      to={item.path}
+                      end={item.path === '/'}
+                      className={({ isActive }) =>
+                        `${styles.navLink} ${isActive ? styles.active : ''}`
+                      }
+                      onClick={() => trackNavigation('mobile_drawer', 'click', item.label)}
+                    >
+                      {item.label}
+                    </NavLink>
+                  )}
+                </motion.li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Footer: CTA, Samarth pill, contact block */}
+        <div className={styles.footer}>
+          <button type="button" className={styles.applyButton} onClick={handleApply}>
+            <Icon icon="mdi:school-outline" aria-hidden="true" />
+            Apply Now
+          </button>
+
+          <a
+            href={collegeInfo.samarthUrl}
+            className={styles.samarthPill}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() =>
+              trackCTAClick('samarth_portal', 'mobile_drawer', 'Samarth Admission Portal')
+            }
+          >
+            Samarth Admission Portal
+            <Icon icon="mdi:open-in-new" aria-hidden="true" />
+          </a>
+
+          <div className={styles.contact}>
+            <a
+              href={phoneHref()}
+              className={styles.contactRow}
+              onClick={() => trackPhoneClick(collegeInfo.phones[0], 'mobile_drawer')}
+            >
+              <Icon icon="mdi:phone" aria-hidden="true" />
+              {collegeInfo.phones[0]}
+            </a>
+            <a href={emailHref()} className={styles.contactRow}>
+              <Icon icon="mdi:email-outline" aria-hidden="true" />
+              {collegeInfo.email}
+            </a>
+            <a
+              href={whatsappHref(
+                collegeInfo.phones[0],
+                "Hello Icon Commerce College, I'd like to know more about admissions.",
+              )}
+              className={styles.contactRow}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon icon="mdi:whatsapp" aria-hidden="true" />
+              WhatsApp us
+            </a>
+            <span className={styles.contactAddress}>
+              <Icon icon="mdi:map-marker" aria-hidden="true" />
+              {collegeInfo.address.full}
+            </span>
+          </div>
+        </div>
+      </div>
+    </Drawer>
   );
 };
 

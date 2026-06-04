@@ -1,462 +1,455 @@
 /* ============================================
-   Header Component Styles - Landing Page Boilerplate
+   Header — Icon Commerce College
+   Navy + Gold sticky multi-page header (prompt 05).
    ============================================ */
 
-/* Header Base */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: var(--z-sticky);
-  padding: var(--space-3) 0;
+  transition: background var(--transition-base), box-shadow var(--transition-base);
+}
+
+/* ── State: solid (inner pages + scrolled home) ───────────────── */
+.header.solid .mainBar {
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.header.scrolled .mainBar {
+  box-shadow: var(--shadow-md);
+}
+
+/* ── State: transparent (Home hero, at top) ───────────────────── */
+.header.transparent .mainBar {
   background: transparent;
-  transition: all var(--transition-base);
 }
 
-/* Scrolled State */
-.header.scrolled {
-  background: var(--white);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-  padding: var(--space-2) 0;
+/* ============================================================
+   Utility bar (desktop only, slim navy)
+   ============================================================ */
+.utilityBar {
+  background: var(--color-primary-dark);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
+  overflow: hidden;
+  max-height: 44px;
+  opacity: 1;
+  transition: max-height var(--transition-base), opacity var(--transition-base),
+    padding var(--transition-base);
 }
 
-.header.scrolled .navLink {
-  color: var(--primary-dark);
+/* Collapse the utility bar once the user scrolls, freeing vertical space.
+   `visibility: hidden` also drops its links out of the tab order. */
+.header.scrolled .utilityBar {
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
 }
 
-/* Once scrolled the header is white, so amber would be low-contrast — use the
-   brand red for an accessible, on-brand hover state and matching underline. */
-.header.scrolled .navLink:hover,
-.header.scrolled .navLink.active {
-  color: var(--accent-red);
-}
-
-.header.scrolled .navLink::after {
-  background: var(--accent-red);
-}
-
-.header.scrolled .mainLogo {
-  filter: none;
-}
-
-.header.scrolled .menuIcon {
-  color: var(--primary-dark);
-}
-
-/* Header Container */
-.headerContainer {
+.utilityInner {
   display: flex !important;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  flex-wrap: nowrap;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
-/* Logo Section */
-.logoSection {
+.utilityLeft,
+.utilityRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.utilityItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+a.utilityItem:hover {
+  color: var(--color-accent);
+}
+
+.utilityItem svg {
+  font-size: 1rem;
+  color: var(--color-accent);
   flex-shrink: 0;
 }
 
-.logoLink {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  text-decoration: none;
-}
-
-.logoWrapper {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.accreditationStrip {
+.utilitySocials {
   display: inline-flex;
   align-items: center;
-  padding: 4px var(--space-2);
-  font-size: 11px;
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-wider);
-  color: var(--white);
+  gap: var(--space-1);
+}
+
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.05rem;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.socialIcon:hover {
   background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--color-accent);
+}
+
+.samarthPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 5px var(--space-4);
+  background: var(--gradient-gold);
+  color: var(--color-primary-dark);
+  font-weight: var(--fw-semibold);
+  font-size: 0.78rem;
+  text-decoration: none;
   border-radius: var(--radius-full);
   white-space: nowrap;
-  transition: all var(--transition-base);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.scrolled .accreditationStrip {
-  color: var(--primary-dark);
-  background: rgba(12, 45, 72, 0.06);
-  border-color: rgba(12, 45, 72, 0.25);
+.samarthPill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(200, 160, 77, 0.35);
 }
 
-.mainLogo {
-  height: 60px;
+.samarthPill svg {
+  font-size: 0.95rem;
+}
+
+/* ============================================================
+   Main bar
+   ============================================================ */
+.mainBar {
+  transition: background var(--transition-base), box-shadow var(--transition-base);
+}
+
+.mainInner {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--header-height);
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
+  transition: min-height var(--transition-base);
+}
+
+.header.scrolled .mainInner {
+  min-height: var(--header-height-scrolled);
+}
+
+/* ── Brand lockup ─────────────────────────────────────────────── */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logo {
+  height: 48px;
   width: auto;
   object-fit: contain;
+  transition: filter var(--transition-base), height var(--transition-base);
+}
+
+.header.transparent .logo {
   filter: brightness(0) invert(1);
-  transition: opacity var(--transition-base), filter var(--transition-base);
 }
 
-.logoDivider {
-  width: 1px;
-  height: 30px;
-  background: rgba(255, 255, 255, 0.3);
-  transition: background var(--transition-base);
+.header.scrolled .logo {
+  height: 42px;
 }
 
-.scrolled .logoDivider {
-  background: var(--border-gray);
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
 }
 
-.projectLogo {
-  height: 28px;
-  width: auto;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
-  transition: filter var(--transition-base);
+.wordmarkName {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  font-size: 1.15rem;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+  transition: color var(--transition-base);
 }
 
-.scrolled .projectLogo {
-  filter: none;
+.wordmarkSub {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  transition: color var(--transition-base);
 }
 
-/* Desktop Navigation */
+.header.transparent .wordmarkName {
+  color: #ffffff;
+}
+
+.header.transparent .wordmarkSub {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ── Desktop nav ──────────────────────────────────────────────── */
 .desktopNav {
-  flex: 1;
   display: flex;
   justify-content: center;
+  flex: 1;
   min-width: 0;
 }
 
 .navList {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: var(--space-1);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+.navItem {
+  position: relative;
+}
+
 .navLink {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
   padding: var(--space-2) var(--space-3);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
-  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: 0.92rem;
+  color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition-fast);
   white-space: nowrap;
+  transition: color var(--transition-fast);
 }
 
+.header.transparent .navLink {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* "Shuttle" underline — grows from centre under the active/hover item. */
 .navLink::after {
-  content: "";
+  content: '';
   position: absolute;
-  bottom: 0;
   left: 50%;
+  bottom: 4px;
   width: 0;
   height: 2px;
-  background: var(--accent-amber);
-  transform: translateX(-50%);
-  transition: width var(--transition-fast);
+  background: var(--color-accent);
   border-radius: var(--radius-full);
+  transform: translateX(-50%);
+  transition: width var(--transition-base);
 }
 
-/* At the top of the page the header is transparent over the dark hero, so the
-   hover state uses the amber accent — the navy --accent-gold was invisible. */
 .navLink:hover,
 .navLink.active {
-  color: var(--accent-amber);
+  color: var(--color-accent-dark);
+}
+
+.header.transparent .navLink:hover,
+.header.transparent .navLink.active {
+  color: #ffffff;
 }
 
 .navLink:hover::after,
 .navLink.active::after {
-  width: 60%;
+  width: calc(100% - var(--space-4));
 }
 
-/* Right Section */
-.rightSection {
+.chevron {
+  font-size: 1rem;
+  transition: transform var(--transition-fast);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ── Dropdown menu ────────────────────────────────────────────── */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+}
+
+.dropdownLink {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-body);
+  font-weight: var(--fw-medium);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.dropdownLink:hover,
+.dropdownLink.active {
+  background: var(--color-accent-soft);
+  color: var(--color-primary);
+}
+
+/* ── Right-side actions ───────────────────────────────────────── */
+.actions {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
   flex-shrink: 0;
 }
 
-.ctaButton {
-  white-space: nowrap;
-}
-
-.callButton {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  background: transparent;
-  color: var(--white);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
-  text-decoration: none;
-  border: 1.5px solid rgba(255, 255, 255, 0.65);
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-fast);
-  white-space: nowrap;
-}
-
-.callButton:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--white);
-  border-color: var(--white);
-  transform: translateY(-1px);
-}
-
-.header.scrolled .callButton {
-  color: var(--primary-dark);
-  border-color: rgba(12, 45, 72, 0.3);
-}
-
-.header.scrolled .callButton:hover {
-  background: rgba(12, 45, 72, 0.06);
-  color: var(--primary-dark);
-  border-color: var(--primary-dark);
-}
-
-.callButtonIcon {
-  font-size: 18px;
-}
-
-/* Primary "Apply Now" CTA — amber accent */
 .applyButton {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-5);
-  background: var(--accent-amber);
-  color: var(--white);
-  font-size: var(--fs-sm);
+  font-family: var(--font-heading);
   font-weight: var(--fw-semibold);
-  text-decoration: none;
+  font-size: 0.92rem;
+  color: #ffffff;
+  background: var(--color-cta);
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-button);
   cursor: pointer;
-  transition: all var(--transition-fast);
   white-space: nowrap;
   box-shadow: var(--shadow-button);
-  font-family: inherit;
+  transition: background var(--transition-fast), transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .applyButton:hover {
-  background: var(--accent-amber-dark);
-  color: var(--white);
-  transform: translateY(-2px);
+  background: var(--color-cta-dark);
+  transform: scale(1.02);
   box-shadow: var(--shadow-button-hover);
 }
 
-.applyButton:focus-visible {
-  outline: 2px solid var(--accent-amber-dark);
-  outline-offset: 2px;
+.applyButton svg {
+  font-size: 1.15rem;
 }
 
-.applyButtonIcon {
-  font-size: 18px;
-}
-
-.mobileApplyButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  width: 100%;
-  padding: var(--space-3) var(--space-4);
-  margin-bottom: var(--space-2);
-  background: var(--accent-amber);
-  color: var(--white);
-  font-size: var(--fs-base);
-  font-weight: var(--fw-semibold);
-  border: none;
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  box-shadow: var(--shadow-button);
-  font-family: inherit;
-}
-
-.mobileApplyButton:hover {
-  background: var(--accent-amber-dark);
-  color: var(--white);
-}
-
-.mobileCallButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  width: 100%;
-  padding: var(--space-3) var(--space-4);
-  background: transparent;
-  color: var(--primary-dark);
-  font-size: var(--fs-base);
-  font-weight: var(--fw-semibold);
-  text-decoration: none;
-  border: 1.5px solid var(--primary-dark);
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-fast);
-}
-
-.mobileCallButton:hover {
-  background: var(--primary-dark);
-  color: var(--white);
-}
-
-/* Menu Button */
-.menuButton {
+/* Hamburger — hidden on desktop, shown below lg. */
+.menuToggle {
   display: none;
-  padding: var(--space-2);
-  color: var(--white);
-  transition: color var(--transition-fast);
-}
-
-.menuIcon {
-  font-size: 28px;
-  color: inherit;
-}
-
-/* Mobile Navigation */
-.mobileNav {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: var(--white);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.mobileNavContent {
-  padding: var(--space-4);
-}
-
-.mobileNavList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.mobileNavLink {
-  display: flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  font-size: var(--fs-base);
-  font-weight: var(--fw-medium);
-  color: var(--primary-dark);
-  text-decoration: none;
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-fast);
-  /* Button reset styles */
-  width: 100%;
-  background: none;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--color-primary);
+  background: transparent;
   border: none;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  text-align: left;
-  font-family: inherit;
+  font-size: 1.75rem;
 }
 
-.mobileNavLink:hover,
-.mobileNavLink.active {
-  background: var(--light-gray);
-  color: var(--accent-gold);
+.header.transparent .menuToggle {
+  color: #ffffff;
 }
 
-.mobileNavIcon {
-  font-size: 22px;
-  color: var(--text-gray);
-  transition: color var(--transition-fast);
+/* ── Focus states ─────────────────────────────────────────────── */
+.navLink:focus-visible,
+.dropdownLink:focus-visible,
+.applyButton:focus-visible,
+.menuToggle:focus-visible,
+.samarthPill:focus-visible,
+.socialIcon:focus-visible,
+.brand:focus-visible,
+a.utilityItem:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
 
-.mobileNavLink:hover .mobileNavIcon,
-.mobileNavLink.active .mobileNavIcon {
-  color: var(--accent-gold);
-}
-
-.mobileNavCTA {
-  margin-top: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--border-gray);
-}
-
-/* Responsive Styles */
-@media (max-width: 1280px) {
-  .navLink {
-    padding: var(--space-2);
-    font-size: 13px;
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1024px) {
+  .utilityBar {
+    display: none;
   }
 
-}
-
-@media (max-width: 1024px) {
   .desktopNav {
     display: none;
   }
 
-  .menuButton {
-    display: flex;
-  }
-
-  .ctaButton {
+  .applyButton {
     display: none;
   }
 
-  .headerContainer {
-    gap: var(--space-3);
+  .menuToggle {
+    display: inline-flex;
+  }
+
+  /* On inner pages the header is solid from the top — keep it visible. */
+  .mainInner {
+    min-height: 64px;
   }
 }
 
-@media (max-width: 768px) {
-  .header {
-    padding: var(--space-2) 0;
+@media (max-width: 600px) {
+  .wordmarkName {
+    font-size: 1rem;
   }
 
-  .logoWrapper {
-    gap: var(--space-2);
+  .wordmarkSub {
+    font-size: 0.72rem;
   }
 
-  .mainLogo {
+  .logo {
     height: 40px;
   }
-
-  .projectLogo {
-    height: 22px;
-  }
-
-  .logoDivider {
-    height: 24px;
-  }
-
 }
 
-@media (max-width: 480px) {
-  .logoDivider {
+@media (max-width: 380px) {
+  .wordmarkSub {
     display: none;
   }
-
-  .projectLogo {
-    display: none;
-  }
-
-  .mainLogo {
-    height: 36px;
-  }
-
 }
 
-/* Focus States */
-.navLink:focus-visible,
-.mobileNavLink:focus-visible {
-  outline: 2px solid var(--accent-amber);
-  outline-offset: 2px;
+/* Respect reduced-motion: drop the animated transitions. */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .mainBar,
+  .mainInner,
+  .utilityBar,
+  .logo,
+  .navLink,
+  .navLink::after,
+  .chevron,
+  .applyButton {
+    transition: none !important;
+  }
 }

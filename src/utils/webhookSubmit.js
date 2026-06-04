@@ -39,26 +39,42 @@ const generateUUID = () => {
 
 /**
  * Submit lead data to the shared server-side store.
+ *
+ * FIELD-KEY DECISION (prompt 08):
+ *   The public form and this util use `program_interest` as the college
+ *   field name (design-system §8). For backward compatibility with the
+ *   existing admin panel / LMS (leadService, LeadManagement, Dashboard,
+ *   LeadDetail) and any leads already stored, the same value is ALSO written
+ *   to the canonical server key `service_interest`. Callers may pass either
+ *   `program_interest` (preferred) or the legacy `service_interest`.
+ *
  * @param {Object} leadData - The form data to submit
  * @param {string} leadData.name - Applicant's full name
  * @param {string} leadData.mobile - Mobile number (10 digits, +91 added separately)
  * @param {string} [leadData.email] - Email address (optional)
- * @param {string} leadData.service_interest - Selected program (legacy key — value is
- *   the program label, e.g. "B.Com. (Bachelor of Commerce)"). Kept as
- *   `service_interest` to preserve the existing admin panel mapping.
+ * @param {string} [leadData.program_interest] - Selected program
+ *   (B.Com / BBA / BCA / B.A. / Undecided). Preferred key.
+ * @param {string} [leadData.service_interest] - Legacy alias of program_interest.
  * @param {string} leadData.state - Applicant's home state (NE India + "Other")
  * @param {string} [leadData.message] - Optional free-text question
  * @param {string} leadData.source - Form source identifier (e.g., 'hero-form', 'contact-form')
  * @returns {Promise<{success: boolean, duplicate?: boolean, message: string}>}
  */
 export const submitLeadToWebhook = async (leadData) => {
-  // Enrich the submission with metadata, attribution and the admin-panel
-  // fields (status / notes / activity) so the lead renders correctly in the
-  // LMS the moment it lands on the server.
+  // Map the college-facing `program_interest` onto the canonical server key
+  // `service_interest` (kept for admin/LMS compatibility) while persisting both
+  // so the stored record is self-describing. Drop any honeypot field before it
+  // ever reaches the server.
+  const { honeypot, program_interest, service_interest, ...rest } = leadData;
+  const programValue = program_interest || service_interest || "";
+
   const submittedAt = new Date().toISOString();
   const params = new URLSearchParams(window.location.search);
   const enrichedData = {
-    ...leadData,
+    ...rest,
+    program_interest: programValue,
+    // Canonical key the admin panel reads — keep in sync with program_interest.
+    service_interest: programValue,
     lead_id: generateUUID(),
     status: "new",
     submitted_at: submittedAt,

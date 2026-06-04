@@ -143,11 +143,11 @@
   border-radius: 10px !important;
   font-weight: 700 !important;
   letter-spacing: 0.3px;
-  box-shadow: 0 4px 16px rgba(0, 184, 148, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(224, 48, 30, 0.35) !important;
 }
 
 .variantHero .submitButton:hover {
-  box-shadow: 0 6px 24px rgba(0, 184, 148, 0.55) !important;
+  box-shadow: 0 6px 24px rgba(224, 48, 30, 0.5) !important;
 }
 
 .variantHero .trustBadges {
@@ -360,7 +360,7 @@
   padding: 14px 28px !important;
   font-size: 1rem !important;
   border-radius: 12px !important;
-  box-shadow: 0 6px 24px rgba(0, 184, 148, 0.45) !important;
+  box-shadow: 0 6px 24px rgba(224, 48, 30, 0.4) !important;
 }
 
 .variantDrawer .messageField :global(.MuiInputBase-input) {
@@ -494,9 +494,10 @@
   font-weight: 600 !important;
   border-radius: 12px !important;
   text-transform: none !important;
-  background: linear-gradient(135deg, #00B894 0%, #00D2A0 50%, #00E6AC 100%) !important;
+  /* Warm Red — the single primary CTA per view (design-system §2). */
+  background: linear-gradient(135deg, #E0301E 0%, #B91E10 100%) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4) !important;
+  box-shadow: 0 4px 15px rgba(224, 48, 30, 0.35) !important;
   transition: all 0.3s ease !important;
   display: flex !important;
   align-items: center !important;
@@ -510,8 +511,8 @@
 }
 
 .submitButton:hover {
-  background: linear-gradient(135deg, #00D2A0 0%, #00E6AC 50%, #00B894 100%) !important;
-  box-shadow: 0 6px 24px rgba(0, 184, 148, 0.55) !important;
+  background: linear-gradient(135deg, #B91E10 0%, #E0301E 100%) !important;
+  box-shadow: 0 6px 24px rgba(224, 48, 30, 0.5) !important;
   transform: translateY(-2px);
 }
 
@@ -728,8 +729,47 @@
 }
 
 .submitButton:focus-visible {
-  outline: 2px solid #00B894;
+  outline: 2px solid var(--color-cta, #E0301E);
   outline-offset: 2px;
+}
+
+/* ============================================
+   HONEYPOT (anti-spam) — kept in the DOM for bots
+   but removed from layout, tab order and a11y tree.
+   ============================================ */
+.honeypot {
+  position: absolute !important;
+  left: -9999px !important;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ============================================
+   COMPACT — tighter spacing for sidebars / drawers
+   ============================================ */
+.compact .form {
+  gap: 12px;
+}
+
+.compact .formHeader {
+  margin-bottom: 16px;
+}
+
+.compact .textField :global(.MuiInputBase-input) {
+  padding: 11px 14px;
+}
+
+.compact .submitWrapper {
+  margin-top: 4px;
+}
+
+.compact .trustBadges {
+  margin-top: 4px;
+  padding-top: 12px;
 }
 
 /* Reduced Motion */

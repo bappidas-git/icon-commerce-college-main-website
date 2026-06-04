@@ -4,6 +4,56 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 1.2 — Lead capture core
+
+Eighth prompt of the rebuild (`prompts/08-lead-capture-core.md`). Adapts the proven
+server-store lead pipeline to the Icon Commerce College fields, with anti-spam,
+preset support and navy + gold dialogs — the public form, the submit util and the
+shared PHP store stay wire-compatible with the existing admin panel.
+
+**Field-key decision (`program_interest`)**
+- The public form and `webhookSubmit` now use **`program_interest`** as the
+  college-facing field name (design-system §8: B.Com / BBA / BCA / B.A. / Undecided).
+- For backward compatibility the same value is ALSO persisted to the canonical
+  server key **`service_interest`**, which the admin panel (`leadService`,
+  `LeadManagement`, `Dashboard`, `LeadDetail`) and any already-stored leads read.
+  `service_interest` remains the canonical admin key; `program_interest` is the new
+  public field and the preset prop. Callers may pass either key — `webhookSubmit`
+  maps and mirrors both. No admin/`leads.php` schema change was required.
+
+**`UnifiedLeadForm` (`src/components/common/UnifiedLeadForm/`)**
+- Fields are now the college set: `name` (req), `mobile` (req, Indian 10-digit),
+  `email` (optional), `program_interest` select (B.Com · BBA · BCA · B.A. ·
+  Undecided), `state` select (Assam default + NE India + Other), `message` (optional).
+- New props: `compact` (tighter spacing for sidebars/drawers), `onSuccess` (called
+  with the submitted data; `onSubmitSuccess` kept as a legacy alias) and
+  `programInterest` (preset the program select, e.g. from a course page).
+- **Honeypot** anti-spam field (`company`) — visually hidden, removed from tab order
+  and the a11y tree; populated submissions are silently dropped (no server write).
+- Inline, accessible validation routed through the shared validators; loading +
+  disabled states retained.
+
+**`webhookSubmit` (`src/utils/webhookSubmit.js`)**
+- Payload builder maps `program_interest` → `service_interest` (mirrors both),
+  strips the honeypot, and keeps the `POST /api/leads.php?action=create` flow,
+  UTM/gclid capture, `lead_id`, `status: 'new'`, `submitted_at`, `notes`, `activity`
+  and cross-device dedupe-by-mobile unchanged. No PII is logged.
+
+**`validators` (`src/utils/validators.js`)**
+- Added `getProgramInterestErrorMessage`, `getStateErrorMessage` and
+  `getOptionalMessageErrorMessage`; `validateLeadForm` now treats email and message
+  as optional and validates program/state (toggle via `requireCourseFields`).
+
+**`leads.php`** — header documents the college lead-record shape; endpoints, merge
+and file-locking logic unchanged (`program_interest` / `state` persist as-is).
+
+**`swalHelper`** — success/error/info dialogs restyled to navy + gold (gold icons,
+navy confirm button with gold trim, Poppins title); error icon uses warm red.
+
+**Styling** — the form's primary CTA gradient moved from teal to **warm red**
+(design-system §2: the single primary action per view); Footer quick-enquiry strip
+now sends `program_interest`.
+
 ### Phase 1.1 — UI primitives & motion helpers
 
 Seventh prompt of the rebuild (`prompts/07-ui-primitives.md`). Adds the shared, DRY

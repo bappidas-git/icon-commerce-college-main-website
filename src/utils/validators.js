@@ -165,11 +165,58 @@ export const getMessageErrorMessage = (message) => {
 };
 
 /**
- * Validate entire lead form
+ * Get validation error message for the program-interest select.
+ * Required only when the course fields are shown.
+ * @param {string} programInterest - Selected program value
+ * @returns {string} - Error message or empty string
+ */
+export const getProgramInterestErrorMessage = (programInterest) => {
+  if (!programInterest) return 'Please select a program';
+  return '';
+};
+
+/**
+ * Get validation error message for the state select.
+ * Required only when the course fields are shown.
+ * @param {string} state - Selected state value
+ * @returns {string} - Error message or empty string
+ */
+export const getStateErrorMessage = (state) => {
+  if (!state) return 'Please select your state';
+  return '';
+};
+
+/**
+ * Get validation error for an OPTIONAL message — only length is checked.
+ * Empty is allowed; non-empty must be within the 500-character limit.
+ * @param {string} message - Message content
+ * @returns {string} - Error message or empty string
+ */
+export const getOptionalMessageErrorMessage = (message) => {
+  if (!message) return '';
+  if (message.trim().length > 500) {
+    return 'Message cannot exceed 500 characters';
+  }
+  return '';
+};
+
+/**
+ * Validate the entire college admission-enquiry lead form.
+ *
+ * College field rules (design-system §8):
+ *   - name   (required)
+ *   - mobile (required, Indian 10-digit)
+ *   - email  (OPTIONAL — only validated when provided)
+ *   - program_interest / state (required only when course fields are shown)
+ *   - message (OPTIONAL — only length-checked)
+ *
  * @param {Object} formData - Form data object
+ * @param {Object} [options]
+ * @param {boolean} [options.requireCourseFields=true] - Validate program/state
  * @returns {Object} - Validation result with isValid and errors
  */
-export const validateLeadForm = (formData) => {
+export const validateLeadForm = (formData, options = {}) => {
+  const { requireCourseFields = true } = options;
   const errors = {};
 
   const nameError = getNameErrorMessage(formData.name);
@@ -178,10 +225,22 @@ export const validateLeadForm = (formData) => {
   const mobileError = getMobileErrorMessage(formData.mobile);
   if (mobileError) errors.mobile = mobileError;
 
-  const emailError = getEmailErrorMessage(formData.email);
-  if (emailError) errors.email = emailError;
+  // Email is optional — validate only when the applicant entered one.
+  if (formData.email) {
+    const emailError = getEmailErrorMessage(formData.email);
+    if (emailError) errors.email = emailError;
+  }
 
-  const messageError = getMessageErrorMessage(formData.message);
+  if (requireCourseFields) {
+    const programError = getProgramInterestErrorMessage(formData.program_interest);
+    if (programError) errors.program_interest = programError;
+
+    const stateError = getStateErrorMessage(formData.state);
+    if (stateError) errors.state = stateError;
+  }
+
+  // Message is optional — only enforce the length cap.
+  const messageError = getOptionalMessageErrorMessage(formData.message);
   if (messageError) errors.message = messageError;
 
   return {
@@ -231,6 +290,9 @@ const validators = {
   getEmailErrorMessage,
   getNameErrorMessage,
   getMessageErrorMessage,
+  getProgramInterestErrorMessage,
+  getStateErrorMessage,
+  getOptionalMessageErrorMessage,
   validateLeadForm,
   formatPhoneNumber,
   sanitizeInput,

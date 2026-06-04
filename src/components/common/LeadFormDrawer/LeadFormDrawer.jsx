@@ -23,6 +23,7 @@ const LeadFormDrawer = ({
   title = 'Enquire About Admission',
   subtitle = "Fill the form — we'll assist you with admission",
   source = 'general',
+  programInterest = '',
   onSubmitSuccess,
 }) => {
   const theme = useTheme();
@@ -171,10 +172,12 @@ const LeadFormDrawer = ({
                 </Typography>
               </motion.div>
 
-              {/* Unified Lead Form */}
+              {/* Unified Lead Form — `programInterest` (e.g. from a program card)
+                  pre-selects the Program field when the drawer opens. */}
               <UnifiedLeadForm
                 variant="drawer"
                 source={source}
+                programInterest={programInterest}
                 showTitle={false}
                 showSubtitle={false}
                 showCourseFields={true}

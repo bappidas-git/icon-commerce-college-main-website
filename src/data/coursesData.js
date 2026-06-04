@@ -61,6 +61,7 @@ const FEES_BCA_BBA = {
  * @property {string} image         Placeholder URL
  * @property {string} summary
  * @property {string} eligibility
+ * @property {string} eligibilityShort  Compact eligibility for the comparison table
  * @property {string[]} highlights
  * @property {string[]} careers
  * @property {{rows:{particular:string,amount:string}[], total:string,
@@ -84,6 +85,7 @@ export const coursesData = [
       'A career-focused commerce degree covering accountancy, finance, taxation and business management — the flagship program at Icon Commerce College.',
     eligibility:
       'Passed HS (10+2) in any stream (Commerce / Science / Arts) under AHSEC or an equivalent board.',
+    eligibilityShort: 'HS (10+2) — any stream',
     highlights: [
       'Accountancy, Finance & Taxation focus',
       'Practical, industry-aligned curriculum',
@@ -111,6 +113,7 @@ export const coursesData = [
     summary:
       'A management degree building leadership, marketing and entrepreneurial skills for the modern business world.',
     eligibility: 'Passed HS (10+2) in any stream under AHSEC or an equivalent board.',
+    eligibilityShort: 'HS (10+2) — any stream',
     highlights: [
       'Management, Marketing & HR fundamentals',
       'Entrepreneurship & leadership training',
@@ -139,6 +142,7 @@ export const coursesData = [
       'A computer-application degree covering programming, databases and web technologies for a career in IT and software.',
     eligibility:
       'Passed HS (10+2); Mathematics / Computer Science preferred. CSE / IT Diploma holders are also eligible.',
+    eligibilityShort: 'HS (10+2) — Maths / CS preferred',
     highlights: [
       'Programming & Software Development',
       'Databases, Networking & Web technologies',
@@ -167,6 +171,7 @@ export const coursesData = [
       'A flexible humanities degree across languages, social sciences and education — strong grounding for teaching, civil services and research.',
     eligibility:
       'Passed HS (10+2) in any stream. Honours requires a minimum of 45% marks.',
+    eligibilityShort: 'HS (10+2) — any stream (Hons. ≥ 45%)',
     highlights: [
       'Wide choice of Arts subjects',
       'Honours specialisation available',

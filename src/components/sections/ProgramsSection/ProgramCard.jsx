@@ -4,10 +4,18 @@
    --------------------------------------------
    The rich card used in the Home programs teaser (and reusable on /courses): a
    placeholder course image with a gold shortName badge (+ an optional
-   "Most Popular" ribbon), the program name and duration, the first three
-   highlight ticks, a 1st-semester "starting fees" hint, and two actions —
-   "View Details" → /courses/:slug and "Apply" → the global `apply-now` lead
-   drawer pre-set to this program.
+   "Most Popular" ribbon), the program name and duration, an optional
+   eligibility one-liner, the first three highlight ticks, a 1st-semester
+   "starting fees" hint, and two actions — "View Details" → /courses/:slug and
+   "Apply" → the global `apply-now` lead drawer pre-set to this program.
+
+   Props:
+     course           (object)  — a record from coursesData (required).
+     source           (string)  — lead `source` recorded when "Apply" is clicked
+                                   (default 'home-programs'; /courses passes
+                                   'courses-grid').
+     showEligibility  (boolean) — render the eligibility one-liner (default
+                                   false; the larger /courses cards opt in).
 
    Motion is split the same way as the rest of the site: the scroll entrance is
    owned by the outer <Reveal> in ProgramsSection while the hover lift + gold
@@ -23,7 +31,7 @@ import styles from './ProgramCard.module.css';
 // Show the first three highlights as quick ticks (design-system §6).
 const MAX_TICKS = 3;
 
-const ProgramCard = ({ course }) => {
+const ProgramCard = ({ course, source = 'home-programs', showEligibility = false }) => {
   const { openLeadDrawer } = useModal();
 
   // Open the global lead drawer in "apply-now" mode, pre-selecting this program.
@@ -31,7 +39,7 @@ const ProgramCard = ({ course }) => {
   // PROGRAM_OPTIONS so the Program select mounts already filled (design-system §8).
   const handleApply = () => {
     openLeadDrawer('apply-now', {
-      source: 'home-programs',
+      source,
       programInterest: course.shortName,
     });
   };
@@ -60,6 +68,21 @@ const ProgramCard = ({ course }) => {
         </p>
 
         <h3 className={styles.name}>{course.name}</h3>
+
+        {/* Optional eligibility one-liner (the larger /courses cards opt in) */}
+        {showEligibility && (
+          <p className={styles.eligibility}>
+            <Icon
+              icon="mdi:school-outline"
+              className={styles.eligibilityIcon}
+              aria-hidden="true"
+            />
+            <span>
+              <span className={styles.eligibilityLabel}>Eligibility:</span>{' '}
+              {course.eligibility}
+            </span>
+          </p>
+        )}
 
         <ul className={styles.ticks}>
           {ticks.map((tick) => (

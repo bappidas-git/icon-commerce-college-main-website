@@ -4,6 +4,65 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.7 — Courses overview
+
+Seventeenth prompt of the rebuild (`prompts/17-courses-overview-page.md`). Replaces
+the `/courses` `ComingSoon` placeholder with a single hub presenting all four UG
+programmes (B.Com · BBA · BCA · B.A.), consolidating the old thin per-course
+pages. Every figure renders from `coursesData` / `admissionData` / `collegeInfo`
+— no fabricated data.
+
+**Courses data (`src/data/coursesData.js`)**
+- Added a compact `eligibilityShort` per course (e.g. "HS (10+2) — any stream",
+  "HS (10+2) — Maths / CS preferred", "HS (10+2) — any stream (Hons. ≥ 45%)") for
+  the comparison table, where the full `eligibility` sentence is too long. Purely
+  additive — existing consumers (cards, course detail, SEO) are unaffected. The
+  `@typedef` was updated to match.
+
+**ProgramCard (`src/components/sections/ProgramsSection/ProgramCard.jsx` + css)**
+- Reused the existing card (its docstring already noted "reusable on /courses")
+  via two backward-compatible props: `source` (default `'home-programs'`; the
+  /courses grid passes `'courses-grid'` so Apply leads are attributed correctly)
+  and `showEligibility` (default `false`; the larger /courses cards opt in to
+  render the eligibility one-liner). Home behaviour is unchanged by the defaults.
+
+**SEO (`src/utils/seo.js`)**
+- Added `generateCourseListSchema(courses)` — an `ItemList` of `Course` items in
+  catalogue order — alongside the existing schema generators. The Courses page
+  contributes it via `useSeo({ schema })`.
+
+**Courses page (`src/pages/Courses/Courses.jsx` + `Courses.module.css`)**
+- **PageHero** — "Our Programs" over the `hero-students` placeholder, "Programs"
+  eyebrow, the NEP-2020 / FYUGP + Gauhati University subtitle and a Home /
+  Courses breadcrumb.
+- **Intro band** — a `SectionTitle` explaining the FYUGP structure (3-year / 6-sem
+  degree, 4-year / 8-sem Honours) and the Samarth admission route (College Code
+  842), over a four-up grid of gold-chip "structure" cards.
+- **Program cards grid** — a responsive 2-up grid of large `ProgramCard`s (image,
+  shortName badge, duration, eligibility one-liner, three highlight ticks,
+  1st-semester fee and "View Details" → `/courses/:slug` + "Apply" → drawer).
+- **Comparison table** — Program · Duration · Eligibility · 1st-Sem Total Fees ·
+  Monthly Tuition, mapped from `coursesData`. A focusable, horizontal-scroll-safe
+  region on desktop/tablet that collapses to stacked, `data-label`-prefixed cards
+  on phones (a visually-hidden `<thead>` + `<caption>` keep it accessible).
+- **Admission CTA** — a navy band with the four-step summary (from
+  `admissionSteps`), a Samarth "College Code 842" pill linking to the portal, the
+  single warm-red **Apply Now** plus a gold-outline **Download Prospectus**
+  (both open the lead drawer) and a link to the full `/admissions` process.
+- Reveal-on-scroll via `<Reveal>/<RevealGroup>` (reduced-motion safe; hover lifts
+  are CSS-only and dropped under `prefers-reduced-motion`). Verified across
+  desktop/tablet/mobile (headless screenshots) — all four programmes, fees and
+  slug links render correctly. `npm run build` stays green.
+
+**Visual QA fix (multi-viewport screenshot review — desktop/tablet/mobile + edge widths)**
+- **Program-card grid breakpoint** — the grid previously dropped to a single
+  column at ≤768px (coupled to the CTA-steps breakpoint), so tablet-portrait
+  (768px) rendered oversized full-width cards with a ~440px-tall media block.
+  Decoupled the two and now stack the cards to one column only at ≤700px, so
+  tablet-portrait keeps a clean 2-up grid (~340px cards, actions uncramped) while
+  phones still get a comfortable single column. Re-verified at 360/414/680/720/
+  768px: no horizontal overflow and the card actions never wrap.
+
 ### Phase 2.6 — Leadership page
 
 Sixteenth prompt of the rebuild (`prompts/16-leadership-desks-page.md`). Replaces

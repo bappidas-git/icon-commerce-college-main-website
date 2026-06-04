@@ -4,6 +4,46 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.5 — About page
+
+Fifteenth prompt of the rebuild (`prompts/15-about-page.md`). Replaces the
+`/about` placeholder with a full, professionally written college story. The
+page composes existing primitives/sections and adds About-specific blocks; all
+copy is sourced from `collegeInfo` and the design system (§1/§6) — no fabricated
+data — with uncertain timeline years flagged `TODO` for the client to confirm.
+
+**About page (`src/pages/About/About.jsx` + `About.module.css`)**
+- **PageHero** — "About Icon Commerce College" over the `about-campus-aerial`
+  placeholder, with a Home / About breadcrumb and an "Our Story" eyebrow.
+- **College Profile** — two-column intro: the `about-college-building`
+  placeholder (gold "Estd. 2004" badge) beside three scannable paragraphs
+  (Estd. 2004 · Icon Academy Trust · Gauhati University / NEP 2020 FYUGP ·
+  permitted Samarth exam centre 842 · library, study materials, smart
+  classrooms, computer lab, online classes, seminars/workshops and
+  experienced, research-active faculty) plus a quick-facts list. Carries the
+  required internal links — a navy **Explore our programmes** → `/courses` and
+  a **Meet our leadership** → `/leadership`.
+- **Vision & Mission** — reuses the prompt 12 `<VisionMission>` section (two
+  gold-accented cards + side accent image) rather than duplicating it.
+- **Core Values / Why ICC** — six icon cards (Academic Excellence, Holistic
+  Development, Moral Integrity, Student-Centric Approach, Inclusive Community,
+  Industry Readiness) as plain icon-card markup inside `<Reveal>/<RevealGroup>`
+  (the WhyChoose precedent) with a CSS-only hover lift, 3 → 2 → 1 columns.
+- **At a Glance** — a navy band that reuses `statsData` + the shared
+  `<AnimatedCounter>` for the count-up figures, followed by gold accreditation
+  chips (Gauhati University · NEP 2020 / FYUGP · Samarth Code 842 · Estd. 2004).
+- **Milestones timeline** — a simple vertical gold-railed timeline
+  (2004 founding → growth → NEP 2020 / FYUGP adoption → today); the
+  not-firmly-documented years use descriptive markers and `TODO` comments.
+- **CTA band** — navy + gold-glow closing band with a single warm-red **Apply
+  Now** primary alongside gold-outline **Download Prospectus** and **Visit
+  Campus** (all open the global lead drawer in the matching context) and a
+  tertiary **See the full admission process** → `/admissions` link.
+- Every block reveals on scroll via `<Reveal>/<RevealGroup>` (reduced-motion
+  safe); hover transforms are dropped under `prefers-reduced-motion`. Page SEO
+  is applied with `useSeo()` (the `/about` route defaults live in
+  `src/config/seo.js`). `npm run build` stays green.
+
 ### Phase 2.4 — Home assembly (notices, leadership, testimonials, CTA)
 
 Fourteenth prompt of the rebuild (`prompts/14-home-noticeboard-leadership-testimonials-assemble.md`).

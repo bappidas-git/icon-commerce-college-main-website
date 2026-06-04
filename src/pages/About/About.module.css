@@ -1,0 +1,604 @@
+/* ============================================
+   About page styles — Icon Commerce College
+   Profile · Core Values · At a Glance · Timeline · CTA
+   (design-system §2–§4). Section background tones for the
+   Core Values / At a Glance / Timeline blocks come from the
+   shared <Section> component; this module lays out their bodies
+   and styles the two bare sections (Profile + CTA).
+   ============================================ */
+
+/* ============================================
+   2 — College Profile
+   ============================================ */
+.profile {
+  background: var(--color-bg);
+  padding: var(--section-py) 0;
+}
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+/* ---------- Media ---------- */
+.profileMedia {
+  position: relative;
+}
+
+.profileFigure {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.profileImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* Gold "Estd. 2004" badge floating over the image (gold = emphasis, §2). */
+.profileBadge {
+  position: absolute;
+  left: var(--space-5);
+  bottom: var(--space-5);
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: var(--color-primary-dark);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-lg);
+  letter-spacing: var(--ls-wide);
+  box-shadow: var(--shadow-md);
+}
+
+.profileBadgeLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-widest);
+}
+
+/* ---------- Copy ---------- */
+.profileText {
+  max-width: 600px;
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.heading {
+  margin: 0 0 var(--space-5);
+  font-size: var(--fs-2xl);
+  color: var(--color-primary);
+  line-height: var(--lh-snug);
+}
+
+.copy p {
+  margin: 0 0 var(--space-4);
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+.copy p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Quick facts ---------- */
+.facts {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fact {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: var(--color-text);
+}
+
+.factIcon {
+  flex-shrink: 0;
+  margin-top: 0.05em;
+  font-size: 1.25rem;
+  color: var(--color-accent);
+}
+
+/* ---------- Actions (internal links → /courses, /leadership) ---------- */
+.profileActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+  margin-top: var(--space-8);
+}
+
+/* Navy structural link to /courses. */
+.primaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-button);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-base);
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(26, 42, 82, 0.28);
+  transition: background var(--transition-base), gap var(--transition-base),
+    transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.primaryLink:hover {
+  background: var(--color-primary-light);
+  gap: var(--space-3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 42, 82, 0.36);
+}
+
+.primaryLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.primaryLink svg {
+  font-size: 1.2em;
+}
+
+/* Tertiary text link to /leadership. */
+.secondaryLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-base);
+  color: var(--color-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+.secondaryLink:hover {
+  color: var(--color-accent-dark);
+  border-bottom-color: var(--color-accent);
+}
+
+.secondaryLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.secondaryLink svg {
+  font-size: 1.2em;
+  color: var(--color-accent);
+}
+
+/* ============================================
+   4 — Core Values grid
+   ============================================ */
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Reveal wrapper fills its cell so cards size evenly. */
+.valueCell {
+  display: flex;
+}
+
+.valueCard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: var(--space-6);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+/* Hover lift + gold accent (design-system §4). */
+.valueCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+}
+
+/* Gold icon chip. */
+.valueChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-size: 28px;
+}
+
+.valueTitle {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+.valueText {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   5 — At a Glance (stats + chips on the navy band)
+   ============================================ */
+.glanceStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(2rem, 5vw, 3.5rem) var(--space-6);
+}
+
+/* Each figure: centered gold value over a light caption (mirrors StatsSection). */
+.statCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  text-align: center;
+}
+
+/* Static gold text for non-numeric stats (e.g. "Gauhati University", "1000s"). */
+.statDisplay {
+  font-family: 'Inter', var(--font-body), sans-serif;
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--color-accent);
+}
+
+.statLabel {
+  max-width: 18ch;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ---------- Accreditation chips ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3) var(--space-4);
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  background: rgba(200, 160, 77, 0.14);
+  border: 1px solid rgba(200, 160, 77, 0.4);
+  color: #ffffff;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.chipIcon {
+  flex-shrink: 0;
+  font-size: 1.15em;
+  color: var(--color-accent);
+}
+
+/* ============================================
+   6 — Milestones timeline
+   ============================================ */
+.timeline {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.tItem {
+  position: relative;
+  padding-left: 52px;
+  padding-bottom: var(--space-8);
+}
+
+.tItem:last-child {
+  padding-bottom: 0;
+}
+
+/* Vertical gold rail connecting the markers. */
+.tItem::before {
+  content: '';
+  position: absolute;
+  left: 13px;
+  top: 4px;
+  bottom: -4px;
+  width: 2px;
+  background: linear-gradient(
+    var(--color-accent) 0%,
+    rgba(200, 160, 77, 0.25) 100%
+  );
+}
+
+.tItem:last-child::before {
+  display: none;
+}
+
+/* Gold marker dot sitting on the rail. */
+.tDot {
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  box-shadow: 0 0 0 4px var(--color-accent-soft);
+}
+
+.tCard {
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.tCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.tMarker {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-accent-dark);
+}
+
+.tTitle {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+.tText {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   7 — CTA band (navy + gold glow, single warm-red primary)
+   ============================================ */
+.cta {
+  position: relative;
+  overflow: hidden;
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+  background: var(--gradient-navy);
+  color: #ffffff;
+  isolation: isolate;
+}
+
+/* Soft gold glow accent (gold = emphasis only — never a full fill behind text). */
+.ctaGlow {
+  position: absolute;
+  inset: auto -10% -60% auto;
+  width: clamp(320px, 50vw, 640px);
+  height: clamp(320px, 50vw, 640px);
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle,
+    rgba(200, 160, 77, 0.28) 0%,
+    rgba(200, 160, 77, 0) 70%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ctaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.ctaEyebrow {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.ctaHeading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: #ffffff;
+}
+
+.ctaSubtitle {
+  margin: var(--space-5) 0 0;
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.ctaLinkRow {
+  margin-top: var(--space-6);
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+.ctaLink:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.ctaLink svg {
+  font-size: 1.05em;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+/* Core Values: 3 → 2 columns. */
+@media (max-width: 960px) {
+  .valuesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Profile stacks (media on top) on large tablets and below. */
+@media (max-width: 900px) {
+  .profileGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .profileMedia {
+    order: -1;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .profileText {
+    max-width: none;
+  }
+}
+
+/* At a Glance: 3 → 2 columns. */
+@media (max-width: 768px) {
+  .glanceStats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Phones: single-column grids + full-width profile CTA. */
+@media (max-width: 540px) {
+  .valuesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .profileActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryLink {
+    justify-content: center;
+  }
+
+  .secondaryLink {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .statDisplay {
+    font-size: var(--fs-2xl);
+  }
+
+  .ctaActions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ============================================
+   Reduced motion — drop hover transforms (§4)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .primaryLink:hover,
+  .valueCard:hover,
+  .tCard:hover {
+    transform: none;
+  }
+}

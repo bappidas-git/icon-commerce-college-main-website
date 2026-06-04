@@ -20,6 +20,76 @@ const COMMON_DOCUMENTS = [
   'Recent passport-size photographs',
 ];
 
+/**
+ * Placeholder for the official Gauhati University FYUGP syllabus link. Each
+ * course points here until the client supplies the real per-programme URL —
+ * the detail page renders a disabled "syllabus coming soon" state for TODOs
+ * rather than a clumsy embedded Drive viewer (prompt 18).
+ */
+const SYLLABUS_TODO =
+  'TODO: Gauhati University FYUGP syllabus PDF URL (client to provide per programme)';
+
+/**
+ * Shared NEP-2020 / FYUGP curriculum structure (Gauhati University). This is the
+ * generic, framework-level structure common to every programme — the detailed,
+ * subject-wise major/minor papers follow the GU syllabus (linked per course).
+ * Kept here (not in the page) so it stays a single, swappable source of truth.
+ */
+export const fyugpCurriculum = {
+  summary:
+    'Under the NEP-2020 Four-Year Undergraduate Programme (FYUGP) of Gauhati University, the course is credit-based with a multiple-entry / multiple-exit design — roughly 120 credits across 6 semesters for the 3-year Degree, or 160 credits across 8 semesters for the 4-year Honours.',
+  // Course categories that make up every FYUGP semester load.
+  components: [
+    {
+      icon: 'mdi:book-open-page-variant-outline',
+      title: 'Major (Core) courses',
+      text: 'In-depth, discipline-specific papers that form the backbone of the degree.',
+    },
+    {
+      icon: 'mdi:book-plus-outline',
+      title: 'Minor courses',
+      text: 'A secondary discipline that broadens your academic profile.',
+    },
+    {
+      icon: 'mdi:shape-outline',
+      title: 'Multidisciplinary (MDC)',
+      text: 'Courses beyond your main stream for a well-rounded foundation.',
+    },
+    {
+      icon: 'mdi:translate',
+      title: 'Ability Enhancement (AEC)',
+      text: 'Language & communication courses — English and a Modern Indian Language.',
+    },
+    {
+      icon: 'mdi:tools',
+      title: 'Skill Enhancement (SEC)',
+      text: 'Practical, employability-focused skill modules.',
+    },
+    {
+      icon: 'mdi:leaf',
+      title: 'Value-Added (VAC)',
+      text: 'Environment, ethics and understanding-India type courses.',
+    },
+    {
+      icon: 'mdi:briefcase-check-outline',
+      title: 'Internship / Project',
+      text: 'Hands-on internship, field work or a project component.',
+    },
+    {
+      icon: 'mdi:flask-outline',
+      title: 'Research (4th year)',
+      text: 'A dedicated research component in the Honours-with-Research pathway.',
+    },
+  ],
+  // Multiple-entry / multiple-exit awards (NEP 2020).
+  exits: [
+    { after: '1 Year (2 sem)', award: 'UG Certificate' },
+    { after: '2 Years (4 sem)', award: 'UG Diploma' },
+    { after: '3 Years (6 sem)', award: "Bachelor's Degree" },
+    { after: '4 Years (8 sem)', award: "Bachelor's (Honours / with Research)" },
+  ],
+};
+
 /** Fee breakdown for B.Com / B.A. (total ₹10,900). */
 const FEES_BCOM_BA = {
   rows: [
@@ -67,6 +137,7 @@ const FEES_BCA_BBA = {
  * @property {{rows:{particular:string,amount:string}[], total:string,
  *            tuitionMonthly:string, application:string, note:string}} fees
  * @property {string[]} documents
+ * @property {string} syllabusUrl    Detailed GU syllabus link (TODO until supplied)
  * @property {string} [badge]
  */
 
@@ -101,6 +172,7 @@ export const coursesData = [
     ],
     fees: FEES_BCOM_BA,
     documents: COMMON_DOCUMENTS,
+    syllabusUrl: SYLLABUS_TODO,
   },
   {
     slug: 'bba',
@@ -129,6 +201,7 @@ export const coursesData = [
     ],
     fees: FEES_BCA_BBA,
     documents: COMMON_DOCUMENTS,
+    syllabusUrl: SYLLABUS_TODO,
   },
   {
     slug: 'bca',
@@ -158,6 +231,7 @@ export const coursesData = [
     ],
     fees: FEES_BCA_BBA,
     documents: COMMON_DOCUMENTS,
+    syllabusUrl: SYLLABUS_TODO,
   },
   {
     slug: 'b-a',
@@ -187,6 +261,7 @@ export const coursesData = [
     ],
     fees: FEES_BCOM_BA,
     documents: COMMON_DOCUMENTS,
+    syllabusUrl: SYLLABUS_TODO,
   },
 ];
 

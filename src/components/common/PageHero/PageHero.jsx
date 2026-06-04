@@ -17,6 +17,8 @@
      breadcrumb  (array)   — [{ label, to? }] passed to <Breadcrumbs/>
      cta         (node|obj)— React node, or { label, onClick?, href?, variant? }
      align       'left'|'center'  — content alignment (default 'left')
+     children    (node)    — optional extra content rendered under the title
+                             (e.g. a meta-pill row on course detail pages)
    ============================================ */
 
 import React from 'react';
@@ -34,6 +36,7 @@ const PageHero = ({
   breadcrumb = [],
   cta = null,
   align = 'left',
+  children = null,
 }) => {
   const bgUrl = placeholder(image);
 
@@ -78,6 +81,7 @@ const PageHero = ({
         )}
         {eyebrow && <p className={styles.eyebrow}>{eyebrow}</p>}
         <h1 className={styles.title}>{title}</h1>
+        {children && <div className={styles.extra}>{children}</div>}
         {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         {cta && <div className={styles.cta}>{renderCta()}</div>}
       </Container>

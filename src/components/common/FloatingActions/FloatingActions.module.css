@@ -39,22 +39,53 @@
   color: #ffffff;
 }
 
-/* Pill Enquire button (Gold accent FAB, design-system §2) */
+/* Enquire FAB (Gold accent, design-system §2).
+   Collapsed to a 52px circle by default so the bottom-right stack stays a tidy
+   column of corner-hugging circles (WhatsApp + Enquire + BackToTop) that doesn't
+   sit on top of right-edge page content (e.g. the course-detail rail). It
+   expands to a labelled pill on hover/focus. The action + name stay available
+   to everyone via the button's aria-label. */
 .enquire {
+  width: 52px;
   height: 52px;
-  padding: 0 22px;
+  padding: 0;
+  gap: 0;
   border-radius: 999px;
   background: var(--gradient-gold, linear-gradient(135deg, #c8a04d 0%, #a8823a 100%));
   color: var(--color-primary, #1a2a52);
   font-size: 0.95rem;
+  overflow: hidden;
+  transition: width var(--transition-base, 250ms cubic-bezier(0.22, 1, 0.36, 1)),
+    padding var(--transition-base, 250ms cubic-bezier(0.22, 1, 0.36, 1)),
+    gap var(--transition-base, 250ms cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.enquire:hover,
+.enquire:focus-visible {
+  width: auto;
+  padding: 0 22px;
+  gap: 8px;
 }
 
 .enquireLabel {
   white-space: nowrap;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width var(--transition-base, 250ms cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--transition-fast, 150ms ease);
+}
+
+.enquire:hover .enquireLabel,
+.enquire:focus-visible .enquireLabel {
+  max-width: 140px;
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fab {
+  .fab,
+  .enquire,
+  .enquireLabel {
     transition: none;
   }
 }

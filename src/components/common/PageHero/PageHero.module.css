@@ -76,6 +76,11 @@
   max-width: 22ch;
 }
 
+/* Optional extra content under the title (e.g. course meta pills). */
+.extra {
+  margin-top: var(--space-4);
+}
+
 .subtitle {
   font-family: var(--font-body);
   font-size: var(--fs-md);

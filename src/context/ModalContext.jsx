@@ -23,15 +23,15 @@ export const MODAL_TYPES = {
 };
 
 // Drawer title mapping based on source/context
-// CIT — Direct B.E. Engineering Admissions 2026 drawer title configuration
+// Icon Commerce College — lead drawer title configuration
 export const DRAWER_TITLES = {
   'apply-now': {
-    title: 'Apply for 2026 Admission',
+    title: 'Apply for Admission',
     subtitle: 'Share your details — our team will guide you',
   },
   'get-details': {
     title: 'Get Admission Details',
-    subtitle: 'Courses, fees, hostel & placements',
+    subtitle: 'Courses, fees & facilities',
   },
   'request-callback': {
     title: 'Request a Callback',
@@ -42,8 +42,8 @@ export const DRAWER_TITLES = {
     subtitle: 'Book a free counselling call',
   },
   'download-brochure': {
-    title: 'Download CIT Brochure',
-    subtitle: 'Get the full 2026 prospectus',
+    title: 'Download Prospectus',
+    subtitle: 'Get the full college prospectus',
   },
   'fees-scholarship': {
     title: 'Fees & Scholarship Info',

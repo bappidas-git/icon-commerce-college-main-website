@@ -1,12 +1,18 @@
 /* ============================================
-   App Component - Landing Page Boilerplate
-   Main application component with providers,
-   lazy loading, and performance optimizations
+   App Component — Icon Commerce College
+   Root application: providers, routing, lazy
+   loading, and global chrome.
+
+   NOTE: This is the Phase-0 foundation state.
+   The public home page is intentionally a
+   minimal placeholder — the real multi-page
+   routing (prompt 04) and page sections
+   (Phase 2) are built in later prompts.
    ============================================ */
 
 import React, { Suspense, lazy, useEffect, useState, memo } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { CircularProgress, useMediaQuery, useTheme, Skeleton, Box } from '@mui/material';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { CircularProgress, useMediaQuery, useTheme, Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // App Styles
@@ -16,9 +22,8 @@ import './App.css';
 import { ThemeProvider as CustomThemeProvider } from './context/ThemeContext';
 import { ModalProvider, useModal } from './context/ModalContext';
 
-// Components (Eager loaded for critical path - Above the fold)
+// Components (Eager loaded — global chrome)
 import Header from './components/common/Header/Header';
-import HeroSection from './components/sections/HeroSection/HeroSection';
 import Footer from './components/common/Footer/Footer';
 import Modal from './components/common/Modal/Modal';
 import MobileNavigation from './components/common/MobileNavigation/MobileNavigation';
@@ -28,11 +33,6 @@ import EngagementTracker from './components/common/EngagementTracker/EngagementT
 import SEOHead from './components/common/SEO/SEOHead';
 import useGTMTracking from './hooks/useGTMTracking';
 import { initGTM } from './utils/gtm';
-import { initConsentMode } from './utils/consentMode';
-import { initPixel, trackPageView as trackMetaPageView } from './utils/metaPixel';
-import { captureGclid } from './utils/gclidManager';
-import { initGoogleAds } from './utils/googleAds';
-import { setupEnhancedConversions } from './utils/enhancedConversions';
 
 // Admin
 import { AdminAuthProvider } from './admin/context/AdminAuthContext';
@@ -43,161 +43,28 @@ import ProtectedRoute from './admin/components/ProtectedRoute';
 const ThankYouPage = lazy(() => import('./pages/ThankYou/ThankYou'));
 const AdminLayout = lazy(() => import('./admin/components/AdminLayout'));
 
-// Lazy loaded sections for performance (Below the fold)
-const AboutSection = lazy(() => import('./components/sections/AboutSection/AboutSection'));
-const WhyChooseCIT = lazy(() => import('./components/sections/WhyChooseCIT/WhyChooseCIT'));
-const ServicesSection = lazy(() => import('./components/sections/ServicesSection/ServicesSection'));
-const StatsSection = lazy(() => import('./components/sections/StatsSection/StatsSection'));
-const HighlightsSection = lazy(() => import('./components/sections/HighlightsSection/HighlightsSection'));
-const FeaturesSection = lazy(() => import('./components/sections/FeaturesSection/FeaturesSection'));
-const LocationSection = lazy(() => import('./components/sections/LocationSection/LocationSection'));
-const CTASection = lazy(() => import('./components/sections/CTASection/CTASection'));
-const ContactSection = lazy(() => import('./components/sections/ContactSection/ContactSection'));
-const SecondaryCTASection = lazy(() => import('./components/sections/SecondaryCTASection/SecondaryCTASection'));
-
-// ===========================================
-// Error Boundary Component
-// ===========================================
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('Section Error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '200px',
-            backgroundColor: '#F8F9FA',
-            borderRadius: '8px',
-            margin: '20px',
-            padding: '40px',
-            textAlign: 'center',
-          }}
-        >
-          <div>
-            <p style={{ color: '#666', marginBottom: '10px' }}>
-              Something went wrong loading this section.
-            </p>
-            <button
-              onClick={() => this.setState({ hasError: false })}
-              style={{
-                backgroundColor: '#0C2D48',
-                color: '#FFFFFF',
-                border: 'none',
-                padding: '10px 20px',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontWeight: 600,
-              }}
-            >
-              Try Again
-            </button>
-          </div>
-        </Box>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-
 // ===========================================
 // Section Loader Component
 // ===========================================
-const SectionLoader = memo(({ height = 300, variant = 'default' }) => {
-  const variants = {
-    default: (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: height,
-          width: '100%',
-          background: 'linear-gradient(180deg, #F8F9FA 0%, #FFFFFF 100%)',
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <CircularProgress
-            size={40}
-            thickness={3}
-            sx={{
-              color: '#0C2D48',
-            }}
-          />
-        </motion.div>
-      </Box>
-    ),
-    skeleton: (
-      <Box sx={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <Skeleton
-          variant="text"
-          width="30%"
-          height={40}
-          sx={{ margin: '0 auto 20px', bgcolor: 'rgba(12, 45, 72, 0.1)' }}
-        />
-        <Skeleton
-          variant="text"
-          width="60%"
-          height={60}
-          sx={{ margin: '0 auto 30px', bgcolor: 'rgba(12, 45, 72, 0.1)' }}
-        />
-        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
-          {[1, 2, 3, 4].map((i) => (
-            <Skeleton
-              key={i}
-              variant="rounded"
-              width={250}
-              height={180}
-              sx={{ bgcolor: 'rgba(12, 45, 72, 0.05)' }}
-            />
-          ))}
-        </Box>
-      </Box>
-    ),
-    minimal: (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: height,
-          width: '100%',
-        }}
-      >
-        <Box
-          sx={{
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            backgroundColor: '#0C2D48',
-            animation: 'pulse 1s ease-in-out infinite',
-          }}
-        />
-      </Box>
-    ),
-  };
-
-  return variants[variant] || variants.default;
-});
+const SectionLoader = memo(({ height = 300 }) => (
+  <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: height,
+      width: '100%',
+    }}
+  >
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <CircularProgress size={40} thickness={3} sx={{ color: 'var(--color-primary, #1A2A52)' }} />
+    </motion.div>
+  </Box>
+));
 
 SectionLoader.displayName = 'SectionLoader';
 
@@ -210,8 +77,9 @@ const ScrollProgressIndicator = memo(() => {
   useEffect(() => {
     const updateScrollProgress = () => {
       const scrollPx = document.documentElement.scrollTop;
-      const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (scrollPx / winHeightPx) * 100;
+      const winHeightPx =
+        document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = winHeightPx > 0 ? (scrollPx / winHeightPx) * 100 : 0;
       setScrollProgress(scrolled);
     };
 
@@ -227,7 +95,7 @@ const ScrollProgressIndicator = memo(() => {
         left: 0,
         width: `${scrollProgress}%`,
         height: '3px',
-        background: 'linear-gradient(90deg, #0C2D48 0%, #1A5276 100%)',
+        background: 'linear-gradient(90deg, #1A2A52 0%, #C8A04D 100%)',
         zIndex: 9999,
         transition: 'width 0.1s ease-out',
       }}
@@ -244,24 +112,12 @@ const BackToTopButton = memo(() => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.pageYOffset > 500) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
+    const toggleVisibility = () => setIsVisible(window.pageYOffset > 500);
     window.addEventListener('scroll', toggleVisibility, { passive: true });
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <AnimatePresence>
@@ -270,7 +126,7 @@ const BackToTopButton = memo(() => {
           initial={{ opacity: 0, scale: 0.5, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
-          whileHover={{ scale: 1.1, backgroundColor: '#081F33' }}
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
           style={{
@@ -280,26 +136,19 @@ const BackToTopButton = memo(() => {
             width: '48px',
             height: '48px',
             borderRadius: '50%',
-            backgroundColor: '#0C2D48',
+            backgroundColor: '#1A2A52',
             color: '#FFFFFF',
             border: '1px solid rgba(255, 255, 255, 0.3)',
             cursor: 'pointer',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
             zIndex: 1000,
           }}
           aria-label="Back to top"
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
           </svg>
         </motion.button>
@@ -309,44 +158,6 @@ const BackToTopButton = memo(() => {
 });
 
 BackToTopButton.displayName = 'BackToTopButton';
-
-// ===========================================
-// Preload Manager - Preload sections on idle
-// ===========================================
-const useIdlePreload = () => {
-  useEffect(() => {
-    // Preload sections during idle time
-    if ('requestIdleCallback' in window) {
-      const sections = [
-        () => import('./components/sections/AboutSection/AboutSection'),
-        () => import('./components/sections/WhyChooseCIT/WhyChooseCIT'),
-        () => import('./components/sections/ServicesSection/ServicesSection'),
-        () => import('./components/sections/StatsSection/StatsSection'),
-        () => import('./components/sections/LocationSection/LocationSection'),
-        () => import('./components/sections/FeaturesSection/FeaturesSection'),
-        () => import('./components/sections/HighlightsSection/HighlightsSection'),
-        () => import('./components/sections/CTASection/CTASection'),
-        () => import('./components/sections/ContactSection/ContactSection'),
-        () => import('./components/sections/SecondaryCTASection/SecondaryCTASection'),
-      ];
-
-      let currentIndex = 0;
-
-      const preloadNext = (deadline) => {
-        while (deadline.timeRemaining() > 0 && currentIndex < sections.length) {
-          sections[currentIndex]();
-          currentIndex++;
-        }
-        if (currentIndex < sections.length) {
-          window.requestIdleCallback(preloadNext, { timeout: 2000 });
-        }
-      };
-
-      const idleId = window.requestIdleCallback(preloadNext, { timeout: 2000 });
-      return () => window.cancelIdleCallback(idleId);
-    }
-  }, []);
-};
 
 // ===========================================
 // Lead Form Drawer Wrapper
@@ -366,143 +177,100 @@ const LeadFormDrawerWrapper = () => {
 };
 
 // ===========================================
-// Home Page Content Component
+// Home Page Content (Phase-0 placeholder)
 // ===========================================
 const HomePageContent = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const { openLeadDrawer } = useModal();
-  const location = useLocation();
 
-  // Initialize GTM tracking (page views, scroll depth, time on page, section visibility)
+  // Initialize GTM tracking (no-ops cleanly when analytics is disabled)
   useGTMTracking();
-
-  // Track Meta Pixel PageView on route changes
-  useEffect(() => {
-    trackMetaPageView();
-  }, [location.pathname]);
 
   const handleMenuClick = () => setIsMobileDrawerOpen(true);
   const handleMobileDrawerClose = () => setIsMobileDrawerOpen(false);
   const handleMobileDrawerOpen = () => setIsMobileDrawerOpen(true);
   const handleEnquiryClick = () => openLeadDrawer('default');
 
-  // Handle hash-based scroll to section (e.g., /#overview, /#floor-plans)
-  // Sections are lazy-loaded, so we poll until the target element appears in the DOM
-  useEffect(() => {
-    const hash = location.hash;
-    if (!hash) return;
-
-    const targetId = hash.substring(1);
-    const headerOffset = 80;
-    let cancelled = false;
-
-    const scrollToTarget = () => {
-      const targetElement = document.getElementById(targetId);
-      if (targetElement) {
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth',
-        });
-        return true;
-      }
-      return false;
-    };
-
-    // Try immediately, then retry with increasing delays to wait for lazy sections
-    if (!scrollToTarget()) {
-      const retryDelays = [100, 300, 600, 1000, 2000];
-      const timers = retryDelays.map((delay) =>
-        setTimeout(() => {
-          if (!cancelled) scrollToTarget();
-        }, delay)
-      );
-      return () => {
-        cancelled = true;
-        timers.forEach(clearTimeout);
-      };
-    }
-  }, [location.hash]);
-
   return (
     <>
-      {/* Header/Navigation */}
       <Header forceCloseMenu={isMobileDrawerOpen} />
 
-      {/* Main Content */}
       <main id="main-content" className="main-content">
-        {/* Hero Section - Critical, loaded immediately */}
-        <HeroSection />
-
-        {/* Lazy loaded sections with error boundaries */}
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={400} variant="skeleton" />}>
-            <AboutSection />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={500} variant="default" />}>
-            <WhyChooseCIT />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={400} variant="skeleton" />}>
-            <ServicesSection />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={500} variant="skeleton" />}>
-            <StatsSection />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={500} variant="skeleton" />}>
-            <HighlightsSection />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={600} variant="skeleton" />}>
-            <FeaturesSection />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={400} variant="skeleton" />}>
-            <LocationSection />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={300} variant="default" />}>
-            <CTASection />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={500} variant="skeleton" />}>
-            <ContactSection />
-          </Suspense>
-        </ErrorBoundary>
-
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader height={500} variant="default" />}>
-            <SecondaryCTASection />
-          </Suspense>
-        </ErrorBoundary>
+        <section
+          style={{
+            minHeight: '70vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            padding: '120px 24px 80px',
+            background: 'linear-gradient(135deg, #1A2A52 0%, #111d3a 100%)',
+            color: '#FFFFFF',
+          }}
+        >
+          <p
+            style={{
+              textTransform: 'uppercase',
+              letterSpacing: '0.12em',
+              color: '#C8A04D',
+              fontWeight: 600,
+              fontSize: '0.8rem',
+              marginBottom: '16px',
+            }}
+          >
+            Established 2004 · Guwahati, Assam
+          </p>
+          <h1
+            style={{
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+              fontWeight: 700,
+              margin: 0,
+              maxWidth: 820,
+            }}
+          >
+            Icon Commerce College
+          </h1>
+          <p
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '1.05rem',
+              lineHeight: 1.7,
+              color: 'rgba(255,255,255,0.78)',
+              maxWidth: 620,
+              marginTop: '16px',
+            }}
+          >
+            Where Knowledge Meets Character — empowering Commerce, Arts &amp;
+            Computer Application graduates. Our new website is being built. In the
+            meantime, send us an enquiry and our team will get in touch.
+          </p>
+          <button
+            type="button"
+            onClick={handleEnquiryClick}
+            style={{
+              marginTop: '32px',
+              padding: '14px 32px',
+              borderRadius: '10px',
+              border: 'none',
+              backgroundColor: '#E0301E',
+              color: '#FFFFFF',
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 600,
+              fontSize: '1rem',
+              cursor: 'pointer',
+            }}
+          >
+            Enquire Now
+          </button>
+        </section>
       </main>
 
-      {/* Footer */}
       <Footer />
 
-      {/* Mobile Bottom Navigation */}
       {isMobile && (
         <>
           <MobileNavigation
@@ -519,10 +287,7 @@ const HomePageContent = () => {
         </>
       )}
 
-      {/* Back to Top Button */}
       <BackToTopButton />
-
-      {/* Global Modal */}
       <Modal />
     </>
   );
@@ -532,24 +297,12 @@ const HomePageContent = () => {
 // Main App Component
 // ===========================================
 const App = () => {
-  // Enable idle preloading
-  useIdlePreload();
-
-  // Initialize Google Consent Mode, GTM, and Meta Pixel on mount
+  // Initialize GTM only when an id is configured (analytics is opt-in).
   useEffect(() => {
-    initConsentMode();
     const gtmId = process.env.REACT_APP_GTM_ID;
     if (gtmId) {
       initGTM(gtmId);
     }
-    // Initialize Meta Pixel (only if REACT_APP_META_PIXEL_ID is set)
-    initPixel();
-    // Initialize Google Ads conversion tracking
-    initGoogleAds();
-    // Setup enhanced conversions if enabled
-    setupEnhancedConversions();
-    // Capture gclid from URL on page load (persists in localStorage)
-    captureGclid();
   }, []);
 
   // Hide initial loader after mount
@@ -559,7 +312,7 @@ const App = () => {
       initialLoader.classList.add('hidden');
       setTimeout(() => {
         initialLoader.style.display = 'none';
-      }, 400); // matches the CSS transition duration
+      }, 400);
     }
   }, []);
 
@@ -568,20 +321,8 @@ const App = () => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
-    // Only scroll to top if there's no hash in the URL
     if (!window.location.hash) {
       window.scrollTo(0, 0);
-    }
-  }, []);
-
-  // Register service worker for offline capability (if available)
-  useEffect(() => {
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').catch(() => {
-          // Service worker registration failed
-        });
-      });
     }
   }, []);
 
@@ -603,14 +344,12 @@ const App = () => {
 
             {/* Routes */}
             <Routes>
-              {/* Home Page */}
               <Route path="/" element={<HomePageContent />} />
 
-              {/* Thank You Page */}
               <Route
                 path="/thank-you"
                 element={
-                  <Suspense fallback={<SectionLoader height={400} variant="default" />}>
+                  <Suspense fallback={<SectionLoader height={400} />}>
                     <ThankYouPage />
                   </Suspense>
                 }
@@ -630,7 +369,7 @@ const App = () => {
                 element={
                   <AdminAuthProvider>
                     <ProtectedRoute>
-                      <Suspense fallback={<SectionLoader height={400} variant="default" />}>
+                      <Suspense fallback={<SectionLoader height={400} />}>
                         <AdminLayout />
                       </Suspense>
                     </ProtectedRoute>
@@ -639,10 +378,10 @@ const App = () => {
               />
             </Routes>
 
-            {/* Lead Form Drawer - Available globally */}
+            {/* Lead Form Drawer — available globally */}
             <LeadFormDrawerWrapper />
 
-            {/* Engagement Tracker - Invisible component for analytics */}
+            {/* Engagement Tracker — invisible analytics helper (no-op when disabled) */}
             <EngagementTracker />
           </div>
         </ModalProvider>

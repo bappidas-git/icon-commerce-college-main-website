@@ -3,5 +3,5 @@ Allow: /
 Disallow: /admin/
 Disallow: /thank-you
 
-Sitemap: https://www.cittumkur.org/sitemap.xml
-Host: https://www.cittumkur.org
+Sitemap: https://www.iconcommercecollege.in/sitemap.xml
+Host: https://www.iconcommercecollege.in

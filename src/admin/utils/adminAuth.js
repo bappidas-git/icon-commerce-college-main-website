@@ -55,8 +55,8 @@ export const clearStoredAuth = () => {
  * Validate credentials against env vars or defaults
  */
 export const validateCredentials = (username, password) => {
-  const validUsername = process.env.REACT_APP_ADMIN_USERNAME || 'cit';
-  const validPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'cit@2026admissions';
+  const validUsername = process.env.REACT_APP_ADMIN_USERNAME || 'admin';
+  const validPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'icc@2026';
   return username === validUsername && password === validPassword;
 };
 

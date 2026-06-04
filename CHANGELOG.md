@@ -1,8 +1,60 @@
 # Changelog
 
-All notable changes to the Landing Page Boilerplate project.
+All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
+
+### Phase 0.1 — Rebrand & cleanup (remove CIT + ad-tech)
+
+First prompt of the Icon Commerce College rebuild (`prompts/01-rebrand-and-cleanup.md`).
+Converts the CIT engineering-admissions boilerplate into a clean Icon Commerce
+College foundation.
+
+**Project metadata**
+- Renamed package to `icon-commerce-college`; updated description, keywords, author.
+- Rewrote `CLAUDE.md` and `README.md` for the new multi-page college site + admin;
+  both now point to `prompts/00-DESIGN-SYSTEM.md` as the single source of truth.
+- Reset `.env` / `.env.example` to Icon Commerce College contact info and lead
+  defaults; removed all Meta/Google-Ads/conversion variables; added
+  `REACT_APP_NOTICES_API_URL` and `REACT_APP_EVENTS_API_URL`; blanked GTM.
+
+**Removed ad-tech stack (lean analytics decision)**
+- Deleted `src/utils/metaPixel.js`, `metaCAPI.js`, `googleAds.js`,
+  `enhancedConversions.js`, `gclidManager.js`, `consentMode.js`, `eventDedup.js`,
+  and `src/admin/utils/googleAdsExport.js`.
+- Deleted `public/api/meta-capi.php` and `public/api/google-offline-conversions.php`.
+- Removed all imports/usages (App.jsx initializers, UnifiedLeadForm tracking,
+  LeadDetail Meta-CAPI conversion feature, LeadManagement Google-Ads export).
+- GTM (`gtm.js` / `useGTMTracking`) kept and now no-ops cleanly unless
+  `REACT_APP_GTM_ID` + `REACT_APP_ENABLE_ANALYTICS` are set; the hardcoded GTM
+  container snippet was removed from `index.html`.
+
+**Removed CIT / engineering content**
+- Deleted all CIT landing-page sections (`HeroSection`, `AboutSection`,
+  `ServicesSection`, `StatsSection`, `FeaturesSection`, `LocationSection`,
+  `CTASection`, `ContactSection`, `SecondaryCTASection`, `WhyChooseCIT`,
+  `HighlightsSection`) — rebuilt fresh in Phase 2. The home route is now a
+  minimal placeholder with an "Enquire Now" CTA.
+- Deleted the unused legacy `LeadForm` wrapper and the CIT ad-tech admin
+  **Guideline** module (`Guideline.jsx` + `guidelineContent/`) per the design doc.
+- Emptied `src/data/*` content files to stubs (`export const x = []`), repopulated
+  in prompt 03.
+
+**Rebranded to Icon Commerce College (Navy + Gold, Gauhati University)**
+- Header, Footer, MobileDrawer, MobileNavigation, ModalContext, LeadFormDrawer,
+  UnifiedLeadForm, ThankYou, SEO config, theme/variables comments, `index.html`,
+  `manifest.json`, `robots.txt`, `sitemap.xml`, and admin chrome
+  (AdminLogin/AdminTopbar/Dashboard) now use Icon Commerce College branding,
+  contact info, and a placeholder SVG logo
+  (`/images/placeholders/logo-icon-commerce.svg`).
+- Lead program options changed to B.Com / BBA / BCA / B.A.
+
+**Known deferred items** (handled in later prompts): full Navy + Gold token
+migration (prompt 02), multi-page routing (prompt 04), Header/Footer redesign
+(prompts 05/06), college lead-form restructure (prompt 08), full SEO/schema
+(prompt 10). The tele-calling admin module and the stale `CUSTOMIZATION_GUIDE.md`
+/ `GTM_GUIDE.md` are left for Phase 3 / prompt 39 respectively.
+
 
 ### Server-side leads as the single source of truth (cross-device sync fix)
 

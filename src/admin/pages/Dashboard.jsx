@@ -130,7 +130,7 @@ const Dashboard = () => {
         <div>
           <h1 className={styles.pageTitle}>Dashboard</h1>
           <p className={styles.pageSubtitle}>
-            Welcome to CIT Admissions Lead Management. Here&rsquo;s your admission lead overview.
+            Welcome to Icon Commerce College Lead Management. Here&rsquo;s your admission lead overview.
           </p>
         </div>
         <div className={styles.headerRight}>
@@ -190,10 +190,6 @@ const Dashboard = () => {
         <Link to="/admin/lms" className={styles.actionSolid}>
           <Icon icon="mdi:account-group-outline" width={18} height={18} />
           View All Leads
-        </Link>
-        <Link to="/admin/guideline" className={styles.actionGhost}>
-          <Icon icon="mdi:book-open-outline" width={18} height={18} />
-          Open Guideline
         </Link>
       </div>
 
@@ -337,7 +333,7 @@ const Dashboard = () => {
 
       {/* Footer Badge */}
       <p className={styles.footerBadge}>
-        CIT Admissions Admin Panel | Lead Management System v1.0
+        Icon Commerce College Admin Panel | Lead Management System v1.0
       </p>
 
       <Snackbar

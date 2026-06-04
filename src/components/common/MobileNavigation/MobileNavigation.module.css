@@ -134,7 +134,7 @@
   opacity: 0.6;
 }
 
-/* Primary CTA Item (Apply Now) — CIT amber */
+/* Primary CTA Item (Apply Now) — warm red */
 .primaryItem .navButton {
   background: linear-gradient(135deg, #E0301E 0%, #F0584A 100%);
   box-shadow: 0 4px 12px rgba(224, 48, 30, 0.4);

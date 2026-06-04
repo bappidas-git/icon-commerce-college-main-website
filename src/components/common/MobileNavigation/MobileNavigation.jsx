@@ -10,12 +10,12 @@ import { Icon } from "@iconify/react";
 import { trackPhoneClick, trackWhatsAppClick, trackNavigation } from "../../../utils/gtm";
 import styles from "./MobileNavigation.module.css";
 
-// Primary CIT admissions contact (Assam Digital campaign)
-const PRIMARY_PHONE = "+918069645014";
-const PRIMARY_PHONE_DIGITS = "918069645014";
-const WHATSAPP_HREF = `https://api.whatsapp.com/send?phone=${PRIMARY_PHONE_DIGITS}&text=Hello%20CIT%2C%20I%27d%20like%20guidance%20on%20Direct%20B.E.%20admission%202026.`;
+// Primary admissions contact (Icon Commerce College)
+const PRIMARY_PHONE = "+919365375782";
+const PRIMARY_PHONE_DIGITS = "919365375782";
+const WHATSAPP_HREF = `https://api.whatsapp.com/send?phone=${PRIMARY_PHONE_DIGITS}&text=Hello%20Icon%20Commerce%20College%2C%20I%27d%20like%20to%20know%20more%20about%20admissions.`;
 
-// Navigation items configuration — CIT admissions actions
+// Navigation items configuration — quick admissions actions
 const navItems = [
   {
     id: "call",

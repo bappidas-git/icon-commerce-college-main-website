@@ -16,34 +16,34 @@ import { seoConfig } from "../../config/seo";
 // Trust badges
 const trustBadges = [
   {
-    icon: "mdi:shield-check",
-    label: "NAAC Accredited",
-    color: "#0C2D48",
+    icon: "mdi:school",
+    label: "Affiliated to Gauhati University",
+    color: "#1A2A52",
   },
   {
-    icon: "mdi:school",
-    label: "AICTE Approved · VTU Affiliated",
+    icon: "mdi:certificate",
+    label: "NEP 2020 / FYUGP",
     color: "#1E8E5A",
   },
   {
     icon: "mdi:headset",
     label: "100% Free Admission Guidance",
-    color: "#D82618",
+    color: "#E0301E",
   },
 ];
 
 // Contact details
 const contactInfo = {
-  phone: "+91 8069645014",
-  whatsapp: "+91 8069645014",
+  phone: "+91 93653 75782",
+  whatsapp: "+91 93653 75782",
   officeHours: "Mon - Sat: 9:00 AM - 5:00 PM",
 };
 
 // Next steps after form submission
 const nextSteps = [
-  "Keep your phone reachable — our CIT admission team will call you shortly on the number you shared.",
-  "Have your Class 10 & 12 marksheets handy so we can map you to the right B.E. branch quickly.",
-  "Feel free to ask about courses, hostel, fees, scholarships and travel from the North East.",
+  "Keep your phone reachable — our admission team will call you shortly on the number you shared.",
+  "Have your HS (Class 12) marksheet and registration/migration certificate handy.",
+  "Feel free to ask about programs, fees, facilities and the Samarth portal admission process.",
 ];
 
 const ThankYou = () => {
@@ -194,8 +194,8 @@ const ThankYou = () => {
   }
 
   const greeting = userName
-    ? `Hi ${userName.split(" ")[0]}, our CIT admission team will call you shortly to guide you through the direct B.E. admission process for 2026.`
-    : "Our CIT admission team will call you shortly to guide you through the direct B.E. admission process for 2026.";
+    ? `Hi ${userName.split(" ")[0]}, our admission team will call you shortly to guide you through the admission process at Icon Commerce College.`
+    : "Our admission team will call you shortly to guide you through the admission process at Icon Commerce College.";
 
   return (
     <div className={styles.thankYouPage}>
@@ -226,7 +226,7 @@ const ThankYou = () => {
             className={styles.thankYouMessage}
           >
             <Typography variant="h2" className={styles.title}>
-              Thank You! Your 2026 Admission Enquiry is Received.
+              Thank You! Your Admission Enquiry is Received.
             </Typography>
             <Typography
               className={styles.subtitle}
@@ -249,8 +249,8 @@ const ThankYou = () => {
                 className={styles.noticeDesc}
                 sx={{ color: "#FFFFFFA6 !important" }}
               >
-                A quick checklist so we can make your 2026 B.E. admission
-                conversation smooth and useful:
+                A quick checklist so we can make your admission conversation
+                smooth and useful:
               </Typography>
             </div>
           </motion.div>
@@ -308,7 +308,7 @@ const ThankYou = () => {
             <div className={styles.contactHeader}>
               <div className={styles.companyBadge}>
                 <Icon icon="mdi:phone-in-talk" />
-                <span>CIT Admission Desk</span>
+                <span>Admission Desk</span>
               </div>
               <Typography variant="h4" className={styles.companyName}>
                 Or call us now if it's urgent
@@ -330,7 +330,7 @@ const ThankYou = () => {
                       Call Us
                     </span>
                     <a
-                      href="tel:+918069645014"
+                      href="tel:+919365375782"
                       className={styles.contactValue}
                     >
                       {contactInfo.phone}
@@ -353,7 +353,7 @@ const ThankYou = () => {
                       WhatsApp
                     </span>
                     <a
-                      href="https://wa.me/918069645014?text=Hi%20CIT%20Admissions%2C%0AI%20just%20submitted%20the%20form%20and%20would%20like%20to%20know%20more%20about%20Direct%20B.E.%20Admission%202026."
+                      href="https://wa.me/919365375782?text=Hi%20Icon%20Commerce%20College%2C%0AI%20just%20submitted%20the%20enquiry%20form%20and%20would%20like%20to%20know%20more%20about%20admissions."
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.contactValue}
@@ -401,7 +401,7 @@ const ThankYou = () => {
               <span>Back to Home</span>
             </motion.a>
             <motion.a
-              href="https://wa.me/918069645014?text=Hi%20CIT%20Admissions%2C%0AI%20just%20submitted%20the%20form%20and%20would%20like%20to%20know%20more%20about%20Direct%20B.E.%20Admission%202026."
+              href="https://wa.me/919365375782?text=Hi%20Icon%20Commerce%20College%2C%0AI%20just%20submitted%20the%20enquiry%20form%20and%20would%20like%20to%20know%20more%20about%20admissions."
               target="_blank"
               rel="noopener noreferrer"
               className={styles.whatsappBtn}

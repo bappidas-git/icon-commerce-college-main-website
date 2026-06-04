@@ -1,61 +1,66 @@
-# CIT — Direct B.E. Engineering Admissions 2026
+# Icon Commerce College — Official Website & Admin
 
 ## Overview
 
-A high-converting, mobile-first landing page for **Channabasaveshwara Institute of Technology (CIT), Tumakuru** — built to capture quality leads for **Direct B.E. (Engineering) Admissions, 2026 intake**, targeted at students and parents across North East India and run by Assam Digital. Built with React 18, Material UI, and Framer Motion. Includes an admin panel with lead management, a tele-calling lead module, GTM integration, Meta CAPI, and Google Ads conversion tracking.
+A modern, mobile-first **multi-page website** and **admin panel** for **Icon Commerce College, Guwahati** (আইকন কমাৰ্চ কলেজ) — a Commerce, Arts & Computer Application college established in 2004 under the Icon Academy Trust and affiliated to **Gauhati University** (NEP 2020 / FYUGP). The site captures admission enquiries (leads) and lets staff publish notices and events from an admin panel. Built with React 18, Material UI v5, and Framer Motion.
+
+> The single source of truth for design tokens, content data, the site map, and
+> coding conventions is **`prompts/00-DESIGN-SYSTEM.md`** — read it before making
+> changes. The phased rebuild plan lives in `prompts/`.
 
 ## Project Structure
 
-- `src/components/sections/` — Page sections (Hero, About, Services, Features, etc.)
-- `src/components/common/` — Reusable components (Header, Footer, LeadForm, SEOHead, etc.)
-- `src/data/` — Content data files (services, features, stats, locations)
+- `src/components/sections/` — Page sections (rebuilt per Phase 2 prompts)
+- `src/components/common/` — Reusable components (Header, Footer, LeadForm, SEO, etc.)
+- `src/data/` — Content data files (programs, departments, faculty, facilities, etc.)
 - `src/config/` — SEO configuration
 - `src/context/` — React context providers (Modal, Theme)
 - `src/hooks/` — Custom hooks (useGTMTracking, useInView, useMediaQuery, etc.)
-- `src/utils/` — Utility functions (webhook, GTM, Meta Pixel, Google Ads, validators)
+- `src/utils/` — Utility functions (webhookSubmit, gtm, validators, formatters, seo)
 - `src/admin/` — Admin panel (components, pages, context, utils)
 - `src/pages/` — Full pages (ThankYou)
 - `public/` — Static assets, index.html, manifest, robots.txt, sitemap.xml
-- `public/api/` — Server-side endpoints (`leads.php` shared lead store, Meta CAPI, offline conversions)
+- `public/images/placeholders/` — Labelled placeholder images (swap for real assets)
+- `public/api/` — Server-side endpoints (`leads.php` shared lead store; `notices.php` and `events.php` added in Phase 3)
+
+## Site Map
+
+Public: `/` · `/about` · `/leadership` · `/courses` · `/courses/:slug` (`b-com`/`bba`/`bca`/`b-a`) · `/departments` · `/faculty` · `/facilities` · `/gallery` · `/admissions` · `/notices` · `/events` · `/contact` · `/thank-you` · `*` (404).
+
+Admin (noindex): `/admin/login` · `/admin/dashboard` · `/admin/leads` (+`/:leadId`) · `/admin/notices` · `/admin/events` · `/admin/settings`.
 
 ## Lead Storage & Sync
 
-Leads are stored server-side in `public/api/leads.php` (a shared JSON store) — this is the **single source of truth**. The public form POSTs each submission there, and the admin panel reads/writes only the server (auto-refreshing every 15s), so every browser and device sees the same leads. There is no localStorage copy of leads. Configure with `REACT_APP_LEADS_API_URL` + `REACT_APP_LEADS_ADMIN_KEY` in `.env` (the key must match `ADMIN_API_KEY` in `public/api/config.php`).
+Leads are stored server-side in `public/api/leads.php` (a shared JSON store) — this is the **single source of truth**. The public form POSTs each submission there, and the admin panel reads/writes only the server (auto-refreshing every 15s), so every browser and device sees the same leads. There is no localStorage copy of leads. Configure with `REACT_APP_LEADS_API_URL` + `REACT_APP_LEADS_ADMIN_KEY` in `.env` (the key must match `ADMIN_API_KEY` in `public/api/config.php`). **Notices** and **Events** copy this exact pattern with `notices.php` / `events.php` stores (added in Phase 3).
 
-## Tele-Calling Module
+## Brand Color System (Deep Navy + Gold)
 
-The **Tele-Calling** admin module (`/admin/tele-calling`) mirrors Lead Management but its records are entered manually by telecallers (not the public form). It has its own server store `public/api/telecalls.php` (`data/telecalls.json`), service `src/admin/utils/telecallService.js`, status config `src/admin/utils/telecallStatus.js`, list page `TeleCalling.jsx`, detail page `TeleCallDetail.jsx`, and shared add/edit form `src/admin/components/TelecallFormDialog.jsx`. It uses the same cross-device sync pattern as leads (in-memory cache hydrated from the server, 15s poll, BroadcastChannel for same-browser tabs) and reuses `REACT_APP_LEADS_ADMIN_KEY` for auth (configure the endpoint with `REACT_APP_TELECALLS_API_URL`). Tele-calling statuses: Hot · Warm · Cold · Need More Follow Ups · Seat Booked · Not Interested.
+- Primary (Deep Navy): `#1A2A52` — headers, headings, primary surfaces
+- Primary Dark (Navy 900): `#111d3a` — gradients, footer
+- Accent (Gold): `#C8A04D` — eyebrow labels, underlines, icon chips, dividers
+- Accent Soft (Gold tint): `#F3E9D2` — card backgrounds, badges
+- CTA (Warm Red): `#E0301E` — the single primary action per view ("Apply Now"/"Enquire Now")
+- Text: `#14233D` · Muted: `#5B6678` · Page bg: `#F7F8FB` · Surface: `#FFFFFF`
 
-## Brand Color System (Defaults)
+Navy = structure, Gold = emphasis only, Warm Red = one primary CTA per view. Full token list (gradients, spacing, radius, shadows, motion) is in `prompts/00-DESIGN-SYSTEM.md`. Define tokens in `src/styles/variables.css` and mirror in `src/theme/muiTheme.js`.
 
-- Primary: #2D3561 (Deep Navy)
-- Secondary/Accent: #2EC4B6 (Teal Green)
-- Accent Warm: #FF6B35 (Orange — CTAs only)
-- Light Teal: #E0F7F5 (Card backgrounds)
-- White: #FFFFFF
-- Text: #1B2A4A
+## Typography
 
-To customize colors, update `src/styles/variables.css`, `src/theme/muiTheme.js`, and CSS variables in `.module.css` files.
+Headings: `'Poppins'` (600/700). Body: `'Inter'` (400/500). Loaded via `public/index.html`.
 
-## Customization Guide
+## Placeholder Images
 
-1. **Content**: Update data files in `src/data/` and hardcoded text in section components
-2. **Branding**: Replace logo URL in `Header.jsx`, `Footer.jsx`, `MobileDrawer.jsx`, and `public/index.html`
-3. **Contact Info**: Update `.env` file and `src/data/locationData.js`
-4. **SEO**: Update meta tags, JSON-LD schemas, `src/config/seo.js`, and `public/sitemap.xml`
-5. **Forms**: Leads POST to the server store (`/api/leads.php`) via `src/utils/webhookSubmit.js` — usually leave the default endpoint
-6. **Analytics**: Set `REACT_APP_GTM_ID` in `.env` and update GTM ID in `public/index.html`
-7. **Admin**: Update `REACT_APP_ADMIN_USERNAME` and `REACT_APP_ADMIN_PASSWORD` in `.env`
-
-See `CUSTOMIZATION_GUIDE.md` for a complete step-by-step walkthrough.
+**Never use real/remote images.** Use labelled placeholders under
+`public/images/placeholders/` referenced by the canonical kebab-case names in
+the design-system doc, so the client can swap them later.
 
 ## Documentation
 
-- `CUSTOMIZATION_GUIDE.md` — Quick-start guide for new landing pages
-- `GTM_GUIDE.md` — Google Tag Manager setup
-- `SEO_GUIDE.md` — SEO and schema configuration
-- `CHANGELOG.md` — Detailed changelog
+- `prompts/00-DESIGN-SYSTEM.md` — single source of truth (read first)
+- `prompts/README.md` — the phased rebuild plan (40 ordered prompts)
+- `CHANGELOG.md` — detailed changelog
+- `GTM_GUIDE.md` — optional Google Tag Manager setup
 
-## DO NOT MODIFY
+## Conventions
 
-- Component structure, layout, animations, form logic, webhookSubmit.js, swalHelper.js, mobile navigation mechanics, drawer/modal behavior, video background system
+React 18 + MUI v5 + Framer Motion. CSS Modules per component using CSS variables. One component per folder. Keep `App.jsx` lean with `React.lazy` + `Suspense`. Accessibility: semantic landmarks, alt text on every image, focus states, `aria-label` on icon buttons, skip-link retained. Animations subtle and guarded by `prefers-reduced-motion`. Each PR: update `CHANGELOG.md`, keep `npm run build` green, no console errors on touched routes.

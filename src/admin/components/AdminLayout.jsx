@@ -15,7 +15,6 @@ const LeadManagement = lazy(() => import('../pages/LeadManagement'));
 const LeadDetail = lazy(() => import('../pages/LeadDetail'));
 const TeleCalling = lazy(() => import('../pages/TeleCalling'));
 const TeleCallDetail = lazy(() => import('../pages/TeleCallDetail'));
-const Guideline = lazy(() => import('../pages/Guideline'));
 
 const PageLoader = () => (
   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 300 }}>
@@ -60,7 +59,6 @@ const AdminLayout = () => {
               <Route path="lms/lead/:leadId" element={<LeadDetail />} />
               <Route path="tele-calling" element={<TeleCalling />} />
               <Route path="tele-calling/lead/:telecallId" element={<TeleCallDetail />} />
-              <Route path="guideline" element={<Guideline />} />
             </Routes>
           </Suspense>
         </main>

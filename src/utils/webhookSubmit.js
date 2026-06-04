@@ -11,9 +11,6 @@
    authoritative and the admin reads straight from it.
    ============================================ */
 
-// GCLID manager for persistent gclid storage (Google Ads attribution).
-import { getStoredGclid } from "./gclidManager";
-
 // =============================================
 // CONFIGURATION
 // Server-side lead storage endpoint. The admin panel reads leads from here,
@@ -46,8 +43,8 @@ const generateUUID = () => {
  * @param {string} leadData.name - Applicant's full name
  * @param {string} leadData.mobile - Mobile number (10 digits, +91 added separately)
  * @param {string} [leadData.email] - Email address (optional)
- * @param {string} leadData.service_interest - Selected B.E. course (legacy key — value is
- *   the course label, e.g. "B.E. — Computer Science & Engineering"). Kept as
+ * @param {string} leadData.service_interest - Selected program (legacy key — value is
+ *   the program label, e.g. "B.Com. (Bachelor of Commerce)"). Kept as
  *   `service_interest` to preserve the existing admin panel mapping.
  * @param {string} leadData.state - Applicant's home state (NE India + "Other")
  * @param {string} [leadData.message] - Optional free-text question
@@ -73,7 +70,7 @@ export const submitLeadToWebhook = async (leadData) => {
     utm_campaign: params.get("utm_campaign") || "",
     utm_term: params.get("utm_term") || "",
     utm_content: params.get("utm_content") || "",
-    gclid: params.get("gclid") || getStoredGclid() || "",
+    gclid: params.get("gclid") || "",
     notes: [],
     activity: [
       {
@@ -89,7 +86,7 @@ export const submitLeadToWebhook = async (leadData) => {
     return {
       success: false,
       message:
-        "Submissions aren't configured yet. Please call us at +91 8069645014.",
+        "Submissions aren't configured yet. Please call us at +91 93653 75782.",
     };
   }
 
@@ -119,7 +116,7 @@ export const submitLeadToWebhook = async (leadData) => {
     return {
       success: false,
       message:
-        "We couldn't submit your enquiry right now. Please try again or call us at +91 8069645014.",
+        "We couldn't submit your enquiry right now. Please try again or call us at +91 93653 75782.",
     };
   } catch (error) {
     // Network-level failure (offline, DNS error, etc.). Surface honestly so
@@ -128,7 +125,7 @@ export const submitLeadToWebhook = async (leadData) => {
     return {
       success: false,
       message:
-        "Network error. Please check your connection and try again, or call us at +91 8069645014.",
+        "Network error. Please check your connection and try again, or call us at +91 93653 75782.",
     };
   }
 };

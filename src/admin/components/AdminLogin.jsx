@@ -41,11 +41,11 @@ const AdminLogin = () => {
         <div className={styles.loginHeader}>
           <div className={styles.loginLogo}>
             <img
-              src="https://res.cloudinary.com/dn9gyaiik/image/upload/v1779669113/logo-cit_ykpxvd.png"
-              alt="CIT Admin"
+              src="/images/placeholders/logo-icon-commerce.svg"
+              alt="Icon Commerce College Admin"
             />
           </div>
-          <h1 className={styles.loginTitle}>CIT Admissions Admin</h1>
+          <h1 className={styles.loginTitle}>Icon Commerce College Admin</h1>
           <p className={styles.loginSubtitle}>Lead Management System</p>
         </div>
 

@@ -15,10 +15,6 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  TextField,
-  InputAdornment,
-  FormControl,
-  InputLabel,
   Snackbar,
   Alert,
 } from "@mui/material";
@@ -27,7 +23,6 @@ import {
   getLeadById,
   updateLeadStatus,
   addLeadNote,
-  updateLeadConversion,
   deleteLead,
   syncLeadsFromServer,
   onLeadsChanged,
@@ -37,18 +32,7 @@ import {
   getStatusConfig,
   formatActivityAction,
 } from "../utils/leadStatus";
-import { sendConversionEvent } from "../../utils/metaCAPI";
-import { generateEventId } from "../../utils/eventDedup";
 import styles from "./LeadDetail.module.css";
-
-const CONVERSION_TYPES = [
-  "Application Submitted",
-  "Counselling Done",
-  "Admission Confirmed",
-  "Hostel Booked",
-  "Referral",
-  "Other",
-];
 
 const formatDate = (dateStr) => {
   if (!dateStr) return "\u2014";
@@ -124,12 +108,7 @@ const LeadDetail = () => {
   const [lead, setLead] = useState(null);
   const [notFound, setNotFound] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [conversionModalOpen, setConversionModalOpen] = useState(false);
-  const [conversionValue, setConversionValue] = useState("");
-  const [conversionType, setConversionType] = useState("");
-  const [conversionSending, setConversionSending] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
-  const [copiedField, setCopiedField] = useState(null);
 
   const loadLead = useCallback(() => {
     const data = getLeadById(leadId);
@@ -227,73 +206,6 @@ const LeadDetail = () => {
     navigate("/admin/lms");
   };
 
-  const handleCopy = (text, field) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopiedField(field);
-      setTimeout(() => setCopiedField(null), 2000);
-    });
-  };
-
-  const handleSendConversion = async () => {
-    if (!lead || !conversionValue || !conversionType) return;
-    setConversionSending(true);
-
-    try {
-      const eventId = generateEventId();
-      const result = await sendConversionEvent(
-        {
-          name: lead.name,
-          email: lead.email,
-          mobile: lead.mobile,
-        },
-        {
-          value: parseFloat(conversionValue),
-          currency: "INR",
-          conversion_type: conversionType,
-          event_id: eventId,
-        }
-      );
-
-      // Update lead status to completed
-      updateLeadStatus(lead.lead_id, "completed");
-
-      // Store conversion details on the lead (for Google Ads export) and
-      // mirror them to the shared server store so other devices see them too.
-      updateLeadConversion(lead.lead_id, {
-        conversion_value: parseFloat(conversionValue),
-        conversion_type: conversionType,
-        converted_at: new Date().toISOString(),
-      });
-
-      // Add activity notes about conversion
-      addLeadNote(
-        lead.lead_id,
-        `Conversion sent to Meta CAPI: ${conversionType} - \u20B9${parseFloat(conversionValue).toLocaleString("en-IN")} (Event ID: ${eventId})`
-      );
-
-      if (lead.gclid) {
-        addLeadNote(
-          lead.lead_id,
-          `Google Ads offline conversion ready for export (GCLID: ${lead.gclid.slice(0, 12)}...)`
-        );
-      }
-
-      loadLead();
-      setConversionModalOpen(false);
-      showSnackbar(
-        result.success
-          ? "Conversion event sent to Meta successfully"
-          : "Conversion recorded locally (CAPI endpoint not available)",
-        result.success ? "success" : "warning"
-      );
-    } catch (error) {
-      console.error("Conversion error:", error);
-      showSnackbar("Failed to send conversion event", "error");
-    } finally {
-      setConversionSending(false);
-    }
-  };
-
   // Not found state
   if (notFound) {
     return (
@@ -317,16 +229,6 @@ const LeadDetail = () => {
   if (!lead) return null;
 
   const sc = getStatusConfig(lead.status);
-
-  const googleAdsStatus = lead.gclid
-    ? lead.status === "completed"
-      ? { label: "Ready for export", style: "trackingChipGreen" }
-      : { label: "GCLID captured", style: "trackingChipBlue" }
-    : { label: "No GCLID", style: "trackingChipMuted" };
-
-  const metaStatus = (lead.notes || []).some((n) => n.text?.includes("Meta CAPI"))
-    ? { label: "Conversion sent", style: "trackingChipGreen" }
-    : { label: "Pending", style: "trackingChipOrange" };
 
   return (
     <div className={styles.page}>
@@ -456,25 +358,6 @@ const LeadDetail = () => {
                   </span>
                 </div>
               ))}
-              <div className={styles.utmItemFull}>
-                <span className={styles.infoLabel}>GCLID</span>
-                <span className={lead.gclid ? styles.infoValue : styles.infoDash}>
-                  {lead.gclid ? (
-                    <>
-                      {lead.gclid.length > 24 ? lead.gclid.slice(0, 24) + "..." : lead.gclid}
-                      <button
-                        className={styles.copyBtn}
-                        onClick={() => handleCopy(lead.gclid, "gclid")}
-                      >
-                        <Icon icon={copiedField === "gclid" ? "mdi:check" : "mdi:content-copy"} width={12} />
-                        {copiedField === "gclid" ? "Copied" : "Copy"}
-                      </button>
-                    </>
-                  ) : (
-                    "\u2014"
-                  )}
-                </span>
-              </div>
             </div>
           </div>
 
@@ -558,62 +441,9 @@ const LeadDetail = () => {
             )}
           </div>
 
-          {/* Conversion Tracking */}
-          <div className={styles.card}>
-            <h3 className={styles.cardTitle}>
-              <Icon icon="mdi:chart-timeline-variant-shimmer" width={16} />
-              Conversion Tracking
-            </h3>
-            <div className={styles.trackingGrid}>
-              <div className={styles.trackingRow}>
-                <span className={styles.trackingLabel}>Google Ads</span>
-                <span className={`${styles.trackingChip} ${styles[googleAdsStatus.style]}`}>
-                  {googleAdsStatus.label}
-                </span>
-              </div>
-              <div className={styles.trackingRow}>
-                <span className={styles.trackingLabel}>Meta CAPI</span>
-                <span className={`${styles.trackingChip} ${styles[metaStatus.style]}`}>
-                  {metaStatus.label}
-                </span>
-              </div>
-              {lead.conversion_value && (
-                <div className={styles.trackingRow}>
-                  <span className={styles.trackingLabel}>Conversion Value</span>
-                  <span className={styles.trackingValue}>
-                    {"\u20B9"}{parseFloat(lead.conversion_value).toLocaleString("en-IN")}
-                  </span>
-                </div>
-              )}
-              {lead.conversion_type && (
-                <div className={styles.trackingRow}>
-                  <span className={styles.trackingLabel}>Conversion Type</span>
-                  <span className={styles.trackingValue}>{lead.conversion_type}</span>
-                </div>
-              )}
-              {lead.converted_at && (
-                <div className={styles.trackingRow}>
-                  <span className={styles.trackingLabel}>Converted At</span>
-                  <span className={styles.trackingValue}>{formatDate(lead.converted_at)}</span>
-                </div>
-              )}
-            </div>
-          </div>
-
           {/* Action Buttons (desktop) */}
           <div className={`${styles.card} ${styles.desktopActions}`}>
             <div className={styles.actionButtons}>
-              <button
-                className={styles.convertBtn}
-                onClick={() => {
-                  setConversionValue("");
-                  setConversionType("");
-                  setConversionModalOpen(true);
-                }}
-              >
-                <Icon icon="mdi:send-check" width={18} />
-                Mark as Converted
-              </button>
               <button
                 className={styles.deleteBtn}
                 onClick={() => setDeleteDialogOpen(true)}
@@ -628,17 +458,6 @@ const LeadDetail = () => {
 
       {/* Mobile Sticky Footer */}
       <div className={styles.mobileFooter}>
-        <button
-          className={styles.convertBtn}
-          onClick={() => {
-            setConversionValue("");
-            setConversionType("");
-            setConversionModalOpen(true);
-          }}
-        >
-          <Icon icon="mdi:send-check" width={18} />
-          Convert
-        </button>
         <button
           className={styles.deleteBtn}
           onClick={() => setDeleteDialogOpen(true)}
@@ -667,82 +486,6 @@ const LeadDetail = () => {
             sx={{ textTransform: "none" }}
           >
             Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Conversion Modal */}
-      <Dialog
-        open={conversionModalOpen}
-        onClose={() => setConversionModalOpen(false)}
-        maxWidth="xs"
-        fullWidth
-      >
-        <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Icon icon="mdi:send-check" width={22} style={{ color: "#4CAF50" }} />
-          Record Conversion
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{ mb: 2 }}>
-            Record a conversion for{" "}
-            <strong>{lead.name || "this lead"}</strong>. This will send a conversion
-            event to Meta CAPI and{lead.gclid
-              ? " mark it for Google Ads offline conversion export"
-              : " record it locally"}.
-          </DialogContentText>
-          <TextField
-            fullWidth
-            label="Conversion Value"
-            type="number"
-            value={conversionValue}
-            onChange={(e) => setConversionValue(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">{"\u20B9"}</InputAdornment>
-              ),
-            }}
-            sx={{ mb: 2 }}
-          />
-          <FormControl fullWidth>
-            <InputLabel>Conversion Type</InputLabel>
-            <Select
-              value={conversionType}
-              label="Conversion Type"
-              onChange={(e) => setConversionType(e.target.value)}
-            >
-              {CONVERSION_TYPES.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setConversionModalOpen(false)}
-            sx={{ textTransform: "none" }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleSendConversion}
-            variant="contained"
-            disabled={!conversionValue || !conversionType || conversionSending}
-            startIcon={
-              conversionSending ? (
-                <Icon icon="mdi:loading" width={18} className="spin" />
-              ) : (
-                <Icon icon="mdi:send" width={18} />
-              )
-            }
-            sx={{
-              textTransform: "none",
-              bgcolor: "#4CAF50",
-              "&:hover": { bgcolor: "#388E3C" },
-            }}
-          >
-            {conversionSending ? "Sending..." : "Send Conversion"}
           </Button>
         </DialogActions>
       </Dialog>

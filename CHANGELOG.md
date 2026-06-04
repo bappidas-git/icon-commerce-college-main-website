@@ -44,6 +44,15 @@ data — with uncertain timeline years flagged `TODO` for the client to confirm.
   is applied with `useSeo()` (the `/about` route defaults live in
   `src/config/seo.js`). `npm run build` stays green.
 
+**Visual QA fixes (multi-viewport screenshot review)**
+- **PageHero title contrast** — the inner-page hero `<h1>` was rendering
+  navy-on-navy (nearly invisible): the global `h1 { color: var(--primary-dark) }`
+  rule in `styles/global.css` overrode the white it should inherit from `.hero`.
+  `PageHero`'s `.title` now sets an explicit white colour, fixing the hero title
+  on **every** page that uses `<PageHero>`.
+- **About CTA link** — moved the arrow on "See the full admission process" to
+  trail the label (conventional "proceed" affordance).
+
 ### Phase 2.4 — Home assembly (notices, leadership, testimonials, CTA)
 
 Fourteenth prompt of the rebuild (`prompts/14-home-noticeboard-leadership-testimonials-assemble.md`).

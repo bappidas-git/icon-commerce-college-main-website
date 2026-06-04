@@ -368,8 +368,8 @@ const About = () => {
 
             <Reveal className={styles.ctaLinkRow} variant="fadeUp">
               <Link to="/admissions" className={styles.ctaLink}>
-                <Icon icon="mdi:arrow-right" aria-hidden="true" />
                 <span>See the full admission process</span>
+                <Icon icon="mdi:arrow-right" aria-hidden="true" />
               </Link>
             </Reveal>
           </RevealGroup>

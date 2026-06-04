@@ -61,6 +61,10 @@
 
 .title {
   font-family: var(--font-heading);
+  /* Explicit white: the global `h1 { color: var(--primary-dark) }` rule
+     (styles/global.css) otherwise wins over the inherited `.hero` colour and
+     renders the title navy-on-navy. */
+  color: #ffffff;
   font-size: var(--fs-4xl);
   font-weight: var(--fw-bold);
   line-height: var(--lh-tight);

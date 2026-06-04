@@ -4,6 +4,52 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 1.4 — SEO foundation & schema
+
+Tenth prompt of the rebuild (`prompts/10-seo-foundation.md`). Adds per-route SEO
+(titles/description/canonical/OG + Twitter), schema.org structured data for an
+educational institution, and refreshed static SEO files. The canonical domain is
+standardised to the non-`www` form `https://iconcommercecollege.in` everywhere.
+
+**SEO config (`src/config/seo.js`)**
+- Expanded the `pages` map to **every route in §5** (home, about, leadership,
+  courses, departments, faculty, facilities, gallery, admissions, notices,
+  events, contact) with `title` / `description` / `keywords` and a short `crumb`
+  label for breadcrumbs. `thankYou`, `notFound` and `admin` are `noindex`.
+- `siteUrl` / `organization.url` set to `https://iconcommercecollege.in`;
+  `alternateName` set to **"ICC"**; `sameAs` left as a TODO for the official
+  Facebook / YouTube URLs. Added a fees FAQ entry; opening hours aligned to
+  09:30–16:30 (Mon–Sat).
+
+**SEO utilities (`src/utils/seo.js`)**
+- New `generateWebSiteSchema()` (WebSite + SearchAction) and
+  `generateCourseSchema(course)` (Course + CourseInstance + application Offer).
+- New route engine: `resolvePageSeo(pathname)`, `buildBreadcrumbs(pathname)`,
+  `absoluteUrl()`, and a central `applySeo(pathname)` that sets all meta + the
+  per-route JSON-LD (WebPage, BreadcrumbList, FAQPage on Home/Admissions, Course
+  on `/courses/:slug`) and strips every schema on `/admin`.
+- Per-page **override store** (`setSeoOverride` / `clearSeoOverride` /
+  `getSeoOverride`) so pages can contribute overrides that merge over route
+  defaults. `injectDefaultSchemas()` now injects the site-wide schemas
+  (Organization, LocalBusiness, WebSite) once; logos resolved to absolute URLs.
+
+**SEOHead + useSeo (`src/components/common/SEO/`)**
+- `SEOHead.jsx` is now a thin wrapper: injects site-wide schemas once and calls
+  the new `useSeo` hook so all routes are covered globally. It also accepts
+  override **props**.
+- New `useSeo(overrides)` hook (and folder `index.js`) for Phase 2 pages to pass
+  `{ title, description, image, schema, faqs }`; page effects run after the
+  global one so page values win.
+
+**Static files**
+- `public/sitemap.xml` — all 16 public routes incl. the 4 course slugs.
+- `public/robots.txt` — allow all, disallow `/admin` + `/thank-you`, sitemap +
+  host on the non-`www` domain.
+- `public/manifest.json` — name "Icon Commerce College", theme `#1A2A52`,
+  favicon/apple-touch icons, and **shortcuts** (Courses, Admissions, Contact).
+- `public/index.html` — OG/Twitter/canonical and the JSON-LD fallback updated to
+  the non-`www` domain; added a WebSite + SearchAction fallback schema.
+
 ### Phase 1.3 — Lead drawer & floating CTAs
 
 Ninth prompt of the rebuild (`prompts/09-lead-drawer-and-ctas.md`). Makes lead

@@ -5,6 +5,24 @@
    ============================================ */
 
 import { seoConfig } from '../config/seo';
+import { coursesData, getCourseBySlug } from '../data/coursesData';
+
+// =========================================
+// URL helpers
+// =========================================
+
+/**
+ * Resolve a path or relative URL to an absolute URL on the canonical domain.
+ * Absolute http(s) URLs are returned unchanged.
+ * @param {string} pathOrUrl
+ * @returns {string}
+ */
+export function absoluteUrl(pathOrUrl = '') {
+  if (!pathOrUrl) return seoConfig.siteUrl;
+  if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+  const path = pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`;
+  return `${seoConfig.siteUrl}${path}`;
+}
 
 // =========================================
 // Page SEO — Update document title & meta tags
@@ -130,7 +148,8 @@ export function generateOrganizationSchema(config) {
     name: org.name,
     alternateName: org.alternateName,
     url: org.url,
-    logo: org.logo,
+    logo: absoluteUrl(org.logo),
+    image: absoluteUrl(org.logo),
     description: org.description,
     telephone: org.phone,
     email: org.email,
@@ -206,7 +225,7 @@ export function generateLocalBusinessSchema(config) {
     '@context': 'https://schema.org',
     '@type': biz.type,
     name: org.name,
-    image: org.logo,
+    image: absoluteUrl(org.logo),
     telephone: org.phone,
     email: org.email,
     address: {
@@ -300,9 +319,86 @@ export function generateWebPageSchema(config) {
       name: seoConfig.organization.name,
       logo: {
         '@type': 'ImageObject',
-        url: seoConfig.organization.logo,
+        url: absoluteUrl(seoConfig.organization.logo),
       },
     },
+  };
+}
+
+/**
+ * Generate WebSite schema with a SearchAction (sitelinks search box).
+ * @returns {Object} JSON-LD WebSite schema
+ */
+export function generateWebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: seoConfig.siteName,
+    alternateName: seoConfig.organization.alternateName,
+    url: seoConfig.siteUrl,
+    inLanguage: seoConfig.language,
+    publisher: {
+      '@type': 'CollegeOrUniversity',
+      name: seoConfig.organization.name,
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${seoConfig.siteUrl}/?s={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
+/**
+ * Generate Course schema for a single program (course detail pages).
+ * @param {Object} course - A course record from coursesData
+ * @returns {Object} JSON-LD Course schema
+ */
+export function generateCourseSchema(course) {
+  if (!course) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: course.name,
+    description: course.summary || course.description,
+    url: `${seoConfig.siteUrl}/courses/${course.slug}`,
+    inLanguage: seoConfig.language,
+    provider: {
+      '@type': 'CollegeOrUniversity',
+      name: seoConfig.organization.name,
+      sameAs: seoConfig.organization.url,
+    },
+    educationalCredentialAwarded: course.name,
+    ...(course.image && { image: absoluteUrl(course.image) }),
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: 'onsite',
+      ...(course.duration && { courseWorkload: course.duration }),
+      location: {
+        '@type': 'Place',
+        name: seoConfig.organization.name,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: seoConfig.organization.address.addressLocality,
+          addressRegion: seoConfig.organization.address.addressRegion,
+          addressCountry: seoConfig.organization.address.addressCountry,
+        },
+      },
+    },
+    ...(course.fees &&
+      course.fees.application && {
+        offers: {
+          '@type': 'Offer',
+          category: 'Application Fee',
+          price: String(course.fees.application).replace(/[^\d.]/g, ''),
+          priceCurrency: 'INR',
+          availability: 'https://schema.org/InStock',
+          url: `${seoConfig.siteUrl}/admissions`,
+        },
+      }),
   };
 }
 
@@ -378,29 +474,289 @@ export function generateProductSchema(products) {
 }
 
 // =========================================
-// Convenience: Inject all default schemas
+// Convenience: Inject site-wide schemas (once)
 // =========================================
 
 /**
- * Inject all default schemas (Organization, FAQ, LocalBusiness, BreadcrumbList, WebPage)
- * into the document head. Call this on initial page load.
+ * Inject the route-independent schemas that appear on every public page:
+ * Organization/CollegeOrUniversity, LocalBusiness and WebSite (+ SearchAction).
+ * Per-route schemas (WebPage, BreadcrumbList, FAQPage, Course) are managed by
+ * {@link applySeo}. Safe to call multiple times — schemas are keyed by id.
  */
 export function injectDefaultSchemas() {
   injectSchema('schema-organization', generateOrganizationSchema());
-  injectSchema('schema-faq', generateFAQSchema());
   injectSchema('schema-localbusiness', generateLocalBusinessSchema());
-  injectSchema(
+  injectSchema('schema-website', generateWebSiteSchema());
+}
+
+/**
+ * Remove every public schema (used when entering admin routes).
+ */
+export function removeAllSchemas() {
+  [
+    'schema-organization',
+    'schema-localbusiness',
+    'schema-website',
+    'schema-webpage',
     'schema-breadcrumb',
-    generateBreadcrumbSchema([
-      { name: 'Home', url: seoConfig.siteUrl + '/' },
-    ])
-  );
+    'schema-faq',
+    'schema-course',
+  ].forEach(removeSchema);
+}
+
+// =========================================
+// Per-route resolution
+// =========================================
+
+/** Map static public pathnames to a key in seoConfig.pages. */
+const ROUTE_KEY_BY_PATH = {
+  '/': 'home',
+  '/about': 'about',
+  '/leadership': 'leadership',
+  '/courses': 'courses',
+  '/departments': 'departments',
+  '/faculty': 'faculty',
+  '/facilities': 'facilities',
+  '/gallery': 'gallery',
+  '/admissions': 'admissions',
+  '/notices': 'notices',
+  '/events': 'events',
+  '/contact': 'contact',
+  '/thank-you': 'thankYou',
+};
+
+/** Normalise a pathname: strip trailing slash (except root), drop query/hash. */
+function normalisePath(pathname = '/') {
+  const clean = String(pathname).split(/[?#]/)[0];
+  if (clean.length > 1 && clean.endsWith('/')) return clean.slice(0, -1);
+  return clean || '/';
+}
+
+/**
+ * Build the BreadcrumbList trail for a pathname using the page `crumb` labels
+ * (with course names resolved for /courses/:slug).
+ * @param {string} pathname
+ * @returns {Array<{name: string, url: string}>}
+ */
+export function buildBreadcrumbs(pathname) {
+  const path = normalisePath(pathname);
+  const crumbs = [{ name: 'Home', url: `${seoConfig.siteUrl}/` }];
+  if (path === '/') return crumbs;
+
+  const segments = path.split('/').filter(Boolean);
+  let acc = '';
+  segments.forEach((segment, i) => {
+    acc += `/${segment}`;
+    let name;
+    const key = ROUTE_KEY_BY_PATH[acc];
+    if (key && seoConfig.pages[key]) {
+      name = seoConfig.pages[key].crumb;
+    } else if (segments[0] === 'courses' && i === 1) {
+      const course = getCourseBySlug(segment);
+      name = course ? course.shortName : segment;
+    } else {
+      name = segment
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+    }
+    crumbs.push({ name, url: `${seoConfig.siteUrl}${acc}` });
+  });
+  return crumbs;
+}
+
+/**
+ * Resolve the full SEO descriptor for a pathname from the route map + data.
+ * @param {string} pathname
+ * @returns {Object} { key, title, description, keywords, image, url, robots,
+ *                      type, isAdmin, faq, course }
+ */
+export function resolvePageSeo(pathname) {
+  const path = normalisePath(pathname);
+  const url = `${seoConfig.siteUrl}${path === '/' ? '/' : path}`;
+
+  // Admin (noindex, no schemas)
+  if (path === '/admin' || path.startsWith('/admin/')) {
+    const cfg = seoConfig.pages.admin;
+    return {
+      key: 'admin',
+      title: cfg.title,
+      description: cfg.description || seoConfig.defaultDescription,
+      image: absoluteUrl(seoConfig.defaultImage),
+      url,
+      robots: cfg.robots,
+      type: 'website',
+      isAdmin: true,
+    };
+  }
+
+  // Course detail — /courses/:slug
+  const courseMatch = path.match(/^\/courses\/([^/]+)$/);
+  if (courseMatch) {
+    const course = getCourseBySlug(courseMatch[1]);
+    if (course) {
+      return {
+        key: 'courseDetail',
+        title: `${course.name} | Icon Commerce College, Guwahati`,
+        description: course.summary,
+        keywords: `${course.shortName} guwahati, ${course.name}, ${course.affiliation}, fyugp ${course.shortName}, icon commerce college`,
+        image: absoluteUrl(course.image),
+        url,
+        robots: 'index, follow',
+        type: 'article',
+        course,
+      };
+    }
+    // Unknown slug → 404 treatment
+  }
+
+  // Known static route
+  const key = ROUTE_KEY_BY_PATH[path];
+  if (key) {
+    const cfg = seoConfig.pages[key];
+    return {
+      key,
+      title: cfg.title,
+      description: cfg.description || seoConfig.defaultDescription,
+      keywords: cfg.keywords,
+      image: absoluteUrl(cfg.image || seoConfig.defaultImage),
+      url,
+      robots: cfg.robots || 'index, follow',
+      type: key === 'home' ? 'website' : 'website',
+      faq: key === 'home' || key === 'admissions',
+    };
+  }
+
+  // Fallback → 404
+  const cfg = seoConfig.pages.notFound;
+  return {
+    key: 'notFound',
+    title: cfg.title,
+    description: cfg.description,
+    image: absoluteUrl(seoConfig.defaultImage),
+    url,
+    robots: cfg.robots,
+    type: 'website',
+  };
+}
+
+// =========================================
+// Per-page override store
+// =========================================
+// Lets pages contribute SEO overrides (via the useSeo hook) that the global
+// SEOHead merges over the route defaults. Keyed by pathname so the global
+// applier (which runs after child effects) always sees the latest override.
+
+const overrideStore = new Map();
+
+/** Register/replace SEO overrides for a pathname. */
+export function setSeoOverride(pathname, override) {
+  overrideStore.set(normalisePath(pathname), override || {});
+}
+
+/** Remove SEO overrides for a pathname. */
+export function clearSeoOverride(pathname) {
+  overrideStore.delete(normalisePath(pathname));
+}
+
+/** Read SEO overrides for a pathname (or undefined). */
+export function getSeoOverride(pathname) {
+  return overrideStore.get(normalisePath(pathname));
+}
+
+// =========================================
+// Central applier — meta + per-route schemas
+// =========================================
+
+/**
+ * Resolve + apply all SEO for a pathname: title/description/canonical/OG/Twitter
+ * meta and the per-route JSON-LD schemas (WebPage, BreadcrumbList, FAQPage,
+ * Course). Site-wide schemas are handled by {@link injectDefaultSchemas}.
+ * Any registered per-page override (see {@link setSeoOverride}) is merged last.
+ *
+ * @param {string} pathname - current location pathname
+ */
+export function applySeo(pathname) {
+  const base = resolvePageSeo(pathname);
+  const override = getSeoOverride(pathname) || {};
+
+  const resolved = {
+    ...base,
+    ...override,
+    image: override.image ? absoluteUrl(override.image) : base.image,
+  };
+
+  // --- Meta tags ---
+  updatePageSEO({
+    title: resolved.title,
+    description: resolved.description,
+    image: resolved.image,
+    url: resolved.url,
+    robots: resolved.robots,
+    type: resolved.type,
+  });
+
+  // Keywords (optional)
+  if (resolved.keywords) {
+    let el = document.querySelector('meta[name="keywords"]');
+    if (!el) {
+      el = document.createElement('meta');
+      el.setAttribute('name', 'keywords');
+      document.head.appendChild(el);
+    }
+    el.setAttribute('content', resolved.keywords);
+  }
+
+  // --- Schemas ---
+  // Admin: strip every schema and bail.
+  if (resolved.isAdmin) {
+    removeAllSchemas();
+    return;
+  }
+
+  // Ensure the site-wide schemas exist (they may have been removed on admin).
+  injectDefaultSchemas();
+
+  // WebPage (per route)
   injectSchema(
     'schema-webpage',
     generateWebPageSchema({
-      name: seoConfig.pages.home.title,
-      description: seoConfig.pages.home.description,
-      url: seoConfig.siteUrl + '/',
+      name: resolved.title,
+      description: resolved.description,
+      url: resolved.url,
     })
   );
+
+  // BreadcrumbList (skip the single-item Home trail)
+  const crumbs = buildBreadcrumbs(pathname);
+  if (crumbs.length > 1) {
+    injectSchema('schema-breadcrumb', generateBreadcrumbSchema(crumbs));
+  } else {
+    removeSchema('schema-breadcrumb');
+  }
+
+  // FAQPage (Home + Admissions, or when a page provides its own faqs)
+  if (override.faqs && override.faqs.length) {
+    injectSchema('schema-faq', generateFAQSchema(override.faqs));
+  } else if (resolved.faq) {
+    injectSchema('schema-faq', generateFAQSchema());
+  } else {
+    removeSchema('schema-faq');
+  }
+
+  // Course (course detail pages)
+  if (resolved.course) {
+    injectSchema('schema-course', generateCourseSchema(resolved.course));
+  } else {
+    removeSchema('schema-course');
+  }
+
+  // Arbitrary extra schema passed by a page override
+  if (override.schema) {
+    injectSchema('schema-page-extra', override.schema);
+  } else {
+    removeSchema('schema-page-extra');
+  }
 }
+
+/** All public program records (handy for sitemaps/tests). */
+export { coursesData };

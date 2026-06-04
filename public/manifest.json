@@ -1,6 +1,6 @@
 {
   "short_name": "Icon College",
-  "name": "Icon Commerce College, Guwahati",
+  "name": "Icon Commerce College",
   "description": "Icon Commerce College, Guwahati — Commerce, Arts & Computer Application programs affiliated to Gauhati University (NEP 2020 / FYUGP). Established 2004.",
   "icons": [
     {
@@ -9,16 +9,45 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "favicon.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "logo512.png",
+      "src": "apple-touch-icon.png",
       "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any maskable"
+      "sizes": "180x180",
+      "purpose": "maskable"
+    },
+    {
+      "src": "images/placeholders/logo-icon-commerce.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Courses & Programs",
+      "short_name": "Courses",
+      "description": "Explore B.Com, BBA, BCA and B.A. programs",
+      "url": "/courses",
+      "icons": [{ "src": "favicon.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Admissions 2026-27",
+      "short_name": "Admissions",
+      "description": "Admission process, eligibility, fees and Samarth portal",
+      "url": "/admissions",
+      "icons": [{ "src": "favicon.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Contact Us",
+      "short_name": "Contact",
+      "description": "Address, phone, email and location map",
+      "url": "/contact",
+      "icons": [{ "src": "favicon.png", "sizes": "192x192", "type": "image/png" }]
     }
   ],
   "start_url": ".",

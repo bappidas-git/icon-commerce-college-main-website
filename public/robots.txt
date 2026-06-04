@@ -1,7 +1,9 @@
+# robots.txt — Icon Commerce College
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /admin
 Disallow: /thank-you
 
-Sitemap: https://www.iconcommercecollege.in/sitemap.xml
-Host: https://www.iconcommercecollege.in
+Sitemap: https://iconcommercecollege.in/sitemap.xml
+Host: https://iconcommercecollege.in

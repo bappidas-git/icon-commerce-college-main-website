@@ -1,62 +1,35 @@
 /* ============================================
    SEOHead Component
-   Manages document head SEO tags dynamically
-   per route. Uses direct DOM manipulation since
-   this is a CRA-based SPA without react-helmet.
+   --------------------------------------------
+   Manages the document head SEO per route using direct DOM manipulation
+   (no react-helmet, consistent with the CRA boilerplate).
+
+   - Injects the site-wide JSON-LD schemas once on mount
+     (Organization / CollegeOrUniversity, LocalBusiness, WebSite + SearchAction).
+   - On every route change, sets <title>, meta description/keywords, canonical,
+     Open Graph + Twitter tags, and the per-route schemas (WebPage,
+     BreadcrumbList, FAQPage on Home/Admissions, Course on course detail).
+   - Strips all schemas on /admin routes.
+
+   Rendered once, globally, in App.jsx. Pages built in Phase 2 can either
+   pass overrides as props here or call the `useSeo` hook directly.
    ============================================ */
 
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { seoConfig } from '../../../config/seo';
-import {
-  updatePageSEO,
-  injectDefaultSchemas,
-  removeSchema,
-} from '../../../utils/seo';
+import { injectDefaultSchemas } from '../../../utils/seo';
+import useSeo from './useSeo';
 
-const SEOHead = () => {
-  const location = useLocation();
-
-  // Inject default schemas on mount
+const SEOHead = (props = {}) => {
+  // Inject the route-independent schemas once.
   useEffect(() => {
     injectDefaultSchemas();
   }, []);
 
-  // Update page SEO based on current route
-  useEffect(() => {
-    const { pathname } = location;
+  // Apply route SEO + any overrides passed as props.
+  const hasProps = props && Object.keys(props).length > 0;
+  useSeo(hasProps ? props : undefined);
 
-    if (pathname === '/') {
-      // Home page
-      updatePageSEO({
-        title: seoConfig.pages.home.title,
-        description: seoConfig.pages.home.description,
-        url: seoConfig.siteUrl + '/',
-      });
-    } else if (pathname === '/thank-you') {
-      // Thank You page — noindex
-      updatePageSEO({
-        title: seoConfig.pages.thankYou.title,
-        description: seoConfig.pages.thankYou.description,
-        url: seoConfig.siteUrl + '/thank-you',
-        robots: 'noindex, nofollow',
-      });
-    } else if (pathname.startsWith('/admin')) {
-      // Admin pages — noindex
-      updatePageSEO({
-        title: seoConfig.pages.admin.title,
-        robots: 'noindex, nofollow',
-      });
-      // Remove public schemas from admin pages
-      removeSchema('schema-organization');
-      removeSchema('schema-faq');
-      removeSchema('schema-localbusiness');
-      removeSchema('schema-breadcrumb');
-      removeSchema('schema-webpage');
-    }
-  }, [location]);
-
-  // This component does not render anything visible
+  // Renders nothing visible.
   return null;
 };
 

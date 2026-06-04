@@ -1,0 +1,117 @@
+/* ============================================
+   NotFound (404) styles — Icon Commerce College
+   ============================================ */
+
+.notFound {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--gradient-navy, linear-gradient(135deg, #1a2a52 0%, #111d3a 100%));
+  color: #ffffff;
+  padding: clamp(120px, 16vw, 200px) 24px clamp(64px, 10vw, 120px);
+  min-height: 80vh;
+}
+
+.inner {
+  max-width: 640px;
+}
+
+.code {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: clamp(4rem, 16vw, 8rem);
+  line-height: 1;
+  margin: 0;
+  color: var(--color-accent, #c8a04d);
+  letter-spacing: 0.02em;
+}
+
+.title {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  margin: 8px 0 0;
+}
+
+.message {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.78);
+  margin: 16px auto 32px;
+  max-width: 520px;
+}
+
+.homeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border-radius: 10px;
+  background-color: var(--color-cta, #e0301e);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.homeBtn:hover {
+  transform: scale(1.02);
+  background-color: var(--color-cta-dark, #b91e10);
+}
+
+.homeBtnIcon {
+  font-size: 1.25rem;
+}
+
+.suggested {
+  margin-top: 40px;
+}
+
+.suggestedLabel {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-accent, #c8a04d);
+  margin: 0 0 16px;
+}
+
+.suggestedList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.suggestedLink {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.suggestedLink:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-accent, #c8a04d);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homeBtn,
+  .suggestedLink {
+    transition: none;
+  }
+}

@@ -5,7 +5,7 @@
 
 .thankYouPage {
   min-height: 100vh;
-  background: linear-gradient(180deg, #081F33 0%, #0C2D48 50%, #081F33 100%);
+  background: linear-gradient(180deg, #111d3a 0%, #1A2A52 50%, #111d3a 100%);
   position: relative;
   overflow: hidden;
   padding: 60px 0 80px;
@@ -158,7 +158,7 @@
 
 .noticeIcon svg {
   font-size: 26px;
-  color: #081F33;
+  color: #111d3a;
 }
 
 .noticeContent {
@@ -217,7 +217,7 @@
   justify-content: center;
   font-size: 0.875rem;
   font-weight: 700;
-  color: #081F33;
+  color: #111d3a;
 }
 
 .stepText {
@@ -408,7 +408,7 @@
   border: 2px solid #E0301E;
   border-radius: 50px;
   padding: 14px 28px;
-  color: #081F33 !important;
+  color: #111d3a !important;
   font-size: 0.9375rem;
   font-weight: 700;
   text-decoration: none;
@@ -419,7 +419,7 @@
 .backHomeBtn:hover {
   background: linear-gradient(135deg, #B71F12 0%, #E0301E 100%);
   border-color: #B71F12;
-  color: #081F33 !important;
+  color: #111d3a !important;
   box-shadow: 0 8px 22px rgba(224, 48, 30, 0.45);
 }
 

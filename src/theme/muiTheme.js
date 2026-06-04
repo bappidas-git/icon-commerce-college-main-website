@@ -1,32 +1,33 @@
 /* ============================================
    MUI Theme Configuration — Icon Commerce College
    Deep Navy + Gold brand system.
-   NOTE: the full Navy + Gold token migration lands
-   in prompt 02 (design-system-tokens); this file
-   keeps the existing palette for now.
+   Single source of truth: prompts/00-DESIGN-SYSTEM.md (§2–4).
+   Mirrors the tokens defined in src/styles/variables.css.
    ============================================ */
 
 import { createTheme, alpha } from '@mui/material/styles';
 
 // Color palette. Matches the tokens in src/styles/variables.css.
 const colors = {
+  // Deep Navy — structure, headings, primary surfaces.
   primary: {
-    main: '#0C2D48',
-    light: '#1A5276',
-    dark: '#081F33',
+    main: '#1A2A52',
+    light: '#2C3E6B',
+    dark: '#111d3a',
     contrastText: '#FFFFFF',
   },
+  // Gold — emphasis only (eyebrows, underlines, icon chips, dividers).
   secondary: {
-    main: '#D82618',
-    light: '#E8503D',
-    dark: '#A81B10',
-    contrastText: '#FFFFFF',
+    main: '#C8A04D',
+    light: '#D8B871',
+    dark: '#A8823A',
+    contrastText: '#1A2A52',
   },
-  // CTA red — primary CTA buttons only.
+  // Warm Red — the single primary CTA per view ("Apply Now"/"Enquire Now").
   accent: {
     main: '#E0301E',
     light: '#F0584A',
-    dark: '#B71F12',
+    dark: '#B91E10',
     contrastText: '#FFFFFF',
     50: '#FDEAE8',
     100: '#F9C7C2',
@@ -34,42 +35,58 @@ const colors = {
     300: '#ED7163',
     400: '#F0584A',
     500: '#E0301E',
-    600: '#B71F12',
+    600: '#B91E10',
     700: '#A52015',
     800: '#861910',
     900: '#66120B',
   },
-  // Legacy alias — many components still reference `palette.orange.*`.
-  // Mapped to amber so CTAs render correctly without sweeping renames.
+  // Legacy alias — components reference `palette.orange.*` for CTAs.
   orange: {
     main: '#E0301E',
     light: '#F0584A',
-    dark: '#B71F12',
+    dark: '#B91E10',
     50: '#FDEAE8',
     100: '#F9C7C2',
     200: '#F39C92',
     300: '#ED7163',
     400: '#F0584A',
     500: '#E0301E',
-    600: '#B71F12',
+    600: '#B91E10',
     700: '#A52015',
     800: '#861910',
     900: '#66120B',
   },
   navy: {
-    main: '#0C2D48',
-    light: '#1A5276',
-    dark: '#081F33',
-    50: '#EAEFF3',
-    100: '#CBD8E1',
-    200: '#9DB0BF',
-    300: '#6E8699',
-    400: '#3F6178',
-    500: '#1A5276',
-    600: '#143F5C',
-    700: '#0C2D48',
-    800: '#081F33',
-    900: '#05131F',
+    main: '#1A2A52',
+    light: '#2C3E6B',
+    dark: '#111d3a',
+    50: '#EAEEF6',
+    100: '#CBD3E5',
+    200: '#A6B2D0',
+    300: '#7E8DB6',
+    400: '#5E6F9D',
+    500: '#3E5184',
+    600: '#2C3E6B',
+    700: '#1A2A52',
+    800: '#111d3a',
+    900: '#0A1226',
+  },
+  // Gold scale — accents, dividers, badges.
+  gold: {
+    main: '#C8A04D',
+    light: '#D8B871',
+    dark: '#A8823A',
+    soft: '#F3E9D2',
+    50: '#FBF6EA',
+    100: '#F3E9D2',
+    200: '#E6D2A6',
+    300: '#D8B871',
+    400: '#CFAC5E',
+    500: '#C8A04D',
+    600: '#A8823A',
+    700: '#8A6A2F',
+    800: '#6C5325',
+    900: '#4E3C1B',
   },
   success: {
     main: '#1E8E5A',
@@ -80,63 +97,64 @@ const colors = {
   warning: {
     main: '#E0301E',
     light: '#F0584A',
-    dark: '#B71F12',
+    dark: '#B91E10',
     contrastText: '#FFFFFF',
   },
+  // CTA / error share the warm-red channel per the design system.
   error: {
-    main: '#D82618',
-    light: '#E8503D',
-    dark: '#A81B10',
+    main: '#E0301E',
+    light: '#F0584A',
+    dark: '#B91E10',
     contrastText: '#FFFFFF',
   },
   info: {
-    main: '#0C2D48',
-    light: '#1A5276',
-    dark: '#081F33',
+    main: '#2563EB',
+    light: '#5B86F0',
+    dark: '#1B4BC0',
     contrastText: '#FFFFFF',
   },
   grey: {
-    50: '#FAFAFA',
-    100: '#F8F9FA',
-    200: '#F5F7FA',
-    300: '#E8EDF2',
-    400: '#B0BEC5',
-    500: '#90A4AE',
-    600: '#78909C',
-    700: '#607D8B',
-    800: '#455A64',
-    900: '#263238',
+    50: '#FAFBFD',
+    100: '#F7F8FB',
+    200: '#EEF1F6',
+    300: '#E6E9F0',
+    400: '#B5BECD',
+    500: '#8E9BAD',
+    600: '#5B6678',
+    700: '#46505F',
+    800: '#2E3744',
+    900: '#14233D',
   },
   background: {
-    default: '#FFFFFF',
+    default: '#F7F8FB',
     paper: '#FFFFFF',
-    dark: '#0C2D48',
-    light: '#EAEFF3',
+    dark: '#1A2A52',
+    light: '#EAEEF6',
   },
   text: {
-    primary: '#11203A',
-    secondary: '#546E7A',
-    disabled: '#90A4AE',
-    dark: '#11203A',
+    primary: '#14233D',
+    secondary: '#5B6678',
+    disabled: '#8E9BAD',
+    dark: '#14233D',
     light: '#FFFFFF',
   },
   iconColors: {
-    gold: '#0C2D48',
+    gold: '#C8A04D',
     green: '#1E8E5A',
     purple: '#6B3FA0',
     orange: '#E0301E',
-    pink: '#D82618',
-    red: '#D82618',
-    teal: '#0C2D48',
-    blue: '#0C2D48',
+    pink: '#E0301E',
+    red: '#E0301E',
+    teal: '#1A2A52',
+    blue: '#1A2A52',
   },
   cardBg: {
-    yellow: '#FDEAE8',
+    yellow: '#F3E9D2',
     green: '#E5F5EC',
     pink: '#FCE4E8',
     purple: '#EFE7F7',
     orange: '#FCEEEB',
-    blue: '#EAEFF3',
+    blue: '#EAEEF6',
   },
 };
 
@@ -165,31 +183,31 @@ const typography = {
   h1: {
     fontFamily: "'Poppins', sans-serif",
     fontWeight: 700,
-    fontSize: 'clamp(2.5rem, 2rem + 2.5vw, 4.5rem)',
-    lineHeight: 1.1,
-    letterSpacing: '-0.025em',
+    fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+    lineHeight: 1.15,
+    letterSpacing: '-0.02em',
     color: colors.primary.main,
   },
   h2: {
     fontFamily: "'Poppins', sans-serif",
     fontWeight: 700,
-    fontSize: 'clamp(2rem, 1.5rem + 2.5vw, 3rem)',
-    lineHeight: 1.1,
-    letterSpacing: '-0.025em',
+    fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
+    lineHeight: 1.2,
+    letterSpacing: '-0.02em',
     color: colors.primary.main,
   },
   h3: {
     fontFamily: "'Poppins', sans-serif",
-    fontWeight: 700,
-    fontSize: 'clamp(1.75rem, 1.4rem + 1.75vw, 2.5rem)',
-    lineHeight: 1.2,
+    fontWeight: 600,
+    fontSize: 'clamp(1.25rem, 2vw, 1.6rem)',
+    lineHeight: 1.25,
     color: colors.primary.main,
   },
   h4: {
     fontFamily: "'Poppins', sans-serif",
-    fontWeight: 700,
-    fontSize: 'clamp(1.5rem, 1.25rem + 1.25vw, 2rem)',
-    lineHeight: 1.25,
+    fontWeight: 600,
+    fontSize: 'clamp(1.15rem, 1.5vw, 1.4rem)',
+    lineHeight: 1.3,
     color: colors.primary.main,
   },
   h5: {
@@ -224,7 +242,7 @@ const typography = {
     fontFamily: "'Inter', sans-serif",
     fontWeight: 400,
     fontSize: '1rem',
-    lineHeight: 1.625,
+    lineHeight: 1.7,
     color: colors.text.primary,
   },
   body2: {
@@ -249,29 +267,31 @@ const typography = {
     lineHeight: 1.5,
     color: colors.text.secondary,
   },
+  // Section "eyebrow" label — uppercase, gold, wide tracking (§3).
   overline: {
     fontFamily: "'Inter', sans-serif",
     fontWeight: 600,
-    fontSize: '0.75rem',
+    fontSize: '0.8rem',
     lineHeight: 1.5,
     textTransform: 'uppercase',
-    letterSpacing: '0.1em',
+    letterSpacing: '0.12em',
     color: colors.secondary.main,
   },
 };
 
-// Shadows configuration
+// Shadows configuration — design-system §4 scale on the low indices
+// (sm: 0 2px 8px / .06, md: 0 8px 30px / .10, lg: 0 20px 50px / .16).
 const shadows = [
   'none',
-  '0 1px 2px rgba(0, 0, 0, 0.05)',
-  '0 1px 3px rgba(0, 0, 0, 0.1)',
-  '0 4px 6px rgba(0, 0, 0, 0.05)',
-  '0 4px 8px rgba(0, 0, 0, 0.08)',
-  '0 4px 12px rgba(0, 0, 0, 0.08)',
-  '0 4px 20px rgba(0, 0, 0, 0.08)',
-  '0 8px 16px rgba(0, 0, 0, 0.1)',
-  '0 8px 24px rgba(0, 0, 0, 0.1)',
-  '0 8px 30px rgba(0, 0, 0, 0.12)',
+  '0 2px 8px rgba(20, 35, 61, 0.06)',
+  '0 2px 8px rgba(20, 35, 61, 0.06)',
+  '0 4px 16px rgba(20, 35, 61, 0.08)',
+  '0 8px 30px rgba(20, 35, 61, 0.10)',
+  '0 8px 30px rgba(20, 35, 61, 0.10)',
+  '0 12px 40px rgba(20, 35, 61, 0.12)',
+  '0 16px 44px rgba(20, 35, 61, 0.14)',
+  '0 20px 50px rgba(20, 35, 61, 0.16)',
+  '0 20px 50px rgba(20, 35, 61, 0.16)',
   '0 12px 40px rgba(0, 0, 0, 0.12)',
   '0 12px 48px rgba(0, 0, 0, 0.15)',
   '0 16px 56px rgba(0, 0, 0, 0.15)',
@@ -289,12 +309,14 @@ const shadows = [
   '0 40px 152px rgba(0, 0, 0, 0.28)',
 ];
 
-// Amber shadow for CTA buttons and highlights.
-// Legacy exports kept as `orangeShadow*` so existing imports keep working.
-const orangeShadow = '0 4px 14px rgba(224, 48, 30, 0.35)';
-const orangeShadowHover = '0 6px 20px rgba(224, 48, 30, 0.45)';
-const amberShadow = orangeShadow;
-const amberShadowHover = orangeShadowHover;
+// Warm-red glow for CTA buttons and highlights.
+// Legacy exports kept as `orangeShadow*`/`amberShadow*` so existing imports work.
+const ctaShadow = '0 4px 14px rgba(224, 48, 30, 0.35)';
+const ctaShadowHover = '0 6px 20px rgba(224, 48, 30, 0.45)';
+const orangeShadow = ctaShadow;
+const orangeShadowHover = ctaShadowHover;
+const amberShadow = ctaShadow;
+const amberShadowHover = ctaShadowHover;
 
 // Create theme
 const theme = createTheme({
@@ -312,6 +334,7 @@ const theme = createTheme({
     accent: colors.accent,
     orange: colors.orange,
     navy: colors.navy,
+    gold: colors.gold,
     iconColors: colors.iconColors,
     cardBg: colors.cardBg,
     divider: colors.grey[300],
@@ -328,7 +351,7 @@ const theme = createTheme({
   typography,
   shadows,
   shape: {
-    borderRadius: 8,
+    borderRadius: 10,
   },
   spacing: 8,
   transitions: {
@@ -380,7 +403,7 @@ const theme = createTheme({
         },
         '::selection': {
           backgroundColor: colors.primary.main,
-          color: colors.background.default,
+          color: '#FFFFFF',
         },
         '::-webkit-scrollbar': {
           width: 8,
@@ -406,14 +429,14 @@ const theme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: 10,
           padding: '12px 24px',
           fontWeight: 600,
           fontSize: '0.9375rem',
           textTransform: 'none',
           transition: 'all 0.25s ease',
           '&:focus-visible': {
-            outline: `2px solid ${colors.primary.main}`,
+            outline: `2px solid ${colors.gold.main}`,
             outlineOffset: 2,
           },
         },
@@ -424,25 +447,38 @@ const theme = createTheme({
             transform: 'translateY(-2px)',
           },
         },
-        // CTA button — amber gradient with dark text for contrast.
+        // Navy = structure. Primary buttons are Deep Navy.
         containedPrimary: {
-          background: `linear-gradient(135deg, ${colors.accent.main} 0%, ${colors.accent.light} 100%)`,
-          color: colors.accent.contrastText,
-          boxShadow: amberShadow,
+          backgroundColor: colors.primary.main,
+          color: colors.primary.contrastText,
           '&:hover': {
-            background: `linear-gradient(135deg, ${colors.accent.light} 0%, ${colors.accent.main} 100%)`,
-            boxShadow: amberShadowHover,
+            backgroundColor: colors.primary.light,
             transform: 'translateY(-2px)',
           },
           '&:active': {
             transform: 'translateY(0)',
           },
         },
+        // Gold = emphasis. Use sparingly.
         containedSecondary: {
-          backgroundColor: colors.primary.main,
-          color: colors.background.default,
+          backgroundColor: colors.secondary.main,
+          color: colors.secondary.contrastText,
           '&:hover': {
-            backgroundColor: colors.primary.light,
+            backgroundColor: colors.secondary.dark,
+          },
+        },
+        // Warm Red CTA — the single primary action per view ("Apply Now").
+        containedError: {
+          background: `linear-gradient(135deg, ${colors.accent.main} 0%, ${colors.accent.light} 100%)`,
+          color: colors.accent.contrastText,
+          boxShadow: ctaShadow,
+          '&:hover': {
+            background: `linear-gradient(135deg, ${colors.accent.light} 0%, ${colors.accent.main} 100%)`,
+            boxShadow: ctaShadowHover,
+            transform: 'translateY(-2px)',
+          },
+          '&:active': {
+            transform: 'translateY(0)',
           },
         },
         outlined: {
@@ -501,10 +537,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 16,
-          boxShadow: shadows[6],
+          boxShadow: shadows[1], // shadow-sm
           transition: 'all 0.3s ease',
           '&:hover': {
-            boxShadow: shadows[9],
+            boxShadow: shadows[4], // shadow-md on lift
             transform: 'translateY(-4px)',
           },
         },
@@ -1174,5 +1210,5 @@ const theme = createTheme({
 });
 
 // Export theme and colors for use in styled components
-export { colors, orangeShadow, orangeShadowHover, amberShadow, amberShadowHover };
+export { colors, ctaShadow, ctaShadowHover, orangeShadow, orangeShadowHover, amberShadow, amberShadowHover };
 export default theme;

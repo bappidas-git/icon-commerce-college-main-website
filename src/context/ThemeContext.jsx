@@ -50,7 +50,7 @@ export const ThemeProvider = ({ children }) => {
     if (metaThemeColor) {
       metaThemeColor.setAttribute(
         'content',
-        resolvedTheme === THEMES.DARK ? '#0C2D48' : '#FFFFFF'
+        resolvedTheme === THEMES.DARK ? '#1A2A52' : '#FFFFFF'
       );
     }
 

@@ -1,10 +1,12 @@
 /* ============================================
-   Global Styles - Landing Page Boilerplate
-   Franchise Landing Page
+   Global Styles — Icon Commerce College
+   Deep Navy + Gold base layer.
+   Fonts are primarily loaded via public/index.html;
+   this @import is a fallback for the same families.
    ============================================ */
 
 /* ========== CSS Reset & Base Styles ========== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 
 *,
 *::before,
@@ -28,9 +30,9 @@ body {
   font-family: var(--font-primary);
   font-size: var(--fs-base);
   font-weight: var(--fw-regular);
-  line-height: var(--lh-normal);
-  color: var(--text-dark-gray);
-  background-color: var(--white);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+  background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -92,15 +94,15 @@ p {
   line-height: var(--lh-relaxed);
 }
 
-/* ========== Links ========== */
+/* ========== Links (navy → gold hover) ========== */
 a {
-  color: var(--accent-gold);
+  color: var(--color-primary);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--accent-gold-light);
+  color: var(--color-accent);
 }
 
 a:focus-visible {
@@ -177,12 +179,12 @@ table {
 
 /* ========== Selection ========== */
 ::selection {
-  background-color: var(--accent-gold);
+  background-color: var(--color-primary);
   color: var(--white);
 }
 
 ::-moz-selection {
-  background-color: var(--accent-gold);
+  background-color: var(--color-primary);
   color: var(--white);
 }
 
@@ -562,6 +564,18 @@ table {
   transition: all var(--transition-slow);
 }
 
+/* ========== Section Eyebrow Label (§3) ========== */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-primary);
+  font-size: 0.8rem;
+  font-weight: var(--fw-semibold);
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+}
+
 /* ========== Gold Underline Decoration ========== */
 .gold-underline {
   position: relative;
@@ -620,7 +634,7 @@ table {
 
 .btn-primary {
   background: var(--accent-amber-gradient);
-  color: var(--color-text);
+  color: var(--white);
   box-shadow: var(--shadow-button);
 }
 
@@ -913,7 +927,7 @@ table {
 /* ========== High Contrast Mode ========== */
 @media (prefers-contrast: high) {
   :root {
-    --accent-gold: #0C2D48;
+    --accent-gold: #8A6A2F;
     --primary-dark: #000000;
     --border-gray: #000000;
   }

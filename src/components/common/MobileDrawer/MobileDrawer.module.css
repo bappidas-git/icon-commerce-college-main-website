@@ -73,7 +73,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0C2D48 0%, #1A5276 100%);
+  background: linear-gradient(135deg, #1A2A52 0%, #2C3E6B 100%);
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(12, 45, 72, 0.3);
 }
@@ -297,12 +297,12 @@
 
 .unifiedActionCall {
   background: rgba(12, 45, 72, 0.1);
-  color: #0C2D48;
+  color: #1A2A52;
   border-color: rgba(12, 45, 72, 0.25);
 }
 
 .unifiedActionCall:active {
-  background: #0C2D48;
+  background: #1A2A52;
   color: #fff;
   transform: scale(0.98);
 }

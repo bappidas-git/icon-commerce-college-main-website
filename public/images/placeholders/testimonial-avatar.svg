@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-label="testimonial-avatar.jpg placeholder image (400×400)">
+  <defs>
+    <linearGradient id="g-testimonial-avatar-jpg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A2A52"/>
+      <stop offset="1" stop-color="#111d3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#g-testimonial-avatar-jpg)"/>
+  <rect x="10" y="10" width="380" height="380" fill="none" stroke="#C8A04D" stroke-width="2" rx="12"/>
+  <circle cx="200" cy="136" r="44" fill="none" stroke="#C8A04D" stroke-width="2"/>
+  <text x="200" y="152.72" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="700" font-size="42" fill="#C8A04D">IC</text>
+  <text x="200" y="248" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="20" fill="#FFFFFF">testimonial-avatar.jpg</text>
+  <text x="200" y="280" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-weight="400" font-size="14" letter-spacing="1" fill="#C8A04D">400 × 400</text>
+</svg>

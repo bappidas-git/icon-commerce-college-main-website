@@ -1,141 +1,55 @@
-# CIT — Direct B.E. Engineering Admissions 2026
+# Icon Commerce College — Website & Admin
 
-A high-converting, mobile-first landing page for **Channabasaveshwara Institute of Technology (CIT), Tumakuru**, built to capture quality leads for **Direct B.E. (Engineering) Admissions — 2026 intake**. Targeted at students and parents across North East India and run by **Assam Digital** through Google Ads and Meta. Built with React 18, Material UI v5, and Framer Motion.
+The official, mobile-first **multi-page website** and **admin panel** for
+**Icon Commerce College, Guwahati** (আইকন কমাৰ্চ কলেজ) — a Commerce, Arts &
+Computer Application college established in 2004 and affiliated to **Gauhati
+University** (NEP 2020 / FYUGP). The site presents the college (programs,
+departments, faculty, facilities, admissions) and captures admission enquiries,
+with an admin panel for managing leads, notices and events. Built with React 18,
+Material UI v5, and Framer Motion.
 
-## Features
-
-### Landing Page
-- Responsive, mobile-first design with bottom navigation
-- Animated sections with scroll-triggered transitions (Framer Motion)
-- Lead capture forms with validation and duplicate prevention
-- Multiple form entry points (hero, contact, drawer, secondary CTA)
-- SweetAlert2 success/error modals
-- Thank You page with confetti animation
-- Legal modals (Privacy Policy, Terms, Disclaimer)
-- PWA-ready with manifest and service worker
-
-### Admin Panel (`/admin`)
-- Secure login with environment-variable credentials
-- Dashboard with lead analytics and charts
-- Lead Management System (LMS) with search, filter, sort, pagination
-- Lead status tracking (New, Contacted, Qualified, Converted, Lost)
-- Per-lead notes and activity log
-- CSV export for offline use
-- Google Ads offline conversion import format
-
-### Tracking & Analytics
-- Google Tag Manager integration with dataLayer events
-- Google Ads conversion tracking (browser-side + offline import)
-- Meta Pixel + Conversions API (CAPI) for server-side tracking
-- Google Consent Mode v2 support
-- Enhanced conversions support
-- GCLID capture and persistence
-- Event deduplication (browser + server)
-
-### SEO
-- JSON-LD structured data (Organization, LocalBusiness, FAQPage, BreadcrumbList, WebPage)
-- Dynamic SEO head management via `SEOHead` component
-- Open Graph and Twitter Card meta tags
-- Canonical URLs, robots.txt, sitemap.xml
-- Configurable via `src/config/seo.js`
+> **This repository is mid-rebuild.** It started from a single-page landing-page
+> boilerplate and is being transformed into the full Icon Commerce College site
+> following the sequenced plan in [`prompts/`](prompts/). Read
+> [`prompts/00-DESIGN-SYSTEM.md`](prompts/00-DESIGN-SYSTEM.md) first — it is the
+> single source of truth for design tokens, content data, the site map and
+> conventions. Comprehensive docs are regenerated in a later phase (prompt 39).
 
 ## Tech Stack
 
-- React 18 (concurrent features, lazy loading)
-- Material UI v5
-- Framer Motion
+- React 18 (concurrent features, route-level lazy loading)
+- Material UI v5 · Framer Motion
 - CSS Modules + CSS Custom Properties
-- React Router v6
-- Swiper (mobile carousels)
-- SweetAlert2
-- Iconify (MDI icons)
+- React Router · Iconify (MDI icons) · SweetAlert2
 - Web Vitals monitoring
 
 ## Quick Start
 
 ```bash
-# Install dependencies
 npm install
-
-# Copy environment template
-cp .env.example .env
-
-# Start development server
-npm start
-
-# Build for production
-npm run build
+cp .env.example .env   # then fill in the values
+npm start              # dev server
+npm run build          # production build
 ```
 
-Admin credentials: `citadmin` / `cit@admissions2026` (configured in `.env`).
+Default admin credentials are configured in `.env`
+(`REACT_APP_ADMIN_USERNAME` / `REACT_APP_ADMIN_PASSWORD`).
 
-## Folder Structure
+## Lead / Notices / Events Storage
 
-```
-├── public/
-│   ├── api/                # Server-side endpoints (CAPI, conversions)
-│   ├── index.html          # HTML template with SEO meta, JSON-LD schemas
-│   ├── manifest.json       # PWA manifest
-│   ├── robots.txt          # Search engine directives
-│   └── sitemap.xml         # Sitemap template
-├── src/
-│   ├── admin/
-│   │   ├── components/     # AdminLayout, AdminLogin, Sidebar, Topbar
-│   │   ├── context/        # AdminAuthContext
-│   │   ├── pages/          # Dashboard, LeadManagement
-│   │   └── utils/          # adminAuth, leadService, googleAdsExport
-│   ├── components/
-│   │   ├── common/         # Header, Footer, LeadForm, MobileNav, SEO, etc.
-│   │   └── sections/       # Hero, About, Services, Features, CTA, etc.
-│   ├── config/             # SEO configuration
-│   ├── context/            # ModalContext, ThemeContext
-│   ├── data/               # Content data files (edit these first!)
-│   ├── hooks/              # useGTMTracking, useInView, useMediaQuery, etc.
-│   ├── pages/              # ThankYou page
-│   ├── styles/             # Global CSS, variables, animations, responsive
-│   ├── theme/              # MUI theme configuration
-│   └── utils/              # Webhook, GTM, Meta, Google Ads, validators, etc.
-├── .env.example            # Environment variables template
-├── CHANGELOG.md            # What changed from the original codebase
-├── CLAUDE.md               # AI assistant instructions
-├── CUSTOMIZATION_GUIDE.md  # Step-by-step setup for a new landing page
-├── GTM_GUIDE.md            # Google Tag Manager setup guide
-└── SEO_GUIDE.md            # SEO configuration guide
-```
-
-## Customization
-
-See **[CUSTOMIZATION_GUIDE.md](CUSTOMIZATION_GUIDE.md)** for a complete step-by-step walkthrough.
-
-### Quick Summary
-
-1. **Environment** — Copy `.env.example` to `.env`, fill in your business details
-2. **Content** — Edit data files in `src/data/` and section text in `src/components/sections/`
-3. **Branding** — Update colors in `src/styles/variables.css` and `src/theme/muiTheme.js`
-4. **Images** — Replace `placehold.co` URLs with your actual images
-5. **SEO** — Update meta tags and schemas in `public/index.html` and `src/config/seo.js`
-6. **Lead Storage** — Copy `public/api/config.example.php` → `config.php`, set `ADMIN_API_KEY`, and set the matching `REACT_APP_LEADS_ADMIN_KEY` in `.env`. Leads POST to `/api/leads.php` (the shared server store) — the single source of truth that keeps every device in sync
-7. **Analytics** — Set up your GTM container (see [GTM_GUIDE.md](GTM_GUIDE.md)); add your Meta Pixel ID / Google Ads ID in `.env` when ready
-8. **Deploy** — Run `npm run build` and deploy the `build/` folder
-
-## Routes
-
-| Route | Description |
-|-------|-------------|
-| `/` | Landing page with all sections |
-| `/thank-you` | Post-submission thank you page (requires session flag) |
-| `/admin` | Redirects to `/admin/login` |
-| `/admin/login` | Admin authentication |
-| `/admin/dashboard` | Lead analytics dashboard |
-| `/admin/lms` | Lead Management System |
+Leads POST to `/api/leads.php` — a shared server-side JSON store that is the
+**single source of truth**, so every admin device sees the same data. Copy
+`public/api/config.example.php` → `config.php`, set `ADMIN_API_KEY`, and set the
+matching `REACT_APP_LEADS_ADMIN_KEY` in `.env`. Notices and Events reuse this
+exact pattern (`notices.php` / `events.php`), added in a later phase.
 
 ## Documentation
 
-- **[CUSTOMIZATION_GUIDE.md](CUSTOMIZATION_GUIDE.md)** — Quick-start guide for creating a new landing page
-- **[GTM_GUIDE.md](GTM_GUIDE.md)** — Google Tag Manager setup and dataLayer events
-- **[SEO_GUIDE.md](SEO_GUIDE.md)** — SEO configuration and schema setup
-- **[CHANGELOG.md](CHANGELOG.md)** — Detailed changelog
+- [`prompts/00-DESIGN-SYSTEM.md`](prompts/00-DESIGN-SYSTEM.md) — single source of truth
+- [`prompts/README.md`](prompts/README.md) — the phased rebuild plan
+- [`CHANGELOG.md`](CHANGELOG.md) — detailed changelog
+- [`GTM_GUIDE.md`](GTM_GUIDE.md) — optional Google Tag Manager setup
 
 ## License
 
-MIT
+UNLICENSED — © Icon Commerce College.

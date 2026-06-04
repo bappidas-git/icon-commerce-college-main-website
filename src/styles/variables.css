@@ -1,32 +1,32 @@
 /* ============================================
-   CSS Variables — CIT Brand System
-   Channabasaveshwara Institute of Technology
-   Direct B.E. Engineering Admissions 2026
+   CSS Variables — Brand System
+   Icon Commerce College
+   NOTE: full Navy + Gold token migration lands in prompt 02
    ============================================ */
 
 :root {
-  /* ========== CIT Brand Tokens (master palette) ==========
+  /* ========== Brand Tokens (master palette) ==========
      Source of truth — use these names in new code. */
-  --color-primary: #0C2D48;        /* Deep CIT navy (official cittumkur.org) */
+  --color-primary: #0C2D48;        /* Deep navy (migrated to #1A2A52 in prompt 02) */
   --color-primary-dark: #081F33;   /* Darker navy — gradients, hovers */
-  --color-secondary: #D82618;      /* CIT red (official cittumkur.org) — accents, labels, badges */
-  --color-accent: #E0301E;         /* CIT CTA red — primary CTA buttons only */
+  --color-secondary: #D82618;      /* red — accents, labels, badges */
+  --color-accent: #E0301E;         /* CTA red — primary CTA buttons only */
   --color-accent-dark: #B71F12;    /* CTA hover */
   --color-success: #1E8E5A;        /* Placement/positive highlights */
   --color-tint: #EAEFF3;           /* Light slate card/section backgrounds */
   --color-text: #11203A;           /* Body text on light */
   --color-white: #FFFFFF;
 
-  /* ========== Primary Colors (legacy names → CIT navy) ========== */
+  /* ========== Primary Colors (legacy names → navy) ========== */
   --primary-dark: #0C2D48;
   --primary-dark-alt: #081F33;
   --primary-dark-light: #1A5276;
   --primary-dark-lighter: #7390A6;
 
-  /* ========== Accent Colors — remapped to CIT navy ==========
+  /* ========== Accent Colors — remapped to navy ==========
      The boilerplate used `--accent-gold` for structural accents.
-     We map them all to CIT navy so existing CSS references stay valid
-     and the page reads as navy, matching the official site. */
+     We map them all to navy so existing CSS references stay valid;
+     these are migrated to the Navy + Gold system in prompt 02. */
   --accent-gold: #0C2D48;
   --accent-gold-light: #1A5276;
   --accent-gold-dark: #081F33;
@@ -42,13 +42,13 @@
   --accent-orange-gradient: linear-gradient(135deg, #E0301E 0%, #F0584A 100%);
   --accent-orange-gradient-reverse: linear-gradient(135deg, #F0584A 0%, #E0301E 100%);
 
-  /* CIT-named CTA aliases (preferred for new code) */
+  /* CTA aliases (preferred for new code) */
   --accent-amber: #E0301E;
   --accent-amber-light: #F0584A;
   --accent-amber-dark: #B71F12;
   --accent-amber-gradient: linear-gradient(135deg, #E0301E 0%, #F0584A 100%);
 
-  /* ========== Secondary Red (CIT) ========== */
+  /* ========== Secondary Red ========== */
   --accent-red: #D82618;
   --accent-red-light: #E8503D;
   --accent-red-dark: #A81B10;
@@ -266,7 +266,7 @@
   --blur-xl: 24px;
 }
 
-/* ========== Admin Panel Colors (Assam Digital) ========== */
+/* ========== Admin Panel Colors ========== */
 :root {
   --admin-primary: #0C2D48;
   --admin-primary-light: #1A5276;

@@ -54,7 +54,6 @@ import {
   onLeadsChanged,
 } from "../utils/leadService";
 import { STATUS_OPTIONS, getStatusConfig } from "../utils/leadStatus";
-import { exportGoogleAdsCSV } from "../utils/googleAdsExport";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import styles from "./LeadManagement.module.css";
 
@@ -354,24 +353,6 @@ const LeadManagement = () => {
     showSnackbar(`Exported ${dataToExport.length} leads`);
   };
 
-  const handleGoogleAdsExport = () => {
-    const allLeads = getLeads({});
-    const result = exportGoogleAdsCSV(allLeads);
-    if (result.exported === 0) {
-      showSnackbar(
-        result.skipped > 0
-          ? `No leads with GCLID to export (${result.skipped} converted leads have no GCLID)`
-          : "No converted leads found for Google Ads export",
-        "warning",
-      );
-    } else {
-      showSnackbar(
-        `Exported ${result.exported} conversions for Google Ads${result.skipped > 0 ? ` (${result.skipped} skipped — no GCLID)` : ""}`,
-        "success",
-      );
-    }
-  };
-
   const handleImport = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -414,7 +395,7 @@ const LeadManagement = () => {
         <div>
           <h1 className={styles.pageTitle}>Admission Leads</h1>
           <p className={styles.pageSubtitle}>
-            View and manage all 2026 B.E. admission leads in one place.
+            View and manage all admission leads in one place.
           </p>
         </div>
         <div className={styles.headerActions}>
@@ -484,19 +465,6 @@ const LeadManagement = () => {
           >
             Export CSV
           </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<Icon icon="mdi:google-ads" />}
-            onClick={handleGoogleAdsExport}
-            sx={{
-              textTransform: "none",
-              borderColor: "var(--admin-accent)",
-              color: "var(--admin-accent)",
-            }}
-          >
-            Export for Google Ads
-          </Button>
         </div>
         {/* Mobile more menu */}
         <IconButton
@@ -544,15 +512,6 @@ const LeadManagement = () => {
           >
             <Icon icon="mdi:download" width={18} style={{ marginRight: 8 }} />{" "}
             Export CSV
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleGoogleAdsExport();
-              setMoreMenuAnchor(null);
-            }}
-          >
-            <Icon icon="mdi:google-ads" width={18} style={{ marginRight: 8 }} />{" "}
-            Export for Google Ads
           </MenuItem>
         </Menu>
       </div>

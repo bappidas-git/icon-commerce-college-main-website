@@ -15,19 +15,17 @@ import {
 import { useModal } from "../../../context/ModalContext";
 import styles from "./Header.module.css";
 
-const logoUrl =
-  "https://res.cloudinary.com/dn9gyaiik/image/upload/v1779669113/logo-cit_ykpxvd.png";
+const logoUrl = "/images/placeholders/logo-icon-commerce.svg";
 
-const PRIMARY_PHONE = "+918069645014";
-const PRIMARY_PHONE_DISPLAY = "+91 8069645014";
+const PRIMARY_PHONE = "+919365375782";
+const PRIMARY_PHONE_DISPLAY = "+91 93653 75782";
 
-// Navigation items — admission-focused anchors. Section IDs are set
-// alongside each section component (about / courses / placements / campus / contact).
+// Navigation items. NOTE: the real multi-page navigation is built in prompt 05;
+// these anchors are placeholders for the Phase-0 foundation state.
 const navItems = [
   { label: "About", href: "#about" },
   { label: "Courses", href: "#courses" },
-  { label: "Placements", href: "#placements" },
-  { label: "Campus", href: "#campus" },
+  { label: "Facilities", href: "#facilities" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -180,12 +178,12 @@ const Header = ({ forceCloseMenu = false }) => {
             href="#home"
             onClick={(e) => scrollToSection(e, "#home")}
             className={styles.logoLink}
-            aria-label="CIT home — scroll to top"
+            aria-label="Icon Commerce College home — scroll to top"
           >
             <div className={styles.logoWrapper}>
               <img
                 src={logoUrl}
-                alt="CIT — Channabasaveshwara Institute of Technology"
+                alt="Icon Commerce College"
                 className={styles.mainLogo}
                 style={{
                   height: "40px",
@@ -195,9 +193,9 @@ const Header = ({ forceCloseMenu = false }) => {
               {!isMobile && (
                 <span
                   className={styles.accreditationStrip}
-                  aria-label="Accreditations: NAAC, AICTE, VTU"
+                  aria-label="Affiliated to Gauhati University"
                 >
-                  NAAC • AICTE • VTU
+                  Affiliated to Gauhati University
                 </span>
               )}
             </div>
@@ -247,7 +245,7 @@ const Header = ({ forceCloseMenu = false }) => {
                   onClick={() =>
                     trackPhoneClick(PRIMARY_PHONE, "header_desktop")
                   }
-                  aria-label={`Call CIT admissions on ${PRIMARY_PHONE_DISPLAY}`}
+                  aria-label={`Call Icon Commerce College on ${PRIMARY_PHONE_DISPLAY}`}
                 >
                   <Icon icon="mdi:phone" className={styles.callButtonIcon} />
                   {PRIMARY_PHONE_DISPLAY}
@@ -260,7 +258,7 @@ const Header = ({ forceCloseMenu = false }) => {
                 transition={{ delay: 0.55, duration: 0.3 }}
                 onClick={() => handleApplyClick("desktop")}
                 className={styles.applyButton}
-                aria-label="Apply for 2026 B.E. admission"
+                aria-label="Enquire about admission"
               >
                 <Icon icon="mdi:school-outline" className={styles.applyButtonIcon} />
                 Apply Now
@@ -327,7 +325,7 @@ const Header = ({ forceCloseMenu = false }) => {
                   type="button"
                   onClick={() => handleApplyClick("mobile_menu")}
                   className={styles.mobileApplyButton}
-                  aria-label="Apply for 2026 B.E. admission"
+                  aria-label="Enquire about admission"
                 >
                   <Icon
                     icon="mdi:school-outline"
@@ -360,8 +358,7 @@ const getNavIcon = (label) => {
   const icons = {
     About: "mdi:information-outline",
     Courses: "mdi:book-open-variant",
-    Placements: "mdi:briefcase-check-outline",
-    Campus: "mdi:school-outline",
+    Facilities: "mdi:office-building-outline",
     Contact: "mdi:phone-outline",
   };
   return icons[label] || "mdi:circle-outline";

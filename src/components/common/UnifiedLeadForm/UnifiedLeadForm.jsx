@@ -6,7 +6,8 @@
    - Consent text
    - Redirect to Thank You page
    - Customizable title, subtitle, and phone CTA
-   CIT — Direct B.E. Engineering Admissions 2026
+   Icon Commerce College — admission enquiry form
+   (Restructured into college fields in prompt 08.)
    ============================================ */
 
 import React, { useState, useCallback, useRef } from "react";
@@ -29,11 +30,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { showSuccess, showError, showInfo } from "../../../utils/swalHelper";
 import { trackFormSubmission } from "../../../utils/gtm";
-import { trackLead as trackMetaLead } from "../../../utils/metaPixel";
-import { sendLeadEvent } from "../../../utils/metaCAPI";
-import { generateEventId } from "../../../utils/eventDedup";
-import { trackFormSubmission as trackGoogleAdsFormSubmission } from "../../../utils/googleAds";
-import { sendEnhancedConversionData } from "../../../utils/enhancedConversions";
 import Button from "../Button/Button";
 import {
   getMobileErrorMessage,
@@ -42,21 +38,18 @@ import {
 } from "../../../utils/validators";
 import styles from "./UnifiedLeadForm.module.css";
 
-// Course options for CIT B.E. (Engineering) admissions 2026.
+// Program options for Icon Commerce College admissions.
 // NOTE: stored under `service_interest` in form state / webhook payload to
-// preserve the existing admin + webhook plumbing — the value is the course.
+// preserve the existing admin + webhook plumbing — the value is the program.
 const COURSE_OPTIONS = [
-  "B.E. — Artificial Intelligence & Data Science",
-  "B.E. — Computer Science & Engineering",
-  "B.E. — Information Science & Engineering",
-  "B.E. — Electronics & Communication Engineering",
-  "B.E. — Electrical & Electronics Engineering",
-  "B.E. — Mechanical Engineering",
-  "B.E. — Civil Engineering",
+  "B.Com. (Bachelor of Commerce)",
+  "BBA (Bachelor of Business Administration)",
+  "BCA (Bachelor of Computer Applications)",
+  "B.A. (Bachelor of Arts)",
   "Not Sure — Need Guidance",
 ];
 
-// North-East India state options (the campaign's target geography).
+// State options (Assam + North-East India + Other).
 const STATE_OPTIONS = [
   "Assam",
   "Arunachal Pradesh",
@@ -93,276 +86,83 @@ const initialErrorState = {
 const PrivacyPolicyContent = () => (
   <div style={{ padding: "0 8px" }}>
     <section style={{ marginBottom: "24px" }}>
-      <h3
-        style={{
-          fontSize: "16px",
-          fontWeight: 600,
-          marginBottom: "12px",
-          color: "#0C2D48",
-        }}
-      >
+      <h3 style={{ fontSize: "16px", fontWeight: 600, marginBottom: "12px", color: "#1A2A52" }}>
         Introduction
       </h3>
       <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151" }}>
-        Channabasaveshwara Institute of Technology (CIT), Tumakuru, together
-        with Assam Digital, the marketing partner running this 2026 B.E.
-        admissions campaign ("we," "our," or "us"), respects your privacy and is
-        committed to protecting the information you share with us. This Privacy
-        Policy explains how we collect, use, and safeguard your information
-        when you submit an admission enquiry through this landing page.
+        Icon Commerce College, Guwahati ("we," "our," or "us") respects your
+        privacy and is committed to protecting the information you share with us
+        when you submit an admission enquiry through this website.
       </p>
     </section>
 
     <section style={{ marginBottom: "24px" }}>
-      <h3
-        style={{
-          fontSize: "16px",
-          fontWeight: 600,
-          marginBottom: "12px",
-          color: "#0C2D48",
-        }}
-      >
+      <h3 style={{ fontSize: "16px", fontWeight: 600, marginBottom: "12px", color: "#1A2A52" }}>
         Information We Collect
       </h3>
-      <p
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          marginBottom: "8px",
-        }}
-      >
-        Through the enquiry form on this page we collect:
-      </p>
-      <ul
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          paddingLeft: "20px",
-          margin: 0,
-        }}
-      >
+      <ul style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151", paddingLeft: "20px", margin: 0 }}>
         <li style={{ marginBottom: "6px" }}>
-          <strong>Contact details:</strong> your full name, mobile number, and
-          email address.
+          <strong>Contact details:</strong> your full name, mobile number, and email address.
         </li>
         <li style={{ marginBottom: "6px" }}>
-          <strong>Admission preferences:</strong> the B.E. course you are
-          interested in and the state you are applying from.
-        </li>
-        <li style={{ marginBottom: "6px" }}>
-          <strong>Optional message:</strong> any question you choose to add
-          about admission, hostel, or fees.
+          <strong>Admission preferences:</strong> the program you are interested in and the state you are applying from.
         </li>
         <li>
-          <strong>Usage & device data:</strong> standard analytics information
-          (IP address, browser, pages visited) used to improve the site and
-          measure campaign performance.
+          <strong>Optional message:</strong> any question you choose to add about admission, courses, or fees.
         </li>
       </ul>
     </section>
 
     <section style={{ marginBottom: "24px" }}>
-      <h3
-        style={{
-          fontSize: "16px",
-          fontWeight: 600,
-          marginBottom: "12px",
-          color: "#0C2D48",
-        }}
-      >
+      <h3 style={{ fontSize: "16px", fontWeight: 600, marginBottom: "12px", color: "#1A2A52" }}>
         How We Use Your Information
       </h3>
-      <p
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          marginBottom: "8px",
-        }}
-      >
-        We use the information you submit to:
-      </p>
-      <ul
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          paddingLeft: "20px",
-          margin: 0,
-        }}
-      >
-        <li style={{ marginBottom: "6px" }}>
-          Provide personalised guidance on CIT's 2026 B.E. direct-admission
-          process.
-        </li>
-        <li style={{ marginBottom: "6px" }}>
-          Contact you by phone, WhatsApp, SMS, or email about your enquiry.
-        </li>
-        <li style={{ marginBottom: "6px" }}>
-          Share course, fee, hostel, and placement details relevant to your
-          enquiry.
-        </li>
-        <li>
-          Improve our website, content, and ad campaigns based on aggregated
-          usage data.
-        </li>
+      <ul style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151", paddingLeft: "20px", margin: 0 }}>
+        <li style={{ marginBottom: "6px" }}>Provide guidance on Icon Commerce College's admission process.</li>
+        <li style={{ marginBottom: "6px" }}>Contact you by phone, WhatsApp or email about your enquiry.</li>
+        <li>Share course, fee and facility details relevant to your enquiry.</li>
       </ul>
     </section>
 
     <section style={{ marginBottom: "24px" }}>
-      <h3
-        style={{
-          fontSize: "16px",
-          fontWeight: 600,
-          marginBottom: "12px",
-          color: "#0C2D48",
-        }}
-      >
+      <h3 style={{ fontSize: "16px", fontWeight: 600, marginBottom: "12px", color: "#1A2A52" }}>
         Information Sharing
       </h3>
-      <p
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          marginBottom: "8px",
-        }}
-      >
-        Your enquiry is shared with:
-      </p>
-      <ul
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          paddingLeft: "20px",
-          margin: 0,
-        }}
-      >
-        <li style={{ marginBottom: "6px" }}>
-          <strong>CIT admission office, Tumakuru:</strong> so the admission
-          team can follow up with you.
-        </li>
-        <li style={{ marginBottom: "6px" }}>
-          <strong>Assam Digital:</strong> the marketing partner managing this
-          campaign and the North-East admission desk.
-        </li>
-        <li>
-          <strong>Service providers:</strong> trusted vendors that help us host
-          the website, send communications, and measure campaign performance.
-        </li>
-      </ul>
-      <p
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          marginTop: "8px",
-        }}
-      >
+      <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151" }}>
+        Your enquiry is used only by the college's admission office to assist you.
         We do not sell your personal information to third parties.
       </p>
     </section>
 
     <section style={{ marginBottom: "24px" }}>
-      <h3
-        style={{
-          fontSize: "16px",
-          fontWeight: 600,
-          marginBottom: "12px",
-          color: "#0C2D48",
-        }}
-      >
-        Data Security
-      </h3>
-      <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151" }}>
-        We use reasonable technical and organisational measures to protect your
-        information against unauthorised access, alteration, or disclosure. No
-        method of internet transmission is fully secure, so we cannot guarantee
-        absolute security.
-      </p>
-    </section>
-
-    <section style={{ marginBottom: "24px" }}>
-      <h3
-        style={{
-          fontSize: "16px",
-          fontWeight: 600,
-          marginBottom: "12px",
-          color: "#0C2D48",
-        }}
-      >
+      <h3 style={{ fontSize: "16px", fontWeight: 600, marginBottom: "12px", color: "#1A2A52" }}>
         Your Rights
       </h3>
-      <p
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          marginBottom: "8px",
-        }}
-      >
-        You can, at any time:
-      </p>
-      <ul
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          paddingLeft: "20px",
-          margin: 0,
-        }}
-      >
-        <li style={{ marginBottom: "6px" }}>
-          Request a copy of the data we hold about you.
-        </li>
-        <li style={{ marginBottom: "6px" }}>
-          Ask us to correct inaccurate information.
-        </li>
-        <li style={{ marginBottom: "6px" }}>
-          Ask us to delete your enquiry data (subject to any legal obligations).
-        </li>
-        <li>
-          Opt out of further admission communication from CIT or Assam Digital.
-        </li>
+      <ul style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151", paddingLeft: "20px", margin: 0 }}>
+        <li style={{ marginBottom: "6px" }}>Request a copy of the data we hold about you.</li>
+        <li style={{ marginBottom: "6px" }}>Ask us to correct inaccurate information.</li>
+        <li>Ask us to delete your enquiry data (subject to any legal obligations).</li>
       </ul>
     </section>
 
     <section style={{ marginBottom: "24px" }}>
-      <h3
-        style={{
-          fontSize: "16px",
-          fontWeight: 600,
-          marginBottom: "12px",
-          color: "#0C2D48",
-        }}
-      >
+      <h3 style={{ fontSize: "16px", fontWeight: 600, marginBottom: "12px", color: "#1A2A52" }}>
         Contact Us
       </h3>
       <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151" }}>
-        For any privacy questions or to exercise your rights, please contact
-        the CIT admission office:
+        For any privacy questions or to exercise your rights, please contact the college office:
       </p>
-      <p
-        style={{
-          fontSize: "14px",
-          lineHeight: 1.6,
-          color: "#374151",
-          marginTop: "8px",
-        }}
-      >
-        <strong>Channabasaveshwara Institute of Technology (CIT)</strong>
+      <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151", marginTop: "8px" }}>
+        <strong>Icon Commerce College</strong>
         <br />
-        NH 206, B.H. Road, Gubbi, Tumakuru – 572 216, Karnataka
+        Rajgarh Road, Near Byelane No-3, Chandmari, Guwahati, Assam – 781003
         <br />
-        Phone: +91 8069645014
+        Phone: +91 93653 75782 · Email: iconcom.2004@gmail.com
       </p>
     </section>
 
     <p style={{ fontSize: "12px", color: "#6B7280", fontStyle: "italic" }}>
-      Last Updated: January 2026
+      Last Updated: June 2026
     </p>
   </div>
 );
@@ -475,8 +275,8 @@ const getHeaderDefaults = (source) => {
   switch (source) {
     case "hero":
       return {
-        title: "Apply for Direct B.E. Admission 2026",
-        subtitle: "Get personal guidance from CIT's admission team",
+        title: "Enquire About Admission",
+        subtitle: "Get personal guidance from our admission team",
       };
     case "contact":
       return {
@@ -485,7 +285,7 @@ const getHeaderDefaults = (source) => {
       };
     default:
       return {
-        title: "Enquire About 2026 Admission",
+        title: "Enquire About Admission",
         subtitle: "Fill the form — we'll guide you",
       };
   }
@@ -496,7 +296,7 @@ const UnifiedLeadForm = ({
   source = "default",
   title: titleProp,
   subtitle: subtitleProp,
-  submitButtonText = "Apply for 2026 Admission",
+  submitButtonText = "Enquire Now",
   showTitle = true,
   showSubtitle = true,
   showCourseFields = true,
@@ -659,7 +459,7 @@ const UnifiedLeadForm = ({
 
     try {
       // Prepare lead data
-      // `service_interest` holds the selected B.E. course (legacy key kept
+      // `service_interest` holds the selected program (legacy key kept
       // for admin panel compatibility — see COURSE_OPTIONS above).
       const leadData = {
         name: formData.name.trim(),
@@ -686,41 +486,9 @@ const UnifiedLeadForm = ({
 
       if (result.success) {
         // Push lead form submission + generate_lead conversion events to GTM
+        // (no-ops cleanly when analytics is disabled).
         trackFormSubmission(formId || 'general', {
           serviceInterest: formData.service_interest,
-        });
-
-        // Meta Pixel + CAPI dual tracking with shared event_id for deduplication
-        const metaEventId = generateEventId();
-
-        // 1. Fire browser-side Meta Pixel Lead event (no PII)
-        trackMetaLead({
-          event_id: metaEventId,
-          content_name: formId || 'lead_form',
-          content_category: 'lead_generation',
-        });
-
-        // 2. Send server-side CAPI Lead event with hashed PII (non-blocking)
-        sendLeadEvent({
-          name: formData.name,
-          email: formData.email,
-          mobile: formData.mobile,
-          event_id: metaEventId,
-          source: formId || 'general',
-        }).catch((err) => {
-          console.error('[MetaCAPI] Lead event failed:', err);
-        });
-
-        // 3. Fire Google Ads conversion event
-        trackGoogleAdsFormSubmission(formId || 'general');
-
-        // 4. Send enhanced conversion data (hashed PII) for Google Ads
-        sendEnhancedConversionData(
-          formData.email,
-          formData.mobile,
-          formData.name
-        ).catch((err) => {
-          console.error('[EnhancedConversions] Failed:', err);
         });
 
         // Set lead submitted flag for thank you page access
@@ -730,7 +498,7 @@ const UnifiedLeadForm = ({
         // Show success alert ON TOP of drawer
         await showSuccess(
           'Thank You!',
-          "Our admission team will call you shortly to guide you through the 2026 B.E. direct-admission process."
+          "Our admission team will call you shortly to guide you through the admission process."
         );
 
         // THEN reset form
@@ -757,7 +525,7 @@ const UnifiedLeadForm = ({
       console.error('Form submission error:', error);
       await showError(
         'Something went wrong',
-        'Please try again or call us directly at +91 8069645014.'
+        'Please try again or call us directly at +91 93653 75782.'
       );
     } finally {
       setIsSubmitting(false);
@@ -1210,7 +978,7 @@ const UnifiedLeadForm = ({
               }
             >
               <Icon icon="mdi:seat-outline" className={styles.trustIcon} />
-              <span>Limited 2026 Seats</span>
+              <span>Admissions Open</span>
             </div>
             <div
               className={styles.trustBadge}
@@ -1221,7 +989,7 @@ const UnifiedLeadForm = ({
               }
             >
               <Icon icon="mdi:certificate-outline" className={styles.trustIcon} />
-              <span>NAAC Accredited</span>
+              <span>Gauhati University</span>
             </div>
           </motion.div>
         )}
@@ -1243,8 +1011,8 @@ const UnifiedLeadForm = ({
                   : undefined
               }
             >
-              By submitting, I agree to be contacted by CIT / Assam Digital
-              about 2026 B.E. admissions and to the{" "}
+              By submitting, I agree to be contacted by Icon Commerce College
+              about admissions and to the{" "}
               <button
                 type="button"
                 onClick={() => setPrivacyModalOpen(true)}
@@ -1273,9 +1041,9 @@ const UnifiedLeadForm = ({
           >
             Or call us directly
           </Typography>
-          <a href="tel:+918069645014" className={styles.phoneLink}>
+          <a href="tel:+919365375782" className={styles.phoneLink}>
             <Icon icon="mdi:phone" />
-            <span>+91 8069645014</span>
+            <span>+91 93653 75782</span>
           </a>
         </div>
       )}

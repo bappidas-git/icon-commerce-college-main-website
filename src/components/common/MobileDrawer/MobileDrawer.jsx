@@ -21,22 +21,20 @@ import { Icon } from "@iconify/react";
 import { trackPhoneClick, trackWhatsAppClick } from "../../../utils/gtm";
 import styles from "./MobileDrawer.module.css";
 
-// CIT primary admissions contact (Assam Digital campaign)
-const PRIMARY_PHONE = "+918069645014";
-const PRIMARY_PHONE_DISPLAY = "+91 8069645014";
-const PRIMARY_PHONE_DIGITS = "918069645014";
-const WHATSAPP_HREF = `https://api.whatsapp.com/send?phone=${PRIMARY_PHONE_DIGITS}&text=Hello%20CIT%2C%20I%27d%20like%20guidance%20on%20Direct%20B.E.%20admission%202026.`;
+// Primary admissions contact (Icon Commerce College)
+const PRIMARY_PHONE = "+919365375782";
+const PRIMARY_PHONE_DISPLAY = "+91 93653 75782";
+const PRIMARY_PHONE_DIGITS = "919365375782";
+const WHATSAPP_HREF = `https://api.whatsapp.com/send?phone=${PRIMARY_PHONE_DIGITS}&text=Hello%20Icon%20Commerce%20College%2C%20I%27d%20like%20to%20know%20more%20about%20admissions.`;
 
-const CIT_LOGO_URL =
-  "https://res.cloudinary.com/dn9gyaiik/image/upload/v1779669113/logo-cit_ykpxvd.png";
+const LOGO_URL = "/images/placeholders/logo-icon-commerce.svg";
 
 // Navigation menu items — match Header anchors
 const menuItems = [
   { id: "home", label: "Home", icon: "ic:outline-home", href: "#home" },
-  { id: "about", label: "About CIT", icon: "mdi:information-outline", href: "#about" },
+  { id: "about", label: "About", icon: "mdi:information-outline", href: "#about" },
   { id: "courses", label: "Courses", icon: "mdi:book-open-variant", href: "#courses" },
-  { id: "placements", label: "Placements", icon: "mdi:briefcase-outline", href: "#placements" },
-  { id: "campus", label: "Campus", icon: "mdi:school-outline", href: "#campus" },
+  { id: "facilities", label: "Facilities", icon: "mdi:office-building-outline", href: "#facilities" },
   { id: "contact", label: "Contact", icon: "mdi:phone-outline", href: "#contact" },
 ];
 
@@ -166,8 +164,8 @@ const MobileDrawer = ({ open, onClose, onOpen, onBookConsultation, activeSection
       <Box className={styles.drawerHeader}>
         <Box className={styles.logoSection}>
           <img
-            src={CIT_LOGO_URL}
-            alt="CIT — Channabasaveshwara Institute of Technology"
+            src={LOGO_URL}
+            alt="Icon Commerce College"
             style={{ height: "36px", width: "auto" }}
           />
         </Box>
@@ -260,7 +258,7 @@ const MobileDrawer = ({ open, onClose, onOpen, onBookConsultation, activeSection
         <Divider className={styles.divider} />
         <Box className={styles.contactInfo}>
           <Typography variant="caption" className={styles.contactLabel}>
-            CIT Admissions Desk
+            Admissions Desk
           </Typography>
 
           {/* Contact Details */}
@@ -313,10 +311,10 @@ const MobileDrawer = ({ open, onClose, onOpen, onBookConsultation, activeSection
                 setTimeout(() => onBookConsultation(), 300);
               }
             }}
-            aria-label="Apply for 2026 B.E. admission"
+            aria-label="Enquire about admission"
           >
             <Icon icon="mdi:school-outline" style={{ fontSize: 20 }} />
-            <span>Apply for 2026 Admission</span>
+            <span>Enquire Now</span>
           </motion.button>
         </Box>
       </Box>

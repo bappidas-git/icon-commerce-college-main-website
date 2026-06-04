@@ -12,7 +12,6 @@ const navItems = [
   { label: 'Dashboard', path: '/admin/dashboard', icon: 'mdi:view-dashboard' },
   { label: 'Leads', path: '/admin/lms', icon: 'mdi:account-group' },
   { label: 'Tele-Calling', path: '/admin/tele-calling', icon: 'mdi:phone-in-talk' },
-  { label: 'Guidelines', path: '/admin/guideline', icon: 'mdi:book-open-page-variant' },
 ];
 
 const AdminTopbar = () => {
@@ -59,8 +58,8 @@ const AdminTopbar = () => {
     <header className={styles.topbar}>
       <div className={styles.topbarLeft}>
         <img
-          src="https://res.cloudinary.com/dn9gyaiik/image/upload/v1779669113/logo-cit_ykpxvd.png"
-          alt="CIT Admin"
+          src="/images/placeholders/logo-icon-commerce.svg"
+          alt="Icon Commerce College Admin"
           className={styles.logo}
         />
         <span className={styles.divider} />
@@ -112,8 +111,8 @@ const AdminTopbar = () => {
             {/* Logo at top */}
             <div className={styles.mobileMenuHeader}>
               <img
-                src="https://res.cloudinary.com/dn9gyaiik/image/upload/v1779669113/logo-cit_ykpxvd.png"
-                alt="CIT Admin"
+                src="/images/placeholders/logo-icon-commerce.svg"
+                alt="Icon Commerce College Admin"
                 className={styles.mobileMenuLogo}
               />
             </div>
@@ -152,7 +151,7 @@ const AdminTopbar = () => {
             </div>
 
             {/* Footer */}
-            <p className={styles.mobileMenuFooter}>CIT Admissions Admin Panel</p>
+            <p className={styles.mobileMenuFooter}>Icon Commerce College Admin Panel</p>
           </div>
         </div>
       )}

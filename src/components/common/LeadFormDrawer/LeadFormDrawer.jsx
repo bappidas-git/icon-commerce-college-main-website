@@ -16,7 +16,7 @@ const LeadFormDrawer = ({
   isOpen,
   onClose,
   title = 'Enquire About Admission',
-  subtitle = "Fill the form — we'll assist you with 2026 B.E. admission",
+  subtitle = "Fill the form — we'll assist you with admission",
   source = 'general',
   onSubmitSuccess,
 }) => {
@@ -150,7 +150,7 @@ const LeadFormDrawer = ({
                 showTrustBadges={true}
                 showConsent={true}
                 showPhoneButton={true}
-                submitButtonText="Apply for 2026 Admission"
+                submitButtonText="Enquire Now"
                 onClose={onClose}
                 onSubmitSuccess={onSubmitSuccess}
                 formId={`drawer-form-${source}`}

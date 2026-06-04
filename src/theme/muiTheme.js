@@ -1,13 +1,14 @@
 /* ============================================
-   MUI Theme Configuration — CIT Brand System
-   Channabasaveshwara Institute of Technology
-   Direct B.E. Engineering Admissions 2026
+   MUI Theme Configuration — Icon Commerce College
+   Deep Navy + Gold brand system.
+   NOTE: the full Navy + Gold token migration lands
+   in prompt 02 (design-system-tokens); this file
+   keeps the existing palette for now.
    ============================================ */
 
 import { createTheme, alpha } from '@mui/material/styles';
 
-// Color palette — CIT navy / red / gold (official cittumkur.org).
-// Matches the tokens in src/styles/variables.css.
+// Color palette. Matches the tokens in src/styles/variables.css.
 const colors = {
   primary: {
     main: '#0C2D48',

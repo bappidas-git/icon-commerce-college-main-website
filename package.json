@@ -1,7 +1,7 @@
 {
-  "name": "cit-landing-page",
+  "name": "icon-commerce-college",
   "version": "1.0.0",
-  "description": "CIT — Direct B.E. Engineering Admissions 2026 landing page for Channabasaveshwara Institute of Technology. High-converting, mobile-first lead-generation page built with React 18, MUI v5, and Framer Motion.",
+  "description": "Icon Commerce College, Guwahati — official multi-page website and admin panel for Commerce, Arts & Computer Application programs affiliated to Gauhati University (NEP 2020 / FYUGP). Built with React 18, MUI v5, and Framer Motion.",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -51,18 +51,18 @@
     ]
   },
   "homepage": "/",
-  "author": "Assam Digital",
+  "author": "Icon Commerce College",
   "license": "UNLICENSED",
   "keywords": [
-    "engineering-admission",
-    "landing-page",
-    "lead-generation",
-    "cit",
-    "vtu",
-    "direct-admission",
-    "be-admission",
-    "tumakuru",
-    "gtm-integration",
-    "conversion-tracking"
+    "icon-commerce-college",
+    "guwahati",
+    "gauhati-university",
+    "commerce-college",
+    "bcom",
+    "bba",
+    "bca",
+    "ba",
+    "college-website",
+    "admissions"
   ]
 }

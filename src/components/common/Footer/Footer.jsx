@@ -1,7 +1,8 @@
 /* ============================================
-   Footer Component — CIT 2026 Admissions
-   Multi-column footer with quick links, admission
-   contact info, accreditation strip and privacy modal
+   Footer Component — Icon Commerce College
+   Multi-column footer with quick links, contact
+   info, affiliation strip and privacy modal.
+   (Redesigned in prompt 06.)
    ============================================ */
 
 import React, { useState } from "react";
@@ -11,51 +12,42 @@ import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 import styles from "./Footer.module.css";
 
-const CIT_LOGO_URL =
-  "https://res.cloudinary.com/dn9gyaiik/image/upload/v1779669113/logo-cit_ykpxvd.png";
+const LOGO_URL = "/images/placeholders/logo-icon-commerce.svg";
 
-const PRIMARY_PHONE = "+918069645014";
-const PRIMARY_PHONE_DISPLAY = "+91 8069645014";
+const PRIMARY_PHONE = "+919365375782";
+const PRIMARY_PHONE_DISPLAY = "+91 93653 75782";
+const SECONDARY_PHONE_DISPLAY = "+91 93653 83289";
+const EMAIL = "iconcom.2004@gmail.com";
 const WHATSAPP_LINK =
-  "https://api.whatsapp.com/send?phone=918069645014&text=Hello%20CIT%2C%20I%27d%20like%20guidance%20on%20Direct%20B.E.%20admission%202026.";
+  "https://api.whatsapp.com/send?phone=919365375782&text=Hello%20Icon%20Commerce%20College%2C%20I%27d%20like%20to%20know%20more%20about%20admissions.";
 
-// Privacy Policy Content — CIT / Assam Digital admissions campaign
+// Privacy Policy Content — Icon Commerce College
 const PrivacyPolicyContent = () => (
   <div className={styles.legalContent}>
     <section className={styles.legalSection}>
       <h3>Introduction</h3>
       <p>
-        Channabasaveshwara Institute of Technology (CIT), Tumakuru, together
-        with its marketing partner Assam Digital, respects your privacy and is
-        committed to protecting the personal data shared by prospective
-        students and parents during the Direct B.E. Admissions 2026 campaign.
-        This Privacy Policy explains what we collect, how we use it, and your
-        rights.
+        Icon Commerce College, Guwahati respects your privacy and is committed to
+        protecting the personal information you share with us through this
+        website. This Privacy Policy explains what we collect, how we use it, and
+        your rights.
       </p>
     </section>
 
     <section className={styles.legalSection}>
       <h3>Information We Collect</h3>
-      <p>We may collect the following types of information:</p>
       <ul>
         <li>
-          <strong>Personal information:</strong> name, mobile number, email,
-          home state and city — collected through admission enquiry forms,
-          call-back requests and WhatsApp messages.
+          <strong>Contact details:</strong> your name, mobile number and email,
+          collected through enquiry and contact forms.
         </li>
         <li>
-          <strong>Academic interest:</strong> the B.E. branch you are
-          interested in, year of qualifying exam, and any questions about
-          hostel, fees or the admission process.
+          <strong>Academic interest:</strong> the program you are interested in
+          and your home state, plus any question you choose to add.
         </li>
         <li>
           <strong>Usage data:</strong> anonymised information about how you
-          interact with this landing page (pages viewed, source campaign, time
-          spent) collected through Google Tag Manager and Meta Pixel.
-        </li>
-        <li>
-          <strong>Device information:</strong> IP address, browser type and
-          device identifiers, used for analytics and basic security.
+          interact with this website, used to improve the experience.
         </li>
       </ul>
     </section>
@@ -63,40 +55,20 @@ const PrivacyPolicyContent = () => (
     <section className={styles.legalSection}>
       <h3>How We Use Your Information</h3>
       <ul>
-        <li>To contact you about Direct B.E. admission 2026 at CIT.</li>
+        <li>To respond to your admission enquiries and questions.</li>
         <li>
-          To answer questions about courses, fees, hostel facilities, scholarships
-          and the admission process — by call or WhatsApp.
+          To share information about courses, fees, facilities and the admission
+          process — by phone, WhatsApp or email.
         </li>
-        <li>
-          To improve our campaigns, the landing page experience, and the
-          guidance we provide to North East India students.
-        </li>
-        <li>
-          To comply with applicable Indian laws and education-regulatory
-          obligations.
-        </li>
+        <li>To improve our website and the guidance we provide to applicants.</li>
       </ul>
     </section>
 
     <section className={styles.legalSection}>
       <h3>Sharing of Information</h3>
       <p>
-        Your details are shared only between CIT&apos;s admissions team and
-        Assam Digital&apos;s NE-region counsellors handling this campaign.
-        We do not sell your data. We may share aggregated, anonymised
-        analytics with platforms such as Google and Meta for ad performance
-        measurement.
-      </p>
-    </section>
-
-    <section className={styles.legalSection}>
-      <h3>Cookies &amp; Tracking</h3>
-      <p>
-        This site uses Google Tag Manager, Google Ads conversion tracking and
-        Meta Pixel/Conversions API to measure ad performance. You can disable
-        cookies via your browser settings; some site features may not work as
-        expected if you do.
+        Your details are used only by the college&apos;s admission office to assist
+        you. We do not sell your personal information to third parties.
       </p>
     </section>
 
@@ -105,27 +77,25 @@ const PrivacyPolicyContent = () => (
       <ul>
         <li>Request a copy of the personal data we hold about you.</li>
         <li>Ask us to correct inaccurate information.</li>
-        <li>Ask us to delete your data (subject to record-keeping requirements).</li>
-        <li>Opt out of further marketing communication at any time.</li>
+        <li>Ask us to delete your enquiry data, subject to legal obligations.</li>
       </ul>
     </section>
 
     <section className={styles.legalSection}>
       <h3>Contact</h3>
+      <p>For any privacy questions or data requests, contact the college office:</p>
       <p>
-        For any privacy questions or data requests, contact the CIT admissions
-        office:
-      </p>
-      <p>
-        <strong>Channabasaveshwara Institute of Technology</strong>
+        <strong>Icon Commerce College</strong>
         <br />
-        NH 206, B.H. Road, Gubbi, Tumakuru – 572 216, Karnataka
+        Rajgarh Road, Near Byelane No-3, Chandmari,
         <br />
-        Phone: {PRIMARY_PHONE_DISPLAY}
+        Guwahati, Assam – 781003
+        <br />
+        Phone: {PRIMARY_PHONE_DISPLAY} · Email: {EMAIL}
       </p>
     </section>
 
-    <p className={styles.lastUpdated}>Last Updated: May 2026</p>
+    <p className={styles.lastUpdated}>Last Updated: June 2026</p>
   </div>
 );
 
@@ -188,22 +158,19 @@ const LegalModal = ({ isOpen, onClose, title, children }) => {
   );
 };
 
-// Quick Links — match the landing-page section anchors
+// Quick Links — placeholder anchors (real multi-page links land in prompt 06)
 const quickLinks = [
-  { label: "About CIT", href: "#about" },
+  { label: "About", href: "#about" },
   { label: "Courses", href: "#courses" },
-  { label: "Placements", href: "#placements" },
-  { label: "Campus", href: "#campus" },
+  { label: "Facilities", href: "#facilities" },
   { label: "Contact", href: "#contact" },
 ];
 
-const accreditationItems = [
-  "NAAC Accredited",
-  "AICTE Approved",
-  "VTU Affiliated",
-  "ISO 9001:2015",
-  "CET Code E101",
-  "COMED-K E035",
+const affiliationItems = [
+  "Affiliated to Gauhati University",
+  "NEP 2020 / FYUGP",
+  "Samarth College Code 842",
+  "Established 2004",
 ];
 
 const Footer = () => {
@@ -220,19 +187,15 @@ const Footer = () => {
               <div className={styles.footerBrand}>
                 <div className={styles.logoWrapper}>
                   <img
-                    src={CIT_LOGO_URL}
-                    alt="CIT — Channabasaveshwara Institute of Technology"
-                    style={{
-                      height: "40px",
-                      width: "auto",
-                    }}
+                    src={LOGO_URL}
+                    alt="Icon Commerce College"
+                    style={{ height: "40px", width: "auto" }}
                   />
                 </div>
                 <p className={styles.tagline}>
-                  Channabasaveshwara Institute of Technology — a NAAC-accredited,
-                  AICTE-approved engineering institute in Tumakuru, Karnataka.
-                  Guided Direct B.E. admissions for the 2026 intake, with
-                  end-to-end support for students from North East India.
+                  Icon Commerce College, Guwahati — empowering Commerce, Arts &amp;
+                  Computer Application graduates since 2004. Affiliated to Gauhati
+                  University under NEP 2020 (FYUGP).
                 </p>
               </div>
 
@@ -252,7 +215,7 @@ const Footer = () => {
 
               {/* Column 3: Contact */}
               <div className={styles.footerColumn}>
-                <h4 className={styles.columnTitle}>Admissions Contact</h4>
+                <h4 className={styles.columnTitle}>Contact</h4>
                 <ul className={styles.contactList}>
                   <li className={styles.contactItem}>
                     <div className={styles.contactLabelRow}>
@@ -260,12 +223,10 @@ const Footer = () => {
                         icon="mdi:phone-in-talk-outline"
                         className={styles.contactIcon}
                       />
-                      <span className={styles.contactLabel}>
-                        Call or WhatsApp
-                      </span>
+                      <span className={styles.contactLabel}>Call or WhatsApp</span>
                     </div>
                     <span className={styles.contactValue}>
-                      {PRIMARY_PHONE_DISPLAY}
+                      {PRIMARY_PHONE_DISPLAY} · {SECONDARY_PHONE_DISPLAY}
                     </span>
                     <div className={styles.contactChipRow}>
                       <a
@@ -291,16 +252,13 @@ const Footer = () => {
 
                   <li className={styles.contactItem}>
                     <div className={styles.contactLabelRow}>
-                      <Icon
-                        icon="mdi:map-marker"
-                        className={styles.contactIcon}
-                      />
+                      <Icon icon="mdi:map-marker" className={styles.contactIcon} />
                       <span className={styles.contactLabel}>Campus</span>
                     </div>
                     <span className={styles.contactValue}>
-                      NH 206, B.H. Road, Gubbi,
+                      Rajgarh Road, Near Byelane No-3, Chandmari,
                       <br />
-                      Tumakuru – 572 216, Karnataka
+                      Guwahati, Assam – 781003
                     </span>
                   </li>
                 </ul>
@@ -309,11 +267,11 @@ const Footer = () => {
           </Container>
         </div>
 
-        {/* Accreditation Strip */}
+        {/* Affiliation Strip */}
         <div className={styles.accreditationStrip}>
           <Container maxWidth="xl">
             <ul className={styles.accreditationList}>
-              {accreditationItems.map((item) => (
+              {affiliationItems.map((item) => (
                 <li key={item} className={styles.accreditationItem}>
                   <Icon
                     icon="mdi:shield-check-outline"
@@ -331,8 +289,8 @@ const Footer = () => {
           <Container maxWidth="xl">
             <div className={styles.bottomContent}>
               <p className={styles.copyright}>
-                &copy; 2026 Channabasaveshwara Institute of Technology. All
-                rights reserved.
+                &copy; {new Date().getFullYear()} Icon Commerce College. All rights
+                reserved.
               </p>
               <div className={styles.legalLinks}>
                 <button
@@ -343,24 +301,6 @@ const Footer = () => {
                 </button>
               </div>
             </div>
-          </Container>
-        </div>
-
-        {/* Marketed By Credit */}
-        <div className={styles.developerBar}>
-          <Container maxWidth="xl">
-            <p className={styles.developerText}>
-              Marketed by{" "}
-              <a
-                href="https://www.assamdigital.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.developerLink}
-              >
-                Assam Digital
-              </a>{" "}
-              · Direct B.E. Admissions 2026
-            </p>
           </Container>
         </div>
       </footer>

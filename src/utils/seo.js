@@ -155,7 +155,7 @@ export function generateOrganizationSchema(config) {
   if (org.courses && org.courses.length > 0) {
     schema.hasOfferingCatalog = {
       '@type': 'OfferCatalog',
-      name: 'B.E. Engineering Programs',
+      name: 'Undergraduate Programs',
       itemListElement: org.courses.map((course) => ({
         '@type': 'Course',
         name: course.name,
@@ -245,7 +245,7 @@ export function generateLocalBusinessSchema(config) {
   if (org.courses && org.courses.length > 0) {
     schema.hasOfferingCatalog = {
       '@type': 'OfferCatalog',
-      name: 'B.E. Engineering Programs',
+      name: 'Undergraduate Programs',
       itemListElement: org.courses.map((course) => ({
         '@type': 'Course',
         name: course.name,

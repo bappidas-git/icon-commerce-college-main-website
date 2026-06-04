@@ -54,6 +54,9 @@ const Contact = lazy(() => import('./pages/Contact/Contact'));
 const ThankYouPage = lazy(() => import('./pages/ThankYou/ThankYou'));
 const AdminLayout = lazy(() => import('./admin/components/AdminLayout'));
 
+// Dev-only UI primitives preview (not part of the public site map).
+const UIKit = lazy(() => import('./pages/UIKit/UIKit'));
+
 // ===========================================
 // Scroll Progress Indicator
 // ===========================================
@@ -150,6 +153,10 @@ const App = () => {
                 <Route path="notices" element={<Notices />} />
                 <Route path="events" element={<Events />} />
                 <Route path="contact" element={<Contact />} />
+                {/* Dev-only primitives preview — excluded from production builds */}
+                {process.env.NODE_ENV !== 'production' && (
+                  <Route path="ui-kit" element={<UIKit />} />
+                )}
               </Route>
 
               {/* Post-submit confirmation (noindex, standalone) */}

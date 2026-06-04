@@ -1,42 +1,92 @@
 /* ============================================
-   PageHero (placeholder) styles
-   Icon Commerce College
+   PageHero styles — Icon Commerce College
    ============================================ */
 
 .hero {
-  background: var(--gradient-navy, linear-gradient(135deg, #1a2a52 0%, #111d3a 100%));
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   color: #ffffff;
-  padding: clamp(112px, 14vw, 168px) 24px clamp(48px, 8vw, 88px);
-  text-align: center;
+  padding: clamp(120px, 16vw, 200px) 0 clamp(48px, 8vw, 96px);
+}
+
+/* Background image layer */
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Navy gradient overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--gradient-hero);
 }
 
 .inner {
-  max-width: 820px;
-  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Alignment */
+.align-left .inner {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.align-center .inner {
+  align-items: center;
+  text-align: center;
+}
+
+.crumbs {
+  margin-bottom: var(--space-5);
 }
 
 .eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--color-accent, #c8a04d);
-  font-weight: 600;
+  letter-spacing: var(--ls-widest); /* 0.12em */
+  color: var(--accent-gold-light);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
   font-size: 0.8rem;
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-3);
 }
 
 .title {
-  font-family: 'Poppins', sans-serif;
-  font-size: clamp(2rem, 4vw, 3.25rem);
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: var(--fs-4xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
   margin: 0;
-  line-height: 1.15;
+  max-width: 16ch;
+}
+
+.align-center .title {
+  max-width: 22ch;
 }
 
 .subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.78);
-  max-width: 640px;
-  margin: 16px auto 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 60ch;
+  margin: var(--space-4) 0 0;
+}
+
+.cta {
+  margin-top: var(--space-7);
+}
+
+@media (max-width: 768px) {
+  .title {
+    max-width: none;
+  }
 }

@@ -1,0 +1,93 @@
+/* ============================================
+   Breadcrumbs styles — Icon Commerce College
+   ============================================ */
+
+.breadcrumbs {
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.homeIcon {
+  font-size: 1.05em;
+}
+
+.separator {
+  font-size: 1.1em;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.current {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: var(--fw-semibold);
+}
+
+/* Light variant (default — over light backgrounds) */
+.light .link {
+  color: var(--color-text-muted);
+}
+
+.light .link:hover,
+.light .link:focus-visible {
+  color: var(--color-accent-dark);
+}
+
+.light .current {
+  color: var(--color-text);
+}
+
+.light .separator {
+  color: var(--color-text-muted);
+}
+
+/* Dark variant (over navy hero) */
+.dark .link {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.dark .link:hover,
+.dark .link:focus-visible {
+  color: var(--accent-gold-light);
+}
+
+.dark .current {
+  color: #ffffff;
+}
+
+.dark .separator {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Focus ring */
+.link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

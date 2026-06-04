@@ -25,6 +25,22 @@
   text-align: right;
 }
 
+/* Eyebrow — gold uppercase label (design-system §3) */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest); /* 0.12em */
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3);
+}
+
+.dark .eyebrow {
+  color: var(--accent-gold-light);
+}
+
 /* Badge */
 .badge {
   display: inline-flex;

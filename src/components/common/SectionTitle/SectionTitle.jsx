@@ -8,7 +8,8 @@ import { motion } from 'framer-motion';
 import styles from './SectionTitle.module.css';
 
 const SectionTitle = ({
-  badge = null,
+  eyebrow = null, // gold uppercase label (design-system §3) — preferred
+  badge = null, // legacy pill badge (kept for backward compatibility)
   title,
   highlight = null,
   subtitle = null,
@@ -97,7 +98,14 @@ const SectionTitle = ({
       viewport={{ once: true, margin: "-50px" }}
       {...props}
     >
-      {/* Badge */}
+      {/* Eyebrow — gold uppercase label (design-system §3) */}
+      {eyebrow && (
+        <motion.span className={styles.eyebrow} variants={itemVariants}>
+          {eyebrow}
+        </motion.span>
+      )}
+
+      {/* Badge (legacy pill) */}
       {badge && (
         <motion.div variants={itemVariants}>
           <span className={`${styles.badge} ${styles[`badge${badgeVariant.charAt(0).toUpperCase() + badgeVariant.slice(1)}`]}`}>

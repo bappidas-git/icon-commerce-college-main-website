@@ -1,0 +1,31 @@
+/* ============================================
+   Container styles — Icon Commerce College
+   ============================================ */
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gutter {
+  padding-left: var(--section-px);
+  padding-right: var(--section-px);
+}
+
+/* Width presets (design-system §3) */
+.default {
+  max-width: var(--container-xl); /* 1200px */
+}
+
+.wide {
+  max-width: var(--container-2xl); /* 1320px */
+}
+
+.narrow {
+  max-width: var(--container-md); /* 768px — long-form / forms */
+}
+
+.fluid {
+  max-width: none;
+}

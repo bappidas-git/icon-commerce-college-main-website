@@ -11,7 +11,7 @@ import styles from './Button.module.css';
 
 const Button = forwardRef(({
   children,
-  variant = 'primary', // primary, secondary, outline, dark, ghost, text
+  variant = 'primary', // primary (warm-red CTA), navy, gold, outline, ghost, link, secondary, dark, text, white
   size = 'medium', // small, medium, large
   fullWidth = false,
   disabled = false,

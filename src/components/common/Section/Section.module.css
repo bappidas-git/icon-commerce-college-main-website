@@ -1,0 +1,33 @@
+/* ============================================
+   Section styles — Icon Commerce College
+   ============================================ */
+
+.section {
+  position: relative;
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+}
+
+/* Background tones (design-system §2) */
+.bg-light {
+  background: var(--color-bg); /* page bg #F7F8FB */
+}
+
+.bg-white {
+  background: var(--color-surface); /* #FFFFFF */
+}
+
+.bg-navy {
+  background: var(--gradient-navy);
+  color: #ffffff;
+}
+
+.bg-navy :global(.eyebrow),
+.bg-navy h2,
+.bg-navy h3 {
+  color: #ffffff;
+}
+
+.bg-gold-soft {
+  background: var(--color-accent-soft); /* gold tint #F3E9D2 */
+}

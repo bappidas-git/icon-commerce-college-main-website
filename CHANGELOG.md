@@ -4,6 +4,56 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 1.1 — UI primitives & motion helpers
+
+Seventh prompt of the rebuild (`prompts/07-ui-primitives.md`). Adds the shared, DRY
+building blocks every page composes from, plus the centralized animation ("shuttle")
+helpers — all in the Navy + Gold system and guarded by `prefers-reduced-motion`.
+
+**Motion helper (`src/utils/motion.js`)** — new
+- Centralized Framer Motion variants: `fadeUp`, `fadeIn`, `scaleIn`, `slideInLeft` /
+  `slideInRight` and a `staggerContainer(stagger = 0.08)` parent (design-system §4:
+  opacity 0→1 / translateY 24px→0, 0.5s, ease `[0.22, 1, 0.36, 1]`).
+- `useReducedMotionVariants()` hook returns static (no-op) variants when
+  `prefers-reduced-motion: reduce` is set, so every animation degrades gracefully.
+
+**New components (`src/components/common/`)**
+- **`Reveal/`** — `Reveal` (single reveal-on-scroll block) and `RevealGroup`
+  (auto-wraps/staggers children — the "shuttle" cascade); both route through the
+  motion helper.
+- **`Container/`** — centered max-width wrapper (`default` 1200px / `wide` 1320px /
+  `narrow` / `fluid`) with the standard page gutters.
+- **`Section/`** — vertical-rhythm section (`clamp` padding) with optional `bg`
+  (`light` | `white` | `navy` | `gold-soft`), inner `Container` and an optional
+  eyebrow + `SectionTitle` header.
+- **`Breadcrumbs/`** — schema-friendly trail (home icon + chevrons, gold hover) that
+  emits `BreadcrumbList` JSON-LD; `light` / `dark` variants.
+- **`Accordion/`** — accessible expand/collapse (`aria-expanded` / `aria-controls`,
+  single- or multi-open) with height-animated panels.
+- **`Tabs/`** — WAI-ARIA tablist (roving Arrow/Home/End keys, `role="tab"`/`tabpanel`)
+  with an animated gold "shuttle" underline; `underline` / `pill` variants.
+- **`EmptyState/`** — gold icon chip + title + description + optional CTA for empty
+  notices/events lists.
+
+**Enhanced existing primitives**
+- **`Button`** — added `navy`, `gold` and `link` variants alongside the existing set
+  (legacy variants retained for backward compatibility).
+- **`Card`** — added generic sub-variant exports `IconCard`, `ImageCard`, `ProfileCard`
+  (avatar + name + role) and `StatCard`; specialized `ProgramCard` / `NoticeCard` /
+  `EventCard` will extend these in their page prompts.
+- **`SectionTitle`** — added a plain gold uppercase `eyebrow` label (design-system §3)
+  next to the legacy pill `badge`.
+- **`PageHero`** — promoted from the Phase 0.4 placeholder to the full inner-page hero:
+  navy gradient over a labelled placeholder background image, optional breadcrumb,
+  eyebrow, title + subtitle and an optional CTA. Backward compatible with the existing
+  `eyebrow` / `title` / `subtitle` prop shape.
+
+**Demo / verification**
+- **`src/pages/UIKit/UIKit.jsx`** — a scratch preview page composing Section +
+  SectionTitle + Card grid + Button + PageHero + Accordion + Tabs + EmptyState +
+  Reveal/RevealGroup. Registered at `/ui-kit` **only in development** (excluded from
+  production routes); `npm run build` compiles cleanly with no warnings.
+
 ### Phase 0.6 — Footer
 
 Sixth prompt of the rebuild (`prompts/06-footer.md`). Replaces the boilerplate footer with

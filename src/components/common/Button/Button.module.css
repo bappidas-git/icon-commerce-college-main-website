@@ -80,6 +80,59 @@
   transform: translateY(0);
 }
 
+/* Navy Variant — solid deep-navy (structural primary, non-CTA) */
+.navy {
+  background: var(--color-primary);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(26, 42, 82, 0.28);
+}
+
+.navy:hover {
+  background: var(--color-primary-light);
+  box-shadow: 0 6px 20px rgba(26, 42, 82, 0.36);
+  transform: translateY(-2px);
+}
+
+.navy:active {
+  transform: translateY(0);
+}
+
+/* Gold Variant — solid gold (emphasis actions) */
+.gold {
+  background: var(--accent-gold-gradient);
+  color: var(--color-primary-dark);
+  box-shadow: 0 4px 14px var(--shadow-gold);
+}
+
+.gold:hover {
+  background: var(--accent-gold-gradient-reverse);
+  box-shadow: 0 6px 20px var(--shadow-gold);
+  transform: translateY(-2px);
+}
+
+.gold:active {
+  transform: translateY(0);
+}
+
+/* Link Variant — inline text link with gold underline on hover */
+.link {
+  background: transparent;
+  color: var(--color-primary);
+  padding-left: var(--space-1);
+  padding-right: var(--space-1);
+  border: none;
+  border-radius: var(--radius-sm);
+  min-height: auto;
+  box-shadow: none;
+}
+
+.link:hover {
+  color: var(--color-accent-dark);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--color-accent);
+}
+
 /* Outline Variant */
 .outline {
   background: transparent;

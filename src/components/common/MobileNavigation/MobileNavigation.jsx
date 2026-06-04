@@ -21,7 +21,7 @@ const navItems = [
     id: "call",
     label: "Call",
     icon: "mdi:phone",
-    color: "#0C2D48",
+    color: "#1A2A52",
     action: "call",
     href: `tel:${PRIMARY_PHONE}`,
   },
@@ -46,7 +46,7 @@ const navItems = [
     id: "menu",
     label: "Menu",
     icon: "mdi:menu",
-    color: "#0C2D48",
+    color: "#1A2A52",
     action: "menu",
   },
 ];

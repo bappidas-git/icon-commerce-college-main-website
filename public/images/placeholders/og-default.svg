@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="og-default.jpg placeholder image (1200×630)">
+  <defs>
+    <linearGradient id="g-og-default-jpg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A2A52"/>
+      <stop offset="1" stop-color="#111d3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g-og-default-jpg)"/>
+  <rect x="16" y="16" width="1168" height="598" fill="none" stroke="#C8A04D" stroke-width="4" rx="19"/>
+  <circle cx="600" cy="214.20000000000002" r="69" fill="none" stroke="#C8A04D" stroke-width="4"/>
+  <text x="600" y="240.42000000000002" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="700" font-size="66" fill="#C8A04D">IC</text>
+  <text x="600" y="390.6" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="28" fill="#FFFFFF">og-default.jpg</text>
+  <text x="600" y="435.40000000000003" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-weight="400" font-size="20" letter-spacing="1" fill="#C8A04D">1200 × 630</text>
+</svg>

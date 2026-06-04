@@ -1,117 +1,142 @@
 /* ============================================
    CSS Variables — Brand System
-   Icon Commerce College
-   NOTE: full Navy + Gold token migration lands in prompt 02
+   Icon Commerce College — Deep Navy + Gold
+   Single source of truth: prompts/00-DESIGN-SYSTEM.md (§2–4)
+   Mirrored in src/theme/muiTheme.js.
    ============================================ */
 
 :root {
-  /* ========== Brand Tokens (master palette) ==========
-     Source of truth — use these names in new code. */
-  --color-primary: #0C2D48;        /* Deep navy (migrated to #1A2A52 in prompt 02) */
-  --color-primary-dark: #081F33;   /* Darker navy — gradients, hovers */
-  --color-secondary: #D82618;      /* red — accents, labels, badges */
-  --color-accent: #E0301E;         /* CTA red — primary CTA buttons only */
-  --color-accent-dark: #B71F12;    /* CTA hover */
-  --color-success: #1E8E5A;        /* Placement/positive highlights */
-  --color-tint: #EAEFF3;           /* Light slate card/section backgrounds */
-  --color-text: #11203A;           /* Body text on light */
+  /* ============================================
+     §2 — Colour system (canonical tokens)
+     ============================================ */
+  --color-primary:        #1A2A52;  /* Deep Navy — headers, primary surfaces, headings   */
+  --color-primary-dark:   #111d3a;  /* Navy 900 — gradients, footer                       */
+  --color-primary-light:  #2C3E6B;  /* Navy 600 — hovers                                  */
+  --color-accent:         #C8A04D;  /* Gold — accents, underlines, icons, dividers        */
+  --color-accent-dark:    #A8823A;  /* Gold dark — hover                                  */
+  --color-accent-soft:    #F3E9D2;  /* Gold tint — card backgrounds, badges               */
+  --color-cta:            #E0301E;  /* Warm Red — primary CTA buttons ONLY                */
+  --color-cta-dark:       #B91E10;
+  --color-success:        #1E8E5A;
+  --color-info:           #2563EB;
+  --color-text:           #14233D;  /* Body text (navy-ink)                               */
+  --color-text-muted:     #5B6678;  /* Secondary text                                     */
+  --color-bg:             #F7F8FB;  /* Page background                                    */
+  --color-surface:        #FFFFFF;  /* Cards                                              */
+  --color-border:         #E6E9F0;
+  --color-navy-overlay:   rgba(26, 42, 82, 0.72); /* hero image overlays                  */
+
+  /* Signature gradients */
+  --gradient-navy:  linear-gradient(135deg, #1A2A52 0%, #111d3a 100%);
+  --gradient-gold:  linear-gradient(135deg, #C8A04D 0%, #A8823A 100%);
+  --gradient-hero:  linear-gradient(120deg, rgba(17,29,58,0.92) 0%, rgba(26,42,82,0.78) 55%, rgba(26,42,82,0.45) 100%);
+
+  /* ============================================
+     Legacy aliases → remapped to Navy + Gold
+     Kept so existing *.module.css references stay valid.
+     New code should prefer the canonical tokens above.
+     ============================================ */
+
+  /* Master palette aliases */
+  --color-secondary: #C8A04D;        /* gold — accents, labels, badges */
   --color-white: #FFFFFF;
 
-  /* ========== Primary Colors (legacy names → navy) ========== */
-  --primary-dark: #0C2D48;
-  --primary-dark-alt: #081F33;
-  --primary-dark-light: #1A5276;
-  --primary-dark-lighter: #7390A6;
+  /* Primary (navy) aliases */
+  --primary-dark: #1A2A52;
+  --primary-dark-alt: #111d3a;
+  --primary-dark-light: #2C3E6B;
+  --primary-dark-lighter: #6E7FA8;
 
-  /* ========== Accent Colors — remapped to navy ==========
-     The boilerplate used `--accent-gold` for structural accents.
-     We map them all to navy so existing CSS references stay valid;
-     these are migrated to the Navy + Gold system in prompt 02. */
-  --accent-gold: #0C2D48;
-  --accent-gold-light: #1A5276;
-  --accent-gold-dark: #081F33;
-  --accent-gold-hover: #143F5C;
-  --accent-gold-gradient: linear-gradient(135deg, #0C2D48 0%, #1A5276 100%);
-  --accent-gold-gradient-reverse: linear-gradient(135deg, #1A5276 0%, #0C2D48 100%);
-  --accent-gold-gradient-horizontal: linear-gradient(90deg, #0C2D48 0%, #1A5276 50%, #0C2D48 100%);
+  /* Accent (gold) aliases — boilerplate used `--accent-gold` for structural accents */
+  --accent-gold: #C8A04D;
+  --accent-gold-light: #D8B871;
+  --accent-gold-dark: #A8823A;
+  --accent-gold-hover: #A8823A;
+  --accent-gold-gradient: linear-gradient(135deg, #C8A04D 0%, #A8823A 100%);
+  --accent-gold-gradient-reverse: linear-gradient(135deg, #A8823A 0%, #C8A04D 100%);
+  --accent-gold-gradient-horizontal: linear-gradient(90deg, #C8A04D 0%, #D8B871 50%, #C8A04D 100%);
 
-  /* ========== Accent Amber — CTAs Only (legacy `--accent-orange`) ========== */
+  /* CTA (warm red) aliases — legacy `--accent-orange` */
   --accent-orange: #E0301E;
   --accent-orange-light: #F0584A;
-  --accent-orange-dark: #B71F12;
+  --accent-orange-dark: #B91E10;
   --accent-orange-gradient: linear-gradient(135deg, #E0301E 0%, #F0584A 100%);
   --accent-orange-gradient-reverse: linear-gradient(135deg, #F0584A 0%, #E0301E 100%);
 
-  /* CTA aliases (preferred for new code) */
   --accent-amber: #E0301E;
   --accent-amber-light: #F0584A;
-  --accent-amber-dark: #B71F12;
+  --accent-amber-dark: #B91E10;
   --accent-amber-gradient: linear-gradient(135deg, #E0301E 0%, #F0584A 100%);
 
-  /* ========== Secondary Red ========== */
-  --accent-red: #D82618;
-  --accent-red-light: #E8503D;
-  --accent-red-dark: #A81B10;
+  /* Secondary red aliases → CTA red */
+  --accent-red: #E0301E;
+  --accent-red-light: #F0584A;
+  --accent-red-dark: #B91E10;
 
   /* ========== Neutral Colors ========== */
   --white: #FFFFFF;
-  --off-white: #FAFBFC;
-  --light-gray: #F8FAFC;
-  --medium-gray: #E8EDF2;
-  --border-gray: #D1D9E6;
-  --text-gray: #546E7A;
-  --text-dark-gray: #11203A;
-  --dark-gray: #22344A;
+  --off-white: #F7F8FB;
+  --light-gray: #F7F8FB;
+  --medium-gray: #E6E9F0;
+  --border-gray: #E6E9F0;
+  --text-gray: #5B6678;
+  --text-dark-gray: #14233D;
+  --dark-gray: #2C3E6B;
 
   /* ========== Icon Background Colors ========== */
-  --icon-gold: #0C2D48;
-  --icon-gold-bg: rgba(12, 45, 72, 0.12);
+  --icon-gold: #C8A04D;
+  --icon-gold-bg: rgba(200, 160, 77, 0.14);
   --icon-green: #1E8E5A;
   --icon-green-bg: rgba(30, 142, 90, 0.15);
   --icon-purple: #6B3FA0;
   --icon-purple-bg: rgba(107, 63, 160, 0.15);
   --icon-orange: #E0301E;
   --icon-orange-bg: rgba(224, 48, 30, 0.15);
-  --icon-pink: #D82618;
-  --icon-pink-bg: rgba(216, 38, 24, 0.12);
-  --icon-red: #D82618;
-  --icon-red-bg: rgba(216, 38, 24, 0.12);
-  --icon-teal: #0C2D48;
-  --icon-teal-bg: rgba(12, 45, 72, 0.12);
-  --icon-blue: #0C2D48;
-  --icon-blue-bg: rgba(12, 45, 72, 0.12);
+  --icon-pink: #E0301E;
+  --icon-pink-bg: rgba(224, 48, 30, 0.12);
+  --icon-red: #E0301E;
+  --icon-red-bg: rgba(224, 48, 30, 0.12);
+  --icon-teal: #1A2A52;
+  --icon-teal-bg: rgba(26, 42, 82, 0.12);
+  --icon-blue: #1A2A52;
+  --icon-blue-bg: rgba(26, 42, 82, 0.12);
 
   /* ========== Card Backgrounds ========== */
-  --card-yellow: #FDEAE8;
+  --card-yellow: #F3E9D2;
   --card-green: #E5F5EC;
   --card-pink: #FCE4E8;
   --card-purple: #EFE7F7;
   --card-orange: #FCEEEB;
-  --card-blue: #EAEFF3;
-  --card-gold-gradient: linear-gradient(135deg, #0C2D48 0%, #081F33 100%);
-  --card-dark-gradient: linear-gradient(135deg, #0C2D48 0%, #1A5276 100%);
+  --card-blue: #EAEEF6;
+  --card-gold-gradient: linear-gradient(135deg, #1A2A52 0%, #111d3a 100%);
+  --card-dark-gradient: linear-gradient(135deg, #1A2A52 0%, #2C3E6B 100%);
 
   /* ========== Semantic Colors ========== */
   --success: #1E8E5A;
   --success-light: #4FB07F;
   --warning: #E0301E;
   --warning-light: #F0584A;
-  --error: #D82618;
-  --error-light: #E8503D;
-  --info: #0C2D48;
-  --info-light: #1A5276;
+  --error: #E0301E;
+  --error-light: #F0584A;
+  --info: #2563EB;
+  --info-light: #5B86F0;
 
   /* ========== Shadow Colors ========== */
-  --shadow-light: rgba(0, 0, 0, 0.05);
-  --shadow-medium: rgba(0, 0, 0, 0.1);
-  --shadow-dark: rgba(0, 0, 0, 0.15);
-  --shadow-gold: rgba(12, 45, 72, 0.3);
-  --shadow-card: 0 2px 12px rgba(12, 45, 72, 0.08);
-  --shadow-card-hover: 0 8px 30px rgba(12, 45, 72, 0.14);
+  --shadow-light: rgba(20, 35, 61, 0.06);
+  --shadow-medium: rgba(20, 35, 61, 0.10);
+  --shadow-dark: rgba(20, 35, 61, 0.16);
+  --shadow-gold: rgba(200, 160, 77, 0.3);
+  --shadow-sm: 0 2px 8px rgba(20, 35, 61, 0.06);
+  --shadow-md: 0 8px 30px rgba(20, 35, 61, 0.10);
+  --shadow-lg: 0 20px 50px rgba(20, 35, 61, 0.16);
+  --shadow-card: 0 2px 8px rgba(20, 35, 61, 0.06);
+  --shadow-card-hover: 0 8px 30px rgba(20, 35, 61, 0.10);
   --shadow-button: 0 4px 14px rgba(224, 48, 30, 0.35);
   --shadow-button-hover: 0 6px 20px rgba(224, 48, 30, 0.45);
 
-  /* ========== Typography ========== */
+  /* ============================================
+     §3 — Typography
+     ============================================ */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
   --font-heading: 'Poppins', 'Inter', sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -125,81 +150,100 @@
   --fw-bold: 700;
   --fw-extrabold: 800;
 
-  /* Font Sizes - Fluid Typography */
-  --fs-xs: clamp(0.7rem, 0.66rem + 0.2vw, 0.8rem);
-  --fs-sm: clamp(0.8rem, 0.74rem + 0.3vw, 0.9rem);
-  --fs-base: clamp(0.9rem, 0.85rem + 0.25vw, 1rem);
+  /* Font Sizes — responsive clamp scale (§3) */
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;                                  /* small */
+  --fs-base: 1rem;                                    /* body */
   --fs-md: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
   --fs-lg: clamp(1.1rem, 1rem + 0.5vw, 1.25rem);
-  --fs-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --fs-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
-  --fs-3xl: clamp(1.75rem, 1.4rem + 1.75vw, 2.5rem);
-  --fs-4xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
-  --fs-5xl: clamp(2.5rem, 1.75rem + 3.75vw, 4rem);
-  --fs-hero: clamp(2.5rem, 2rem + 2.5vw, 4.5rem);
+  --fs-xl: clamp(1.25rem, 2vw, 1.6rem);               /* h3 */
+  --fs-2xl: clamp(1.6rem, 3vw, 2.4rem);               /* h2 */
+  --fs-3xl: clamp(1.75rem, 3.5vw, 2.75rem);
+  --fs-4xl: clamp(2rem, 4vw, 3.25rem);                /* h1 */
+  --fs-5xl: clamp(2.25rem, 4.5vw, 3.5rem);
+  --fs-hero: clamp(2rem, 4vw, 3.25rem);               /* h1 hero */
 
   /* Line Heights */
-  --lh-tight: 1.1;
+  --lh-tight: 1.15;
   --lh-snug: 1.25;
   --lh-normal: 1.5;
-  --lh-relaxed: 1.625;
+  --lh-relaxed: 1.7;                                  /* body 1rem/1.7 */
   --lh-loose: 2;
 
   /* Letter Spacing */
-  --ls-tight: -0.025em;
+  --ls-tight: -0.02em;
   --ls-normal: 0;
   --ls-wide: 0.025em;
   --ls-wider: 0.05em;
-  --ls-widest: 0.1em;
+  --ls-widest: 0.12em;                                /* eyebrow */
 
-  /* ========== Spacing Scale ========== */
+  /* ============================================
+     §4 — Spacing scale (px: 4,8,12,16,24,32,48,64,96)
+     ============================================ */
   --space-0: 0;
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-14: 3.5rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
+  --space-1: 0.25rem;   /*  4px */
+  --space-2: 0.5rem;    /*  8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-14: 3.5rem;   /* 56px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
   --space-32: 8rem;
   --space-40: 10rem;
   --space-48: 12rem;
   --space-64: 16rem;
 
-  /* Section Padding */
-  --section-py: clamp(3rem, 5vw, 6rem);
+  /* Section padding (§4: clamp(56px, 8vw, 112px)) */
+  --section-py: clamp(3.5rem, 8vw, 7rem);
   --section-px: clamp(1rem, 3vw, 2rem);
 
-  /* ========== Border Radius ========== */
+  /* ============================================
+     §4 — Radius (cards 16, buttons 10, pills 999, inputs 10)
+     ============================================ */
   --radius-none: 0;
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
+  --radius-sm: 0.375rem;   /*  6px */
+  --radius-md: 0.625rem;   /* 10px — buttons / inputs */
+  --radius-lg: 0.625rem;   /* 10px */
+  --radius-xl: 1rem;       /* 16px — cards */
+  --radius-2xl: 1.25rem;   /* 20px */
   --radius-3xl: 2rem;
-  --radius-full: 9999px;
+  --radius-full: 999px;    /* pills / chips */
+  --radius-button: 10px;
+  --radius-card: 16px;
+  --radius-input: 10px;
 
   /* ========== Borders ========== */
-  --border-thin: 1px solid var(--border-gray);
-  --border-medium: 2px solid var(--border-gray);
+  --border-thin: 1px solid var(--color-border);
+  --border-medium: 2px solid var(--color-border);
   --border-gold: 2px solid var(--accent-gold);
   --border-gold-thin: 1px solid var(--accent-gold);
 
-  /* ========== Transitions ========== */
-  --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
-  --transition-slow: 350ms ease;
-  --transition-slower: 500ms ease;
-  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* ============================================
+     §4 — Motion (shuttle reveal: 0.5s, ease [0.22,1,0.36,1])
+     ============================================ */
+  --ease-shuttle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --transition-fast: 150ms var(--ease-standard);
+  --transition-base: 250ms var(--ease-standard);
+  --transition-slow: 350ms var(--ease-standard);
+  --transition-slower: 500ms var(--ease-shuttle);
+  --transition-spring: 500ms var(--ease-spring);
   --transition-bounce: 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --transition-smooth: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 400ms var(--ease-standard);
+
+  /* Reveal-on-scroll defaults */
+  --reveal-duration: 0.5s;
+  --reveal-distance: 24px;
+  --stagger-step: 0.08s;
 
   /* ========== Z-Index Scale ========== */
   --z-below: -1;
@@ -216,13 +260,15 @@
   --z-toast: 900;
   --z-max: 9999;
 
-  /* ========== Container Widths ========== */
+  /* ============================================
+     Container widths (§3: 1200px content, 1320px wide)
+     ============================================ */
   --container-sm: 640px;
   --container-md: 768px;
   --container-lg: 1024px;
-  --container-xl: 1280px;
-  --container-2xl: 1440px;
-  --container-max: 1600px;
+  --container-xl: 1200px;
+  --container-2xl: 1320px;
+  --container-max: 1320px;
 
   /* ========== Breakpoints (for reference in JS) ========== */
   --bp-xs: 480px;
@@ -239,10 +285,10 @@
 
   /* ========== Overlays ========== */
   --overlay-light: rgba(255, 255, 255, 0.8);
-  --overlay-dark: rgba(12, 45, 72, 0.7);
-  --overlay-darker: rgba(12, 45, 72, 0.85);
-  --overlay-gradient: linear-gradient(180deg, rgba(12, 45, 72, 0.9) 0%, rgba(12, 45, 72, 0.4) 100%);
-  --overlay-gradient-reverse: linear-gradient(0deg, rgba(12, 45, 72, 0.9) 0%, rgba(12, 45, 72, 0.2) 100%);
+  --overlay-dark: rgba(26, 42, 82, 0.72);
+  --overlay-darker: rgba(17, 29, 58, 0.85);
+  --overlay-gradient: linear-gradient(180deg, rgba(17, 29, 58, 0.9) 0%, rgba(26, 42, 82, 0.4) 100%);
+  --overlay-gradient-reverse: linear-gradient(0deg, rgba(17, 29, 58, 0.9) 0%, rgba(26, 42, 82, 0.2) 100%);
 
   /* ========== Aspect Ratios ========== */
   --aspect-square: 1 / 1;
@@ -268,27 +314,27 @@
 
 /* ========== Admin Panel Colors ========== */
 :root {
-  --admin-primary: #0C2D48;
-  --admin-primary-light: #1A5276;
-  --admin-primary-dark: #081F33;
-  --admin-accent: #D82618;
-  --admin-accent-light: #E8503D;
-  --admin-magenta: #D82618;
-  --admin-magenta-light: #E8503D;
-  --admin-cyan: #0C2D48;
-  --admin-cyan-light: #1A5276;
-  --admin-gradient: linear-gradient(135deg, #0C2D48 0%, #1A5276 100%);
-  --admin-gradient-accent: linear-gradient(135deg, #0C2D48 0%, #D82618 100%);
-  --admin-bg: #F2F5F8;
+  --admin-primary: #1A2A52;
+  --admin-primary-light: #2C3E6B;
+  --admin-primary-dark: #111d3a;
+  --admin-accent: #C8A04D;
+  --admin-accent-light: #D8B871;
+  --admin-magenta: #E0301E;
+  --admin-magenta-light: #F0584A;
+  --admin-cyan: #1A2A52;
+  --admin-cyan-light: #2C3E6B;
+  --admin-gradient: linear-gradient(135deg, #1A2A52 0%, #2C3E6B 100%);
+  --admin-gradient-accent: linear-gradient(135deg, #1A2A52 0%, #C8A04D 100%);
+  --admin-bg: #F7F8FB;
   --admin-card-bg: #FFFFFF;
-  --admin-border: #E2E8F0;
-  --admin-text-primary: #11203A;
-  --admin-text-secondary: #5A6B7F;
+  --admin-border: #E6E9F0;
+  --admin-text-primary: #14233D;
+  --admin-text-secondary: #5B6678;
   --admin-text-muted: #8E9BAD;
   --admin-success: #1E8E5A;
   --admin-warning: #E0301E;
-  --admin-error: #D82618;
-  --admin-info: #0C2D48;
+  --admin-error: #E0301E;
+  --admin-info: #2563EB;
 }
 
 /* ========== Dark Mode Variables (for potential future use) ========== */

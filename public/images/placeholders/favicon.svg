@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="favicon.png placeholder image (256×256)">
+  <defs>
+    <linearGradient id="g-favicon-png" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A2A52"/>
+      <stop offset="1" stop-color="#111d3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" fill="url(#g-favicon-png)"/>
+  <rect x="6" y="6" width="244" height="244" fill="none" stroke="#C8A04D" stroke-width="2" rx="8"/>
+  <circle cx="128" cy="87.04" r="28" fill="none" stroke="#C8A04D" stroke-width="2"/>
+  <text x="128" y="97.68" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="700" font-size="27" fill="#C8A04D">IC</text>
+  <text x="128" y="158.72" text-anchor="middle" font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="13" fill="#FFFFFF">favicon.png</text>
+  <text x="128" y="179.52" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-weight="400" font-size="9" letter-spacing="1" fill="#C8A04D">256 × 256</text>
+</svg>

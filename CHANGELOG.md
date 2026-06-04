@@ -4,6 +4,58 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 0.2 — Design tokens, typography & placeholder system
+
+Second prompt of the rebuild (`prompts/02-design-system-tokens.md`). Implements the
+visual foundation defined in `prompts/00-DESIGN-SYSTEM.md` §2–4, §7.
+
+**Design tokens (Navy + Gold)**
+- Rewrote `src/styles/variables.css` with the full §2–4 token set: canonical
+  `--color-*` palette, signature gradients (`--gradient-navy/gold/hero`), the §3
+  type scale (h1 `clamp(2rem,4vw,3.25rem)` … body `1rem/1.7`, eyebrow tracking
+  `0.12em`), §4 spacing (4–96px), radii (cards 16 / buttons 10 / pills 999 /
+  inputs 10), shadows (`--shadow-sm/md/lg`) and motion (`--ease-shuttle`,
+  reveal 0.5s / 24px / 0.08s stagger). Container widths set to 1200/1320px.
+  Legacy alias variables (`--accent-gold`, `--primary-dark`, `--accent-orange`,
+  admin tokens, etc.) are remapped onto the new palette so existing
+  `*.module.css` keeps rendering.
+- Mirrored the palette in `src/theme/muiTheme.js`: `primary` Deep Navy `#1A2A52`,
+  `secondary` Gold `#C8A04D`, `error` Warm-Red CTA `#E0301E`, `success` `#1E8E5A`,
+  background `#F7F8FB` / paper `#FFFFFF`, text `#14233D`/`#5B6678`. Added a `gold`
+  palette + `navy` scale, responsive Poppins/Inter typography, `shape.borderRadius:10`,
+  shadow scale aligned to §4, and component overrides — Button (radius 10, navy
+  `containedPrimary`, gold `containedSecondary`, red-gradient `containedError` CTA,
+  gold focus ring), Card (radius 16, shadow-sm, lift to shadow-md).
+
+**Global styles & fonts**
+- `src/styles/global.css`: body now `--color-bg` / `--color-text` at `1.7`
+  line-height; links navy → gold hover; navy text selection; added the
+  `.eyebrow` label utility; aligned the font `@import` to the loaded weights.
+- `public/index.html`: Google Fonts trimmed to **Poppins 600/700** + **Inter
+  400/500/600** (preload + noscript). Title, meta description, `theme-color`
+  `#1A2A52` and the navy/gold initial-loader were already in place from 0.1.
+
+**Colour migration (grep clean)**
+- Replaced every remaining old CIT hex across the source tree — `#0C2D48`→`#1A2A52`,
+  `#081F33`→`#111d3a`, `#1A5276`→`#2C3E6B`, `#D82618`→`#E0301E` — in
+  UnifiedLeadForm, Modal, MobileDrawer, MobileNavigation, LeadFormDrawer,
+  AdminTopbar, LeadDetail, App.css, swalHelper, ThemeContext and the ThankYou
+  page/confetti (now navy/gold/red/green). `grep` for `#0C2D48`/`#D82618` is clean.
+
+**Placeholder image system (§7)**
+- Added `scripts/gen-placeholders.mjs` (Node ESM, no deps) + the
+  `gen:placeholders` npm script. It writes a labelled navy/gold SVG (gold border,
+  centered white filename + dimensions, IC mark) for every §7 asset, with a
+  curated logo lockup. `npm run gen:placeholders` (re)creates all files.
+- Generated **49** placeholders into `public/images/placeholders/` (+ `.gitkeep`):
+  logo, favicon, hero-campus/students/library, about-college-building/campus-aerial,
+  vision-mission, 7 leadership portraits, course-bcom/bba/bca/ba, dept-arts/commerce/science,
+  6 facility-*, faculty-placeholder, gallery-1…12, 4 event-*, testimonial-avatar,
+  prospectus-cover, map-location, og-default. SVGs are saved as `<base>.svg`.
+- Added `src/utils/assets.js` exporting `placeholder(name)` (resolves a logical
+  name, with or without extension, to `/images/placeholders/<base>.svg`) and the
+  `IMAGES` constant map, so components never hardcode image paths.
+
 ### Phase 0.1 — Rebrand & cleanup (remove CIT + ad-tech)
 
 First prompt of the Icon Commerce College rebuild (`prompts/01-rebrand-and-cleanup.md`).

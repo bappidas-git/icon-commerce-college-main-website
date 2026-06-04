@@ -239,7 +239,7 @@ const PrivacyPolicyModal = ({ isOpen, onClose }) => {
                   fontSize: "18px",
                   fontWeight: 600,
                   margin: 0,
-                  color: "#0C2D48",
+                  color: "#1A2A52",
                 }}
               >
                 Privacy Policy

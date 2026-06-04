@@ -4,6 +4,42 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.1 — Home hero & highlights
+
+Eleventh prompt of the rebuild (`prompts/11-home-hero-and-highlights.md`). Builds
+the first impression of the Home page: a navy-gradient hero over the campus
+placeholder and a thin quick-highlights strip directly beneath it. Introduces the
+new `src/components/sections/` group used to assemble the Home page (prompts
+11–14).
+
+**HeroSection (`src/components/sections/HeroSection/`)**
+- Full-width `--gradient-hero` overlay over the `hero-campus` placeholder, with a
+  subtle CSS Ken-Burns zoom that freezes under `prefers-reduced-motion`.
+- Gold eyebrow ("Admissions Open 2026–27 · Affiliated to Gauhati University"),
+  H1 from `collegeInfo.tagline` ("Where Knowledge Meets Character") and a subtitle
+  built from the §1 secondary tagline + "Estd. 2004 · Guwahati, Assam."
+- CTAs: warm-red **Apply Now** (→ `apply-now` drawer) and outline-gold **Download
+  Prospectus** (→ `prospectus` drawer) via the shared `EnquiryButton`, plus an
+  **Explore Courses** text link → `/courses`. Trust chips row (Gauhati University ·
+  NEP 2020 · Samarth Code 842 · 4 UG Programs).
+- Desktop right-side floating quick-enquiry card (compact `UnifiedLeadForm`,
+  source `hero`); hidden ≤1024px where the Apply Now CTA carries lead capture.
+- Staggered "shuttle" entrance (eyebrow → headline → subtitle → CTAs → chips)
+  routed through `useReducedMotionVariants()` so it collapses to static when
+  reduced motion is preferred. The H1 sets an explicit white colour so the global
+  `h1` navy-ink rule can't win.
+
+**HighlightsSection (`src/components/sections/HighlightsSection/`)**
+- Thin strip of four icon cards (NEP 2020 FYUGP · 4 UG Programs · Experienced
+  Faculty · Modern Campus & Labs) with gold icon chips and a CSS hover lift.
+- Revealed with the centralized `RevealGroup` stagger; the entrance lives on the
+  outer `Reveal` and the hover lift on the inner card so the two never fight over
+  `transform`. Grid is 4 → 2 → 1 columns at the §3 breakpoints.
+
+**Home (`src/pages/Home/Home.jsx`)**
+- Mounts `HeroSection` + `HighlightsSection` at the top (replacing the placeholder
+  `PageHero`); `ComingSoon` stays for the sections still to be assembled.
+
 ### Phase 1.4 — SEO foundation & schema
 
 Tenth prompt of the rebuild (`prompts/10-seo-foundation.md`). Adds per-route SEO

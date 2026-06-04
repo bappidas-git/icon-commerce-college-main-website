@@ -2,14 +2,16 @@
    Home — page shell
    Icon Commerce College
    --------------------------------------------
-   Shell only. The full home page (hero, programs,
-   stats, facilities, testimonials, CTA) is assembled
-   across prompts 11–14.
+   The full home page (programs, stats, facilities,
+   testimonials, CTA) is assembled across prompts 11–14.
+   Prompt 11 adds the hero + highlights strip at the top;
+   the remaining sections follow in later prompts.
    ============================================ */
 
 import React from 'react';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
-import PageHero from '../../components/common/PageHero/PageHero';
+import HeroSection from '../../components/sections/HeroSection';
+import HighlightsSection from '../../components/sections/HighlightsSection';
 import ComingSoon from '../../components/common/ComingSoon/ComingSoon';
 
 const Home = () => {
@@ -17,11 +19,8 @@ const Home = () => {
 
   return (
     <>
-      <PageHero
-        eyebrow="Established 2004 · Guwahati, Assam"
-        title="Icon Commerce College"
-        subtitle="Where Knowledge Meets Character — empowering Commerce, Arts & Computer Application graduates, affiliated to Gauhati University (NEP 2020 / FYUGP)."
-      />
+      <HeroSection />
+      <HighlightsSection />
       <ComingSoon label="home" />
     </>
   );

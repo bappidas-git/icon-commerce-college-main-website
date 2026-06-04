@@ -1,0 +1,222 @@
+/* ============================================
+   ProgramCard styles — Icon Commerce College
+   Rich program card with hover lift + gold accent (design-system §2–§4, §6).
+   ============================================ */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base),
+    box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+/* Hover lift + gold accent (design-system §4). */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+}
+
+/* ---------- Media ---------- */
+.media {
+  position: relative;
+  overflow: hidden;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.card:hover .image {
+  transform: scale(1.04);
+}
+
+/* Gold shortName badge (bottom-left of the image). */
+.shortBadge {
+  position: absolute;
+  left: var(--space-4);
+  bottom: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+  color: var(--color-primary-dark);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-wide);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Optional "Most Popular" ribbon (top-right). */
+.ribbon {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+/* ---------- Body ---------- */
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: var(--space-5);
+}
+
+.duration {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--color-text-muted);
+}
+
+.duration svg {
+  font-size: 1.1em;
+  color: var(--color-accent-dark);
+}
+
+.name {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+/* ---------- Highlight ticks ---------- */
+.ticks {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.tick {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--color-text);
+}
+
+.tickIcon {
+  flex-shrink: 0;
+  margin-top: 0.1em;
+  font-size: 1.1rem;
+  color: var(--color-accent);
+}
+
+/* ---------- Fees hint (pushed to the bottom so actions align across cards) ---------- */
+.fees {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: auto 0 var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.feesIcon {
+  align-self: center;
+  font-size: 1.05rem;
+  color: var(--color-accent-dark);
+}
+
+.feesValue {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-lg);
+  color: var(--color-primary);
+}
+
+.feesLabel {
+  font-size: var(--fs-xs);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Actions ---------- */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.btnView,
+.btnApply {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-button);
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition-base), color var(--transition-base),
+    border-color var(--transition-base), transform var(--transition-fast),
+    box-shadow var(--transition-base);
+}
+
+/* "View Details" — navy outline (secondary, structural link). */
+.btnView {
+  background: transparent;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-primary);
+}
+
+.btnView:hover {
+  border-color: var(--color-primary);
+  background: rgba(26, 42, 82, 0.04);
+}
+
+/* "Apply" — navy filled (the card's primary conversion action). */
+.btnApply {
+  background: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(26, 42, 82, 0.24);
+}
+
+.btnApply:hover {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(26, 42, 82, 0.32);
+}
+
+.btnView:focus-visible,
+.btnApply:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

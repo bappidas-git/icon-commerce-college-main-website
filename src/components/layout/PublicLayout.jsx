@@ -50,13 +50,15 @@ const PublicLayout = () => {
 
       <Footer />
 
-      {/* Global lead-capture drawer (opened via header CTA, floating actions, etc.) */}
+      {/* Global lead-capture drawer (opened via header CTA, floating actions, etc.).
+          `programInterest` lets a CTA (e.g. a program card) preselect the program. */}
       <LeadFormDrawer
         isOpen={isDrawerOpen}
         onClose={closeLeadDrawer}
         title={drawerConfig.title}
         subtitle={drawerConfig.subtitle}
         source={drawerConfig.source}
+        programInterest={drawerConfig.programInterest}
       />
 
       {/* Floating enquiry / WhatsApp (desktop) */}

@@ -4,6 +4,53 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.3 — Home programs & why-choose
+
+Thirteenth prompt of the rebuild (`prompts/13-home-programs-why-choose.md`). Adds
+the undergraduate-programs teaser and the "why choose us" band to the Home page,
+continuing the `src/components/sections/` group (prompts 11–14). All program data
+(fees, slugs, durations, highlights) is read from `coursesData` — no figures are
+hard-coded in the view.
+
+**ProgramsSection (`src/components/sections/ProgramsSection/`)**
+- Gold-eyebrow `Section` ("Programs" → "Undergraduate Programs (NEP 2020)") over a
+  responsive **1 / 2 / 4-column** grid of the four programmes from `coursesData`
+  (B.Com · BBA · BCA · B.A.), revealed with the centralized "shuttle" stagger via
+  `<RevealGroup>` (reduced-motion safe). Closes with a navy-outline **View All
+  Programs** link → `/courses`.
+- **ProgramCard (`ProgramsSection/ProgramCard.jsx`)** — placeholder `course-*`
+  image with a gold **shortName** badge (+ an optional "Most Popular" ribbon from
+  `course.badge`), the program name, a duration row, the first three highlight
+  ticks, and a **1st-semester fees** hint (`course.fees.total`). Two actions:
+  a navy-outline **View Details** `<Link>` → `/courses/:slug` and a navy-filled
+  **Apply** button that opens the global `apply-now` drawer pre-set to this
+  program. Hover lift + gold accent border are CSS-only so they never fight the
+  entrance transform; cards stretch to equal heights with actions bottom-aligned.
+
+**WhyChoose (`src/components/sections/WhyChoose/`)**
+- Split band: the `hero-students` placeholder with a floating **gold stat callout**
+  ("Estd. 2004 · Affiliated to Gauhati University · NEP 2020") on the left, and a
+  two-column grid of **six reason cards** on the right — Affiliated to Gauhati
+  University · NEP 2020 outcome-based curriculum · Experienced & research-active
+  faculty · Smart classrooms & computer lab · Digital library & study materials ·
+  Scholarships & student support. Each reason is plain icon-card markup inside
+  `<Reveal>`/`<RevealGroup>` (HighlightsSection precedent) so all motion routes
+  through `useReducedMotionVariants()`. Split stacks ≤992px; reasons collapse to
+  one column ≤540px.
+
+**Preset-program wiring (lead drawer)**
+- `LeadFormDrawer` now accepts a `programInterest` prop and forwards it to
+  `UnifiedLeadForm`, and `PublicLayout` passes `drawerConfig.programInterest`
+  through. Combined with `openLeadDrawer('apply-now', { programInterest })`
+  (already spread into `drawerConfig` by `ModalContext`), a program card's
+  **Apply** opens the drawer with the Program field pre-selected to that course's
+  `shortName` (which matches the form's program options). General Apply CTAs
+  (hero/header/footer) are unaffected — they open with no program preset.
+
+**Home (`src/pages/Home/Home.jsx`)**
+- Mounts `ProgramsSection` → `WhyChoose` between the stats band and the
+  `ComingSoon` placeholder.
+
 ### Phase 2.2 — Home about, vision/mission & stats
 
 Twelfth prompt of the rebuild (`prompts/12-home-about-vision-stats.md`). Adds the

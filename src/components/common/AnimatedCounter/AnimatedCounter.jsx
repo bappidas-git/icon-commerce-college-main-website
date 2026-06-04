@@ -4,7 +4,7 @@
    ============================================ */
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useInView } from 'framer-motion';
+import { useInView, useReducedMotion } from 'framer-motion';
 import styles from './AnimatedCounter.module.css';
 
 const AnimatedCounter = ({
@@ -25,6 +25,7 @@ const AnimatedCounter = ({
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once, margin: "-50px" });
+  const prefersReducedMotion = useReducedMotion();
   const [displayValue, setDisplayValue] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const animationRef = useRef(null);
@@ -60,47 +61,59 @@ const AnimatedCounter = ({
     return parts.join('.');
   }, [separator]);
 
-  // Animate counter when in view
+  // Animate counter when in view (skips the count-up under reduced motion)
   useEffect(() => {
-    if (isInView && !hasAnimated && !isSpecialFormat) {
-      const timeoutId = setTimeout(() => {
-        const startTime = performance.now();
-        const startValue = 0;
-        const endValue = numericValue;
-        const durationMs = duration * 1000;
+    if (!isInView || hasAnimated || isSpecialFormat) return undefined;
 
-        const animate = (currentTime) => {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / durationMs, 1);
+    // prefers-reduced-motion: jump straight to the final value (design-system §4 —
+    // every animation must be reduced-motion guarded).
+    if (prefersReducedMotion) {
+      setDisplayValue(
+        decimals > 0
+          ? parseFloat(numericValue.toFixed(decimals))
+          : Math.round(numericValue)
+      );
+      setHasAnimated(true);
+      return undefined;
+    }
 
-          // Ease-out cubic function for smooth animation
-          const easeOut = 1 - Math.pow(1 - progress, 3);
-          const currentValue = startValue + (endValue - startValue) * easeOut;
+    const timeoutId = setTimeout(() => {
+      const startTime = performance.now();
+      const startValue = 0;
+      const endValue = numericValue;
+      const durationMs = duration * 1000;
 
-          if (decimals > 0) {
-            setDisplayValue(parseFloat(currentValue.toFixed(decimals)));
-          } else {
-            setDisplayValue(Math.round(currentValue));
-          }
+      const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / durationMs, 1);
 
-          if (progress < 1) {
-            animationRef.current = requestAnimationFrame(animate);
-          } else {
-            setHasAnimated(true);
-          }
-        };
+        // Ease-out cubic function for smooth animation
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const currentValue = startValue + (endValue - startValue) * easeOut;
 
-        animationRef.current = requestAnimationFrame(animate);
-      }, delay * 1000);
+        if (decimals > 0) {
+          setDisplayValue(parseFloat(currentValue.toFixed(decimals)));
+        } else {
+          setDisplayValue(Math.round(currentValue));
+        }
 
-      return () => {
-        clearTimeout(timeoutId);
-        if (animationRef.current) {
-          cancelAnimationFrame(animationRef.current);
+        if (progress < 1) {
+          animationRef.current = requestAnimationFrame(animate);
+        } else {
+          setHasAnimated(true);
         }
       };
-    }
-  }, [isInView, hasAnimated, numericValue, duration, delay, decimals, isSpecialFormat]);
+
+      animationRef.current = requestAnimationFrame(animate);
+    }, delay * 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isInView, hasAnimated, numericValue, duration, delay, decimals, isSpecialFormat, prefersReducedMotion]);
 
   // Build class names
   const classNames = [

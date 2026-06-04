@@ -4,6 +4,52 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.2 — Home about, vision/mission & stats
+
+Twelfth prompt of the rebuild (`prompts/12-home-about-vision-stats.md`). Adds the
+"who we are" storytelling band, the vision & mission cards and the animated stats
+counters to the Home page, continuing the `src/components/sections/` group
+(prompts 11–14). All copy is condensed from the design-system College Profile /
+prospectus messaging (§6) — no fabricated claims.
+
+**AboutSection (`src/components/sections/AboutSection/`)**
+- Two-column teaser: the `about-college-building` placeholder with a floating gold
+  **Estd. 2004** badge (year from `collegeInfo.established`) on the left, and a
+  condensed College Profile on the right — eyebrow "About the College", H2 "A
+  legacy of quality higher education in Guwahati", three short prospectus-sourced
+  paragraphs (Gauhati University · NEP 2020 FYUGP · B.Com/BBA/BCA/B.A · experienced
+  faculty · smart classrooms, digital library, computer lab · study materials &
+  seminars), four bullet ticks and a navy **Learn More** link → `/about`.
+- Media slides in from the left while the copy reveals as a "shuttle" stagger via
+  `<Reveal>`/`<RevealGroup>` (reduced-motion safe). Grid stacks to one column ≤900px.
+
+**VisionMissionSection (`src/components/sections/VisionMission/`)**
+- Two gold-accented cards — **Our Vision** and **Our Mission** — built on the
+  prospectus Principal/President themes (excellence, holistic development, moral
+  integrity, industry readiness). Each card has a gold top-bar accent and a gold
+  icon chip; the Mission lists four commitments with gold check ticks.
+- Rendered through the shared `Section` (`bg="white"`, centered eyebrow/title);
+  the `vision-mission` placeholder sits alongside as a side accent on desktop and
+  is dropped ≤768px.
+
+**StatsSection (`src/components/sections/StatsSection/`)**
+- Navy band (`Section bg="navy"`) of six gold figures from `statsData` — Since
+  2004 · 4 UG Programs · 18+ Departments · 40+ Faculty · Gauhati University ·
+  1000s Alumni. Numeric stats reuse `AnimatedCounter`; non-numeric stats render as
+  static gold text. Each figure is a `<figure>`/`<figcaption>` with a light
+  caption for AA contrast on navy. Grid is 3 → 2 columns.
+- The year counter is rendered ungrouped (no thousands comma) so "Since 2004"
+  reads correctly.
+
+**AnimatedCounter (`src/components/common/AnimatedCounter/`)**
+- Now `prefers-reduced-motion` aware: when reduced motion is preferred the count-up
+  is skipped and the final value is shown immediately (design-system §4), satisfying
+  the stats "reduced-motion shows final values" requirement.
+
+**Home (`src/pages/Home/Home.jsx`)**
+- Mounts `AboutSection` → `VisionMission` → `StatsSection` between the highlights
+  strip and the `ComingSoon` placeholder.
+
 ### Phase 2.1 — Home hero & highlights
 
 Eleventh prompt of the rebuild (`prompts/11-home-hero-and-highlights.md`). Builds

@@ -1,0 +1,56 @@
+/* ============================================
+   StatsSection styles — Icon Commerce College
+   Navy stats band with gold count-up figures (design-system §2–§4, §6).
+   The navy background, white heading and gold eyebrow come from the shared
+   Section `bg="navy"` styles; this module only lays out the figures.
+   ============================================ */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(2rem, 5vw, 3.5rem) var(--space-6);
+}
+
+/* Each figure: centered gold value over a light caption. */
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  text-align: center;
+}
+
+/* Static gold text for non-numeric stats (e.g. "Gauhati University", "1000s").
+   Mirrors the AnimatedCounter value treatment so the band reads consistently. */
+.display {
+  font-family: 'Inter', var(--font-body), sans-serif;
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--color-accent);
+}
+
+/* Caption under each figure — light on the navy band for AA contrast. */
+.label {
+  max-width: 18ch;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ============================================
+   Responsive — 3 → 2 columns
+   ============================================ */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 380px) {
+  .display {
+    font-size: var(--fs-2xl);
+  }
+}

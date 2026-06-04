@@ -4,6 +4,35 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 0.6 — Footer
+
+Sixth prompt of the rebuild (`prompts/06-footer.md`). Replaces the boilerplate footer with
+a polished, informative multi-column footer in the Navy + Gold system, driven by
+`collegeInfo` and `navigation.js`.
+
+**Footer (`src/components/common/Footer/`)** — full rebuild
+- **Inline enquiry mini-strip** at the top of the footer: a mobile (required, validated as a
+  10-digit Indian number) + optional email field that submits straight to the shared lead
+  store via `submitLeadToWebhook` with `source: 'footer'`, including duplicate handling and
+  inline success/error feedback.
+- **Top band (navy gradient)** with five columns:
+  - **About** — logo + wordmark (English + Assamese), two-line description and
+    Facebook / YouTube / Instagram social icons (TODO URLs from `collegeInfo.social`).
+  - **Quick Links** — About, Courses, Departments, Admissions, Gallery, Contact (`react-router` `Link`).
+  - **Programs** — B.Com / BBA / BCA / B.A. linking to each `/courses/:slug`.
+  - **Reach Us** — full tappable address (opens Google Maps), both phones as click-to-call,
+    `mailto:` email, office hours and a WhatsApp chat chip.
+  - **Admissions** — Samarth portal pill (College Code 842), a "Download Prospectus" button
+    (opens the lead drawer `download-brochure`), an "Apply Now" warm-red CTA and a small
+    map thumbnail (`map-location.svg` placeholder) linking to Google Maps.
+- **Affiliation strip** — gold-bordered badge chips: "Affiliated to Gauhati University ·
+  NEP 2020 / FYUGP · Samarth Code 842 · Estd. 2004".
+- **Bottom bar** — dynamic copyright, **Privacy Policy** and **Terms of Use** links opening a
+  Framer-Motion modal with placeholder legal copy, and a discreet **Admin** link to
+  `/admin/login`.
+- Fully responsive (5 → 3 → 2 → 1 columns at 1024 / 768 / 640), GTM tracking on phone /
+  WhatsApp / CTA clicks, `prefers-reduced-motion`-guarded reveal, focus states and print styles.
+
 ### Phase 0.5 — Header, dropdown nav & mobile menu
 
 Fifth prompt of the rebuild (`prompts/05-header-navigation.md`). Replaces the temporary

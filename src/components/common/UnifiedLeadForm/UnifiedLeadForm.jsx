@@ -35,18 +35,21 @@ import {
   getMobileErrorMessage,
   getEmailErrorMessage,
   getNameErrorMessage,
+  getProgramInterestErrorMessage,
+  getStateErrorMessage,
+  getOptionalMessageErrorMessage,
 } from "../../../utils/validators";
 import styles from "./UnifiedLeadForm.module.css";
 
-// Program options for Icon Commerce College admissions.
-// NOTE: stored under `service_interest` in form state / webhook payload to
-// preserve the existing admin + webhook plumbing — the value is the program.
-const COURSE_OPTIONS = [
-  "B.Com. (Bachelor of Commerce)",
-  "BBA (Bachelor of Business Administration)",
-  "BCA (Bachelor of Computer Applications)",
-  "B.A. (Bachelor of Arts)",
-  "Not Sure — Need Guidance",
+// Program options for Icon Commerce College admissions (design-system §8).
+// The selected value is sent as `program_interest`; webhookSubmit also mirrors
+// it to the legacy `service_interest` key for admin-panel compatibility.
+const PROGRAM_OPTIONS = [
+  "B.Com.",
+  "BBA",
+  "BCA",
+  "B.A.",
+  "Undecided",
 ];
 
 // State options (Assam + North-East India + Other).
@@ -62,22 +65,25 @@ const STATE_OPTIONS = [
   "Other",
 ];
 
-// Initial form state
-const initialFormState = {
+// Initial form state. `state` defaults to Assam (design-system §8); a preset
+// `program_interest` (e.g. from a course page) is merged in at mount time.
+const makeInitialFormState = (presetProgram = "") => ({
   name: "",
   mobile: "",
   email: "",
-  service_interest: "",
-  state: "",
+  program_interest: presetProgram,
+  state: "Assam",
   message: "",
-};
+  // Honeypot — must stay empty. Bots that auto-fill every field trip this.
+  company: "",
+});
 
 // Initial error state
 const initialErrorState = {
   name: "",
   mobile: "",
   email: "",
-  service_interest: "",
+  program_interest: "",
   state: "",
   message: "",
 };
@@ -303,8 +309,11 @@ const UnifiedLeadForm = ({
   showTrustBadges = true,
   showConsent = true,
   showPhoneButton = false,
+  compact = false, // Tighter spacing for sidebars / drawers
+  programInterest = "", // Preset program selection (e.g. from a course page)
   onClose, // Called when drawer should close (for drawer variant)
-  onSubmitSuccess,
+  onSuccess, // Called with the submitted form data after a successful submit
+  onSubmitSuccess, // Legacy alias of onSuccess (kept for existing callers)
   className = "",
   formId = "unified-lead-form",
 }) => {
@@ -312,6 +321,9 @@ const UnifiedLeadForm = ({
   const title = titleProp || headerDefaults.title;
   const subtitle = subtitleProp || headerDefaults.subtitle;
   const navigate = useNavigate();
+
+  // Build the initial state once, seeding any preset program_interest.
+  const initialFormState = makeInitialFormState(programInterest);
 
   // Form state
   const [formData, setFormData] = useState(initialFormState);
@@ -324,7 +336,7 @@ const UnifiedLeadForm = ({
   const nameRef = useRef(null);
   const mobileRef = useRef(null);
   const emailRef = useRef(null);
-  const serviceRef = useRef(null);
+  const programRef = useRef(null);
   const stateSelectRef = useRef(null);
   const messageRef = useRef(null);
 
@@ -377,20 +389,18 @@ const UnifiedLeadForm = ({
             errorMessage = getEmailErrorMessage(formData.email);
           }
           break;
-        case "service_interest":
-          if (showCourseFields && !formData.service_interest) {
-            errorMessage = "Please select a course";
+        case "program_interest":
+          if (showCourseFields) {
+            errorMessage = getProgramInterestErrorMessage(formData.program_interest);
           }
           break;
         case "state":
-          if (showCourseFields && !formData.state) {
-            errorMessage = "Please select your state";
+          if (showCourseFields) {
+            errorMessage = getStateErrorMessage(formData.state);
           }
           break;
         case "message":
-          if (formData.message && formData.message.length > 500) {
-            errorMessage = "Message must be 500 characters or less";
-          }
+          errorMessage = getOptionalMessageErrorMessage(formData.message);
           break;
         default:
           break;
@@ -410,18 +420,11 @@ const UnifiedLeadForm = ({
       name: getNameErrorMessage(formData.name),
       mobile: getMobileErrorMessage(formData.mobile),
       email: formData.email ? getEmailErrorMessage(formData.email) : "",
-      service_interest:
-        showCourseFields && !formData.service_interest
-          ? "Please select a course"
-          : "",
-      state:
-        showCourseFields && !formData.state
-          ? "Please select your state"
-          : "",
-      message:
-        formData.message && formData.message.length > 500
-          ? "Message must be 500 characters or less"
-          : "",
+      program_interest: showCourseFields
+        ? getProgramInterestErrorMessage(formData.program_interest)
+        : "",
+      state: showCourseFields ? getStateErrorMessage(formData.state) : "",
+      message: getOptionalMessageErrorMessage(formData.message),
     };
 
     setErrors(newErrors);
@@ -429,7 +432,7 @@ const UnifiedLeadForm = ({
       name: true,
       mobile: true,
       email: true,
-      service_interest: true,
+      program_interest: true,
       state: true,
       message: true,
     });
@@ -441,6 +444,14 @@ const UnifiedLeadForm = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (isSubmitting) return; // Guard against double-click
+
+    // Honeypot: a real user never fills the hidden `company` field. If it's
+    // populated, silently swallow the submission (no server write, no error)
+    // so bots get no signal either way.
+    if (formData.company) {
+      setFormData(initialFormState);
+      return;
+    }
 
     // Validate form
     if (!validateForm()) {
@@ -458,14 +469,13 @@ const UnifiedLeadForm = ({
     setIsSubmitting(true);
 
     try {
-      // Prepare lead data
-      // `service_interest` holds the selected program (legacy key kept
-      // for admin panel compatibility — see COURSE_OPTIONS above).
+      // Prepare lead data. We send `program_interest`; webhookSubmit mirrors it
+      // onto the legacy `service_interest` key for admin-panel compatibility.
       const leadData = {
         name: formData.name.trim(),
         mobile: formData.mobile.trim(),
         email: formData.email.trim(),
-        service_interest: formData.service_interest || '',
+        program_interest: formData.program_interest || '',
         state: formData.state || '',
         message: formData.message || '',
         source: formId || 'general',
@@ -488,7 +498,7 @@ const UnifiedLeadForm = ({
         // Push lead form submission + generate_lead conversion events to GTM
         // (no-ops cleanly when analytics is disabled).
         trackFormSubmission(formId || 'general', {
-          serviceInterest: formData.service_interest,
+          serviceInterest: formData.program_interest,
         });
 
         // Set lead submitted flag for thank you page access
@@ -511,7 +521,11 @@ const UnifiedLeadForm = ({
           onClose();
         }
 
-        // Callback for parent component
+        // Callback for parent component (onSuccess preferred; onSubmitSuccess
+        // kept as a legacy alias).
+        if (onSuccess) {
+          onSuccess(formData);
+        }
         if (onSubmitSuccess) {
           onSubmitSuccess(formData);
         }
@@ -558,7 +572,9 @@ const UnifiedLeadForm = ({
 
   return (
     <div
-      className={`${styles.formContainer} ${getVariantClass()} ${className}`}
+      className={`${styles.formContainer} ${getVariantClass()} ${
+        compact ? styles.compact : ""
+      } ${className}`}
     >
       {/* Form Header */}
       {(showTitle || showSubtitle) && (
@@ -592,6 +608,23 @@ const UnifiedLeadForm = ({
         noValidate
         autoComplete="off"
       >
+        {/* Honeypot anti-spam field — visually hidden, skipped by keyboard and
+            screen readers. A genuine applicant never sees or fills it. */}
+        <div className={styles.honeypot} aria-hidden="true">
+          <label htmlFor={`${formId}-company`}>
+            Company (leave this field empty)
+          </label>
+          <input
+            id={`${formId}-company`}
+            type="text"
+            name="company"
+            tabIndex={-1}
+            autoComplete="off"
+            value={formData.company}
+            onChange={handleChange("company")}
+          />
+        </div>
+
         {/* Name Field */}
         <motion.div
           custom={0}
@@ -742,15 +775,15 @@ const UnifiedLeadForm = ({
           >
             <FormControl
               fullWidth
-              error={touched.service_interest && !!errors.service_interest}
+              error={touched.program_interest && !!errors.program_interest}
               className={styles.textField}
             >
               <Select
-                ref={serviceRef}
+                ref={programRef}
                 displayEmpty
-                value={formData.service_interest}
-                onChange={handleChange("service_interest")}
-                onBlur={handleBlur("service_interest")}
+                value={formData.program_interest}
+                onChange={handleChange("program_interest")}
+                onBlur={handleBlur("program_interest")}
                 disabled={isSubmitting}
                 startAdornment={
                   <InputAdornment position="start">
@@ -769,7 +802,7 @@ const UnifiedLeadForm = ({
                   if (!selected) {
                     return (
                       <span style={{ color: variant === "dark" || variant === "drawer" ? "#FFFFFF80" : undefined, opacity: variant === "dark" || variant === "drawer" ? 1 : 0.5 }}>
-                        Course Interested In
+                        Program Interested In
                       </span>
                     );
                   }
@@ -783,7 +816,7 @@ const UnifiedLeadForm = ({
                   style: { zIndex: 99999 },
                 }}
                 inputProps={{
-                  "aria-label": "Course interested in",
+                  "aria-label": "Program interested in",
                 }}
                 sx={
                   variant === "dark" || variant === "drawer"
@@ -791,14 +824,14 @@ const UnifiedLeadForm = ({
                     : undefined
                 }
               >
-                {COURSE_OPTIONS.map((option) => (
+                {PROGRAM_OPTIONS.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
                 ))}
               </Select>
-              {touched.service_interest && errors.service_interest && (
-                <FormHelperText>{errors.service_interest}</FormHelperText>
+              {touched.program_interest && errors.program_interest && (
+                <FormHelperText>{errors.program_interest}</FormHelperText>
               )}
             </FormControl>
           </motion.div>

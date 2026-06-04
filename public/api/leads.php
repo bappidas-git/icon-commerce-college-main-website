@@ -1,15 +1,28 @@
 <?php
 /* ============================================
-   Lead Storage API
-   Server-side shared storage for leads so the
-   admin panel can see leads submitted from any
-   browser/device (localStorage is per-device).
+   Lead Storage API — Icon Commerce College
+   Server-side shared storage for admission-enquiry
+   leads so the admin panel can see leads submitted
+   from any browser/device (localStorage is per-device).
+
+   Lead record shape (college fields, design-system §8):
+     name             (req)  Applicant full name
+     mobile           (req)  Indian 10-digit mobile (no +91)
+     email            (opt)  Email address
+     program_interest        B.Com / BBA / BCA / B.A. / Undecided
+     service_interest        Mirror of program_interest — canonical key
+                             read by the admin panel (kept for compat)
+     state                   Home state (Assam + NE India + Other)
+     message          (opt)  Free-text question
+     + auto: lead_id, source, status, submitted_at, updated_at,
+             page_url, user_agent, utm_*/gclid, notes[], activity[]
+   This endpoint is field-agnostic: it stores whatever the
+   client sends, so adding/renaming fields needs no PHP change.
 
    Endpoints (all on this single file):
      POST /api/leads.php?action=create
        Body: { "lead": {...} }
-       Public — no auth. Called by webhookSubmit.js
-       after the Pabbly POST.
+       Public — no auth. Called by webhookSubmit.js.
 
      GET  /api/leads.php?action=list
        Header: X-Admin-Key: <ADMIN_API_KEY>

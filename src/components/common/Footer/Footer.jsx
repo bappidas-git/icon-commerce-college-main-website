@@ -324,7 +324,7 @@ const EnquiryStrip = () => {
       name: email ? email.split("@")[0] : "Website enquiry",
       mobile: digits,
       email: email.trim(),
-      service_interest: "Undecided",
+      program_interest: "Undecided",
       state: "Assam",
       message: "Quick enquiry submitted from the website footer.",
       source: "footer",

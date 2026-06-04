@@ -1,0 +1,32 @@
+export const locationData = {
+  name: "Channabasaveshwara Institute of Technology (CIT)",
+  address: "NH 206, B.H. Road, Gubbi, Tumakuru – 572 216, Karnataka",
+  city: "Tumakuru",
+  state: "Karnataka",
+  phone: "+918069645014",
+  phoneDisplay: "+91 8069645014",
+  whatsapp: "918069645014",
+  mapUrl:
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1779671141/CIT-Map_jqtimx.png",
+  warehouses: [],
+  nearbyAreas: [
+    "Gubbi",
+    "Tumakuru City",
+    "Kyathsandra",
+    "NH-206 (B.H. Road)",
+    "Bengaluru (~70 km)",
+    "Kempegowda International Airport (~110 km)",
+    "Tumakuru Railway Station",
+  ],
+  servingStates: [
+    "Assam",
+    "Arunachal Pradesh",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Tripura",
+    "Sikkim",
+  ],
+  audienceNote: "Welcoming students from across North East India",
+};

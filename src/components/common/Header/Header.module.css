@@ -1,0 +1,462 @@
+/* ============================================
+   Header Component Styles - Landing Page Boilerplate
+   ============================================ */
+
+/* Header Base */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  padding: var(--space-3) 0;
+  background: transparent;
+  transition: all var(--transition-base);
+}
+
+/* Scrolled State */
+.header.scrolled {
+  background: var(--white);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  padding: var(--space-2) 0;
+}
+
+.header.scrolled .navLink {
+  color: var(--primary-dark);
+}
+
+/* Once scrolled the header is white, so amber would be low-contrast — use the
+   brand red for an accessible, on-brand hover state and matching underline. */
+.header.scrolled .navLink:hover,
+.header.scrolled .navLink.active {
+  color: var(--accent-red);
+}
+
+.header.scrolled .navLink::after {
+  background: var(--accent-red);
+}
+
+.header.scrolled .mainLogo {
+  filter: none;
+}
+
+.header.scrolled .menuIcon {
+  color: var(--primary-dark);
+}
+
+/* Header Container */
+.headerContainer {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: nowrap;
+}
+
+/* Logo Section */
+.logoSection {
+  flex-shrink: 0;
+}
+
+.logoLink {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-decoration: none;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.accreditationStrip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px var(--space-2);
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wider);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  transition: all var(--transition-base);
+}
+
+.scrolled .accreditationStrip {
+  color: var(--primary-dark);
+  background: rgba(12, 45, 72, 0.06);
+  border-color: rgba(12, 45, 72, 0.25);
+}
+
+.mainLogo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  transition: opacity var(--transition-base), filter var(--transition-base);
+}
+
+.logoDivider {
+  width: 1px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background var(--transition-base);
+}
+
+.scrolled .logoDivider {
+  background: var(--border-gray);
+}
+
+.projectLogo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  transition: filter var(--transition-base);
+}
+
+.scrolled .projectLogo {
+  filter: none;
+}
+
+/* Desktop Navigation */
+.desktopNav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  position: relative;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--white);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent-amber);
+  transform: translateX(-50%);
+  transition: width var(--transition-fast);
+  border-radius: var(--radius-full);
+}
+
+/* At the top of the page the header is transparent over the dark hero, so the
+   hover state uses the amber accent — the navy --accent-gold was invisible. */
+.navLink:hover,
+.navLink.active {
+  color: var(--accent-amber);
+}
+
+.navLink:hover::after,
+.navLink.active::after {
+  width: 60%;
+}
+
+/* Right Section */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.ctaButton {
+  white-space: nowrap;
+}
+
+.callButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  color: var(--white);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.callButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  border-color: var(--white);
+  transform: translateY(-1px);
+}
+
+.header.scrolled .callButton {
+  color: var(--primary-dark);
+  border-color: rgba(12, 45, 72, 0.3);
+}
+
+.header.scrolled .callButton:hover {
+  background: rgba(12, 45, 72, 0.06);
+  color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.callButtonIcon {
+  font-size: 18px;
+}
+
+/* Primary "Apply Now" CTA — amber accent */
+.applyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  background: var(--accent-amber);
+  color: var(--white);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  box-shadow: var(--shadow-button);
+  font-family: inherit;
+}
+
+.applyButton:hover {
+  background: var(--accent-amber-dark);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-button-hover);
+}
+
+.applyButton:focus-visible {
+  outline: 2px solid var(--accent-amber-dark);
+  outline-offset: 2px;
+}
+
+.applyButtonIcon {
+  font-size: 18px;
+}
+
+.mobileApplyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+  background: var(--accent-amber);
+  color: var(--white);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-button);
+  font-family: inherit;
+}
+
+.mobileApplyButton:hover {
+  background: var(--accent-amber-dark);
+  color: var(--white);
+}
+
+.mobileCallButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  color: var(--primary-dark);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  border: 1.5px solid var(--primary-dark);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.mobileCallButton:hover {
+  background: var(--primary-dark);
+  color: var(--white);
+}
+
+/* Menu Button */
+.menuButton {
+  display: none;
+  padding: var(--space-2);
+  color: var(--white);
+  transition: color var(--transition-fast);
+}
+
+.menuIcon {
+  font-size: 28px;
+  color: inherit;
+}
+
+/* Mobile Navigation */
+.mobileNav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.mobileNavContent {
+  padding: var(--space-4);
+}
+
+.mobileNavList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.mobileNavLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--primary-dark);
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  /* Button reset styles */
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.mobileNavLink:hover,
+.mobileNavLink.active {
+  background: var(--light-gray);
+  color: var(--accent-gold);
+}
+
+.mobileNavIcon {
+  font-size: 22px;
+  color: var(--text-gray);
+  transition: color var(--transition-fast);
+}
+
+.mobileNavLink:hover .mobileNavIcon,
+.mobileNavLink.active .mobileNavIcon {
+  color: var(--accent-gold);
+}
+
+.mobileNavCTA {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-gray);
+}
+
+/* Responsive Styles */
+@media (max-width: 1280px) {
+  .navLink {
+    padding: var(--space-2);
+    font-size: 13px;
+  }
+
+}
+
+@media (max-width: 1024px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .menuButton {
+    display: flex;
+  }
+
+  .ctaButton {
+    display: none;
+  }
+
+  .headerContainer {
+    gap: var(--space-3);
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: var(--space-2) 0;
+  }
+
+  .logoWrapper {
+    gap: var(--space-2);
+  }
+
+  .mainLogo {
+    height: 40px;
+  }
+
+  .projectLogo {
+    height: 22px;
+  }
+
+  .logoDivider {
+    height: 24px;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .logoDivider {
+    display: none;
+  }
+
+  .projectLogo {
+    display: none;
+  }
+
+  .mainLogo {
+    height: 36px;
+  }
+
+}
+
+/* Focus States */
+.navLink:focus-visible,
+.mobileNavLink:focus-visible {
+  outline: 2px solid var(--accent-amber);
+  outline-offset: 2px;
+}

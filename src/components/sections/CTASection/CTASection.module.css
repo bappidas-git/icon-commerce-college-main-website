@@ -1,0 +1,365 @@
+/* ============================================
+   CTASection Styles — Mid-page Apply CTA band
+   CIT B.E. 2026 admission lead capture
+   ============================================ */
+
+/* Section Container */
+.section {
+  position: relative;
+  padding: var(--space-16) 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark) 100%
+  );
+  overflow: hidden;
+}
+
+/* Background Overlay */
+.bgOverlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://placehold.co/1920x900/0C2D48/081F33?text=");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* Background Pattern */
+.bgPattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(224, 48, 30, 0.08) 0%,
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 60% 80%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 35%
+    );
+  pointer-events: none;
+}
+
+/* Content Container */
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-6);
+}
+
+/* Section Header */
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 760px;
+}
+
+.overline {
+  font-size: var(--fs-sm) !important;
+  font-weight: var(--fw-semibold) !important;
+  letter-spacing: 0.15em !important;
+  color: var(--accent-amber-light) !important;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: var(--fw-bold);
+  color: #ffffff !important;
+  line-height: var(--lh-tight);
+}
+
+.highlight {
+  position: relative;
+  display: inline-block;
+  color: var(--accent-amber) !important;
+}
+
+.highlight::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent-amber);
+  border-radius: var(--radius-full);
+  opacity: 0.45;
+}
+
+.subtitle {
+  font-size: var(--fs-md);
+  color: rgba(255, 255, 255, 0.85) !important;
+  line-height: var(--lh-relaxed);
+  max-width: 640px;
+}
+
+/* Reassurance Pills */
+.reassuranceList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  max-width: 880px;
+}
+
+.reassuranceItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.reassuranceIcon {
+  font-size: 1.15rem;
+  color: var(--accent-amber-light);
+  flex-shrink: 0;
+}
+
+/* CTA Buttons */
+.ctaButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+.primaryBtn {
+  min-width: 240px;
+  box-shadow: 0 8px 25px rgba(224, 48, 30, 0.4);
+}
+
+.primaryBtn:hover {
+  box-shadow: 0 12px 35px rgba(224, 48, 30, 0.5);
+}
+
+.secondaryBtn {
+  min-width: 240px;
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(4px);
+}
+
+.secondaryBtn:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* Micro Copy */
+.microCopy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  padding-top: var(--space-2);
+}
+
+.microIcon {
+  font-size: 1.1rem;
+  color: var(--accent-amber-light);
+}
+
+/* Corner Decorations */
+.cornerDecoration1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 70%
+  );
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  pointer-events: none;
+}
+
+.cornerDecoration2 {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(
+    315deg,
+    rgba(224, 48, 30, 0.12) 0%,
+    transparent 70%
+  );
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
+/* ============================================
+   Tablet Styles (768px - 1023px)
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .section {
+    padding: var(--space-14) 0;
+  }
+}
+
+/* ============================================
+   Mobile Styles (below 768px)
+   ============================================ */
+@media (max-width: 767px) {
+  .section {
+    padding: var(--space-12) 0;
+  }
+
+  .title {
+    font-size: var(--fs-2xl);
+  }
+
+  .highlight::after {
+    height: 3px;
+    bottom: 1px;
+  }
+
+  .subtitle {
+    font-size: var(--fs-sm);
+  }
+
+  .reassuranceList {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .reassuranceItem {
+    justify-content: flex-start;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    max-width: 320px;
+    min-width: unset;
+  }
+
+  .microCopy {
+    font-size: var(--fs-xs);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .cornerDecoration1,
+  .cornerDecoration2 {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* Small Mobile (below 480px) */
+@media (max-width: 479px) {
+  .section {
+    padding: var(--space-10) 0;
+  }
+
+  .title {
+    font-size: var(--fs-xl);
+  }
+
+  .subtitle {
+    font-size: var(--fs-xs);
+    line-height: 1.7;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    max-width: 100%;
+  }
+}
+
+/* ============================================
+   Touch Device Optimizations
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+  .primaryBtn:hover,
+  .secondaryBtn:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .primaryBtn,
+  .secondaryBtn {
+    transition: none;
+  }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+  .section {
+    background: #f5f7fa;
+    padding: var(--space-8) 0;
+  }
+
+  .bgOverlay,
+  .bgPattern,
+  .cornerDecoration1,
+  .cornerDecoration2 {
+    display: none;
+  }
+
+  .title,
+  .subtitle,
+  .overline,
+  .microCopy {
+    color: var(--color-primary) !important;
+  }
+
+  .reassuranceItem {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+    color: #333;
+  }
+
+  .ctaButtons {
+    display: none;
+  }
+}

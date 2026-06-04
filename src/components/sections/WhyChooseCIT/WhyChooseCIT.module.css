@@ -1,0 +1,676 @@
+/* ============================================
+   WhyChooseCIT Styles
+   NE-objection answers + CIT direct-admission CTA.
+   CIT blue (#0C2D48) + amber (#E0301E) palette.
+   ============================================ */
+
+/* ---------- Section ---------- */
+.section {
+  position: relative;
+  padding: var(--space-16) 0;
+  background: linear-gradient(180deg, #f8fafc 0%, var(--color-tint) 50%, #f8fafc 100%);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bgDecor {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    rgba(12, 45, 72, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.6),
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.bgGlowOne,
+.bgGlowTwo {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.bgGlowOne {
+  top: -180px;
+  left: -160px;
+  background: rgba(12, 45, 72, 0.25);
+}
+
+.bgGlowTwo {
+  bottom: -200px;
+  right: -140px;
+  background: rgba(224, 48, 30, 0.22);
+}
+
+.wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Header ---------- */
+.header {
+  max-width: 760px;
+  margin: 0 auto var(--space-12);
+  text-align: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(12, 45, 72, 0.08);
+  color: var(--color-primary);
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  border: 1px solid rgba(12, 45, 72, 0.2);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
+}
+
+.badgeIcon {
+  font-size: 1.1rem;
+  color: var(--color-accent);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 2.4vw + 0.5rem, 2.75rem);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-4);
+}
+
+.titleAccent {
+  position: relative;
+  color: var(--color-accent);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--accent-amber-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.titleAccent::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  border-radius: var(--radius-full);
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--text-gray);
+  line-height: var(--lh-relaxed);
+  margin-top: var(--space-4);
+}
+
+/* ---------- Objection grid ---------- */
+.reasonsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-12);
+}
+
+.reasonCard {
+  position: relative;
+  background: #ffffff;
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8) var(--space-6);
+  border: 1px solid rgba(12, 45, 72, 0.1);
+  box-shadow: 0 8px 24px rgba(12, 45, 72, 0.08);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+  overflow: hidden;
+}
+
+.reasonCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  opacity: 0.9;
+}
+
+.reasonCard:hover {
+  box-shadow: 0 16px 40px rgba(12, 45, 72, 0.16);
+  border-color: rgba(12, 45, 72, 0.25);
+}
+
+.reasonIconWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: rgba(12, 45, 72, 0.1);
+  color: var(--color-primary);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-5);
+}
+
+.reasonIcon {
+  font-size: 2rem;
+}
+
+.reasonNumber {
+  position: absolute;
+  top: -12px;
+  right: -16px;
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  font-weight: var(--fw-extrabold);
+  color: rgba(12, 45, 72, 0.12);
+  letter-spacing: var(--ls-tight);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.reasonTitle {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  margin: 0 0 var(--space-3);
+  line-height: var(--lh-snug);
+}
+
+.reasonDescription {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--text-gray);
+  line-height: var(--lh-relaxed);
+  margin: 0;
+}
+
+/* ---------- CTA Banner ---------- */
+.ctaBanner {
+  position: relative;
+  border-radius: var(--radius-3xl);
+  padding: var(--space-10);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 55%, #1A5276 140%);
+  color: #ffffff;
+  box-shadow: 0 30px 80px rgba(12, 45, 72, 0.35);
+  overflow: hidden;
+}
+
+.ctaBanner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(224, 48, 30, 0.2) 0%,
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 45%
+    );
+  pointer-events: none;
+}
+
+.bannerGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--space-10);
+  align-items: center;
+}
+
+/* --- Banner Left --- */
+.bannerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.bannerBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(224, 48, 30, 0.18);
+  color: #ffffff;
+  border: 1px solid rgba(224, 48, 30, 0.4);
+  border-radius: var(--radius-full);
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  width: fit-content;
+  backdrop-filter: blur(8px);
+}
+
+.bannerBadgeIcon {
+  font-size: 1.1rem;
+  color: var(--color-accent);
+}
+
+.bannerTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 1.8vw + 0.4rem, 2rem);
+  font-weight: var(--fw-bold);
+  color: #ffffff !important;
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+
+.bannerTitleAccent {
+  color: var(--color-accent) !important;
+  white-space: nowrap;
+}
+
+.reassuranceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.reassuranceItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: rgba(255, 255, 255, 0.92);
+  line-height: var(--lh-relaxed);
+}
+
+.reassuranceIcon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  color: var(--color-accent);
+  margin-top: 2px;
+}
+
+/* --- Banner Right (CTA Card) --- */
+.bannerRight {
+  display: flex;
+  justify-content: center;
+}
+
+.ctaCard {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  color: var(--text-dark-gray);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.ctaLabel {
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-secondary);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+.ctaHeadline {
+  font-family: var(--font-heading);
+  font-size: clamp(1.15rem, 1vw + 0.6rem, 1.4rem);
+  font-weight: var(--fw-bold);
+  color: var(--color-primary);
+  line-height: var(--lh-snug);
+  margin: 0;
+}
+
+.ctaButton {
+  margin-top: var(--space-2);
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: var(--accent-amber-gradient);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  padding: var(--space-4) var(--space-6);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  text-transform: none;
+  box-shadow: 0 10px 24px rgba(224, 48, 30, 0.4);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--accent-amber-light) 0%, var(--color-accent) 100%);
+  box-shadow: 0 14px 32px rgba(224, 48, 30, 0.5);
+}
+
+.ctaButton:focus-visible {
+  outline: 3px solid rgba(224, 48, 30, 0.5);
+  outline-offset: 3px;
+}
+
+.ctaButtonIcon {
+  font-size: 1.25rem;
+}
+
+.callLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--fw-medium);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.callLink:hover {
+  color: var(--color-primary-dark);
+  background: rgba(12, 45, 72, 0.06);
+}
+
+.callLink strong {
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.01em;
+}
+
+.callIcon {
+  font-size: 1.15rem;
+  color: var(--color-success);
+}
+
+.trustRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+.trustItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: var(--fw-medium);
+  color: var(--text-gray);
+}
+
+.trustItem svg,
+.trustItem :global(iconify-icon) {
+  color: var(--color-accent);
+  font-size: 1rem;
+}
+
+.ctaDisclaimer {
+  font-family: var(--font-body);
+  font-size: 10px !important;
+  color: var(--text-gray);
+  margin-top: 0;
+  opacity: 0.85;
+  line-height: var(--lh-normal);
+}
+
+/* ============================================
+   Tablet (768px - 1023px)
+   ============================================ */
+@media (max-width: 1023px) {
+  .section {
+    padding: var(--space-14) 0;
+  }
+
+  .header {
+    margin-bottom: var(--space-10);
+  }
+
+  .reasonsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin-bottom: var(--space-10);
+  }
+
+  .reasonCard:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .ctaBanner {
+    padding: var(--space-8);
+  }
+
+  .bannerGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .bannerLeft {
+    align-items: center;
+    text-align: center;
+  }
+
+  .bannerTitle {
+    text-align: center;
+  }
+
+  .reassuranceList {
+    text-align: left;
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .ctaCard {
+    max-width: 440px;
+  }
+}
+
+/* ============================================
+   Mobile (below 768px)
+   ============================================ */
+@media (max-width: 767px) {
+  .section {
+    padding: var(--space-12) 0;
+  }
+
+  .header {
+    margin-bottom: var(--space-8);
+  }
+
+  .title {
+    font-size: 1.65rem;
+  }
+
+  .subtitle {
+    font-size: var(--fs-sm);
+  }
+
+  .reasonsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .reasonCard {
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .reasonCard:nth-child(3) {
+    grid-column: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  .reasonIconWrap {
+    width: 56px;
+    height: 56px;
+    margin-bottom: var(--space-4);
+  }
+
+  .reasonIcon {
+    font-size: 1.75rem;
+  }
+
+  .reasonNumber {
+    font-size: 1.75rem;
+    right: -10px;
+    top: -8px;
+  }
+
+  .ctaBanner {
+    padding: var(--space-6) var(--space-5);
+    border-radius: var(--radius-2xl);
+  }
+
+  .bannerGrid {
+    gap: var(--space-6);
+  }
+
+  .bannerLeft {
+    gap: var(--space-4);
+  }
+
+  .bannerTitle {
+    font-size: 1.3rem;
+  }
+
+  .bannerTitleAccent {
+    white-space: normal;
+  }
+
+  .reassuranceItem {
+    font-size: var(--fs-sm);
+  }
+
+  .ctaCard {
+    padding: var(--space-6) var(--space-5);
+    max-width: 100%;
+  }
+
+  .ctaHeadline {
+    font-size: 1.15rem;
+  }
+
+  .ctaButton {
+    font-size: var(--fs-sm);
+    padding: var(--space-3) var(--space-5);
+  }
+
+  .callLink {
+    font-size: var(--fs-sm);
+  }
+
+  .trustRow {
+    gap: var(--space-3);
+  }
+}
+
+/* Small mobile */
+@media (max-width: 420px) {
+  .title {
+    font-size: 1.45rem;
+  }
+
+  .bannerTitle {
+    font-size: 1.15rem;
+  }
+
+  .ctaHeadline {
+    font-size: 1.05rem;
+  }
+}
+
+/* ============================================
+   Motion preferences
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .reasonCard,
+  .ctaButton {
+    transition: none;
+  }
+
+  .ctaButton:hover {
+    transform: none;
+  }
+
+  .reasonCard:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   Print
+   ============================================ */
+@media print {
+  .section {
+    background: #ffffff;
+    padding: var(--space-8) 0;
+  }
+
+  .bgDecor,
+  .bgGlowOne,
+  .bgGlowTwo {
+    display: none;
+  }
+
+  .ctaBanner {
+    background: #f0f4f8;
+    color: #1a1a1a;
+    box-shadow: none;
+  }
+
+  .bannerTitle,
+  .reassuranceItem {
+    color: #1a1a1a !important;
+  }
+}

@@ -1,0 +1,623 @@
+/* ============================================
+   LocationSection Styles — CIT Tumakuru
+   Campus location + NE travel reassurance band
+   ============================================ */
+
+/* Section Container */
+.section {
+  position: relative;
+  padding: var(--space-20) 0;
+  background: var(--off-white);
+  overflow: hidden;
+}
+
+.mainContent {
+  margin-top: var(--space-8);
+}
+
+/* ========== Campus Info Card ========== */
+.centreInfoCard {
+  background: var(--white);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  height: 100%;
+  box-shadow: 0 10px 40px rgba(12, 45, 72, 0.08);
+  border: 1px solid var(--medium-gray);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.centreHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.centreIconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-xl);
+  background: var(--card-dark-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.centreName {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  color: var(--primary-dark);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-snug);
+  margin-bottom: var(--space-1);
+}
+
+.centreAddress {
+  color: var(--text-gray);
+  font-size: var(--fs-sm);
+}
+
+/* Contact List */
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--off-white);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid transparent;
+}
+
+.contactItem:hover {
+  background: var(--card-blue);
+  transform: translateX(4px);
+  border-color: var(--primary-dark);
+}
+
+.contactIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: rgba(12, 45, 72, 0.12);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.contactIconWhatsapp {
+  background: rgba(30, 142, 90, 0.15);
+  color: #1E8E5A;
+}
+
+.contactLabel {
+  display: block;
+  color: var(--text-gray);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  font-weight: var(--fw-medium);
+  margin-bottom: 2px;
+}
+
+.contactValue {
+  color: var(--primary-dark);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  word-break: break-word;
+}
+
+/* ========== Map ========== */
+.mapWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mapContainer {
+  position: relative;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(12, 45, 72, 0.14);
+  height: 100%;
+}
+
+.mapPlaceholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-dark-light) 100%);
+}
+
+.mapImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mapOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(12, 45, 72, 0.25) 0%, rgba(12, 45, 72, 0.78) 100%);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.mapPinIcon {
+  font-size: 3rem;
+  color: var(--accent-amber);
+  margin-bottom: var(--space-2);
+  filter: drop-shadow(0 2px 8px rgba(224, 48, 30, 0.45));
+}
+
+.mapTitle {
+  font-family: var(--font-heading);
+  color: var(--white);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-1);
+}
+
+.mapAddress {
+  color: #E6E8EA;
+  margin-bottom: var(--space-4);
+  max-width: 300px;
+}
+
+.mapButton {
+  z-index: 1;
+}
+
+/* ========== NE Helper Block ========== */
+.neBlock {
+  margin-top: var(--space-16);
+  padding: var(--space-10) var(--space-6);
+  background: var(--card-blue);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--medium-gray);
+}
+
+.neBlockHead {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto var(--space-8);
+}
+
+.neBlockEyebrow {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-widest);
+  color: var(--accent-red);
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+
+.neBlockTitle {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  color: var(--primary-dark);
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-snug);
+  margin-bottom: var(--space-3);
+}
+
+.neBlockSubtitle {
+  color: var(--text-gray);
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+}
+
+.neGrid {
+  margin-top: 0;
+}
+
+.connectivityCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--medium-gray);
+  transition: all var(--transition-base);
+  cursor: default;
+  height: 100%;
+}
+
+.connectivityCard:hover {
+  border-color: var(--primary-dark);
+  box-shadow: 0 8px 24px rgba(12, 45, 72, 0.12);
+}
+
+.connectivityIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.connectivityBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.connectivityTitle {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  color: var(--primary-dark);
+  font-size: var(--fs-base);
+  line-height: var(--lh-snug);
+}
+
+.connectivityText {
+  font-weight: var(--fw-regular);
+  color: var(--text-gray);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+}
+
+/* ========== States Band ========== */
+.statesBand {
+  margin-top: var(--space-12);
+  text-align: center;
+}
+
+.statesTitle {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  color: var(--primary-dark);
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-6);
+}
+
+.statesPills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.statePill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 38px;
+  padding: 0 var(--space-4);
+  background: var(--white);
+  color: var(--primary-dark);
+  border: 1px solid var(--border-gray);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  transition: all var(--transition-base);
+}
+
+.statePill svg {
+  font-size: 1rem;
+  color: var(--accent-red);
+}
+
+.statePill:hover {
+  background: var(--primary-dark);
+  color: var(--white);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(12, 45, 72, 0.25);
+}
+
+.statePill:hover svg {
+  color: var(--accent-amber);
+}
+
+/* ========== Bottom CTA ========== */
+.bottomCta {
+  margin-top: var(--space-12);
+  text-align: center;
+  padding: var(--space-10) var(--space-6);
+  background: var(--card-dark-gradient);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 20px 60px rgba(12, 45, 72, 0.18);
+}
+
+.ctaTitle {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-bold);
+  color: var(--white);
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-2xl);
+}
+
+.ctaSubtitle {
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 640px;
+  margin: 0 auto var(--space-6);
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+}
+
+.ctaButtons {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.callUsBtn {
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(4px);
+}
+
+.callUsBtn:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+/* ========== Background Decorations ========== */
+.bgDecoration1 {
+  position: absolute;
+  top: 10%;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(12, 45, 72, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+}
+
+.bgDecoration2 {
+  position: absolute;
+  bottom: 10%;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(224, 48, 30, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 1024px) {
+  .section {
+    padding: var(--space-16) 0;
+  }
+
+  .connectivityCard {
+    padding: var(--space-4);
+  }
+
+  .neBlock {
+    padding: var(--space-8) var(--space-5);
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: var(--space-12) 0;
+  }
+
+  .mainContent {
+    margin-top: var(--space-6);
+  }
+
+  .centreInfoCard {
+    padding: var(--space-4);
+    border-radius: var(--radius-xl);
+    gap: var(--space-4);
+  }
+
+  .centreIconWrapper {
+    width: 48px;
+    height: 48px;
+    font-size: 1.4rem;
+  }
+
+  .centreName {
+    font-size: var(--fs-base);
+  }
+
+  .mapContainer {
+    border-radius: var(--radius-xl);
+  }
+
+  .mapPlaceholder {
+    min-height: 260px;
+  }
+
+  .neBlock {
+    margin-top: var(--space-10);
+    padding: var(--space-6) var(--space-4);
+    border-radius: var(--radius-xl);
+  }
+
+  .neBlockTitle {
+    font-size: var(--fs-xl);
+  }
+
+  .neBlockHead {
+    margin-bottom: var(--space-6);
+  }
+
+  .connectivityIcon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+  }
+
+  .connectivityTitle {
+    font-size: var(--fs-sm);
+  }
+
+  .connectivityText {
+    font-size: var(--fs-xs);
+  }
+
+  .statesBand {
+    margin-top: var(--space-8);
+  }
+
+  .statesTitle {
+    font-size: var(--fs-base);
+    margin-bottom: var(--space-4);
+  }
+
+  .statesPills {
+    gap: var(--space-2);
+  }
+
+  .statePill {
+    height: 32px;
+    padding: 0 var(--space-3);
+    font-size: var(--fs-xs);
+  }
+
+  .bottomCta {
+    margin-top: var(--space-8);
+    padding: var(--space-8) var(--space-4);
+    border-radius: var(--radius-xl);
+  }
+
+  .ctaTitle {
+    font-size: var(--fs-xl);
+    margin-bottom: var(--space-2);
+  }
+
+  .ctaSubtitle {
+    font-size: var(--fs-sm);
+    margin-bottom: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: var(--space-10) 0;
+  }
+
+  .centreHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .contactItem {
+    padding: var(--space-2);
+    gap: var(--space-2);
+  }
+
+  .contactIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .mapOverlay {
+    padding: var(--space-4);
+  }
+
+  .mapTitle {
+    font-size: var(--fs-base);
+  }
+
+  .mapAddress {
+    font-size: var(--fs-xs);
+  }
+
+  .mapPinIcon {
+    font-size: 2.4rem;
+  }
+
+  .connectivityCard {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .connectivityIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .bottomCta {
+    padding: var(--space-6) var(--space-3);
+  }
+
+  .ctaTitle {
+    font-size: var(--fs-lg);
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+}
+
+/* Touch device fix */
+@media (hover: none) and (pointer: coarse) {
+  .contactItem:hover,
+  .statePill:hover,
+  .connectivityCard:hover {
+    transform: none;
+  }
+}
+
+/* Print */
+@media print {
+  .section {
+    background: var(--white);
+    padding: var(--space-8) 0;
+  }
+
+  .mapContainer,
+  .bgDecoration1,
+  .bgDecoration2 {
+    display: none;
+  }
+
+  .centreInfoCard,
+  .neBlock {
+    box-shadow: none;
+    border: 1px solid var(--medium-gray);
+  }
+
+  .bottomCta {
+    background: var(--white);
+    box-shadow: none;
+    border: 1px solid var(--medium-gray);
+  }
+
+  .ctaTitle,
+  .ctaSubtitle {
+    color: var(--primary-dark);
+  }
+}

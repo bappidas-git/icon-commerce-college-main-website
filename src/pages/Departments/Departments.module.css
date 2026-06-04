@@ -179,8 +179,10 @@
   width: 54px;
   height: 54px;
   border-radius: var(--radius-md);
-  background: var(--stream-accent, var(--color-accent));
-  color: #ffffff;
+  /* Consistently gold (brand emphasis) so the badge stays legible on any image
+     — a per-stream navy badge would vanish on dark photos / the navy placeholder. */
+  background: var(--gradient-gold);
+  color: var(--color-primary-dark);
   font-size: 28px;
   box-shadow: var(--shadow-md);
 }
@@ -240,6 +242,10 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-5);
+  /* Cards size to their own content so expanding one card's accordion never
+     stretches its collapsed row-mates (a uniform collapsed height is kept via
+     the blurb's min-height in DepartmentCard). */
+  align-items: start;
   margin: 0;
   padding: 0;
   list-style: none;

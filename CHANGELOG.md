@@ -54,6 +54,15 @@ separate routes.
 - Reveal-on-scroll is reduced-motion safe; card/image hover lifts are CSS-only.
   `npm run build` stays green (no new warnings).
 
+**Visual QA (multi-viewport screenshots — Desktop / Tablet / Mobile)**
+- Department cards size to their own content (`align-items: start`) so expanding
+  one card's accordion no longer stretches its collapsed row-mates into tall,
+  empty cards; the blurb reserves two lines (`min-height`) so collapsed rows stay
+  uniform and the "Details" toggles align.
+- The stream image badge is now consistently gold (brand emphasis) instead of the
+  per-stream accent — a navy Commerce badge was invisible on the navy placeholder
+  (and would be unreliable on dark photos).
+
 ### Phase 2.8 — Course detail template
 
 Eighteenth prompt of the rebuild (`prompts/18-course-detail-pages.md`). Replaces the

@@ -72,6 +72,9 @@
 
 .blurb {
   margin: 0;
+  /* Reserve two lines so collapsed cards in a row keep a uniform height and
+     their "Details" toggles align (blurbs run one or two lines). */
+  min-height: calc(var(--fs-sm) * var(--lh-relaxed) * 2);
   font-size: var(--fs-sm);
   line-height: var(--lh-relaxed);
   color: var(--color-text-muted);

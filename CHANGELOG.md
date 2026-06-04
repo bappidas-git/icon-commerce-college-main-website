@@ -44,6 +44,21 @@ verbatim prospectus messages land in prompt 37.
   contributes `Person` schema for the President and Principal. Removes the
   `ComingSoon` placeholder. `npm run build` stays green.
 
+**Visual QA fixes (multi-viewport screenshot review — desktop/tablet/mobile)**
+- **Directory grid** — switched from a fixed 4-column CSS grid to a centred
+  flex layout (`flex: 1 1 260px; max-width: 300px`). Seven desks never divide
+  evenly, so the old grid left an awkward incomplete final row — most visibly a
+  lonely left-aligned card on tablet. The trailing row now centres at every
+  width (desktop 4+3, tablet 2+2+2+1, phones full-width single column) while all
+  cards keep a uniform width.
+- **Reversed message blocks** — the gold quote disc now mirrors to the inner,
+  text-facing corner of the portrait (it previously sat on the outer page-edge
+  corner on right-hand portraits).
+- Re-verified after the fixes: `npm run build` green, and the Home-teaser
+  deep-links land correctly (direct `/leadership#dr-mandira-saha` load and an
+  in-page card click both scroll the target desk to exactly the fixed-header
+  offset).
+
 ### Phase 2.5 — About page
 
 Fifteenth prompt of the rebuild (`prompts/15-about-page.md`). Replaces the

@@ -10,18 +10,24 @@
 /* ============================================
    2 — Leadership directory (ProfileCard grid)
    ============================================ */
+/* Centered flex so an incomplete final row (7 desks never divide evenly)
+   stays centred at every width, instead of a lonely left-aligned card. */
 .cardGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-6);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/* Reveal wrapper fills its cell so cards size evenly. */
+/* Reveal wrapper fills its cell; cards grow to a shared max so every row
+   (full or partial) keeps a uniform card width. */
 .cardCell {
   display: flex;
+  flex: 1 1 260px;
+  max-width: 300px;
 }
 
 /* The whole card is the anchor link to that desk's message block. */
@@ -183,7 +189,7 @@
   background: var(--color-accent-soft);
 }
 
-/* Gold quote disc anchored to a corner of the portrait. */
+/* Gold quote disc anchored to the text-facing corner of the portrait. */
 .portraitQuote {
   position: absolute;
   right: var(--space-4);
@@ -198,6 +204,12 @@
   color: var(--color-primary-dark);
   font-size: 1.5rem;
   box-shadow: var(--shadow-md);
+}
+
+/* Mirror the disc to the inner corner when the portrait is on the right. */
+.reversed .portraitQuote {
+  right: auto;
+  left: var(--space-4);
 }
 
 /* ---------- Message body ---------- */
@@ -381,13 +393,6 @@
    Responsive
    ============================================ */
 
-/* Directory grid: 4 → 3 → 2 → 1 columns. */
-@media (max-width: 1080px) {
-  .cardGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 /* Message blocks stack (portrait on top) on large tablets and below. */
 @media (max-width: 900px) {
   .messageGrid,
@@ -409,15 +414,11 @@
   }
 }
 
-@media (max-width: 760px) {
-  .cardGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 460px) {
-  .cardGrid {
-    grid-template-columns: 1fr;
+  /* Full-width cards on phones (the shared max-width would otherwise cap them). */
+  .cardCell {
+    flex-basis: 100%;
+    max-width: none;
   }
 
   .governanceLinks {

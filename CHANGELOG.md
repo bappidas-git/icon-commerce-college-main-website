@@ -58,6 +58,18 @@ comes from `coursesData` — no per-course markup, no fabricated data.
   Verified all four slugs + a bad slug render correct, distinct content (SSR smoke
   render). `npm run build` stays green.
 
+**Visual QA fix (multi-viewport screenshot review of the assembled pages)**
+- **Floating Enquire button overlap (`src/components/common/FloatingActions/FloatingActions.module.css`)**
+  — production-build screenshots of the course detail page showed the global
+  bottom-right "Enquire" pill overlapping right-edge content (the course-detail
+  side rail's secondary buttons) at common laptop widths (~1024–1366px). The wide
+  gold pill now collapses to a compact 52px circle that hugs the corner and
+  expands to its labelled "Enquire" pill on hover/focus (the action + name remain
+  available to everyone via the button's `aria-label`). This shrinks the stack's
+  footprint site-wide so the floating actions clear page content; verified on the
+  course detail and Home pages across desktop/tablet/mobile with no regressions.
+  Transitions are dropped under `prefers-reduced-motion`.
+
 ### Phase 2.7 — Courses overview
 
 Seventeenth prompt of the rebuild (`prompts/17-courses-overview-page.md`). Replaces

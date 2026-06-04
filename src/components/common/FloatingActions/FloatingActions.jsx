@@ -4,33 +4,41 @@
    --------------------------------------------
    Desktop-only floating WhatsApp + Enquiry stack
    pinned to the bottom-right. On mobile the bottom
-   navigation bar covers these actions, so this
-   component renders nothing there.
+   navigation bar already exposes Call / WhatsApp /
+   Apply, so this component renders nothing there to
+   avoid overlapping it. (BackToTop is rendered
+   separately and sits above this stack.)
    ============================================ */
 
 import React from 'react';
 import { useTheme, useMediaQuery } from '@mui/material';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import { useModal } from '../../../context/ModalContext';
 import { trackWhatsAppClick } from '../../../utils/gtm';
+import { whatsappHref } from '../../../data/collegeInfo';
 import styles from './FloatingActions.module.css';
 
-const WHATSAPP_HREF =
-  'https://api.whatsapp.com/send?phone=919365375782&text=Hello%20Icon%20Commerce%20College%2C%20I%27d%20like%20to%20know%20more%20about%20admissions.';
+const WHATSAPP_MESSAGE =
+  "Hello Icon Commerce College, I'd like to know more about admissions.";
 
 const FloatingActions = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { openLeadDrawer } = useModal();
+  const { openLeadDrawer, isDrawerOpen } = useModal();
 
   // The mobile bottom navigation already exposes Call / WhatsApp / Apply.
   if (isMobile) return null;
 
   return (
-    <div className={styles.stack}>
+    <motion.div
+      className={styles.stack}
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
       <motion.a
-        href={WHATSAPP_HREF}
+        href={whatsappHref(undefined, WHATSAPP_MESSAGE)}
         target="_blank"
         rel="noopener noreferrer"
         className={`${styles.fab} ${styles.whatsapp}`}
@@ -42,18 +50,26 @@ const FloatingActions = () => {
         <Icon icon="mdi:whatsapp" className={styles.fabIcon} />
       </motion.a>
 
-      <motion.button
-        type="button"
-        className={`${styles.fab} ${styles.enquire}`}
-        onClick={() => openLeadDrawer('default')}
-        whileHover={{ scale: 1.04 }}
-        whileTap={{ scale: 0.96 }}
-        aria-label="Enquire about admission"
-      >
-        <Icon icon="mdi:message-text-outline" className={styles.fabIcon} />
-        <span className={styles.enquireLabel}>Enquire</span>
-      </motion.button>
-    </div>
+      {/* Enquire FAB — hidden while the lead drawer is open */}
+      <AnimatePresence>
+        {!isDrawerOpen && (
+          <motion.button
+            type="button"
+            className={`${styles.fab} ${styles.enquire}`}
+            onClick={() => openLeadDrawer('enquiry')}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            aria-label="Enquire about admission"
+          >
+            <Icon icon="mdi:message-text-outline" className={styles.fabIcon} />
+            <span className={styles.enquireLabel}>Enquire</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

@@ -1,6 +1,6 @@
 /* ============================================
    LeadFormDrawer Styles
-   Full-width side drawer from left
+   Right-side drawer (desktop) / bottom-sheet (mobile)
    ============================================ */
 
 /* Backdrop */
@@ -10,12 +10,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(26, 82, 118, 0.85);
+  background: rgba(17, 29, 58, 0.82);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 9999;
   display: flex;
   align-items: stretch;
+  justify-content: flex-end;
+}
+
+/* Bottom-sheet alignment on mobile */
+.backdropMobile {
+  align-items: flex-end;
+  justify-content: stretch;
 }
 
 /* Drawer */
@@ -25,9 +32,28 @@
   max-width: 480px;
   height: 100%;
   background: linear-gradient(180deg, #1A2A52 0%, #111d3a 100%);
-  box-shadow: 8px 0 40px rgba(0, 0, 0, 0.4);
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.4);
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* Mobile bottom-sheet */
+.drawerMobile {
+  max-width: 100%;
+  height: auto;
+  max-height: 92vh;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Bottom-sheet grab handle */
+.grabber {
+  display: block;
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 10px auto 0;
 }
 
 /* Close Button */
@@ -117,6 +143,24 @@
   max-width: 300px;
   margin: 0 auto;
   text-align: center !important;
+}
+
+/* Trust line */
+.trustLine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 14px 0 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+.trustLineIcon {
+  font-size: 1rem;
+  color: var(--color-accent, #C8A04D);
 }
 
 /* Decorative Elements */

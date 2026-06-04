@@ -435,7 +435,7 @@ const Footer = () => {
 
   const handleDownloadProspectus = () => {
     trackCTAClick("footer_download_prospectus", "footer", "Download Prospectus");
-    openLeadDrawer("download-brochure");
+    openLeadDrawer("prospectus");
   };
 
   const handleApply = () => {

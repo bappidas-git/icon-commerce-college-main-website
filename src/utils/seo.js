@@ -6,6 +6,7 @@
 
 import { seoConfig } from '../config/seo';
 import { coursesData, getCourseBySlug } from '../data/coursesData';
+import { departmentsData } from '../data/departmentsData';
 
 // =========================================
 // URL helpers
@@ -427,6 +428,34 @@ export function generateCourseListSchema(courses = coursesData) {
           sameAs: seoConfig.organization.url,
         },
       },
+    })),
+  };
+}
+
+/**
+ * Generate an ItemList schema for the academic departments (the /departments
+ * page). Department names are flattened across streams and de-duplicated
+ * (Economics / English appear under more than one stream) so the list stays
+ * a clean, valid set of unique entries in catalogue order.
+ * @param {Array} [streams] - stream records (defaults to departmentsData.streams)
+ * @returns {Object} JSON-LD ItemList of department names
+ */
+export function generateDepartmentListSchema(streams = departmentsData.streams) {
+  const names = [];
+  (streams || []).forEach((stream) => {
+    (stream.subjects || []).forEach((subject) => {
+      if (!names.includes(subject.name)) names.push(subject.name);
+    });
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Academic Departments',
+    itemListElement: names.map((name, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name,
     })),
   };
 }

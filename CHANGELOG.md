@@ -4,6 +4,65 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.9 — Departments page
+
+Nineteenth prompt of the rebuild (`prompts/19-departments-page.md`). Replaces the
+`/departments` `ComingSoon` placeholder — and the old ~20 thin per-department routes
+— with ONE clean, well-organised page that groups every subject under its academic
+stream (Arts / Commerce / Science). Everything renders from `departmentsData`; no
+separate routes.
+
+**Departments data (`src/data/departmentsData.js`)**
+- Enriched each subject with an `icon`, a one-line `blurb`, a short `description`
+  (shown in the card accordion) and the `related` UG programme slug(s) it feeds into
+  (resolved against `coursesData`). Streams gained a representative `icon`. The
+  `subj()` helper and `@typedef`s were updated to match; the three stream/subject
+  lists are unchanged (design-system §6). A few pure-science subjects (Botany,
+  Chemistry) carry an empty `related` — the card simply omits the chip rather than
+  inventing a link.
+
+**SEO (`src/utils/seo.js`)**
+- Added `generateDepartmentListSchema(streams)` — an `ItemList` of the (de-duplicated)
+  department names, applied via `useSeo()` on `/departments`. Mirrors the existing
+  `generateCourseListSchema` pattern; purely additive.
+
+**DepartmentCard (`src/pages/Departments/DepartmentCard.jsx` + `.module.css`)**
+- A tidy, self-contained tile: a stream-accented gold icon chip, the department name
+  and a one-line blurb, plus an accessible accordion (real `<button>` with
+  `aria-expanded` / `aria-controls`; panel `role="region"`) that expands to a short
+  description and the related-programme link(s). Carries the deep-link anchor `id`.
+  Height animation is reduced-motion safe (mirrors the shared `Accordion`).
+
+**Departments page (`src/pages/Departments/Departments.jsx` + `.module.css`)**
+- **PageHero** — "Departments", subtitle "Arts · Commerce · Science", Home / Departments
+  breadcrumb.
+- **Stream filter** — accessible filter chips (All · Arts · Commerce · Science) with
+  per-stream counts (`aria-pressed`, keyboard-navigable, `role="status"` result
+  count). "All" keeps every stream mounted so deep-links resolve.
+- **Stream sections** — each stream gets a short image intro band (`dept-arts` /
+  `dept-commerce` / `dept-science`) with its label, blurb and count, followed by a
+  responsive department-card grid. Stream identity stays inside the Navy + Gold
+  palette via per-section `--stream-accent` / `--stream-soft` custom properties
+  (Arts/Science read gold, Commerce reads navy); section eyebrows stay gold.
+- **Deep-links** — every card has a unique anchor `id`: bare slug where unique (so
+  `/departments#accountancy` works as documented), stream-qualified where a name
+  recurs across streams (`#arts-economics` vs `#commerce-economics`) to avoid
+  duplicate ids. Cards use `scroll-margin-top` so the fixed header never covers them.
+- **CTA** — navy + gold-glow band: "Not sure which stream is right for you?" with a
+  single warm-red "Talk to Us" primary (opens the enquiry drawer), "Download
+  Prospectus" and a tertiary link to `/courses`.
+- Reveal-on-scroll is reduced-motion safe; card/image hover lifts are CSS-only.
+  `npm run build` stays green (no new warnings).
+
+**Visual QA (multi-viewport screenshots — Desktop / Tablet / Mobile)**
+- Department cards size to their own content (`align-items: start`) so expanding
+  one card's accordion no longer stretches its collapsed row-mates into tall,
+  empty cards; the blurb reserves two lines (`min-height`) so collapsed rows stay
+  uniform and the "Details" toggles align.
+- The stream image badge is now consistently gold (brand emphasis) instead of the
+  per-stream accent — a navy Commerce badge was invisible on the navy placeholder
+  (and would be unreliable on dark photos).
+
 ### Phase 2.8 — Course detail template
 
 Eighteenth prompt of the rebuild (`prompts/18-course-detail-pages.md`). Replaces the

@@ -4,6 +4,80 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.4 — Home assembly (notices, leadership, testimonials, CTA)
+
+Fourteenth prompt of the rebuild (`prompts/14-home-noticeboard-leadership-testimonials-assemble.md`).
+Completes the Home page with the dynamic-ready Notices/Events band, a leadership
+teaser, an alumni testimonials carousel and a closing CTA, then assembles the
+full page in its final order. Notices/Events read from the seed data today via
+new hooks and are rewired to the live API in prompt 32.
+
+**Data hooks (`src/hooks/useNotices.js`, `src/hooks/useEvents.js`)**
+- `useNotices()` returns the published `seedNotices` sorted pinned-first then
+  newest; `useEvents()` returns the published `seedEvents` sorted by start date.
+  Both expose a stable `{ notices|events, loading, error }` shape so prompt 32
+  can swap the seed source for the `notices.php` / `events.php` stores without
+  touching any consumer.
+
+**NoticeBoardSection (`src/components/sections/NoticeBoard/`)**
+- Gold-eyebrow `Section` ("Stay Updated" → "Notices & Upcoming Events") over a
+  **two-up** layout. Left = an auto-cycling **Notice Board** (date chip +
+  category + title + warm-red **New** badge for pinned/recent notices) whose
+  active row is highlighted with a gold rail and gently scrolled into view
+  **within the panel only**; it pauses on hover/focus and stops entirely under
+  `prefers-reduced-motion`. Right = an **Upcoming Events** preview (next 2–3
+  events) with navy day/month date tiles, category, title and a date-range +
+  venue meta line. Each panel links out (**View all notices** → `/notices`,
+  **All events** → `/events`) and falls back to `<EmptyState>` when empty.
+  Upcoming events prefer not-yet-ended dates and fall back to the soonest seed
+  events so the preview is never empty. Date parsing is local-midnight to avoid
+  timezone off-by-one in the tiles. Panels stack ≤860px; the date chip drops to
+  its own row ≤420px.
+
+**LeadershipTeaser (`src/components/sections/LeadershipTeaser/`)**
+- Three featured desks — **President** (Smt. Dipali Bora), **Principal**
+  (Dr. Mandira Saha) and **Academic Advisor** (Dr. Nilanjan Bhattacharjee) — as
+  profile cards with a circular photo placeholder + gold quote-mark badge, name,
+  role · qualifications, a one-line message excerpt and a **Read message** link
+  to `/leadership#<slug>` (slug via `slugify`). Identity is read from
+  `leadershipData`; the teaser carries its own short, neutral excerpts because
+  the full desk messages remain TODO stubs until prompt 37 (so no "TODO:" leaks
+  onto the page). Closes with a navy-outline **Meet our leadership** → `/leadership`.
+  Cards stack to one column ≤860px.
+
+**TestimonialsSection (`src/components/sections/Testimonials/`)**
+- A **Swiper** carousel (1 / 2 / 3 slides per view) of alumni quotes from
+  `testimonialsData` — navy gradient cards with a gold quote mark, quote, and an
+  avatar + name + role footer; cards stretch to equal height. Autoplay is
+  **pausable** (stops on hover/focus) and **disabled under reduced motion**;
+  `rewind` is used instead of `loop` to avoid Swiper's "not enough slides" clone
+  warning. Not-yet-written quotes (TODO stubs) are filtered out; an `<EmptyState>`
+  covers the empty case.
+
+**HomeCTASection (`src/components/sections/HomeCTA/`)**
+- Full-width navy band with a soft gold accent glow: eyebrow, "Begin your
+  journey at Icon Commerce College", a single warm-red **Apply Now** primary +
+  a gold-outline **Download Prospectus** (both open the global lead drawer in
+  the matching context) and a tertiary **Samarth portal** link (College Code 842,
+  external). Keeps exactly one primary action per the design system; buttons
+  stack full-width ≤520px.
+
+**Home (`src/pages/Home/Home.jsx`)**
+- Final order: Hero → Highlights → About → Vision/Mission → Programs → Stats →
+  WhyChoose → Notices & Events → Leadership → Testimonials → CTA. Hero +
+  Highlights stay eager (above the fold / LCP); every below-the-fold section is
+  code-split with `React.lazy` + `Suspense` (the heavy Swiper carousel only
+  loads with its section), each behind a height-reserving fallback to limit
+  layout shift. Sections own their reveal-on-scroll entrance, so they are not
+  double-wrapped in `<Reveal>`. Replaces the `ComingSoon` placeholder.
+
+**Verification**
+- `npm run build` passes (only the pre-existing `formatters.js`
+  anonymous-default-export lint warning remains). Full page verified end-to-end
+  at desktop / tablet / mobile with no horizontal overflow; the Notice Board
+  panels were balanced so the "View all" links align and the empty gap was
+  removed.
+
 ### Phase 2.3 — Home programs & why-choose
 
 Thirteenth prompt of the rebuild (`prompts/13-home-programs-why-choose.md`). Adds

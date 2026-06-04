@@ -22,36 +22,39 @@ export const MODAL_TYPES = {
   CUSTOM: 'CUSTOM',
 };
 
-// Drawer title mapping based on source/context
-// Icon Commerce College — lead drawer title configuration
+// Drawer title presets — Icon Commerce College lead-capture contexts.
+// Each preset sets the drawer title, subtitle and the `source` recorded
+// against the lead. Keep this list short and college-specific (prompt 09).
 export const DRAWER_TITLES = {
   'apply-now': {
-    title: 'Apply for Admission',
-    subtitle: 'Share your details — our team will guide you',
+    title: 'Apply for Admission 2026',
+    subtitle: 'Share your details — our admission team will guide you',
+    source: 'apply-now',
   },
-  'get-details': {
-    title: 'Get Admission Details',
-    subtitle: 'Courses, fees & facilities',
+  'enquiry': {
+    title: 'Course Enquiry',
+    subtitle: 'Ask us about programs, fees & eligibility',
+    source: 'enquiry',
   },
-  'request-callback': {
-    title: 'Request a Callback',
-    subtitle: 'Our admission team will call you',
-  },
-  'book-meeting': {
-    title: 'Talk to an Admission Counsellor',
-    subtitle: 'Book a free counselling call',
-  },
-  'download-brochure': {
+  'prospectus': {
     title: 'Download Prospectus',
-    subtitle: 'Get the full college prospectus',
+    subtitle: "We'll send the full college prospectus to you",
+    source: 'prospectus',
   },
-  'fees-scholarship': {
-    title: 'Fees & Scholarship Info',
-    subtitle: 'Get the latest 2026 fee structure and scholarship details',
+  'callback': {
+    title: 'Request a Callback',
+    subtitle: 'Our admission team will call you back',
+    source: 'callback',
+  },
+  'visit': {
+    title: 'Book a Campus Visit',
+    subtitle: 'Plan a guided tour of our Chandmari campus',
+    source: 'visit',
   },
   'default': {
     title: 'Enquire About Admission',
     subtitle: "Fill the form — we'll assist you",
+    source: 'general',
   },
 };
 
@@ -160,7 +163,7 @@ export const ModalProvider = ({ children }) => {
     setDrawerConfig({
       title: extraData.title || titleConfig.title,
       subtitle: extraData.subtitle || titleConfig.subtitle,
-      source: titleKey,
+      source: extraData.source || titleConfig.source,
       ...extraData,
     });
     setIsDrawerOpen(true);

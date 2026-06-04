@@ -4,6 +4,49 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 1.3 — Lead drawer & floating CTAs
+
+Ninth prompt of the rebuild (`prompts/09-lead-drawer-and-ctas.md`). Makes lead
+capture reachable from anywhere — a polished side drawer, the restyled generic
+modal, and floating contact actions — all driven by `ModalContext`.
+
+**`ModalContext` (`src/context/ModalContext.jsx`)**
+- Simplified `DRAWER_TITLES` to six college contexts, each setting
+  `title` / `subtitle` / `source`: `apply-now` ("Apply for Admission 2026"),
+  `enquiry` ("Course Enquiry"), `prospectus` ("Download Prospectus"),
+  `callback` ("Request a Callback"), `visit` ("Book a Campus Visit"), and
+  `default`. `openLeadDrawer` now records the preset's `source` on the lead
+  (callers can still override via `extraData`).
+
+**`LeadFormDrawer` (`src/components/common/LeadFormDrawer/`)**
+- Now slides in from the **right** on desktop and presents as a **bottom-sheet**
+  (rounded top, grab handle) on mobile (`< sm`), chosen via `useMediaQuery`.
+- **Focus-trapped**: focus moves to the first field on open and Tab/Shift+Tab
+  cycle stays within the drawer; closes on Esc / overlay click; body scroll-lock
+  retained via `ModalContext`.
+- Navy + gold header, hosts `UnifiedLeadForm`, and adds a trust line —
+  "We'll never share your details." Backdrop recoloured to the navy overlay token.
+
+**`Modal` (`src/components/common/Modal/`)**
+- Restyled the backdrop to the navy overlay token (`--color-navy-overlay`),
+  keeping the generic modal for legal / info / gallery / video use.
+
+**`FloatingActions` (`src/components/common/FloatingActions/`)**
+- Bottom-right stack (desktop): WhatsApp FAB now uses `whatsappHref()` from
+  `collegeInfo` with a prefilled message, and a **gold** "Enquire" FAB →
+  `openLeadDrawer('enquiry')`. Subtle entrance + hover; the Enquire FAB is hidden
+  while the drawer is open. Hidden on mobile so it never overlaps the bottom nav
+  (which already exposes Call / WhatsApp / Apply); `BackToTop` (navy) sits above.
+
+**`EnquiryButton` (`src/components/common/EnquiryButton/`)** — new
+- Reusable `<EnquiryButton preset=… source=… />` wrapper around the shared
+  `Button` primitive that opens the lead drawer with the given preset and tracks
+  the CTA. Sensible default labels per preset.
+
+**Wiring**
+- Footer's "Download Prospectus" CTA now opens the `prospectus` preset
+  (was `download-brochure`). Header / PublicLayout keep `apply-now`.
+
 ### Phase 1.2 — Lead capture core
 
 Eighth prompt of the rebuild (`prompts/08-lead-capture-core.md`). Adapts the proven

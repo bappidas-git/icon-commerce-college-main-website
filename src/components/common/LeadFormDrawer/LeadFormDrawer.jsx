@@ -1,16 +1,21 @@
 /* ============================================
    LeadFormDrawer Component
-   Full-width side drawer from left with lead form
-   Uses UnifiedLeadForm for consistent functionality
+   Right-side drawer on desktop, bottom-sheet on mobile.
+   Hosts UnifiedLeadForm with a navy + gold header.
+   Closes on Esc / overlay click, is focus-trapped and
+   scroll-locked (body lock handled by ModalContext).
    ============================================ */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Typography, IconButton } from '@mui/material';
+import { Typography, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import UnifiedLeadForm from '../UnifiedLeadForm/UnifiedLeadForm';
 import styles from './LeadFormDrawer.module.css';
+
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
 const LeadFormDrawer = ({
   isOpen,
@@ -20,32 +25,11 @@ const LeadFormDrawer = ({
   source = 'general',
   onSubmitSuccess,
 }) => {
-  // Handle body scroll lock
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-    };
-  }, [isOpen]);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const drawerRef = useRef(null);
 
-  // Handle backdrop click
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  // Handle escape key
+  // Handle escape key to close.
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -56,6 +40,50 @@ const LeadFormDrawer = ({
     return () => window.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
+  // Focus trap: keep Tab focus inside the drawer while open and move
+  // focus to the first field on open.
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const node = drawerRef.current;
+    if (!node) return undefined;
+
+    const focusFirst = () => {
+      const focusables = node.querySelectorAll(FOCUSABLE);
+      const target = focusables[1] || focusables[0]; // skip the close button
+      if (target) target.focus();
+    };
+    const raf = requestAnimationFrame(focusFirst);
+
+    const handleTab = (e) => {
+      if (e.key !== 'Tab') return;
+      const focusables = Array.from(node.querySelectorAll(FOCUSABLE)).filter(
+        (el) => el.offsetParent !== null,
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    node.addEventListener('keydown', handleTab);
+    return () => {
+      cancelAnimationFrame(raf);
+      node.removeEventListener('keydown', handleTab);
+    };
+  }, [isOpen]);
+
+  // Handle backdrop click
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   // Animation variants
   const backdropVariants = {
     hidden: { opacity: 0 },
@@ -63,19 +91,18 @@ const LeadFormDrawer = ({
     exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
+  // Slide from the right on desktop, up from the bottom on mobile.
+  const hiddenOffset = isMobile ? { y: '100%' } : { x: '100%' };
   const drawerVariants = {
-    hidden: { x: '-100%', opacity: 0 },
+    hidden: { ...hiddenOffset, opacity: 0 },
     visible: {
       x: 0,
+      y: 0,
       opacity: 1,
-      transition: {
-        type: 'spring',
-        damping: 30,
-        stiffness: 300,
-      },
+      transition: { type: 'spring', damping: 30, stiffness: 300 },
     },
     exit: {
-      x: '-100%',
+      ...hiddenOffset,
       opacity: 0,
       transition: { duration: 0.25, ease: 'easeInOut' },
     },
@@ -94,7 +121,7 @@ const LeadFormDrawer = ({
     <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
-          className={styles.backdrop}
+          className={`${styles.backdrop} ${isMobile ? styles.backdropMobile : ''}`}
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
@@ -102,7 +129,8 @@ const LeadFormDrawer = ({
           onClick={handleBackdropClick}
         >
           <motion.div
-            className={styles.drawer}
+            ref={drawerRef}
+            className={`${styles.drawer} ${isMobile ? styles.drawerMobile : ''}`}
             variants={drawerVariants}
             initial="hidden"
             animate="visible"
@@ -111,11 +139,14 @@ const LeadFormDrawer = ({
             aria-modal="true"
             aria-labelledby="drawer-title"
           >
+            {/* Mobile bottom-sheet grab handle */}
+            {isMobile && <span className={styles.grabber} aria-hidden="true" />}
+
             {/* Close Button */}
             <IconButton
               className={styles.closeButton}
               onClick={onClose}
-              aria-label="Close drawer"
+              aria-label="Close enquiry form"
             >
               <Icon icon="mdi:close" />
             </IconButton>
@@ -155,6 +186,12 @@ const LeadFormDrawer = ({
                 onSubmitSuccess={onSubmitSuccess}
                 formId={`drawer-form-${source}`}
               />
+
+              {/* Trust line */}
+              <p className={styles.trustLine}>
+                <Icon icon="mdi:lock-outline" className={styles.trustLineIcon} />
+                We&rsquo;ll never share your details.
+              </p>
             </div>
 
             {/* Decorative Elements */}

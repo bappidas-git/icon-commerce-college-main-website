@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-4);
-  background: rgba(26, 82, 118, 0.7);
+  background: var(--color-navy-overlay, rgba(26, 42, 82, 0.72));
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }

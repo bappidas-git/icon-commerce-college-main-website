@@ -39,13 +39,13 @@
   color: #ffffff;
 }
 
-/* Pill Enquire button (Warm-Red primary CTA, design-system §2) */
+/* Pill Enquire button (Gold accent FAB, design-system §2) */
 .enquire {
   height: 52px;
   padding: 0 22px;
   border-radius: 999px;
-  background-color: var(--color-cta, #e0301e);
-  color: #ffffff;
+  background: var(--gradient-gold, linear-gradient(135deg, #c8a04d 0%, #a8823a 100%));
+  color: var(--color-primary, #1a2a52);
   font-size: 0.95rem;
 }
 

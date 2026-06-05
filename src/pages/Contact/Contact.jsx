@@ -35,6 +35,7 @@ import {
   whatsappHref,
 } from '../../data/collegeInfo';
 import { trackPhoneClick, trackWhatsAppClick } from '../../utils/gtm';
+import { placeholder } from '../../utils/assets';
 import styles from './Contact.module.css';
 
 /** True for absolute http(s) URLs (placeholder `TODO:` values resolve false). */
@@ -236,7 +237,12 @@ const Contact = () => {
         aria-label="Location map and directions"
       >
         <div className={styles.mapGrid}>
-          <Reveal className={styles.mapWrap} variant="fadeUp" amount={0.1}>
+          <Reveal
+            className={styles.mapWrap}
+            variant="fadeUp"
+            amount={0.1}
+            style={{ backgroundImage: `url(${placeholder('map-location')})` }}
+          >
             <iframe
               src={mapsEmbedUrl}
               title={`Map showing the location of ${collegeInfo.name}, Chandmari, Guwahati`}

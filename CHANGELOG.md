@@ -40,7 +40,9 @@ metrics (Total / Published / Drafts / Pinned), and per-row actions — **Edit**,
 Initial server sync + 15s visibility-aware poll + `onNoticesChanged` keep it
 live; a manual Refresh button and `Toast` feedback round it out. Drafts are
 visible here for the admin but hidden from the public list (enforced
-server-side).
+server-side). The table is responsive: on tablet/mobile the lower-priority
+columns fold into the title cell (category · date · publish status) so the
+**Actions** column stays on-screen without horizontal scrolling.
 
 **`src/admin/components/NoticeFormDialog.jsx`** — create/edit modal on MUI
 `Dialog` + the shared `FormField` kit: title (required), category (select),

@@ -78,13 +78,35 @@
   min-width: 0;
 }
 
+.titleMain {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
 .titleText {
+  display: block;
   font-weight: 600;
   color: var(--admin-text-primary, #14233D);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 340px;
+  /* max-width is set inline per responsive tier (see Notices.jsx) so the title
+     never widens the table past the viewport and clips the Actions column. */
+}
+
+.titleMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.metaDate {
+  font-size: 0.72rem;
+  color: var(--admin-text-muted, #8E9BAD);
+  white-space: nowrap;
 }
 
 .pinDot {
@@ -123,10 +145,6 @@
 
   .headerActions {
     width: 100%;
-  }
-
-  .titleText {
-    max-width: 200px;
   }
 }
 

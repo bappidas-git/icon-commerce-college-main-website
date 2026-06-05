@@ -262,7 +262,7 @@ const Dashboard = () => {
           <Icon icon="mdi:bullhorn-outline" width={18} height={18} />
           Add Notice
         </Link>
-        <Link to="/admin/events" className={styles.actionPrimary}>
+        <Link to="/admin/events" state={{ openCreate: true }} className={styles.actionPrimary}>
           <Icon icon="mdi:calendar-plus" width={18} height={18} />
           Add Event
         </Link>

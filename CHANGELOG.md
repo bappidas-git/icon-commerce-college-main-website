@@ -4,6 +4,61 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.7 — Admin events & calendar
+
+Thirty-first prompt of the rebuild (`prompts/31-admin-events-calendar.md`). The
+full **Events** admin module (`/admin/events`), with a **list** and a
+**calendar** view over the shared `events.php` store, so staff can schedule
+college events that surface on the public Events page — synced across tabs and
+devices like leads/notices (no localStorage copy).
+
+**`src/admin/utils/eventService.js`** — mirrors `noticeService.js`: an in-memory
+cache hydrated from `events.php` (the single source of truth) and refreshed on a
+**15s poll**, with `syncEventsFromServer()`, `onEventsChanged()` (a
+`BroadcastChannel` + DOM-event subscription for same-browser tabs),
+`getEvents(filters)` (search · category · published · `timeframe`
+upcoming/past, sorted by `start_date` ascending), `getEventById`, and optimistic
+`createEvent` / `updateEvent` / `deleteEvent(s)` (public list read, admin-key
+writes, reusing `REACT_APP_LEADS_ADMIN_KEY`; env `REACT_APP_EVENTS_API_URL`).
+Exports the canonical `EVENT_CATEGORIES` (Academic · Cultural · Sports ·
+Examination · Holiday · Workshop · General — icons match `EventCard`) +
+`getCategoryConfig` for the chips/filters.
+
+**Shared calendar — `src/components/common/MonthGrid/`** — the month grid built
+for the public Events page (prompt 24) was **extracted** into a reusable
+`<MonthGrid>` so the public site and the admin panel share **one** calendar
+component. MonthGrid owns the month + selected-day state, navigation
+(prev/next/Today), event highlighting (multi-day spans mark every covered day)
+and the responsive two-column layout; the consumer supplies the selected day's
+detail via a `renderDetail` render-prop. The public `EventCalendar` is now a thin
+wrapper that renders read-only `<EventCard>`s; its grid CSS moved to
+`MonthGrid.module.css` (no visual change).
+
+**Events admin page — `src/admin/pages/Events.jsx`** (replaces the scaffold):
+- **List view** — a sortable/searchable `DataTable` (Title · Category · Start ·
+  End · Venue · Published) with row actions (edit · publish/unpublish · delete),
+  a category filter and an upcoming/past filter. Responsive column sets keep the
+  Actions column reachable on tablet/mobile (secondary fields fold into the title
+  cell), matching Notices.
+- **Calendar view** — the shared `<MonthGrid>`: click a day to see/edit that
+  day's events (each with the same edit/publish/delete actions) or **add a new
+  event on that date** (prefilled). Multi-day + timed events render correctly.
+- A **List / Calendar** toggle, stat tiles (Total · Upcoming · Published ·
+  Drafts), refresh, and an **Add Event** button. Drafts are visible to the admin
+  but hidden from the public list/calendar (enforced server-side). Same
+  initial-sync + 15s-poll + cross-tab-notify model as leads/notices.
+
+**Event form — `src/admin/components/EventFormDialog.jsx`** — create/edit modal
+(title, category, description, start/end date, start/end time, venue, image
+placeholder name, published toggle) built on the shared `FormField` kit. Validates
+required title + start date and **end ≥ start** (dates, and times on a single-day
+event), writes through `eventService`, and toasts on save. Opens prefilled with
+the clicked day from the calendar.
+
+**Dashboard** — the "Add Event" quick action now opens the create dialog directly
+(`state={{ openCreate: true }}`, mirroring "Add Notice"); the "Upcoming Events"
+tile already links to `/admin/events`.
+
 ### Phase 3.6 — Events API store
 
 Thirtieth prompt of the rebuild (`prompts/30-events-api-store.md`). A server-side

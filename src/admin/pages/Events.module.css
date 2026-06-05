@@ -1,0 +1,374 @@
+/* ============================================
+   Admin Events Page Styles
+   ============================================
+   List (DataTable) + Calendar (shared MonthGrid) views over the events store.
+   ============================================ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* AdminPageHeader carries its own bottom margin; the flex gap covers spacing. */
+.page > header {
+  margin-bottom: 0;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Spinning refresh icon while syncing. */
+.spin {
+  animation: eventsSpin 0.8s linear infinite;
+}
+
+@keyframes eventsSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ---- Stat tiles ---- */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* ---- Filters (DataTable toolbar slot + calendar controls) ---- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--admin-text-muted, #8E9BAD);
+  white-space: nowrap;
+}
+
+.filterSelect {
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--admin-text-primary, #14233D);
+  background: var(--admin-bg, #F7F8FB);
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 999px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.filterSelect:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--admin-accent, #C8A04D);
+  box-shadow: 0 0 0 3px rgba(200, 160, 77, 0.18);
+}
+
+/* ---- View toggle (List / Calendar) ---- */
+.viewBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.viewToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background: var(--admin-card-bg, #fff);
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 999px;
+}
+
+.viewBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--admin-text-secondary, #5B6678);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.viewBtn svg {
+  font-size: 18px;
+}
+
+.viewBtn:hover {
+  color: var(--admin-primary, #1A2A52);
+}
+
+.viewBtnActive,
+.viewBtnActive:hover {
+  background: var(--admin-gradient);
+  color: #fff;
+}
+
+.viewBtn:focus-visible {
+  outline: 2px solid var(--admin-accent, #C8A04D);
+  outline-offset: 2px;
+}
+
+/* ---- Table cells ---- */
+.titleCell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.titleMain {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.titleText {
+  display: block;
+  font-weight: 600;
+  color: var(--admin-text-primary, #14233D);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* max-width is set inline per responsive tier (see Events.jsx) so the title
+     never widens the table past the viewport and clips the Actions column. */
+}
+
+.titleMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.metaDate {
+  font-size: 0.72rem;
+  color: var(--admin-text-muted, #8E9BAD);
+  white-space: nowrap;
+}
+
+.dateCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dateText {
+  font-size: 0.82rem;
+  color: var(--admin-text-secondary, #5B6678);
+  white-space: nowrap;
+}
+
+.timeText {
+  font-size: 0.72rem;
+  color: var(--admin-text-muted, #8E9BAD);
+  white-space: nowrap;
+}
+
+.venueText {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--admin-text-secondary, #5B6678);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 170px;
+}
+
+.muted {
+  color: var(--admin-text-muted, #8E9BAD);
+}
+
+.actions {
+  display: inline-flex;
+  gap: 2px;
+  justify-content: flex-end;
+}
+
+/* ============================================
+   Calendar view
+   ============================================ */
+/* Hint shown when no day is selected. */
+.calHint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 24px;
+  border: 1px dashed var(--admin-border, #E6E9F0);
+  border-radius: 16px;
+  background: var(--admin-card-bg, #fff);
+  color: var(--admin-text-muted, #8E9BAD);
+  font-size: 0.88rem;
+}
+
+.calHint svg {
+  font-size: 20px;
+  color: var(--admin-accent-dark, #A8823A);
+}
+
+/* Selected day's events. */
+.calDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calDetailHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.calDetailTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-heading, "Poppins", sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--admin-primary, #1A2A52);
+}
+
+.calDetailTitle svg {
+  font-size: 20px;
+  color: var(--admin-accent-dark, #A8823A);
+}
+
+.calList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 12px;
+  background: var(--admin-card-bg, #fff);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(20, 35, 61, 0.06));
+}
+
+.calRowMain {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.calRowTop {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.calRowTitle {
+  font-family: var(--font-heading, "Poppins", sans-serif);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--admin-text-primary, #14233D);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.calRowMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--admin-text-muted, #8E9BAD);
+}
+
+.calRowMeta svg {
+  color: var(--admin-accent-dark, #A8823A);
+  flex-shrink: 0;
+}
+
+.calRowActions {
+  display: inline-flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.calEmpty {
+  margin: 0;
+  padding: 20px;
+  border: 1px dashed var(--admin-border, #E6E9F0);
+  border-radius: 12px;
+  background: var(--admin-bg, #F7F8FB);
+  color: var(--admin-text-muted, #8E9BAD);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .headerActions {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .calRow {
+    flex-direction: column;
+  }
+
+  .calRowActions {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 400px) {
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

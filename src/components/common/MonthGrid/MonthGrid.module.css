@@ -1,0 +1,201 @@
+/* ============================================
+   MonthGrid styles — Icon Commerce College
+   --------------------------------------------
+   Shared by the public Events page and the admin Events module. A two-part
+   layout: the month grid (left) and the selected day's detail (right), stacking
+   on narrow screens. Navy = structure (selected day, today ring), Gold =
+   emphasis only (event dots, nav hover). Uses the global design tokens so it
+   reads correctly on both the public site and the admin panel.
+   ============================================ */
+
+.calendar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+/* Grid-only mode (no detail panel supplied). */
+.calendarGridOnly {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* ============================================
+   Month grid
+   ============================================ */
+.grid {
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.monthLabel {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.nav {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-size: 20px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.navBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent-dark);
+}
+
+.todayBtn {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.todayBtn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+.navBtn:focus-visible,
+.todayBtn:focus-visible,
+.day:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Weekday header + day grid share the 7-column track. */
+.weekdays,
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-1);
+}
+
+.weekday {
+  padding: var(--space-2) 0;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.dayPad {
+  aspect-ratio: 1 / 1;
+}
+
+.day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.day:hover {
+  border-color: var(--color-accent);
+}
+
+/* Days that have events: gold-soft fill + a dot. */
+.dayHasEvents {
+  background: var(--color-accent-soft);
+  color: var(--color-primary-dark);
+  font-weight: var(--fw-semibold);
+}
+
+.dot {
+  position: absolute;
+  bottom: 18%;
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-dark);
+}
+
+/* Today: gold ring. */
+.dayToday {
+  border-color: var(--color-accent);
+}
+
+/* Selected: navy fill wins over everything. */
+.daySelected,
+.daySelected:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.daySelected .dot {
+  background: var(--color-accent);
+}
+
+.dayNum {
+  line-height: 1;
+}
+
+/* ============================================
+   Selected day's detail (consumer-rendered)
+   ============================================ */
+.detail {
+  min-width: 0;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 880px) {
+  .calendar {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Reduced motion — transitions already short; nothing transform-based here. */

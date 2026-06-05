@@ -58,25 +58,38 @@
    Masonry (CSS columns — a single fade reveals the grid)
    ============================================ */
 .masonry {
-  column-count: 4;
+  --cols: 4;
+  --tile-cap: 22rem;
+  /* Cap the effective columns at the photo count so a small filtered set
+     (e.g. 1–3 photos) doesn't strand tiles in the leftmost columns and leave
+     the rest of the row empty. The plain declaration is a fallback for engines
+     without min() support. */
+  column-count: var(--cols);
+  column-count: min(var(--cols), var(--photo-count, 4));
   column-gap: var(--space-4);
+  /* And cap the width so a few photos stay centered at a sensible tile size
+     rather than stretching across the row — a no-op once the count fills the
+     row (the calc then exceeds the container width). */
+  max-width: calc(var(--photo-count, 4) * var(--tile-cap));
+  margin-inline: auto;
 }
 
 @media (max-width: 1100px) {
   .masonry {
-    column-count: 3;
+    --cols: 3;
   }
 }
 
 @media (max-width: 760px) {
   .masonry {
-    column-count: 2;
+    --cols: 2;
   }
 }
 
 @media (max-width: 460px) {
   .masonry {
-    column-count: 1;
+    --cols: 1;
+    max-width: none;
   }
 }
 

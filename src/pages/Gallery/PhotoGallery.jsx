@@ -111,28 +111,30 @@ const PhotoGallery = ({ photos = [], categories = [] }) => {
 
       {/* Masonry */}
       {count > 0 ? (
-        <Reveal variant="fadeIn" className={styles.masonry} amount={0.05}>
-          {filteredPhotos.map((photo, index) => (
-            <button
-              key={`${photo.caption}-${index}`}
-              type="button"
-              className={styles.tile}
-              style={{ aspectRatio: TILE_RATIOS[index % TILE_RATIOS.length] }}
-              onClick={() => openLightbox(index)}
-              aria-label={`Open “${photo.caption}” in the lightbox`}
-            >
-              <img
-                src={photo.src}
-                alt={photo.caption}
-                className={styles.tileImage}
-                loading="lazy"
-              />
-              <span className={styles.tileOverlay} aria-hidden="true">
-                <span className={styles.tileCaption}>{photo.caption}</span>
-                <Icon icon="mdi:magnify-plus-outline" className={styles.tileIcon} />
-              </span>
-            </button>
-          ))}
+        <Reveal variant="fadeIn" amount={0.05}>
+          <div className={styles.masonry} style={{ '--photo-count': count }}>
+            {filteredPhotos.map((photo, index) => (
+              <button
+                key={`${photo.caption}-${index}`}
+                type="button"
+                className={styles.tile}
+                style={{ aspectRatio: TILE_RATIOS[index % TILE_RATIOS.length] }}
+                onClick={() => openLightbox(index)}
+                aria-label={`Open “${photo.caption}” in the lightbox`}
+              >
+                <img
+                  src={photo.src}
+                  alt={photo.caption}
+                  className={styles.tileImage}
+                  loading="lazy"
+                />
+                <span className={styles.tileOverlay} aria-hidden="true">
+                  <span className={styles.tileCaption}>{photo.caption}</span>
+                  <Icon icon="mdi:magnify-plus-outline" className={styles.tileIcon} />
+                </span>
+              </button>
+            ))}
+          </div>
         </Reveal>
       ) : (
         <p className={styles.empty}>No photos in this category yet.</p>

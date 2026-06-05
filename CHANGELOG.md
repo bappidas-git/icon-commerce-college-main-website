@@ -56,6 +56,19 @@ entirely from the existing exports (`galleryPhotos` — 12 labelled placeholders
 - Entrance is reduced-motion-safe (`<RevealGroup>`); card/thumbnail hover lifts
   are CSS-only. `npm run build` stays green and the new files lint clean.
 
+**Visual QA (multi-viewport screenshots — Desktop / Tablet / Mobile)**
+- Captured the assembled page at Desktop (1440), Tablet (820) and Mobile (390)
+  across every state (photos masonry, category filters, lightbox, videos tab and
+  video modal). Tabs, filters, the lightbox (prev/next + caption + counter) and
+  the video modal all behaved correctly; the masonry reflows 4 → 3 → 1 columns
+  and the modals adapt to a bottom-sheet on mobile.
+- **Fix from review:** filtering to a small category (1–3 photos) left the
+  `column-count` masonry stranding tiles in the leftmost columns with the rest
+  of the row empty. The grid now caps its effective columns **and** width to the
+  photo count (`column-count: min(--cols, --photo-count)` + a width cap that is a
+  no-op once the row is full), so any filtered set stays centered at a consistent
+  tile size while the full "All" view is unchanged.
+
 ### Phase 2.11 — Facilities page
 
 Twenty-first prompt of the rebuild (`prompts/21-facilities-page.md`). Replaces the

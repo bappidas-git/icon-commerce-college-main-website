@@ -327,7 +327,7 @@ const LeadManagement = () => {
   };
 
   const handleViewDetail = (lead) => {
-    navigate(`/admin/lms/lead/${lead.lead_id}`);
+    navigate(`/admin/leads/${lead.lead_id}`);
   };
 
   const handleDeleteConfirm = () => {

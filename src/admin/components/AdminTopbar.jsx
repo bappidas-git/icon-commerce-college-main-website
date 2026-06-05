@@ -1,160 +1,68 @@
 /* ============================================
-   Admin Topbar — Primary Navigation Header
+   Admin Topbar — section header & account bar
+   ============================================
+   Sits above the page content alongside the sidebar. Shows the college name,
+   the current section title (derived from the route), a "View site" link, the
+   logged-in user and logout. On tablet/mobile it exposes the hamburger that
+   opens the sidebar drawer.
    ============================================ */
 
-import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { useAdminAuth } from '../context/AdminAuthContext';
+import { getActiveSection } from '../navItems';
 import styles from './AdminTopbar.module.css';
 
-const navItems = [
-  { label: 'Dashboard', path: '/admin/dashboard', icon: 'mdi:view-dashboard' },
-  { label: 'Leads', path: '/admin/lms', icon: 'mdi:account-group' },
-  { label: 'Tele-Calling', path: '/admin/tele-calling', icon: 'mdi:phone-in-talk' },
-];
-
-const AdminTopbar = () => {
+const AdminTopbar = ({ onMenuClick }) => {
   const { user, logout } = useAdminAuth();
-  const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const menuRef = useRef(null);
-
-  const initials = (user?.username || 'A').charAt(0).toUpperCase();
-
-  // Close menu on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
-
-  // Close on outside click
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setMobileMenuOpen(false);
-      }
-    };
-    if (mobileMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
-    };
-  }, [mobileMenuOpen]);
-
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
-  }, [mobileMenuOpen]);
+  const { pathname } = useLocation();
+  const section = getActiveSection(pathname);
+  const username = user?.username || 'Admin';
+  const initials = username.charAt(0).toUpperCase();
 
   return (
     <header className={styles.topbar}>
-      <div className={styles.topbarLeft}>
-        <img
-          src="/images/placeholders/logo-icon-commerce.svg"
-          alt="Icon Commerce College Admin"
-          className={styles.logo}
-        />
-        <span className={styles.divider} />
-        <span className={styles.badge}>Admissions</span>
-      </div>
-
-      <nav className={styles.desktopNav}>
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            end={item.path === '/admin/dashboard'}
-            className={({ isActive }) =>
-              `${styles.navLink} ${isActive ? styles.navLinkActive : ''}`
-            }
-          >
-            <Icon icon={item.icon} width={18} height={18} />
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
-
-      <div className={styles.topbarRight}>
-        <div className={styles.userInfo}>
-          <div className={styles.userAvatar}>{initials}</div>
-          <span className={styles.userName}>{user?.username || 'Admin'}</span>
-        </div>
-        <button className={styles.logoutBtn} onClick={logout}>
-          <Icon icon="mdi:logout" width={16} height={16} />
-          Logout
-        </button>
+      <div className={styles.left}>
         <button
+          type="button"
           className={styles.hamburger}
-          onClick={() => setMobileMenuOpen((prev) => !prev)}
-          aria-label="Toggle navigation menu"
+          onClick={onMenuClick}
+          aria-label="Open navigation menu"
         >
-          <Icon icon={mobileMenuOpen ? 'mdi:close' : 'mdi:menu'} width={24} height={24} />
+          <Icon icon="mdi:menu" width={24} height={24} />
         </button>
+        <div className={styles.titleBlock}>
+          <span className={styles.eyebrow}>Icon Commerce College</span>
+          <h1 className={styles.section}>{section}</h1>
+        </div>
       </div>
 
-      {/* Mobile Menu Overlay + Panel */}
-      {mobileMenuOpen && (
-        <div className={styles.mobileOverlay} onClick={() => setMobileMenuOpen(false)}>
-          <div
-            className={styles.mobileMenu}
-            ref={menuRef}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Logo at top */}
-            <div className={styles.mobileMenuHeader}>
-              <img
-                src="/images/placeholders/logo-icon-commerce.svg"
-                alt="Icon Commerce College Admin"
-                className={styles.mobileMenuLogo}
-              />
-            </div>
+      <div className={styles.right}>
+        <a
+          className={styles.viewSite}
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon icon="mdi:open-in-new" width={16} height={16} />
+          <span className={styles.viewSiteLabel}>View site</span>
+        </a>
 
-            {/* Nav links */}
-            <nav className={styles.mobileNav}>
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  end={item.path === '/admin/dashboard'}
-                  className={({ isActive }) =>
-                    `${styles.mobileNavLink} ${isActive ? styles.mobileNavLinkActive : ''}`
-                  }
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Icon icon={item.icon} width={20} height={20} />
-                  {item.label}
-                </NavLink>
-              ))}
-            </nav>
+        <span className={styles.divider} aria-hidden="true" />
 
-            {/* Divider */}
-            <div className={styles.mobileMenuDivider} />
-
-            {/* User info */}
-            <div className={styles.mobileUserSection}>
-              <div className={styles.mobileUserRow}>
-                <div className={styles.userAvatar}>{initials}</div>
-                <span className={styles.mobileUserName}>{user?.username || 'Admin'}</span>
-              </div>
-              <button className={styles.mobileLogout} onClick={logout}>
-                <Icon icon="mdi:logout" width={20} height={20} />
-                Logout
-              </button>
-            </div>
-
-            {/* Footer */}
-            <p className={styles.mobileMenuFooter}>Icon Commerce College Admin Panel</p>
-          </div>
+        <div className={styles.user}>
+          <span className={styles.avatar} aria-hidden="true">
+            {initials}
+          </span>
+          <span className={styles.username}>{username}</span>
         </div>
-      )}
+
+        <button type="button" className={styles.logout} onClick={logout}>
+          <Icon icon="mdi:logout" width={16} height={16} />
+          <span className={styles.logoutLabel}>Logout</span>
+        </button>
+      </div>
     </header>
   );
 };

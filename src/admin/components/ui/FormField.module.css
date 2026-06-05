@@ -1,0 +1,69 @@
+/* ============================================
+   FormField Styles
+   ============================================ */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--admin-text-primary, #14233D);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.required {
+  color: var(--admin-cta, #E0301E);
+  font-weight: 700;
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--admin-text-muted, #8E9BAD);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.error {
+  font-size: 0.75rem;
+  color: var(--admin-error, #E0301E);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Consistent styling for native controls dropped straight into a FormField. */
+.field input:not([type='checkbox']):not([type='radio']),
+.field select,
+.field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--admin-text-primary, #14233D);
+  background: var(--admin-card-bg, #fff);
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input:not([type='checkbox']):not([type='radio']):focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--admin-accent, #C8A04D);
+  box-shadow: 0 0 0 3px rgba(200, 160, 77, 0.18);
+}
+
+.field input:disabled,
+.field select:disabled,
+.field textarea:disabled {
+  background: var(--admin-bg, #F7F8FB);
+  color: var(--admin-text-secondary, #5B6678);
+  cursor: not-allowed;
+}

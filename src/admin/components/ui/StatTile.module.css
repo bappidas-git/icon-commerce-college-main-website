@@ -1,0 +1,80 @@
+/* ============================================
+   StatTile Styles
+   ============================================ */
+
+.tile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--admin-card-bg, #FFFFFF);
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(20, 35, 61, 0.06));
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.tile:hover {
+  box-shadow: var(--shadow-md, 0 8px 30px rgba(20, 35, 61, 0.1));
+  transform: translateY(-2px);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.body {
+  min-width: 0;
+}
+
+.value {
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--admin-text-primary, #14233D);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--admin-text-secondary, #5B6678);
+  margin: 4px 0 0;
+}
+
+.hint {
+  font-size: 0.72rem;
+  color: var(--admin-text-muted, #8E9BAD);
+  margin: 2px 0 0;
+}
+
+/* ---- Tones ---- */
+.tone_navy {
+  background: linear-gradient(135deg, #1A2A52 0%, #2C3E6B 100%);
+}
+.tone_gold {
+  background: linear-gradient(135deg, #C8A04D 0%, #A8823A 100%);
+}
+.tone_green {
+  background: linear-gradient(135deg, #1E8E5A 0%, #15643f 100%);
+}
+.tone_red {
+  background: linear-gradient(135deg, #E0301E 0%, #B91E10 100%);
+}
+.tone_blue {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4FBE 100%);
+}
+.tone_teal {
+  background: linear-gradient(135deg, #0E9AA7 0%, #0A7A85 100%);
+}
+.tone_pink {
+  background: linear-gradient(135deg, #D6457D 0%, #B22F63 100%);
+}

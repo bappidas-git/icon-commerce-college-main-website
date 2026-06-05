@@ -4,26 +4,24 @@
 
 .layout {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
-  background: var(--admin-bg, #F2F5F8);
-  /* Remove 300ms tap delay on all touch elements */
+  background: var(--admin-bg, #F7F8FB);
   -webkit-tap-highlight-color: transparent;
 }
 
-.mainArea {
+.main {
   flex: 1;
+  min-width: 0; /* allow children (tables) to shrink instead of overflowing */
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 64px);
 }
 
 .content {
   flex: 1;
-  padding: 24px;
-  max-width: 1400px;
   width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 28px;
   box-sizing: border-box;
 }
 
@@ -33,13 +31,13 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .content {
     padding: 16px;
   }
 }
 
-/* ---- Print Styles ---- */
+/* ---- Print ---- */
 @media print {
   .layout {
     background: #fff;
@@ -48,18 +46,5 @@
   .content {
     max-width: 100%;
     padding: 0;
-  }
-
-  * {
-    color: #000 !important;
-    background: #fff !important;
-    box-shadow: none !important;
-  }
-
-  /* Keep table/card borders visible */
-  table,
-  th,
-  td {
-    border-color: #ccc !important;
   }
 }

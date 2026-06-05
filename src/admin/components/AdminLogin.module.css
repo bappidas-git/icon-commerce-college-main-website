@@ -7,116 +7,157 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: var(--admin-gradient);
-  padding: var(--space-4);
+  background: linear-gradient(135deg, #1A2A52 0%, #111d3a 100%);
+  padding: var(--space-4, 1rem);
+  position: relative;
+}
+
+/* Subtle gold glow accents on the navy backdrop */
+.loginPage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(200, 160, 77, 0.16), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(200, 160, 77, 0.1), transparent 42%);
+  pointer-events: none;
 }
 
 .loginCard {
-  background: var(--admin-card-bg);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  background: var(--admin-card-bg, #fff);
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
   width: 100%;
   max-width: 420px;
-  padding: var(--space-10);
+  padding: 40px 36px 28px;
+  border-top: 4px solid var(--admin-accent, #C8A04D);
 }
 
 .loginHeader {
   text-align: center;
-  margin-bottom: var(--space-8);
+  margin-bottom: 28px;
 }
 
 .loginLogo {
-  margin: 0 auto var(--space-4);
+  margin: 0 auto 16px;
 }
 
 .loginLogo img {
-  height: 48px;
+  height: 52px;
   width: auto;
   display: block;
   margin: 0 auto;
 }
 
+.accentRule {
+  display: block;
+  width: 48px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--admin-accent, #C8A04D);
+  margin: 0 auto 16px;
+}
+
 .loginTitle {
-  font-family: var(--font-heading);
-  font-size: var(--fs-2xl);
-  font-weight: var(--fw-bold);
-  color: var(--admin-primary);
-  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--admin-primary, #1A2A52);
+  margin: 0 0 6px;
 }
 
 .loginSubtitle {
-  font-size: var(--fs-sm);
-  color: var(--admin-text-secondary);
+  font-size: 0.875rem;
+  color: var(--admin-text-secondary, #5B6678);
   margin: 0;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: 18px;
 }
 
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 6px;
 }
 
 .inputLabel {
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
-  color: var(--admin-text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--admin-text-primary, #14233D);
 }
 
 .rememberRow {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
 }
 
 .rememberLabel {
-  font-size: var(--fs-sm);
-  color: var(--admin-text-secondary);
+  font-size: 0.82rem;
+  color: var(--admin-text-secondary, #5B6678);
   cursor: pointer;
   user-select: none;
 }
 
 .errorMessage {
-  background: rgba(239, 68, 68, 0.08);
-  color: var(--admin-error);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  font-size: var(--fs-sm);
-  text-align: center;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(224, 48, 30, 0.08);
+  color: var(--admin-cta, #E0301E);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  border: 1px solid rgba(224, 48, 30, 0.2);
 }
 
 .submitButton {
-  background: var(--admin-gradient-accent);
-  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #1A2A52 0%, #2C3E6B 100%);
+  color: #fff;
   border: none;
-  padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-md);
-  font-size: var(--fs-base);
-  font-weight: var(--fw-semibold);
+  padding: 13px 24px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
-  transition: var(--transition-base);
+  transition: box-shadow 0.2s ease, transform 0.1s ease, opacity 0.2s ease;
   width: 100%;
-  height: 48px;
+  min-height: 48px;
+  margin-top: 2px;
 }
 
-.submitButton:hover {
-  opacity: 0.9;
-  box-shadow: 0 6px 20px rgba(224, 48, 30, 0.35);
+.submitButton:hover:not(:disabled) {
+  box-shadow: 0 8px 24px rgba(26, 42, 82, 0.35);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .submitButton:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
+}
+
+.loginFooter {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--admin-text-muted, #8E9BAD);
+  margin: 22px 0 0;
 }
 
 @media (max-width: 480px) {
   .loginCard {
-    padding: var(--space-6);
+    padding: 32px 24px 24px;
   }
 }

@@ -54,6 +54,12 @@ empty `DataTable` preview; `Settings` is functional (session StatTiles, read-onl
 endpoint config with copy-to-clipboard `Toast`, and a confirmed sign-out via
 `ConfirmDialog`). Full publishing tools arrive in prompts 29/31/33.
 
+**Responsive polish** (post screenshot QA across desktop/tablet/mobile) —
+`DataTable` empty state now renders at card width outside the horizontal-scroll
+area so its message is never clipped on narrow screens; the sidebar drawer brand
+keeps "Icon Commerce" on one line (corner-anchored close button) to match
+desktop; `StatTile` values truncate with an ellipsis instead of overflowing.
+
 **Tokens** — added `--admin-accent-dark`, `--admin-accent-soft`, `--admin-cta`,
 `--admin-cta-dark` to the admin palette in `src/styles/variables.css`.
 

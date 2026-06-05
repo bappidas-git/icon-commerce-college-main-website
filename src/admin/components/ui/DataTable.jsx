@@ -168,21 +168,9 @@ const DataTable = ({
               ))}
             </tr>
           </thead>
-          <tbody>
-            {pageRows.length === 0 ? (
-              <tr>
-                <td colSpan={columns.length || 1} className={styles.emptyCell}>
-                  <div className={styles.empty}>
-                    <Icon icon={emptyIcon} width={44} height={44} className={styles.emptyIcon} />
-                    <p className={styles.emptyTitle}>{query ? 'No matching records' : emptyTitle}</p>
-                    <p className={styles.emptyMessage}>
-                      {query ? 'Try a different search term.' : emptyMessage}
-                    </p>
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              pageRows.map((row, index) => {
+          {pageRows.length > 0 && (
+            <tbody>
+              {pageRows.map((row, index) => {
                 const id = rowId(row, start + index);
                 const clickable = Boolean(onRowClick);
                 return (
@@ -210,11 +198,21 @@ const DataTable = ({
                     ))}
                   </tr>
                 );
-              })
-            )}
-          </tbody>
+              })}
+            </tbody>
+          )}
         </table>
       </div>
+
+      {/* Empty state lives outside the horizontal scroll area so its message is
+          never clipped on narrow screens where the table itself overflows. */}
+      {pageRows.length === 0 && (
+        <div className={styles.empty}>
+          <Icon icon={emptyIcon} width={44} height={44} className={styles.emptyIcon} />
+          <p className={styles.emptyTitle}>{query ? 'No matching records' : emptyTitle}</p>
+          <p className={styles.emptyMessage}>{query ? 'Try a different search term.' : emptyMessage}</p>
+        </div>
+      )}
 
       {/* Pagination footer */}
       {total > 0 && (

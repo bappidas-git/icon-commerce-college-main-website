@@ -41,6 +41,9 @@
   color: var(--admin-text-primary, #14233D);
   margin: 0;
   line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .label {

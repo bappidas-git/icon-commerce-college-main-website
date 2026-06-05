@@ -17,6 +17,7 @@
 
 /* ---- Brand ---- */
 .brand {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -49,9 +50,10 @@
 .brandName {
   font-family: var(--font-heading, 'Poppins', sans-serif);
   font-weight: 700;
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   line-height: 1.2;
   color: #fff;
+  white-space: nowrap;
 }
 
 .brandSub {
@@ -63,7 +65,9 @@
 
 .closeBtn {
   display: none;
-  margin-left: auto;
+  position: absolute;
+  top: 14px;
+  right: 14px;
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.75);

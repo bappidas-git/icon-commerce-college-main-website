@@ -595,7 +595,10 @@ export const getLeadStats = () => {
   const weekLeads = leads.filter(
     (l) => new Date(l.submitted_at) >= weekStart
   ).length;
-  const convertedLeads = leads.filter((l) => l.status === "converted").length;
+  // "Seat Booked" (status key `completed`) is the enrolled/won stage of the
+  // admissions funnel — that's a conversion. There is no `converted` status,
+  // so the previous key never matched and the rate always read 0%.
+  const convertedLeads = leads.filter((l) => l.status === "completed").length;
   const conversionRate = totalLeads > 0 ? ((convertedLeads / totalLeads) * 100).toFixed(1) : "0";
 
   // Top source

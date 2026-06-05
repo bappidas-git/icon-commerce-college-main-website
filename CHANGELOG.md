@@ -39,6 +39,21 @@ no notices/events surface).
 `last7Days` array (`{ key, label, count }`, oldest→newest) for the chart and
 widens `recentLeads` from 5 to 6. No other consumers of these fields change.
 
+**Visual-QA fixes (desktop 1440 / tablet 834 / mobile 390 screenshots)**
+- **Conversion rate** — `getLeadStats()` counted a non-existent `converted`
+  status, so the Dashboard + Lead Management "Conversion" stat always read 0%.
+  Now counts `completed` ("Seat Booked"), the enrolled/won funnel stage.
+- **Upcoming Events tile vs list** — the tile counted only not-yet-ended events
+  while the mini-list fell back to showing past events, so the card could read
+  "0" yet list four past events. The preview now derives from the same
+  upcoming-only set as the tile, with a "No upcoming events scheduled." empty
+  state, so they always agree.
+- **Seed events refreshed** (`src/data/seedEvents.js`) — the four signature
+  annual events were dated Jan–Apr 2026 (already past), leaving nothing
+  genuinely "upcoming" on the dashboard or the public Events/NoticeBoard. Shifted
+  to the upcoming 2026-27 session (ICON Shield Aug 2026 · College Week Sep 2026 ·
+  Cooking Competition Nov 2026 · ICON Trophy Jan 2027).
+
 ### Phase 3.1 — Admin cleanup & shell
 
 Twenty-fifth prompt of the rebuild (`prompts/25-admin-cleanup-and-shell.md`).

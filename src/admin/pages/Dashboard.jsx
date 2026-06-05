@@ -154,9 +154,10 @@ const Dashboard = () => {
     return events.filter((e) => parseDate(e.end_date || e.start_date) >= today);
   }, [events]);
 
-  // Never show an empty events preview before dated events exist — fall back to
-  // the soonest seed events (mirrors the public Notice board behaviour).
-  const eventsPreview = (upcomingEvents.length ? upcomingEvents : events).slice(0, 4);
+  // Keep the "Upcoming Events" tile count and this preview in lock-step: both
+  // derive from upcomingEvents, so the card never lists a past event as
+  // "upcoming" (and an empty list always agrees with a 0 tile).
+  const eventsPreview = upcomingEvents.slice(0, 4);
   const noticesPreview = notices.slice(0, 4);
 
   const recentLeads = stats?.recentLeads || [];
@@ -413,7 +414,7 @@ const Dashboard = () => {
             {eventsPreview.length === 0 ? (
               <div className={styles.empty}>
                 <Icon icon="mdi:calendar-blank-outline" width={40} height={40} />
-                <p className={styles.emptyText}>No events scheduled.</p>
+                <p className={styles.emptyText}>No upcoming events scheduled.</p>
               </div>
             ) : (
               <ul className={styles.miniList}>

@@ -35,8 +35,8 @@ export const seedEvents = [
     description:
       'A week-long celebration featuring indoor & outdoor games, quiz, debate, and art & literature competitions — the highlight of the college calendar.',
     category: 'Cultural',
-    start_date: '2026-02-16',
-    end_date: '2026-02-21',
+    start_date: '2026-09-21',
+    end_date: '2026-09-26',
     venue: 'College Campus',
     image_url: 'event-college-week',
     published: true,
@@ -49,7 +49,7 @@ export const seedEvents = [
     description:
       'A lively inter-college culinary contest showcasing the creativity and skills of students from across the region.',
     category: 'Cultural',
-    start_date: '2026-03-12',
+    start_date: '2026-11-13',
     venue: 'College Playground',
     image_url: 'event-cooking-competition',
     published: true,
@@ -62,8 +62,8 @@ export const seedEvents = [
     description:
       'The annual ICON Shield cricket tournament, held in loving memory of Rupam Patgiri.',
     category: 'Sports',
-    start_date: '2026-01-20',
-    end_date: '2026-01-25',
+    start_date: '2026-08-17',
+    end_date: '2026-08-22',
     venue: 'College Playground',
     image_url: 'event-icon-shield',
     published: true,
@@ -76,8 +76,8 @@ export const seedEvents = [
     description:
       'The annual ICON Trophy cricket tournament, held in loving memory of Jadav Dutta.',
     category: 'Sports',
-    start_date: '2026-04-06',
-    end_date: '2026-04-11',
+    start_date: '2027-01-18',
+    end_date: '2027-01-23',
     venue: 'College Playground',
     image_url: 'event-icon-trophy',
     published: true,

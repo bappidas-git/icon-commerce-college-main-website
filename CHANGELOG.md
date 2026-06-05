@@ -4,6 +4,56 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.2 — Admin dashboard
+
+Twenty-sixth prompt of the rebuild (`prompts/26-admin-dashboard.md`). Rebuilds
+the admin home as an at-a-glance overview on the shared admin UI kit, replacing
+the boilerplate holdover dashboard (which had stale pre-rebrand red accents and
+no notices/events surface).
+
+**`Dashboard` (`src/admin/pages/Dashboard.jsx` + `.module.css`, rebuilt)**
+- **Header** — uses the shared `AdminPageHeader` (gold eyebrow / navy title)
+  with a refresh button + live date pill in the actions slot.
+- **Stat tiles** — six shared `StatTile`s: Total Leads · New Today · This Week ·
+  Conversion % (from `getLeadStats()`), plus Upcoming Events and Active Notices
+  counts. Navy/Gold/Green/Blue/Teal/Pink tones (Warm Red stays reserved for the
+  single public CTA per design system §2).
+- **Leads — last 7 days** — a lightweight pure-CSS bar chart (no chart dep) of
+  daily lead counts, fed by a new `last7Days` series on `getLeadStats()`
+  (local-midnight day buckets, DST-safe). `role="img"` with a summarising label.
+- **Recent Admission Leads** — the six newest leads as a desktop table / mobile
+  cards, each row linking to `/admin/leads/:leadId`, with status chips from the
+  shared `leadStatus` config.
+- **Quick actions** — Add Notice, Add Event (navy primary, route to the
+  modules), Export Leads (CSV) and View Site (opens the public site in a new
+  tab).
+- **Upcoming Events** + **Latest Notices** mini-lists read the existing
+  `useNotices()` / `useEvents()` hooks (seed data today; they switch to the live
+  `notices.php` / `events.php` stores in prompt 32 without changing shape, so the
+  dashboard goes fully live with no further edits here). Upcoming events filter
+  to today-or-later with a soonest-event fallback so the preview is never empty.
+- **Auto-refresh** — initial server sync, the 15s visibility-gated poll and the
+  `onLeadsChanged` subscription keep tiles, chart and recent leads current.
+
+**`getLeadStats()` (`src/admin/utils/leadService.js`)** — now also returns a
+`last7Days` array (`{ key, label, count }`, oldest→newest) for the chart and
+widens `recentLeads` from 5 to 6. No other consumers of these fields change.
+
+**Visual-QA fixes (desktop 1440 / tablet 834 / mobile 390 screenshots)**
+- **Conversion rate** — `getLeadStats()` counted a non-existent `converted`
+  status, so the Dashboard + Lead Management "Conversion" stat always read 0%.
+  Now counts `completed` ("Seat Booked"), the enrolled/won funnel stage.
+- **Upcoming Events tile vs list** — the tile counted only not-yet-ended events
+  while the mini-list fell back to showing past events, so the card could read
+  "0" yet list four past events. The preview now derives from the same
+  upcoming-only set as the tile, with a "No upcoming events scheduled." empty
+  state, so they always agree.
+- **Seed events refreshed** (`src/data/seedEvents.js`) — the four signature
+  annual events were dated Jan–Apr 2026 (already past), leaving nothing
+  genuinely "upcoming" on the dashboard or the public Events/NoticeBoard. Shifted
+  to the upcoming 2026-27 session (ICON Shield Aug 2026 · College Week Sep 2026 ·
+  Cooking Competition Nov 2026 · ICON Trophy Jan 2027).
+
 ### Phase 3.1 — Admin cleanup & shell
 
 Twenty-fifth prompt of the rebuild (`prompts/25-admin-cleanup-and-shell.md`).

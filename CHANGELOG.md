@@ -4,6 +4,76 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.14 — Contact, Notices & Events (public)
+
+Twenty-fourth prompt of the rebuild (`prompts/24-contact-notices-events.md`).
+Replaces the `/contact`, `/notices` and `/events` `ComingSoon` shells with full,
+responsive, dynamic-ready pages. Notices/Events read seed data through the
+shared hooks now and switch to the live PHP stores in prompt 32 without page
+changes (same record shapes).
+
+**Shared date helpers (`src/utils/dateUtils.js`, new)**
+- Dependency-free helpers shared by NoticeCard / EventCard / EventCalendar.
+  Parses `YYYY-MM-DD` as **local** midnight (`parseISODate`) so dates never
+  drift a day across time zones. Adds `formatLongDate`, `formatFullDate`,
+  `formatDateRange` (single/same-month/same-year/cross-year), `formatTime` +
+  `formatTimeRange`, `dateTile`, `isNew`, `isPastEvent`, `dayInEvent`,
+  `toISOKey`, `startOfMonth`/`addMonths`/`isSameDay` and the month/weekday name
+  tables.
+
+**Hooks (`src/hooks/useNotices.js`, `src/hooks/useEvents.js`)**
+- Now expose the list under **`items`** (the generic shape prompt 24 specifies)
+  alongside the existing `notices` / `events` keys (same array reference), so the
+  new pages use `items` while the Home NoticeBoard band stays untouched. Sorting
+  is unchanged (notices: pinned first, then newest; events: soonest first).
+
+**Contact (`src/pages/Contact/Contact.jsx` + `.module.css`)**
+- **PageHero** "Contact Us" + breadcrumb. Two-column band: left = the shared
+  `<UnifiedLeadForm source="contact">` (full fields incl. message); right = a
+  navy details card from `collegeInfo` — address (→ Google Maps), both phones
+  (click-to-call), email (mailto), office hours, a Samarth "College Code 842"
+  pill, a WhatsApp chip and social icons (live once real URLs replace the
+  `TODO`s, per the Footer convention).
+- Full-width **embedded Google Map** (keyless `output=embed` iframe by
+  `mapsQuery`) paired with a **"How to reach us"** card (Rajgarh Road, Chandmari)
+  and an "Open in Google Maps" link.
+- SEO via `useSeo()` (the LocalBusiness/CollegeOrUniversity JSON-LD with address,
+  phone, hours and map is already injected site-wide by `<SEOHead/>`, so the page
+  reuses it instead of emitting a duplicate).
+
+**Notices (`src/pages/Notices/Notices.jsx` + `.module.css`, `NoticeCard.jsx` + `.module.css`)**
+- **PageHero** "Notices & Announcements" + breadcrumb. Control bar: search box
+  (title + body) and category filter chips (derived from the data). List of
+  `NoticeCard`s (pinned first, then newest — ordering owned by `useNotices()`)
+  with a **"Load more"** pager (6 per page; resets on search/filter change) and a
+  result count.
+- **NoticeCard** — date chip, per-category badge, **"Pinned"** / **"New"** flags
+  (recent = within 30 days), title and a 3-line clamped body that **expands
+  inline** ("Read more"/"Show less", `aria-expanded`); the toggle only appears
+  when the clamped body actually overflows or an optional attachment is present.
+- `EmptyState` for "no notices yet" and "no matching notices" (with a Clear
+  filters action). SEO via `useSeo()` (/notices route defaults).
+
+**Events (`src/pages/Events/Events.jsx` + `.module.css`, `EventCard.jsx` + `.module.css`, `EventCalendar.jsx` + `.module.css`)**
+- **PageHero** "Events" + breadcrumb. Control bar: category filter chips + a
+  **List / Calendar** segmented toggle (filter applies to both views).
+- **List view** — **Upcoming** and **Past** groups of `EventCard`s (date block,
+  category badge, title, date-range · time · venue meta, description); past
+  events read muted. Upcoming shows a friendly note when empty.
+- **Calendar view** — `EventCalendar`, a lightweight **month grid** (no extra
+  deps) highlighting event days (multi-day spans mark every covered day), with
+  Prev/Next/Today navigation. It opens on the most relevant month for the
+  current filter (next upcoming, else most recent) and auto-selects that month's
+  first event day; **clicking a day** shows that day's events below via
+  `EventCard`.
+- `EmptyState` for "no events yet" and "no events in this category". SEO via
+  `useSeo()` (/events route defaults). The four signature events (College Week,
+  Cooking Competition, ICON Shield, ICON Trophy) come from the existing seed.
+
+**Drive-by:** named the `formatters.js` default export before exporting it
+(`import/no-anonymous-default-export`) so the whole project compiles clean under
+`CI=true` (warnings-as-errors). `npm run build` passes.
+
 ### Phase 2.13 — Admissions + lead-gated prospectus
 
 Twenty-third prompt of the rebuild (`prompts/23-admissions-and-prospectus.md`).

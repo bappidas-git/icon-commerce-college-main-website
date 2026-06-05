@@ -1,0 +1,394 @@
+/* ============================================
+   Contact page styles — Icon Commerce College (prompt 24)
+   --------------------------------------------
+   Two-column form + details band, then a full-width embedded map paired with a
+   "how to reach us" card. Navy = structure, Gold = emphasis only (icon chips,
+   the Samarth pill). The single Warm-Red CTA lives inside <UnifiedLeadForm>.
+   ============================================ */
+
+/* ============================================
+   Form + details layout
+   ============================================ */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: var(--space-8);
+  /* Height-match the columns so the navy details card fills the same height as
+     the (taller) lead form; its `.connect` row is anchored to the bottom. */
+  align-items: stretch;
+  margin-top: var(--space-6);
+}
+
+.formCol,
+.infoCol {
+  min-width: 0;
+}
+
+/* ---------- Contact details card ---------- */
+.infoCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-8);
+  background: var(--gradient-navy);
+  color: #ffffff;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+}
+
+.infoTitle {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  color: #ffffff;
+}
+
+.infoLead {
+  margin: 0 0 var(--space-6);
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.details {
+  list-style: none;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.detail {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.detailChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: rgba(200, 160, 77, 0.18);
+  color: var(--color-accent);
+  font-size: 22px;
+}
+
+.detailBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.detailLabel {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.detailValue {
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+}
+
+a.detailValue:hover,
+.inlineLink:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.inlineLink {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.sep {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- Samarth pill ---------- */
+.samarthPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-6);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(200, 160, 77, 0.4);
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.samarthPill:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--color-accent);
+}
+
+.samarthPill > svg:first-child {
+  font-size: 22px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.samarthCode {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.samarthExternal {
+  margin-left: auto;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- WhatsApp + social ---------- */
+.connect {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.whatsapp:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+}
+
+.whatsapp svg {
+  font-size: 20px;
+  color: #25d366;
+}
+
+.social {
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 20px;
+  text-decoration: none;
+  transition: background var(--transition-fast), color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.socialIcon:hover {
+  background: var(--color-accent);
+  color: var(--color-primary-dark);
+  transform: translateY(-2px);
+}
+
+.detailValue:focus-visible,
+.inlineLink:focus-visible,
+.samarthPill:focus-visible,
+.whatsapp:focus-visible,
+.socialIcon:focus-visible,
+.mapsLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Map + how to reach us
+   ============================================ */
+.mapGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: stretch;
+  margin-top: var(--space-6);
+}
+
+.mapWrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  min-height: 360px;
+  /* Graceful fallback: the labelled map placeholder (set as a backgroundImage
+     in JSX, per the PageHero/Footer convention for public/ assets) sits behind
+     the iframe, so a slow / blocked embed (privacy blockers, offline) degrades
+     to a map-ish backdrop instead of a stark-white void. The loaded iframe
+     paints over it. */
+  background-color: var(--color-accent-soft);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.mapFrame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  border: 0;
+}
+
+.reachCard {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-8);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.reachChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-size: 28px;
+}
+
+.reachTitle {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.reachText {
+  margin: 0 0 var(--space-4);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+.reachText strong {
+  color: var(--color-text);
+  font-weight: var(--fw-semibold);
+}
+
+.reachList {
+  list-style: none;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.reachList li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--color-text);
+}
+
+.reachList svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 20px;
+  color: var(--color-accent-dark);
+}
+
+.mapsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.mapsLink:hover {
+  color: var(--color-accent-dark);
+}
+
+.mapsLink > svg:last-child {
+  font-size: 15px;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 960px) {
+  .layout,
+  .mapGrid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Lead form first, details below it on narrow screens. */
+  .infoCard {
+    height: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .infoCard,
+  .reachCard {
+    padding: var(--space-6);
+  }
+
+  .connect {
+    justify-content: flex-start;
+  }
+}
+
+/* ============================================
+   Reduced motion — drop hover transforms (§4)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp:hover,
+  .socialIcon:hover {
+    transform: none;
+  }
+}

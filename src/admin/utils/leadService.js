@@ -13,7 +13,7 @@
    ============================================ */
 
 import { getConfig } from "../../utils/webhookSubmit";
-import { describeStatusChange } from "./leadStatus";
+import { describeStatusChange, normalizeStatus } from "./leadStatus";
 
 // Shared secret used to authenticate against /api/leads.php admin actions.
 // Must match ADMIN_API_KEY in public/api/config.php (or the committed default
@@ -112,21 +112,34 @@ const callLeadsApi = (action, body) => {
 
 /**
  * Normalise a raw server lead so the admin UI always has the fields it expects.
+ *
+ * `program_interest` is the canonical college field (design-system §8 / prompt
+ * 08), while `service_interest` is the legacy mirror older records / the LMS
+ * still read. webhookSubmit writes both with the same value; here we guarantee
+ * BOTH are always present and equal — preferring an existing `program_interest`
+ * — so every admin surface can read either key regardless of how the record was
+ * created or imported. Status is folded to a current canonical key so legacy
+ * funnel keys never leak into filters/stats/chips.
  */
-const normalizeLead = (lead) => ({
-  ...lead,
-  status: lead.status || "new",
-  notes: Array.isArray(lead.notes) ? lead.notes : [],
-  activity: Array.isArray(lead.activity)
-    ? lead.activity
-    : [
-        {
-          action: "Lead created",
-          status: lead.status || "new",
-          timestamp: lead.submitted_at || new Date().toISOString(),
-        },
-      ],
-});
+const normalizeLead = (lead) => {
+  const program = lead.program_interest || lead.service_interest || "";
+  return {
+    ...lead,
+    program_interest: program,
+    service_interest: program,
+    status: normalizeStatus(lead.status),
+    notes: Array.isArray(lead.notes) ? lead.notes : [],
+    activity: Array.isArray(lead.activity)
+      ? lead.activity
+      : [
+          {
+            action: "Lead created",
+            status: normalizeStatus(lead.status),
+            timestamp: lead.submitted_at || new Date().toISOString(),
+          },
+        ],
+  };
+};
 
 /**
  * Replace a lead in the cache with a NEW object built by `updater`. Returning a
@@ -216,7 +229,7 @@ export const syncLeadsFromServer = async () => {
 export const getLeads = (filters = {}) => {
   let leads = [..._cache];
 
-  // Search filter — name, email, mobile, course (service_interest), state
+  // Search filter — name, email, mobile, program interest, state
   if (filters.search) {
     const q = filters.search.toLowerCase();
     leads = leads.filter(
@@ -224,7 +237,9 @@ export const getLeads = (filters = {}) => {
         (l.name || "").toLowerCase().includes(q) ||
         (l.email || "").toLowerCase().includes(q) ||
         (l.mobile || "").includes(q) ||
-        (l.service_interest || "").toLowerCase().includes(q) ||
+        (l.program_interest || l.service_interest || "")
+          .toLowerCase()
+          .includes(q) ||
         (l.state || "").toLowerCase().includes(q)
     );
   }
@@ -434,7 +449,7 @@ export const exportLeadsCSV = (leads) => {
     "Name",
     "Mobile",
     "Email",
-    "Course Interested",
+    "Program Interest",
     "State",
     "Source",
     "Status",
@@ -462,7 +477,7 @@ export const exportLeadsCSV = (leads) => {
     l.name,
     l.mobile,
     l.email,
-    l.service_interest,
+    l.program_interest || l.service_interest,
     l.state,
     l.source,
     l.status,
@@ -513,11 +528,12 @@ export const importLeadsCSV = async (csvText) => {
     name: "name",
     mobile: "mobile",
     email: "email",
-    // Canonical key is `service_interest` (kept from the public form); the
-    // exported header label is "Course Interested" but legacy "Service
-    // Interest" CSVs still import into the same key.
-    "course interested": "service_interest",
-    "service interest": "service_interest",
+    // Canonical key is `program_interest` (design-system §8). The current export
+    // header is "Program Interest"; older "Course Interested" / "Service
+    // Interest" CSVs still import into the same canonical key.
+    "program interest": "program_interest",
+    "course interested": "program_interest",
+    "service interest": "program_interest",
     state: "state",
     source: "source",
     status: "status",
@@ -550,6 +566,14 @@ export const importLeadsCSV = async (csvText) => {
       const key = fieldMap[h] || h.replace(/\s+/g, "_");
       if (values[idx]) lead[key] = values[idx];
     });
+
+    // Keep the canonical `program_interest` and legacy `service_interest` mirror
+    // in lock-step (whichever the CSV supplied), and fold any imported status to
+    // a current key so re-imported exports stay consistent with the live store.
+    const program = lead.program_interest || lead.service_interest || "";
+    lead.program_interest = program;
+    lead.service_interest = program;
+    lead.status = normalizeStatus(lead.status);
 
     newLeads.push(lead);
     if (mobile) existingMobiles.add(mobile);
@@ -595,10 +619,11 @@ export const getLeadStats = () => {
   const weekLeads = leads.filter(
     (l) => new Date(l.submitted_at) >= weekStart
   ).length;
-  // "Seat Booked" (status key `completed`) is the enrolled/won stage of the
-  // admissions funnel — that's a conversion. There is no `converted` status,
-  // so the previous key never matched and the rate always read 0%.
-  const convertedLeads = leads.filter((l) => l.status === "completed").length;
+  // "Admitted / Seat Booked" (status key `admitted`) is the enrolled/won stage
+  // of the admissions funnel — that's a conversion. Leads are normalised to the
+  // current status keys on load, so legacy `completed` records are already
+  // folded into `admitted` and counted here too.
+  const convertedLeads = leads.filter((l) => l.status === "admitted").length;
   const conversionRate = totalLeads > 0 ? ((convertedLeads / totalLeads) * 100).toFixed(1) : "0";
 
   // Top source

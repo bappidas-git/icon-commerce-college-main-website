@@ -4,6 +4,84 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.3 — Admin lead management
+
+Twenty-seventh prompt of the rebuild (`prompts/27-admin-lead-management.md`).
+Adapts the proven Lead Management System to Icon Commerce College's admission
+funnel — college statuses, the `program_interest` field, applicant quick
+actions — and aligns the screen with the shared navy+gold admin UI kit. The
+server-store sync (15s poll + `onLeadsChanged` + `BroadcastChannel`) is
+unchanged.
+
+**`leadStatus` (`src/admin/utils/leadStatus.js`)** — replaces the generic
+consultation funnel (New · Hot · Warm · Cold · Seat Booked · Not Interested)
+with the college admission funnel, the single source of truth for every admin
+surface:
+- **New · Contacted · Interested · Applying · Admitted · Not Interested**, each
+  with a label + chip colour. Labels are kept short (the keys
+  `application_started` / `admitted` are unchanged) so the inline status chip
+  stays compact in the dense leads table.
+- New `normalizeStatus()` folds legacy workflow keys
+  (`consultation_booked` → `interested`, `procedure_scheduled` →
+  `application_started`, `completed` → `admitted`) onto the current stages so
+  stale records never render as a raw key or collapse to "New".
+- `getStatusConfig()` / `statusLabel()` normalise first; `formatActivityAction()`
+  also remaps legacy keys inside historical timeline text. `describeStatusChange()`
+  retained.
+
+**`leadService` (`src/admin/utils/leadService.js`)** — kept as-is except for
+making `program_interest` flow through cleanly (prompt 08's field decision):
+- `normalizeLead()` guarantees the canonical `program_interest` and the legacy
+  `service_interest` mirror are always present and equal (preferring an existing
+  `program_interest`), and normalises `status`, so every surface can read either
+  key for any record.
+- Search now matches on program interest; CSV export header is **"Program
+  Interest"** (value reads `program_interest`); CSV import maps "Program
+  Interest" / "Course Interested" / "Service Interest" → `program_interest` and
+  mirrors both keys + normalises status on import.
+- Conversion rate counts the `admitted` stage (was the now-removed `completed`).
+
+**`LeadManagement` (`src/admin/pages/LeadManagement.jsx` + `.module.css`)** —
+`/admin/leads`:
+- DataTable columns **Name · Mobile · Email · Program Interest · State · Source ·
+  Status · Date** (the course column is now **Program Interest**, reading the
+  canonical field). Search placeholder updated.
+- Adopts the shared **`AdminPageHeader`** (gold eyebrow / navy title / icon) and
+  four shared **`StatTile`**s (Total Leads · New Today · Conversion · Top Source),
+  replacing the bespoke header and stat cards that still carried pre-rebrand
+  boilerplate colours (a red-tinted "blue" stat icon, etc.).
+- Active-filter chips and the selected-row highlight move from leftover
+  blue/red tints to the navy palette.
+- Filters (search · status · source · date range), bulk select → change
+  status / delete (confirm dialog), inline status chips, CSV export/import,
+  pagination and auto-refresh are all retained.
+
+**`LeadDetail` (`src/admin/pages/LeadDetail.jsx` + `.module.css`)** —
+`/admin/leads/:leadId`:
+- **Quick Actions** card — one-tap **Call** (`tel:`), **WhatsApp**
+  (`wa.me`, +91 prefixed) and **Email** (`mailto:`); each disables cleanly when
+  the underlying mobile/email is absent.
+- "Course Interested" → **Program Interest**; adds a **Last Updated** time
+  alongside Submitted At. Editable status, append-only notes, activity timeline
+  and source/UTM panel unchanged (all merge-safe via `leadService`).
+
+**`Dashboard` (`src/admin/pages/Dashboard.jsx`)** — recent-leads table column
+relabelled **Program** and reads `program_interest`, matching the new
+terminology.
+
+**Visual-QA fixes (desktop 1440 / tablet 834 / mobile 390 screenshots)**
+- **Leads table no longer overflows** — the dense column set plus the long
+  "Admitted / Seat Booked" inline status select pushed the table ~119px past its
+  container on desktop, clipping the **Actions** column off-screen and truncating
+  the **Date** column on tablet. Fixed by the shorter status labels, a compact
+  "Program" header, tighter cell padding, a width-capped status select, and
+  single-line/ellipsised Name + Email cells. All columns (incl. Actions) now fit
+  at every breakpoint.
+- **Tablet header/body alignment** — Source is now `hideTablet`, but the body
+  Source cell was still rendered on tablet (it wasn't wrapped in the `!isTablet`
+  guard like Email/Program), shifting the body one column out of step with the
+  header. The body Source cell is now guarded too, so header and body line up.
+
 ### Phase 3.2 — Admin dashboard
 
 Twenty-sixth prompt of the rebuild (`prompts/26-admin-dashboard.md`). Rebuilds

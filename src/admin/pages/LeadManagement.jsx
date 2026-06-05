@@ -54,6 +54,7 @@ import {
   onLeadsChanged,
 } from "../utils/leadService";
 import { STATUS_OPTIONS, getStatusConfig } from "../utils/leadStatus";
+import { AdminPageHeader, StatTile } from "../components/ui";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import styles from "./LeadManagement.module.css";
 
@@ -75,20 +76,22 @@ const formatShortDate = (dateStr) => {
   });
 };
 
-// Columns config — `service_interest` is the canonical key (kept from the
-// public form), displayed as "Course Interested" in the UI.
+// Columns config — `program_interest` is the canonical college field
+// (design-system §8); leadService guarantees it is always populated (mirrored
+// from the legacy `service_interest` when needed) so sorting/rendering work for
+// every record.
 const COLUMNS = [
   { id: "name", label: "Name", sortable: true },
   { id: "mobile", label: "Mobile", sortable: true, width: 130 },
   { id: "email", label: "Email", sortable: true, hideTablet: true },
   {
-    id: "service_interest",
-    label: "Course Interested",
+    id: "program_interest",
+    label: "Program",
     sortable: true,
     hideTablet: true,
   },
   { id: "state", label: "State", sortable: true, width: 120 },
-  { id: "source", label: "Source", sortable: true, width: 130 },
+  { id: "source", label: "Source", sortable: true, width: 130, hideTablet: true },
   { id: "status", label: "Status", sortable: true, width: 150 },
   { id: "submitted_at", label: "Date", sortable: true, width: 100 },
 ];
@@ -391,31 +394,54 @@ const LeadManagement = () => {
   return (
     <div className={styles.page}>
       {/* Page Header */}
-      <div className={styles.pageHeader}>
-        <div>
-          <h1 className={styles.pageTitle}>Admission Leads</h1>
-          <p className={styles.pageSubtitle}>
-            View and manage all admission leads in one place.
-          </p>
-        </div>
-        <div className={styles.headerActions}>
-          <input
-            type="file"
-            accept=".csv"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleImport}
-          />
-          <Tooltip title="Refresh leads">
-            <span>
-              <IconButton
+      <AdminPageHeader
+        eyebrow="Leads"
+        title="Admission Leads"
+        icon="mdi:account-multiple-outline"
+        subtitle="View and manage every admission enquiry in one place."
+        actions={
+          <>
+            <input
+              type="file"
+              accept=".csv"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleImport}
+            />
+            <div className={styles.headerActions}>
+              <Tooltip title="Refresh leads">
+                <span>
+                  <IconButton
+                    size="small"
+                    onClick={handleRefresh}
+                    disabled={refreshing}
+                    aria-label="Refresh leads"
+                    sx={{
+                      border: "1px solid var(--admin-border)",
+                      borderRadius: "8px",
+                      color: "var(--admin-text-secondary)",
+                      "&:hover": {
+                        borderColor: "var(--admin-accent)",
+                        color: "var(--admin-accent)",
+                      },
+                    }}
+                  >
+                    <Icon
+                      icon="mdi:refresh"
+                      width={20}
+                      className={refreshing ? styles.refreshSpinning : undefined}
+                    />
+                  </IconButton>
+                </span>
+              </Tooltip>
+              <Button
+                variant="outlined"
                 size="small"
-                onClick={handleRefresh}
-                disabled={refreshing}
-                aria-label="Refresh leads"
+                startIcon={<Icon icon="mdi:upload" />}
+                onClick={() => fileInputRef.current?.click()}
                 sx={{
-                  border: "1px solid var(--admin-border)",
-                  borderRadius: "8px",
+                  textTransform: "none",
+                  borderColor: "var(--admin-border)",
                   color: "var(--admin-text-secondary)",
                   "&:hover": {
                     borderColor: "var(--admin-accent)",
@@ -423,142 +449,105 @@ const LeadManagement = () => {
                   },
                 }}
               >
+                Import CSV
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<Icon icon="mdi:download" />}
+                onClick={handleExport}
+                sx={{
+                  textTransform: "none",
+                  borderColor: "var(--admin-border)",
+                  color: "var(--admin-text-secondary)",
+                  "&:hover": {
+                    borderColor: "var(--admin-accent)",
+                    color: "var(--admin-accent)",
+                  },
+                }}
+              >
+                Export CSV
+              </Button>
+            </div>
+            {/* Mobile more menu */}
+            <IconButton
+              className={styles.moreMenuBtn}
+              onClick={(e) => setMoreMenuAnchor(e.currentTarget)}
+              size="small"
+              sx={{ border: "1px solid var(--admin-border)", borderRadius: "8px" }}
+            >
+              <Icon icon="mdi:dots-vertical" width={20} />
+            </IconButton>
+            <Menu
+              anchorEl={moreMenuAnchor}
+              open={Boolean(moreMenuAnchor)}
+              onClose={() => setMoreMenuAnchor(null)}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleRefresh();
+                  setMoreMenuAnchor(null);
+                }}
+                disabled={refreshing}
+              >
                 <Icon
                   icon="mdi:refresh"
-                  width={20}
+                  width={18}
+                  style={{ marginRight: 8 }}
                   className={refreshing ? styles.refreshSpinning : undefined}
-                />
-              </IconButton>
-            </span>
-          </Tooltip>
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<Icon icon="mdi:upload" />}
-            onClick={() => fileInputRef.current?.click()}
-            sx={{
-              textTransform: "none",
-              borderColor: "var(--admin-border)",
-              color: "var(--admin-text-secondary)",
-              "&:hover": {
-                borderColor: "var(--admin-accent)",
-                color: "var(--admin-accent)",
-              },
-            }}
-          >
-            Import CSV
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<Icon icon="mdi:download" />}
-            onClick={handleExport}
-            sx={{
-              textTransform: "none",
-              borderColor: "var(--admin-border)",
-              color: "var(--admin-text-secondary)",
-              "&:hover": {
-                borderColor: "var(--admin-accent)",
-                color: "var(--admin-accent)",
-              },
-            }}
-          >
-            Export CSV
-          </Button>
-        </div>
-        {/* Mobile more menu */}
-        <IconButton
-          className={styles.moreMenuBtn}
-          onClick={(e) => setMoreMenuAnchor(e.currentTarget)}
-          size="small"
-          sx={{ border: "1px solid var(--admin-border)", borderRadius: "8px" }}
-        >
-          <Icon icon="mdi:dots-vertical" width={20} />
-        </IconButton>
-        <Menu
-          anchorEl={moreMenuAnchor}
-          open={Boolean(moreMenuAnchor)}
-          onClose={() => setMoreMenuAnchor(null)}
-        >
-          <MenuItem
-            onClick={() => {
-              handleRefresh();
-              setMoreMenuAnchor(null);
-            }}
-            disabled={refreshing}
-          >
-            <Icon
-              icon="mdi:refresh"
-              width={18}
-              style={{ marginRight: 8 }}
-              className={refreshing ? styles.refreshSpinning : undefined}
-            />{" "}
-            Refresh
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              fileInputRef.current?.click();
-              setMoreMenuAnchor(null);
-            }}
-          >
-            <Icon icon="mdi:upload" width={18} style={{ marginRight: 8 }} />{" "}
-            Import CSV
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleExport();
-              setMoreMenuAnchor(null);
-            }}
-          >
-            <Icon icon="mdi:download" width={18} style={{ marginRight: 8 }} />{" "}
-            Export CSV
-          </MenuItem>
-        </Menu>
-      </div>
+                />{" "}
+                Refresh
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  fileInputRef.current?.click();
+                  setMoreMenuAnchor(null);
+                }}
+              >
+                <Icon icon="mdi:upload" width={18} style={{ marginRight: 8 }} />{" "}
+                Import CSV
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleExport();
+                  setMoreMenuAnchor(null);
+                }}
+              >
+                <Icon icon="mdi:download" width={18} style={{ marginRight: 8 }} />{" "}
+                Export CSV
+              </MenuItem>
+            </Menu>
+          </>
+        }
+      />
 
-      {/* Stats Summary */}
+      {/* Stats Summary — shared StatTile kit (matches the Dashboard) */}
       {stats && (
         <div className={styles.statsGrid}>
-          <div className={styles.statCard}>
-            <div className={`${styles.statIcon} ${styles.statIconBlue}`}>
-              <Icon icon="mdi:account-multiple" width={20} />
-            </div>
-            <div>
-              <p className={styles.statValue}>{stats.totalLeads}</p>
-              <p className={styles.statLabel}>Total Leads</p>
-            </div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={`${styles.statIcon} ${styles.statIconGreen}`}>
-              <Icon icon="mdi:account-plus" width={20} />
-            </div>
-            <div>
-              <p className={styles.statValue}>{stats.newLeads24h}</p>
-              <p className={styles.statLabel}>New Today</p>
-            </div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={`${styles.statIcon} ${styles.statIconTeal}`}>
-              <Icon icon="mdi:percent" width={20} />
-            </div>
-            <div>
-              <p className={styles.statValue}>{stats.conversionRate}%</p>
-              <p className={styles.statLabel}>Conversion Rate</p>
-            </div>
-          </div>
-          <div className={styles.statCard}>
-            <div className={`${styles.statIcon} ${styles.statIconOrange}`}>
-              <Icon icon="mdi:target" width={20} />
-            </div>
-            <div>
-              <p className={styles.statValue} title={stats.topSource}>
-                {stats.topSource.length > 14
-                  ? stats.topSource.slice(0, 14) + "..."
-                  : stats.topSource}
-              </p>
-              <p className={styles.statLabel}>Top Source</p>
-            </div>
-          </div>
+          <StatTile
+            icon="mdi:account-multiple"
+            value={stats.totalLeads}
+            label="Total Leads"
+            tone="navy"
+          />
+          <StatTile
+            icon="mdi:account-plus"
+            value={stats.newLeads24h}
+            label="New Today"
+            tone="green"
+          />
+          <StatTile
+            icon="mdi:trending-up"
+            value={`${stats.conversionRate}%`}
+            label="Conversion Rate"
+            tone="gold"
+          />
+          <StatTile
+            icon="mdi:target"
+            value={stats.topSource}
+            label="Top Source"
+            tone="teal"
+          />
         </div>
       )}
 
@@ -568,7 +557,7 @@ const LeadManagement = () => {
         <div className={styles.filtersBar}>
           <TextField
             size="small"
-            placeholder="Search by name, email, mobile, course, or state..."
+            placeholder="Search by name, email, mobile, program, or state..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -700,9 +689,9 @@ const LeadManagement = () => {
                 size="small"
                 onDelete={() => setSearch("")}
                 sx={{
-                  bgcolor: "#EBF5FF",
-                  color: "var(--admin-accent)",
-                  "& .MuiChip-deleteIcon": { color: "var(--admin-accent)" },
+                  bgcolor: "rgba(26, 42, 82, 0.08)",
+                  color: "var(--admin-primary)",
+                  "& .MuiChip-deleteIcon": { color: "var(--admin-primary)" },
                 }}
               />
             )}
@@ -726,9 +715,9 @@ const LeadManagement = () => {
                 size="small"
                 onDelete={() => setSourceFilter("all")}
                 sx={{
-                  bgcolor: "#EBF5FF",
-                  color: "var(--admin-accent)",
-                  "& .MuiChip-deleteIcon": { color: "var(--admin-accent)" },
+                  bgcolor: "rgba(26, 42, 82, 0.08)",
+                  color: "var(--admin-primary)",
+                  "& .MuiChip-deleteIcon": { color: "var(--admin-primary)" },
                 }}
               />
             )}
@@ -742,9 +731,9 @@ const LeadManagement = () => {
                   setCustomEnd("");
                 }}
                 sx={{
-                  bgcolor: "#EBF5FF",
-                  color: "var(--admin-accent)",
-                  "& .MuiChip-deleteIcon": { color: "var(--admin-accent)" },
+                  bgcolor: "rgba(26, 42, 82, 0.08)",
+                  color: "var(--admin-primary)",
+                  "& .MuiChip-deleteIcon": { color: "var(--admin-primary)" },
                 }}
               />
             )}
@@ -856,7 +845,18 @@ const LeadManagement = () => {
             {/* Desktop Table */}
             <div className={styles.desktopTable}>
               <div className={styles.tableWrap}>
-                <Table size="small">
+                <Table
+                  size="small"
+                  sx={{
+                    // Tighten horizontal cell padding (MUI default 16px) so the
+                    // 9-column table fits the content width without clipping the
+                    // Actions column. Checkbox cells keep their own padding.
+                    "& .MuiTableCell-root:not(.MuiTableCell-paddingCheckbox)": {
+                      pl: 1,
+                      pr: 1,
+                    },
+                  }}
+                >
                   <TableHead>
                     <TableRow>
                       <TableCell
@@ -923,7 +923,7 @@ const LeadManagement = () => {
                           textTransform: "uppercase",
                           letterSpacing: "0.05em",
                           color: "var(--admin-text-muted)",
-                          width: 80,
+                          width: 72,
                           borderBottom: "1px solid var(--admin-border)",
                         }}
                       >
@@ -942,12 +942,12 @@ const LeadManagement = () => {
                           sx={{
                             cursor: "pointer",
                             bgcolor: isSelected
-                              ? "rgba(43, 123, 213, 0.06)"
+                              ? "rgba(26, 42, 82, 0.05)"
                               : "#fff",
                             borderLeft: isSelected
                               ? "3px solid var(--admin-accent)"
                               : "3px solid transparent",
-                            "&:hover": { bgcolor: "#F8FAFF" },
+                            "&:hover": { bgcolor: "var(--admin-bg)" },
                             transition: "background 0.15s ease",
                             "& td": {
                               borderBottom: "1px solid var(--admin-border)",
@@ -967,9 +967,14 @@ const LeadManagement = () => {
                           <TableCell>
                             <Typography
                               variant="body2"
+                              title={lead.name || undefined}
                               sx={{
                                 fontWeight: 600,
                                 color: "var(--admin-text-primary)",
+                                whiteSpace: "nowrap",
+                                maxWidth: 150,
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
                               }}
                             >
                               {lead.name || "—"}
@@ -991,8 +996,9 @@ const LeadManagement = () => {
                             <TableCell>
                               <Typography
                                 variant="body2"
+                                title={lead.email || undefined}
                                 sx={{
-                                  maxWidth: 200,
+                                  maxWidth: 150,
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
                                   whiteSpace: "nowrap",
@@ -1011,7 +1017,7 @@ const LeadManagement = () => {
                                   color: "var(--admin-text-secondary)",
                                 }}
                               >
-                                {lead.service_interest || "—"}
+                                {lead.program_interest || "—"}
                               </Typography>
                             </TableCell>
                           )}
@@ -1026,21 +1032,24 @@ const LeadManagement = () => {
                               {lead.state || "—"}
                             </Typography>
                           </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={lead.source || "—"}
-                              size="small"
-                              variant="outlined"
-                              sx={{
-                                fontSize: "0.7rem",
-                                maxWidth: 130,
-                                "& .MuiChip-label": {
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                },
-                              }}
-                            />
-                          </TableCell>
+                          {!isTablet && (
+                            <TableCell>
+                              <Chip
+                                label={lead.source || "—"}
+                                size="small"
+                                variant="outlined"
+                                title={lead.source || undefined}
+                                sx={{
+                                  fontSize: "0.7rem",
+                                  maxWidth: 112,
+                                  "& .MuiChip-label": {
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  },
+                                }}
+                              />
+                            </TableCell>
+                          )}
                           <TableCell onClick={(e) => e.stopPropagation()}>
                             <Select
                               value={lead.status || "new"}
@@ -1054,8 +1063,14 @@ const LeadManagement = () => {
                                 bgcolor: sc.bg,
                                 color: sc.color,
                                 height: 28,
+                                maxWidth: 168,
                                 borderRadius: "6px",
-                                "& .MuiSelect-select": { py: 0.3, px: 1 },
+                                "& .MuiSelect-select": {
+                                  py: 0.3,
+                                  px: 1,
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                },
                                 "& .MuiOutlinedInput-notchedOutline": {
                                   borderColor: sc.color + "44",
                                 },
@@ -1090,12 +1105,16 @@ const LeadManagement = () => {
                               {formatShortDate(lead.submitted_at)}
                             </Typography>
                           </TableCell>
-                          <TableCell onClick={(e) => e.stopPropagation()}>
+                          <TableCell
+                            onClick={(e) => e.stopPropagation()}
+                            sx={{ whiteSpace: "nowrap", px: 1 }}
+                          >
                             <Tooltip title="View Details">
                               <IconButton
                                 size="small"
                                 onClick={() => handleViewDetail(lead)}
                                 sx={{
+                                  p: 0.5,
                                   color: "var(--admin-text-muted)",
                                   "&:hover": { color: "var(--admin-accent)" },
                                 }}
@@ -1111,6 +1130,7 @@ const LeadManagement = () => {
                                   setDeleteDialogOpen(true);
                                 }}
                                 sx={{
+                                  p: 0.5,
                                   color: "var(--admin-text-muted)",
                                   "&:hover": { color: "var(--admin-error)" },
                                 }}
@@ -1175,7 +1195,7 @@ const LeadManagement = () => {
                         marginTop: 2,
                       }}
                     >
-                      {lead.service_interest || "—"}
+                      {lead.program_interest || "—"}
                       {lead.state ? ` · ${lead.state}` : ""}
                     </div>
                     <div

@@ -479,6 +479,76 @@
   color: var(--admin-accent);
 }
 
+/* ---- Quick Actions (Call / WhatsApp / Email) ---- */
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.quickAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--admin-border);
+  background: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--admin-text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-height: 44px;
+  text-align: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.quickActionCall {
+  color: var(--admin-primary);
+  border-color: rgba(26, 42, 82, 0.25);
+  background: rgba(26, 42, 82, 0.05);
+}
+
+.quickActionCall:hover {
+  background: rgba(26, 42, 82, 0.1);
+  border-color: var(--admin-primary);
+}
+
+.quickActionWhatsapp {
+  color: #1FA855;
+  border-color: rgba(37, 211, 102, 0.3);
+  background: rgba(37, 211, 102, 0.08);
+}
+
+.quickActionWhatsapp:hover {
+  background: rgba(37, 211, 102, 0.16);
+  border-color: #25D366;
+}
+
+.quickActionEmail {
+  color: var(--admin-accent-dark);
+  border-color: rgba(200, 160, 77, 0.35);
+  background: rgba(200, 160, 77, 0.1);
+}
+
+.quickActionEmail:hover {
+  background: rgba(200, 160, 77, 0.18);
+  border-color: var(--admin-accent);
+}
+
+.quickActionDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--admin-text-muted);
+}
+
 /* ---- Mobile Sticky Footer ---- */
 .mobileFooter {
   display: none;

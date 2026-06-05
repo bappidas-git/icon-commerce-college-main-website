@@ -4,6 +4,47 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.6 — Events API store
+
+Thirtieth prompt of the rebuild (`prompts/30-events-api-store.md`). A server-side
+events/calendar store that is the single source of truth for the events shown on
+the public site (`/events`) and managed from the admin panel. It mirrors
+`notices.php` / `leads.php` exactly so every browser/device sees the same events —
+no localStorage copy. Wired to `REACT_APP_EVENTS_API_URL=/api/events.php` (already
+present in `.env`); the record shape matches the bundled `seedEvents.js` and the
+public `useEvents()` hook (live in prompt 32).
+
+**`public/api/events.php`** — one file, four actions, JSON file store at
+`api/data/events.json` (flock-guarded read/write, `data/` auto-created on first
+use and protected with a `.htaccess` "Deny from all", just like leads/notices):
+- `GET ?action=list` — **public, no auth** (the website calendar reads events
+  here). Returns `published` events, sorted by **`start_date` ascending** (soonest
+  first, breaking same-day ties on `start_time` then `title`). An optional
+  `?from=YYYY-MM-DD&to=YYYY-MM-DD` filter restricts the result to events
+  **overlapping** that window — a multi-day event runs `start_date`→`end_date` so
+  it matches if it touches either edge; `from`/`to` are independent. A valid
+  `X-Admin-Key` also returns **drafts** (`published=false`) for the panel.
+- `POST ?action=create` — **admin key required**. Body `{ event: {...} }`.
+  Validates required `title` + `start_date` (400 otherwise); generates `id`
+  (UUID v4), `created_at` and `updated_at` server-side when missing; coerces
+  `published` to a real boolean and an unknown `category` to `General`. Idempotent
+  on a re-sent `id` (`duplicate: true`).
+- `POST ?action=update` — **admin key required**. Body `{ id, patch: {...} }`.
+  Last-write-wins merge with `id` / `created_at` immutable and `updated_at`
+  refreshed; 404 if the `id` is unknown.
+- `POST ?action=delete` — **admin key required**. Body `{ ids: [...] }`. Returns
+  `removed` count.
+- Record shape: `{ id, title, description, category (Academic|Cultural|Sports|Examination|Holiday|Workshop|General),
+  start_date, end_date?, start_time?, end_time?, venue?, image_url?, published,
+  created_at, updated_at }`. Field-agnostic like leads/notices — extra fields the
+  client sends are stored untouched.
+- **Auth** reuses the leads/notices handshake (`config.php` → env → committed
+  default matching `REACT_APP_LEADS_ADMIN_KEY`), so all three endpoints always
+  agree on the key. Responses are `{ success, events|event|error }` with
+  400/401/404/500 codes; `503` if no key is configured. CORS + `OPTIONS`
+  preflight handled. The runtime `events.json` joins `leads.json` / `notices.json`
+  under the already-ignored `/public/api/data/` (no `.gitignore` change needed).
+
 ### Phase 3.5 — Admin notices module
 
 Twenty-ninth prompt of the rebuild (`prompts/29-admin-notices-module.md`). Lets

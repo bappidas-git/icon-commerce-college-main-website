@@ -1,0 +1,385 @@
+/* ============================================
+   Faculty page styles — Icon Commerce College
+   --------------------------------------------
+   Intro credential strip · Leadership/Coordinators highlight ·
+   directory controls (department filter + name search) · responsive
+   faculty grid (1 / 2 / 3 / 4 cols) · Guest Faculty (design-system §2–§4).
+   The section background tones + headers come from the shared <Section>;
+   this module lays out the grids and the directory controls.
+   ============================================ */
+
+/* Screen-reader-only utility. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   2 — Intro (credential strip + points)
+   ============================================ */
+.creds {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cred {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.cred svg {
+  font-size: 1.1rem;
+  color: var(--color-accent-dark);
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin: var(--space-10) 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.pointIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-full);
+  background: rgba(200, 160, 77, 0.16);
+  color: var(--color-accent-dark);
+  font-size: 28px;
+}
+
+.pointTitle {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.pointText {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   3 & 5 — Highlight / Guest grid (centered flex)
+   Centered so the partial final row (5 coordinators, 2 guests never
+   divide evenly) stays balanced at every width, instead of a lonely
+   left-aligned card (the Leadership directory precedent).
+   ============================================ */
+.highlightGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Featured leadership/coordinators — sized so all five sit in one tidy row on
+   desktop, wrapping to a centered 3+2 then a single column below. */
+.featuredCell {
+  display: flex;
+  flex: 1 1 200px;
+  max-width: 236px;
+}
+
+/* Guest faculty — only two, kept a touch larger so the pair reads prominently. */
+.guestCell {
+  display: flex;
+  flex: 1 1 260px;
+  max-width: 300px;
+}
+
+/* ============================================
+   4 — Directory controls (filter chips + search)
+   ============================================ */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+}
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: background var(--transition-base), border-color var(--transition-base),
+    color var(--transition-base), transform var(--transition-base);
+}
+
+.filter:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.filter:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Active chip — navy fill (structure), gold count pill. */
+.filterActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.filterActive:hover {
+  border-color: var(--color-primary);
+}
+
+.filterCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+}
+
+.filterActive .filterCount {
+  background: var(--gradient-gold);
+  color: var(--color-primary-dark);
+}
+
+/* ---------- Name search ---------- */
+.search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: 1 1 240px;
+  max-width: 320px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--space-4);
+  font-size: 1.25rem;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--space-3) var(--space-10) var(--space-3) calc(var(--space-4) + 1.5rem);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+/* Suppress the native search clear so our own button is the only affordance. */
+.searchInput::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+.searchInput:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(200, 160, 77, 0.22);
+}
+
+.clear {
+  position: absolute;
+  right: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.clear:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+}
+
+.clear:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.resultCount {
+  margin: var(--space-5) 0 var(--space-8);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.resultCount strong {
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+}
+
+/* ---------- Directory grid (1 / 2 / 3 / 4 cols) ---------- */
+.directoryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  /* Stretch so cards in a row share one height — names/designations vary in
+     length. (If per-card bio expands are enabled later, revisit: Departments
+     uses align-items:start + reserved heights to avoid stretching row-mates.) */
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.directoryCell {
+  display: flex;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+/* Featured strip: 5 → 3 per row (3 + 2 centred) — avoids a lopsided 4 + 1 at
+   iPad-landscape / small-laptop widths. */
+@media (max-width: 1180px) {
+  .featuredCell {
+    flex-basis: 30%;
+    max-width: 280px;
+  }
+}
+
+/* Directory grid: 4 → 3 columns. */
+@media (max-width: 1100px) {
+  .directoryGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Intro points + directory grid: → 2 columns. */
+@media (max-width: 860px) {
+  .points {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .directoryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Stack controls; let the search span the row. */
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search {
+    max-width: none;
+  }
+}
+
+/* Featured strip: stack (skips an unbalanced 2 + 2 + 1). */
+@media (max-width: 680px) {
+  .featuredCell {
+    flex-basis: 100%;
+    max-width: 360px;
+  }
+}
+
+/* Single column on phones. */
+@media (max-width: 560px) {
+  .points,
+  .directoryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 460px) {
+  /* Full-width cards on phones (the max-width would otherwise cap them). */
+  .featuredCell,
+  .guestCell {
+    flex-basis: 100%;
+    max-width: none;
+  }
+}
+
+/* ============================================
+   Reduced motion — drop hover transforms (§4)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .filter:hover {
+    transform: none;
+  }
+}

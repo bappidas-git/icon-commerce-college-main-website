@@ -1,0 +1,155 @@
+/* ============================================
+   FacultyCard styles — Icon Commerce College
+   --------------------------------------------
+   Profile tile for the /faculty directory: gold-ringed avatar, name,
+   designation, qualifications and a department chip, plus an optional
+   bio expand (design-system §2–§4). Hover lift is CSS-only so it never
+   fights the <Reveal> entrance transform.
+   ============================================ */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+}
+
+.card.open {
+  border-color: var(--color-accent);
+}
+
+/* Gold ring around the circular avatar (mirrors the Leadership directory). */
+.avatarWrap {
+  width: 104px;
+  height: 104px;
+  margin-bottom: var(--space-4);
+  padding: 4px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-gold);
+}
+
+.avatar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 3px solid var(--color-surface);
+  background: var(--color-accent-soft);
+}
+
+.name {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+.designation {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: var(--color-text-muted);
+}
+
+.quals {
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: var(--color-accent-dark);
+}
+
+/* Department chip — soft gold pill (gold = emphasis only, §2). */
+.dept {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: var(--space-4) 0 0;
+  padding: 4px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+}
+
+.dept svg {
+  font-size: 1.05rem;
+  color: var(--color-accent-dark);
+}
+
+/* ---------- Optional bio expand ---------- */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+  transition: color var(--transition-base);
+}
+
+.toggle:hover {
+  color: var(--color-accent-dark);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.chevron {
+  font-size: 1.1em;
+  transition: transform var(--transition-base);
+}
+
+.card.open .chevron {
+  transform: rotate(180deg);
+}
+
+.bio {
+  margin: var(--space-3) 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+}
+
+/* ============================================
+   Reduced motion — drop hover transforms (§4)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+
+  .chevron {
+    transition: none;
+  }
+}

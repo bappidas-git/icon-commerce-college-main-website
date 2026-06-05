@@ -607,10 +607,30 @@ export const getLeadStats = () => {
   const topSource =
     Object.entries(sourceCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "N/A";
 
-  // Recent leads (last 5)
+  // Recent leads (most recent first) for the dashboard table.
   const recentLeads = [...leads]
     .sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at))
-    .slice(0, 5);
+    .slice(0, 6);
+
+  // Leads per day for the last 7 calendar days (oldest → newest), for the
+  // dashboard "leads over time" mini chart. Each bucket is built from a
+  // local-midnight boundary (via the Date(y, m, d - i) constructor) so the
+  // day counts never drift across a DST change.
+  const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const last7Days = [];
+  for (let i = 6; i >= 0; i--) {
+    const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+    const dayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i + 1);
+    const count = leads.filter((l) => {
+      const t = new Date(l.submitted_at);
+      return t >= dayStart && t < dayEnd;
+    }).length;
+    last7Days.push({
+      key: `${dayStart.getFullYear()}-${dayStart.getMonth() + 1}-${dayStart.getDate()}`,
+      label: DAY_LABELS[dayStart.getDay()],
+      count,
+    });
+  }
 
   // Unique sources
   const sources = [...new Set(leads.map((l) => l.source).filter(Boolean))];
@@ -623,6 +643,7 @@ export const getLeadStats = () => {
     convertedLeads,
     topSource,
     recentLeads,
+    last7Days,
     sources,
   };
 };

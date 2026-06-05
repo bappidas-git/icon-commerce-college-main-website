@@ -4,6 +4,49 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.8 — Wire public notices/events to live APIs
+
+Thirty-second prompt of the rebuild (`prompts/32-public-dynamic-wiring.md`). The
+public site now reads notices and events from the **live** `notices.php` /
+`events.php` stores instead of bundled seed data, so **anything published in the
+admin panel appears on the website with no code change** (the core Phase 3
+requirement). Drafts stay hidden (the public list endpoints return published-only
+without an admin key), and the whole flow degrades gracefully to seed data when
+the API is unreachable or empty, so the UI is never blank.
+
+**`src/utils/fetchJson.js`** (new) — a tiny read-only `GET`-and-parse wrapper
+shared by the public hooks: takes an `AbortSignal` (so the hooks abort in flight
+on unmount), **cache-busts** by default (`_=<ts>` param + `cache: 'no-store'`) so
+a revalidate-on-focus always re-reads the live store, and throws on a non-2xx
+status or malformed body so callers have a single catch to fall back to seed.
+
+**`src/hooks/useNotices.js`** — rewritten to fetch
+`GET /api/notices.php?action=list` (public, no auth), returning published notices
+sorted pinned-first then date desc. Adds a module-level **session cache** (instant
+paint + quiet revalidate when moving between Home and `/notices`),
+**revalidate-on-focus**, and **abort-on-unmount**. Falls back to `seedNotices`
+silently when the request fails or the store is empty. Exposes
+`{ items, notices, loading, error }` (the `notices` alias keeps the Home band
+untouched).
+
+**`src/hooks/useEvents.js`** — rewritten to fetch
+`GET /api/events.php?action=list` (optional `?from=&to=`), published only, sorted
+by `start_date`, with the same cache / revalidate-on-focus / abort / seed-fallback
+behaviour. Adds `upcoming` / `past` split helpers (via `dateUtils`). Exposes
+`{ items, events, upcoming, past, loading, error }`. Because notices and events
+are independent hooks, Home fetches both **in parallel** (no waterfall).
+
+**Public components** — Home `NoticeBoardSection`, the `/notices` page, the Home
+upcoming-events preview and the `/events` list + calendar already consumed these
+hooks, so they go live with no UI change (record shapes match); only their header
+comments were refreshed.
+
+**`src/admin/pages/Dashboard.jsx`** — the "Active Notices" and "Upcoming Events"
+tiles + mini-lists now read the live `noticeService` / `eventService` caches
+(published-only), wired into the **same** initial-sync + 15s-poll + cross-tab
+(`onNoticesChanged` / `onEventsChanged`) model already used for leads — so a
+notice/event created on any tab or device reflects on the dashboard.
+
 ### Phase 3.7 — Admin events & calendar
 
 Thirty-first prompt of the rebuild (`prompts/31-admin-events-calendar.md`). The

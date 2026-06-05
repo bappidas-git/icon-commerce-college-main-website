@@ -10,10 +10,10 @@
          with a "Load more" pager
        → <EmptyState> when there are no notices, or no search/filter matches
 
-   Data comes from `useNotices()` (seed data today; the live notices.php store in
-   prompt 32 — same record shape, so this page is untouched then). Sorting
-   (pinned first, newest next) is owned by the hook; this page only filters,
-   searches and pages. SEO uses useSeo() with the /notices route defaults.
+   Data comes from `useNotices()`, now wired to the live notices.php store
+   (published-only, silent seed fallback) — same record shape, so this page is
+   untouched. Sorting (pinned first, newest next) is owned by the hook; this page
+   only filters, searches and pages. SEO uses useSeo() with the /notices defaults.
    ============================================ */
 
 import React, { useEffect, useMemo, useState } from 'react';

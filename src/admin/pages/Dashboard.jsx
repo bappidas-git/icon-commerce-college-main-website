@@ -8,10 +8,12 @@
 
    • Lead metrics come from getLeadStats() against the server-backed cache and
      refresh on the existing 15s poll / onLeadsChanged subscription.
-   • Notices/events counts and lists read the useNotices()/useEvents() hooks,
-     which serve seed data today and switch to the live PHP/JSON stores in
-     prompt 32 WITHOUT changing their return shape — so this dashboard goes
-     fully live with no further edits here.
+   • The "Active Notices" / "Upcoming Events" tiles and their mini-lists read the
+     live noticeService / eventService caches (the same shared PHP/JSON stores
+     the admin Notices/Events pages use), wired into the SAME initial-sync + 15s
+     poll + cross-tab (onNoticesChanged / onEventsChanged) model as leads — so a
+     notice/event created on any tab or device reflects here. Published-only,
+     matching what the public site shows (drafts live on their own admin pages).
    ============================================ */
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -27,9 +29,17 @@ import {
   onLeadsChanged,
 } from '../utils/leadService';
 import { getStatusConfig } from '../utils/leadStatus';
+import {
+  getNotices,
+  syncNoticesFromServer,
+  onNoticesChanged,
+} from '../utils/noticeService';
+import {
+  getEvents,
+  syncEventsFromServer,
+  onEventsChanged,
+} from '../utils/eventService';
 import { AdminPageHeader, StatTile } from '../components/ui';
-import useNotices from '../../hooks/useNotices';
-import useEvents from '../../hooks/useEvents';
 import styles from './Dashboard.module.css';
 
 const MONTHS = [
@@ -88,34 +98,55 @@ const Dashboard = () => {
   useAdminAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState(() => getLeadStats());
+  // Published-only notices/events from the shared stores — same source the
+  // public site reads, hydrated by the sync effect below (empty until first poll).
+  const [notices, setNotices] = useState(() => getNotices({ published: true }));
+  const [events, setEvents] = useState(() => getEvents({ published: true }));
   const [refreshing, setRefreshing] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-  const { notices } = useNotices();
-  const { events } = useEvents();
-
   // ── Auto-refresh: initial server sync + cross-tab subscription + 15s poll ──
+  // One shared loop hydrates leads, notices AND events from their server stores,
+  // so the dashboard reflects activity from any tab or device.
   useEffect(() => {
-    const refresh = () => setStats(getLeadStats());
+    const refreshLeads = () => setStats(getLeadStats());
+    const refreshNotices = () => setNotices(getNotices({ published: true }));
+    const refreshEvents = () => setEvents(getEvents({ published: true }));
     const changed = (r) => !r.error && (r.added > 0 || r.updated > 0 || r.removed > 0);
-    refresh();
 
-    // Pull leads from the shared server store so submissions made on other
-    // devices (e.g. an ad visitor's phone) show up here too.
+    refreshLeads();
+    refreshNotices();
+    refreshEvents();
+
+    // Pull each store so submissions/posts made on other devices show up here.
     syncLeadsFromServer().then((r) => {
-      if (changed(r)) refresh();
+      if (changed(r)) refreshLeads();
+    });
+    syncNoticesFromServer().then((r) => {
+      if (changed(r)) refreshNotices();
+    });
+    syncEventsFromServer().then((r) => {
+      if (changed(r)) refreshEvents();
     });
 
-    // Reflect new leads and admin edits from any tab/window of this browser.
-    const unsubscribe = onLeadsChanged(refresh);
+    // Reflect new leads/notices/events and admin edits from any tab of this browser.
+    const unsubLeads = onLeadsChanged(refreshLeads);
+    const unsubNotices = onNoticesChanged(refreshNotices);
+    const unsubEvents = onEventsChanged(refreshEvents);
 
-    // Poll the server every 15s while the tab is visible.
+    // Poll the servers every 15s while the tab is visible.
     const POLL_MS = 15000;
     let intervalId = null;
     const poll = () => {
       if (document.visibilityState !== 'visible') return;
       syncLeadsFromServer().then((r) => {
-        if (changed(r)) refresh();
+        if (changed(r)) refreshLeads();
+      });
+      syncNoticesFromServer().then((r) => {
+        if (changed(r)) refreshNotices();
+      });
+      syncEventsFromServer().then((r) => {
+        if (changed(r)) refreshEvents();
       });
     };
     const startPolling = () => {
@@ -130,7 +161,7 @@ const Dashboard = () => {
     const handleVisibility = () => {
       if (document.visibilityState === 'visible') {
         poll();
-        refresh();
+        refreshLeads();
         startPolling();
       } else {
         stopPolling();
@@ -142,13 +173,15 @@ const Dashboard = () => {
 
     return () => {
       stopPolling();
-      unsubscribe();
+      unsubLeads();
+      unsubNotices();
+      unsubEvents();
       document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 
-  // ── Derived notices/events views (seed today, live after prompt 32) ──
-  // useNotices() already returns only published notices, pinned-first.
+  // ── Derived notices/events views (live, published-only) ──
+  // getNotices({ published: true }) already returns pinned-first, date desc.
   const upcomingEvents = useMemo(() => {
     const today = startOfToday();
     return events.filter((e) => parseDate(e.end_date || e.start_date) >= today);

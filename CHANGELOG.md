@@ -4,6 +4,58 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.5 — Admin notices module
+
+Twenty-ninth prompt of the rebuild (`prompts/29-admin-notices-module.md`). Lets
+admins create, edit, publish/unpublish, pin/unpin and delete notices from the
+panel, synced cross-device. Built entirely on the existing leads sync model and
+the shared admin UI kit.
+
+**`src/admin/utils/noticeService.js`** — mirrors `leadService.js` against the
+`public/api/notices.php` store (prompt 28): an in-memory cache hydrated from the
+server, a 15s poll, and `onNoticesChanged()` via `BroadcastChannel`
+(`lp_notices_channel`) + a `lp:notices-changed` window event so a change in one
+tab/window reflects in the others (cross-device handled by the poll).
+- `syncNoticesFromServer()` GETs `?action=list` with the admin `X-Admin-Key`
+  header so the panel also receives **drafts** (`published=false`); diffs against
+  the cache and returns `{ synced, added, updated, removed, error? }`.
+- `getNotices({ search, category, published })` (sorted pinned-first then date
+  desc), `getNoticeById`, `createNotice` (client-generated UUID → idempotent
+  server create), `updateNotice(id, patch)`, `deleteNotice` / `deleteNotices` —
+  all **optimistic cache update + server mirror + notify**.
+- Writes use the admin key (`X-Admin-Key`); the URL comes from
+  `getNoticesApiUrl()` (env `REACT_APP_NOTICES_API_URL`, `/api/notices.php`
+  default). The key reuses `REACT_APP_LEADS_ADMIN_KEY` — the same handshake
+  `notices.php` resolves — so the two endpoints always agree.
+- Exports `NOTICE_CATEGORIES` + `getCategoryConfig()` (Admission · Examination ·
+  Event · General · Result · Holiday, each with chip colours + an icon) as the
+  single source of truth shared by the table, filter and form — like
+  `leadStatus.js` centralises lead statuses.
+
+**`src/admin/pages/Notices.jsx`** — replaces the scaffold with the full module:
+a shared `DataTable` (Title · Category · Date · Pinned · Published · Updated +
+Actions) with text search, a category filter in the toolbar, four `StatTile`
+metrics (Total / Published / Drafts / Pinned), and per-row actions — **Edit**,
+**Toggle Publish**, **Pin/Unpin**, and **Delete** behind a `ConfirmDialog`.
+Initial server sync + 15s visibility-aware poll + `onNoticesChanged` keep it
+live; a manual Refresh button and `Toast` feedback round it out. Drafts are
+visible here for the admin but hidden from the public list (enforced
+server-side). The table is responsive: on tablet/mobile the lower-priority
+columns fold into the title cell (category · date · publish status) so the
+**Actions** column stays on-screen without horizontal scrolling.
+
+**`src/admin/components/NoticeFormDialog.jsx`** — create/edit modal on MUI
+`Dialog` + the shared `FormField` kit: title (required), category (select),
+date (required), body (textarea, plain text / simple markdown), attachment URL
+(optional, validated as `http(s)://…`), and pinned / published toggles. Writes
+through `noticeService`; the page refreshes and toasts on save.
+
+**Dashboard wiring** — the "Add Notice" quick action now deep-links to
+`/admin/notices` with router state that auto-opens the create dialog, and the
+stat tiles (incl. **Active Notices**) link to their source modules via a new
+optional `to` prop on the shared `StatTile`. The notices count/list still read
+the `useNotices()` seam (live in prompt 32) — no data-source change here.
+
 ### Phase 3.4 — Notices API store
 
 Twenty-eighth prompt of the rebuild (`prompts/28-notices-api-store.md`). A

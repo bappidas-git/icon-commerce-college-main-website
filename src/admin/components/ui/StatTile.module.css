@@ -19,6 +19,21 @@
   transform: translateY(-2px);
 }
 
+/* Tile rendered as a router link (carries no underline / inherits text colour). */
+.tileLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.tileLink:hover {
+  border-color: var(--admin-accent, #C8A04D);
+}
+
+.tileLink:focus-visible {
+  outline: 2px solid var(--admin-accent, #C8A04D);
+  outline-offset: 2px;
+}
+
 .icon {
   display: flex;
   align-items: center;

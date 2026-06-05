@@ -57,6 +57,18 @@ Twentieth prompt of the rebuild (`prompts/20-faculty-page.md`). Replaces the
 - Reveal-on-scroll is reduced-motion safe (`<Reveal>`/`<RevealGroup>`); card
   hover lifts are CSS-only. `npm run build` stays green (no new warnings).
 
+**Visual QA (multi-viewport screenshots — Desktop / Tablet / Mobile)**
+- Fixed a duplicated gold eyebrow: the intro section read "Our People" — the same
+  label as the PageHero — so it now reads "Teaching Excellence".
+- Leadership & Coordinators strip: the five cards wrapped as a lopsided 4 + 1 on
+  desktop. The featured cells now size so the strip is a single balanced row of
+  five (≥1181px), wrapping to a centred 3 + 2 (≤1180px) and a single column
+  (≤680px) — never an awkward 4 + 1 or 2 + 2 + 1. Guest cards got their own cell
+  size (only two) so the pair stays prominent.
+- Directory grid switched from `align-items: start` to `stretch` so cards in a
+  row share one height (names/designations wrap to two lines on some cards, and
+  some have no qualifications line) — bottoms now align cleanly.
+
 ### Phase 2.9 — Departments page
 
 Nineteenth prompt of the rebuild (`prompts/19-departments-page.md`). Replaces the

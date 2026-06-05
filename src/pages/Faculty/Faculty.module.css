@@ -117,10 +117,19 @@
   list-style: none;
 }
 
-.highlightCell {
+/* Featured leadership/coordinators — sized so all five sit in one tidy row on
+   desktop, wrapping to a centered 3+2 then a single column below. */
+.featuredCell {
   display: flex;
-  flex: 1 1 240px;
-  max-width: 280px;
+  flex: 1 1 200px;
+  max-width: 236px;
+}
+
+/* Guest faculty — only two, kept a touch larger so the pair reads prominently. */
+.guestCell {
+  display: flex;
+  flex: 1 1 260px;
+  max-width: 300px;
 }
 
 /* ============================================
@@ -287,7 +296,10 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-5);
-  align-items: start;
+  /* Stretch so cards in a row share one height — names/designations vary in
+     length. (If per-card bio expands are enabled later, revisit: Departments
+     uses align-items:start + reserved heights to avoid stretching row-mates.) */
+  align-items: stretch;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -300,6 +312,15 @@
 /* ============================================
    Responsive
    ============================================ */
+
+/* Featured strip: 5 → 3 per row (3 + 2 centred) — avoids a lopsided 4 + 1 at
+   iPad-landscape / small-laptop widths. */
+@media (max-width: 1180px) {
+  .featuredCell {
+    flex-basis: 30%;
+    max-width: 280px;
+  }
+}
 
 /* Directory grid: 4 → 3 columns. */
 @media (max-width: 1100px) {
@@ -329,6 +350,14 @@
   }
 }
 
+/* Featured strip: stack (skips an unbalanced 2 + 2 + 1). */
+@media (max-width: 680px) {
+  .featuredCell {
+    flex-basis: 100%;
+    max-width: 360px;
+  }
+}
+
 /* Single column on phones. */
 @media (max-width: 560px) {
   .points,
@@ -338,8 +367,9 @@
 }
 
 @media (max-width: 460px) {
-  /* Full-width cards on phones (the shared max-width would otherwise cap them). */
-  .highlightCell {
+  /* Full-width cards on phones (the max-width would otherwise cap them). */
+  .featuredCell,
+  .guestCell {
     flex-basis: 100%;
     max-width: none;
   }

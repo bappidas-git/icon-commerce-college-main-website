@@ -123,7 +123,7 @@ const Faculty = () => {
         bg="white"
         container="default"
         align="center"
-        eyebrow="Our People"
+        eyebrow="Teaching Excellence"
         title="Experienced, qualified & research-active educators"
         subtitle="Icon Commerce College is taught by a dedicated team of teachers across Commerce, Arts and Computer Application. Our faculty are highly qualified and research-active, and mentor every student individually under the NEP 2020 framework."
         aria-label="About our faculty"
@@ -161,7 +161,7 @@ const Faculty = () => {
       >
         <RevealGroup as="ul" className={styles.highlightGrid} stagger={0.07} amount={0.1}>
           {featured.map((member) => (
-            <Reveal as="li" key={member.id} className={styles.highlightCell} variant="fadeUp">
+            <Reveal as="li" key={member.id} className={styles.featuredCell} variant="fadeUp">
               <FacultyCard member={member} />
             </Reveal>
           ))}
@@ -274,7 +274,7 @@ const Faculty = () => {
         >
           <RevealGroup as="ul" className={styles.highlightGrid} stagger={0.08} amount={0.2}>
             {guests.map((member) => (
-              <Reveal as="li" key={member.id} className={styles.highlightCell} variant="fadeUp">
+              <Reveal as="li" key={member.id} className={styles.guestCell} variant="fadeUp">
                 <FacultyCard member={member} />
               </Reveal>
             ))}

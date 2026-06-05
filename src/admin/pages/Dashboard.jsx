@@ -165,13 +165,15 @@ const Dashboard = () => {
   const maxDay = last7Days.reduce((m, d) => Math.max(m, d.count), 0);
   const weekTotal = last7Days.reduce((sum, d) => sum + d.count, 0);
 
+  // Each tile links to its source module so the stats row doubles as quick nav
+  // (e.g. "Active Notices" → /admin/notices).
   const statTiles = [
-    { icon: 'mdi:account-multiple', value: stats?.totalLeads ?? 0, label: 'Total Leads', tone: 'navy' },
-    { icon: 'mdi:account-plus', value: stats?.newLeads24h ?? 0, label: 'New Today', tone: 'green' },
-    { icon: 'mdi:calendar-week', value: stats?.weekLeads ?? 0, label: 'This Week', tone: 'blue' },
-    { icon: 'mdi:trending-up', value: `${stats?.conversionRate ?? 0}%`, label: 'Conversion', tone: 'gold' },
-    { icon: 'mdi:calendar-star', value: upcomingEvents.length, label: 'Upcoming Events', tone: 'teal' },
-    { icon: 'mdi:bullhorn', value: notices.length, label: 'Active Notices', tone: 'pink' },
+    { icon: 'mdi:account-multiple', value: stats?.totalLeads ?? 0, label: 'Total Leads', tone: 'navy', to: '/admin/leads' },
+    { icon: 'mdi:account-plus', value: stats?.newLeads24h ?? 0, label: 'New Today', tone: 'green', to: '/admin/leads' },
+    { icon: 'mdi:calendar-week', value: stats?.weekLeads ?? 0, label: 'This Week', tone: 'blue', to: '/admin/leads' },
+    { icon: 'mdi:trending-up', value: `${stats?.conversionRate ?? 0}%`, label: 'Conversion', tone: 'gold', to: '/admin/leads' },
+    { icon: 'mdi:calendar-star', value: upcomingEvents.length, label: 'Upcoming Events', tone: 'teal', to: '/admin/events' },
+    { icon: 'mdi:bullhorn', value: notices.length, label: 'Active Notices', tone: 'pink', to: '/admin/notices' },
   ];
 
   const handleExportCSV = () => {
@@ -250,13 +252,13 @@ const Dashboard = () => {
       {/* Stat tiles */}
       <div className={styles.statsGrid}>
         {statTiles.map((t) => (
-          <StatTile key={t.label} icon={t.icon} value={t.value} label={t.label} tone={t.tone} />
+          <StatTile key={t.label} icon={t.icon} value={t.value} label={t.label} tone={t.tone} to={t.to} />
         ))}
       </div>
 
       {/* Quick actions */}
       <div className={styles.quickActions}>
-        <Link to="/admin/notices" className={styles.actionPrimary}>
+        <Link to="/admin/notices" state={{ openCreate: true }} className={styles.actionPrimary}>
           <Icon icon="mdi:bullhorn-outline" width={18} height={18} />
           Add Notice
         </Link>

@@ -1,0 +1,11 @@
+/* ============================================
+   Gallery page styles — Icon Commerce College (prompt 22)
+   --------------------------------------------
+   Thin shell: the centered tablist sits below the shared <Section> header; the
+   two tab panels (PhotoGallery / VideoGallery) own their own layout. Section
+   background tones + the section header come from the shared <Section>.
+   ============================================ */
+
+.tabs {
+  margin-top: var(--space-6);
+}

@@ -1,0 +1,322 @@
+/* ============================================
+   PhotoGallery styles — Icon Commerce College (prompt 22)
+   --------------------------------------------
+   Filter chips · responsive CSS-columns masonry · header-less lightbox (navy
+   stage + floating controls + caption bar). Navy = structure, Gold = emphasis
+   only (active chip uses navy; controls hover to the single Warm-Red accent).
+   ============================================ */
+
+.wrap {
+  width: 100%;
+}
+
+/* ============================================
+   Filter chips
+   ============================================ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-8);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.chip:hover {
+  color: var(--color-primary);
+  border-color: var(--color-accent);
+}
+
+.chipActive,
+.chipActive:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Masonry (CSS columns — a single fade reveals the grid)
+   ============================================ */
+.masonry {
+  column-count: 4;
+  column-gap: var(--space-4);
+}
+
+@media (max-width: 1100px) {
+  .masonry {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 760px) {
+  .masonry {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 460px) {
+  .masonry {
+    column-count: 1;
+  }
+}
+
+.tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-sm);
+  break-inside: avoid;
+  isolation: isolate;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.tile:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.tile:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.tileImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.tile:hover .tileImage {
+  transform: scale(1.05);
+}
+
+/* Caption overlay — navy gradient up from the bottom, revealed on hover/focus */
+.tileOverlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-4) var(--space-4);
+  background: linear-gradient(
+    180deg,
+    rgba(17, 29, 58, 0) 0%,
+    rgba(17, 29, 58, 0.82) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.tile:hover .tileOverlay,
+.tile:focus-visible .tileOverlay {
+  opacity: 1;
+}
+
+.tileCaption {
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: #ffffff;
+  text-align: left;
+}
+
+.tileIcon {
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  color: var(--color-accent);
+}
+
+.empty {
+  margin: var(--space-8) 0;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   Lightbox (header-less Modal content)
+   ============================================ */
+.lightboxContent {
+  padding: 0;
+}
+
+.lightbox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbox:focus {
+  outline: none;
+}
+
+.stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-dark);
+}
+
+.stageImage {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: min(72vh, 720px);
+  object-fit: contain;
+}
+
+/* Floating circular controls (close + prev/next) */
+.navBtn,
+.closeBtn {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-full);
+  background: rgba(17, 29, 58, 0.55);
+  color: #ffffff;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.navBtn {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  font-size: 1.75rem;
+}
+
+.prevBtn {
+  left: var(--space-3);
+}
+
+.nextBtn {
+  right: var(--space-3);
+}
+
+.closeBtn {
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 42px;
+  height: 42px;
+  font-size: 1.4rem;
+}
+
+.navBtn:hover,
+.closeBtn:hover {
+  background: var(--color-cta);
+}
+
+.navBtn:hover {
+  transform: translateY(-50%) scale(1.05);
+}
+
+.navBtn:focus-visible,
+.closeBtn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Caption bar below the image */
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.barCaption {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+}
+
+.barMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.barCategory {
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-primary-dark);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+}
+
+.barCounter {
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.78);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 480px) {
+  .navBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+
+  .bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+}
+
+/* ============================================
+   Reduced motion — drop hover transforms (§4)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .tile:hover,
+  .tile:hover .tileImage {
+    transform: none;
+  }
+
+  .navBtn:hover {
+    transform: translateY(-50%);
+  }
+}

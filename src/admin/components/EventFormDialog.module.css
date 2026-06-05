@@ -1,0 +1,67 @@
+/* ============================================
+   EventFormDialog Styles
+   ============================================
+   Layout only — the native inputs/select/textarea inherit the shared
+   FormField control styling (FormField.module.css).
+   ============================================ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+/* Paired fields (category/venue, the date pair, the time pair) sit side by side
+   on roomy screens, stack on narrow ones. */
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 12px;
+  background: var(--admin-bg, #F7F8FB);
+  cursor: pointer;
+}
+
+.toggleText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.toggleLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--admin-text-primary, #14233D);
+}
+
+.toggleHint {
+  font-size: 0.74rem;
+  color: var(--admin-text-muted, #8E9BAD);
+  line-height: 1.4;
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

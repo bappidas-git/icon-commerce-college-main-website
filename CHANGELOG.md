@@ -4,6 +4,59 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.10 — Faculty page
+
+Twentieth prompt of the rebuild (`prompts/20-faculty-page.md`). Replaces the
+`/faculty` `ComingSoon` shell with a professional teaching-staff directory:
+
+    PageHero → intro (prospectus credentials) → Leadership & Coordinators
+    highlight strip → searchable/filterable faculty directory → Guest Faculty.
+
+**Faculty data (`src/data/facultyData.js`)**
+- Enriched each member with a `featured` flag (Principal, Academic Advisor and
+  the three programme coordinators — the highlight strip) and documented an
+  optional `bio` (left to prompt 37). The coordinators' placeholder
+  `qualifications` string was changed from a literal `'TODO: …'` (which would
+  have leaked into the UI) to `''`, so the card cleanly omits the line — no
+  fabricated credentials.
+- Added a `guestFaculty` export for the two prospectus-named guest faculty
+  (Biswajit Bhattacharya; Dr. Nripendra Nath Medhi). Only their names are
+  confirmed, so department/qualifications are intentionally omitted rather than
+  invented; they render in their own section, not the filterable grid.
+
+**SEO (`src/utils/seo.js`)**
+- Added `generateFacultyListSchema(faculty)` — an `ItemList` of `Person`
+  entries (each `worksFor` the college, with `jobTitle`/`honorificSuffix` when
+  known), applied via `useSeo()` on `/faculty`. Mirrors the existing
+  `generateDepartmentListSchema` / `generateCourseListSchema` pattern; purely
+  additive.
+
+**FacultyCard (`src/pages/Faculty/FacultyCard.jsx` + `.module.css`)**
+- A self-contained profile tile: gold-ringed avatar (placeholder), name,
+  designation, qualifications and a department chip. CSS-only hover lift (kept
+  off the entrance transform). When a member has a `bio` it grows an accessible
+  expand toggle (real `<button>` with `aria-expanded`/`aria-controls`; panel
+  `role="region"`, reduced-motion-safe height animation) — no toggle renders
+  today, so nothing fabricated is shown.
+
+**Faculty page (`src/pages/Faculty/Faculty.jsx` + `.module.css`)**
+- **PageHero** — "Our Faculty", subtitle "Experienced, qualified &
+  research-active educators…", Home / Faculty breadcrumb.
+- **Intro** — prospectus-sourced lead plus a credential strip (Ph.D · M.Phil ·
+  NET · SLET) and three faithful points (highly qualified · research-active ·
+  mentor-based guidance). No invented numbers beyond the prospectus.
+- **Leadership & Coordinators highlight** — a centered strip pulling the
+  Principal, Academic Advisor and B.Com/BBA, BCA and B.A. coordinators to the
+  top; they also stay in the directory so a search for them still resolves.
+- **Directory** — department filter chips (derived from the data, count desc;
+  `aria-pressed`, `role="status"` result count) AND a live name search
+  (`role="search"`, custom clear button) that combine; an `EmptyState` with a
+  "Clear filters" action when nothing matches. Responsive grid (4 / 3 / 2 / 1
+  columns).
+- **Guest Faculty** — its own section for the two guest faculty.
+- Reveal-on-scroll is reduced-motion safe (`<Reveal>`/`<RevealGroup>`); card
+  hover lifts are CSS-only. `npm run build` stays green (no new warnings).
+
 ### Phase 2.9 — Departments page
 
 Nineteenth prompt of the rebuild (`prompts/19-departments-page.md`). Replaces the

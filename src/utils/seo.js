@@ -7,6 +7,7 @@
 import { seoConfig } from '../config/seo';
 import { coursesData, getCourseBySlug } from '../data/coursesData';
 import { departmentsData } from '../data/departmentsData';
+import { facultyData } from '../data/facultyData';
 
 // =========================================
 // URL helpers
@@ -456,6 +457,37 @@ export function generateDepartmentListSchema(streams = departmentsData.streams) 
       '@type': 'ListItem',
       position: index + 1,
       name,
+    })),
+  };
+}
+
+/**
+ * Generate an ItemList schema of the teaching faculty (the /faculty page).
+ * Each entry is a Person who worksFor the college; qualifications, when known,
+ * are surfaced as `honorificSuffix`. Mirrors the existing list-schema helpers.
+ * @param {Array} [faculty] - faculty records (defaults to facultyData)
+ * @returns {Object} JSON-LD ItemList of faculty Persons
+ */
+export function generateFacultyListSchema(faculty = facultyData) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Faculty & Teaching Staff',
+    itemListElement: (faculty || []).map((member, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Person',
+        name: member.name,
+        ...(member.designation && { jobTitle: member.designation }),
+        ...(member.qualifications && { honorificSuffix: member.qualifications }),
+        ...(member.image && { image: absoluteUrl(member.image) }),
+        worksFor: {
+          '@type': 'CollegeOrUniversity',
+          name: seoConfig.organization.name,
+          sameAs: seoConfig.organization.url,
+        },
+      },
     })),
   };
 }

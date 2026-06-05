@@ -86,12 +86,12 @@ const COLUMNS = [
   { id: "email", label: "Email", sortable: true, hideTablet: true },
   {
     id: "program_interest",
-    label: "Program Interest",
+    label: "Program",
     sortable: true,
     hideTablet: true,
   },
   { id: "state", label: "State", sortable: true, width: 120 },
-  { id: "source", label: "Source", sortable: true, width: 130 },
+  { id: "source", label: "Source", sortable: true, width: 130, hideTablet: true },
   { id: "status", label: "Status", sortable: true, width: 150 },
   { id: "submitted_at", label: "Date", sortable: true, width: 100 },
 ];
@@ -845,7 +845,18 @@ const LeadManagement = () => {
             {/* Desktop Table */}
             <div className={styles.desktopTable}>
               <div className={styles.tableWrap}>
-                <Table size="small">
+                <Table
+                  size="small"
+                  sx={{
+                    // Tighten horizontal cell padding (MUI default 16px) so the
+                    // 9-column table fits the content width without clipping the
+                    // Actions column. Checkbox cells keep their own padding.
+                    "& .MuiTableCell-root:not(.MuiTableCell-paddingCheckbox)": {
+                      pl: 1,
+                      pr: 1,
+                    },
+                  }}
+                >
                   <TableHead>
                     <TableRow>
                       <TableCell
@@ -912,7 +923,7 @@ const LeadManagement = () => {
                           textTransform: "uppercase",
                           letterSpacing: "0.05em",
                           color: "var(--admin-text-muted)",
-                          width: 80,
+                          width: 72,
                           borderBottom: "1px solid var(--admin-border)",
                         }}
                       >
@@ -956,9 +967,14 @@ const LeadManagement = () => {
                           <TableCell>
                             <Typography
                               variant="body2"
+                              title={lead.name || undefined}
                               sx={{
                                 fontWeight: 600,
                                 color: "var(--admin-text-primary)",
+                                whiteSpace: "nowrap",
+                                maxWidth: 150,
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
                               }}
                             >
                               {lead.name || "—"}
@@ -980,8 +996,9 @@ const LeadManagement = () => {
                             <TableCell>
                               <Typography
                                 variant="body2"
+                                title={lead.email || undefined}
                                 sx={{
-                                  maxWidth: 200,
+                                  maxWidth: 150,
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
                                   whiteSpace: "nowrap",
@@ -1015,21 +1032,24 @@ const LeadManagement = () => {
                               {lead.state || "—"}
                             </Typography>
                           </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={lead.source || "—"}
-                              size="small"
-                              variant="outlined"
-                              sx={{
-                                fontSize: "0.7rem",
-                                maxWidth: 130,
-                                "& .MuiChip-label": {
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                },
-                              }}
-                            />
-                          </TableCell>
+                          {!isTablet && (
+                            <TableCell>
+                              <Chip
+                                label={lead.source || "—"}
+                                size="small"
+                                variant="outlined"
+                                title={lead.source || undefined}
+                                sx={{
+                                  fontSize: "0.7rem",
+                                  maxWidth: 112,
+                                  "& .MuiChip-label": {
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  },
+                                }}
+                              />
+                            </TableCell>
+                          )}
                           <TableCell onClick={(e) => e.stopPropagation()}>
                             <Select
                               value={lead.status || "new"}
@@ -1043,8 +1063,14 @@ const LeadManagement = () => {
                                 bgcolor: sc.bg,
                                 color: sc.color,
                                 height: 28,
+                                maxWidth: 168,
                                 borderRadius: "6px",
-                                "& .MuiSelect-select": { py: 0.3, px: 1 },
+                                "& .MuiSelect-select": {
+                                  py: 0.3,
+                                  px: 1,
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                },
                                 "& .MuiOutlinedInput-notchedOutline": {
                                   borderColor: sc.color + "44",
                                 },
@@ -1079,12 +1105,16 @@ const LeadManagement = () => {
                               {formatShortDate(lead.submitted_at)}
                             </Typography>
                           </TableCell>
-                          <TableCell onClick={(e) => e.stopPropagation()}>
+                          <TableCell
+                            onClick={(e) => e.stopPropagation()}
+                            sx={{ whiteSpace: "nowrap", px: 1 }}
+                          >
                             <Tooltip title="View Details">
                               <IconButton
                                 size="small"
                                 onClick={() => handleViewDetail(lead)}
                                 sx={{
+                                  p: 0.5,
                                   color: "var(--admin-text-muted)",
                                   "&:hover": { color: "var(--admin-accent)" },
                                 }}
@@ -1100,6 +1130,7 @@ const LeadManagement = () => {
                                   setDeleteDialogOpen(true);
                                 }}
                                 sx={{
+                                  p: 0.5,
                                   color: "var(--admin-text-muted)",
                                   "&:hover": { color: "var(--admin-error)" },
                                 }}

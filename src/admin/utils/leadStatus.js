@@ -9,12 +9,13 @@
 
    College admission funnel (design-system §8 / prompt 27):
 
-     New · Contacted · Interested · Application Started ·
-     Admitted / Seat Booked · Not Interested
+     New · Contacted · Interested · Applying (application started) ·
+     Admitted (seat booked) · Not Interested
 
-   The `value` keys are the canonical workflow keys persisted on each lead and
-   sent in sync/export payloads. DO NOT rename them — only the human `label` is
-   shown in the UI.
+   Labels are kept short so the inline status chip/select stays compact in the
+   dense leads table. The `value` keys are the canonical workflow keys persisted
+   on each lead and sent in sync/export payloads. DO NOT rename them — only the
+   human `label` is shown in the UI.
 
    Earlier builds shipped a generic consultation funnel
    (Hot / Warm / Cold / Seat Booked); `LEGACY_STATUS_MAP` + `normalizeStatus()`
@@ -26,8 +27,8 @@ export const STATUS_OPTIONS = [
   { value: "new", label: "New", color: "#2563EB", bg: "#EBF2FF" },
   { value: "contacted", label: "Contacted", color: "#0E7490", bg: "#E0F7FA" },
   { value: "interested", label: "Interested", color: "#A8823A", bg: "#F3E9D2" },
-  { value: "application_started", label: "Application Started", color: "#7C3AED", bg: "#F1ECFE" },
-  { value: "admitted", label: "Admitted / Seat Booked", color: "#1E8E5A", bg: "#E7F6EF" },
+  { value: "application_started", label: "Applying", color: "#7C3AED", bg: "#F1ECFE" },
+  { value: "admitted", label: "Admitted", color: "#1E8E5A", bg: "#E7F6EF" },
   { value: "not_interested", label: "Not Interested", color: "#64748B", bg: "#F1F5F9" },
 ];
 

@@ -17,8 +17,10 @@ unchanged.
 consultation funnel (New · Hot · Warm · Cold · Seat Booked · Not Interested)
 with the college admission funnel, the single source of truth for every admin
 surface:
-- **New · Contacted · Interested · Application Started · Admitted / Seat Booked ·
-  Not Interested**, each with a label + chip colour.
+- **New · Contacted · Interested · Applying · Admitted · Not Interested**, each
+  with a label + chip colour. Labels are kept short (the keys
+  `application_started` / `admitted` are unchanged) so the inline status chip
+  stays compact in the dense leads table.
 - New `normalizeStatus()` folds legacy workflow keys
   (`consultation_booked` → `interested`, `procedure_scheduled` →
   `application_started`, `completed` → `admitted`) onto the current stages so
@@ -66,6 +68,19 @@ making `program_interest` flow through cleanly (prompt 08's field decision):
 **`Dashboard` (`src/admin/pages/Dashboard.jsx`)** — recent-leads table column
 relabelled **Program** and reads `program_interest`, matching the new
 terminology.
+
+**Visual-QA fixes (desktop 1440 / tablet 834 / mobile 390 screenshots)**
+- **Leads table no longer overflows** — the dense column set plus the long
+  "Admitted / Seat Booked" inline status select pushed the table ~119px past its
+  container on desktop, clipping the **Actions** column off-screen and truncating
+  the **Date** column on tablet. Fixed by the shorter status labels, a compact
+  "Program" header, tighter cell padding, a width-capped status select, and
+  single-line/ellipsised Name + Email cells. All columns (incl. Actions) now fit
+  at every breakpoint.
+- **Tablet header/body alignment** — Source is now `hideTablet`, but the body
+  Source cell was still rendered on tablet (it wasn't wrapped in the `!isTablet`
+  guard like Email/Program), shifting the body one column out of step with the
+  header. The body Source cell is now guarded too, so header and body line up.
 
 ### Phase 3.2 — Admin dashboard
 

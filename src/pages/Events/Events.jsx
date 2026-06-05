@@ -11,9 +11,9 @@
                           click a day to see that day's events
        → <EmptyState> when there are no events / no matches for the filter
 
-   Data comes from `useEvents()` (seed data today; the live events.php store in
-   prompt 32 — same record shape). The category filter applies to both views.
-   SEO uses useSeo() with the /events route defaults.
+   Data comes from `useEvents()`, now wired to the live events.php store
+   (published-only, silent seed fallback) — same record shape. The category
+   filter applies to both views. SEO uses useSeo() with the /events defaults.
    ============================================ */
 
 import React, { useMemo, useState } from 'react';

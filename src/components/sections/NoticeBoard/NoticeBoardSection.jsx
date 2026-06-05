@@ -8,10 +8,11 @@
                / focus and stops entirely under prefers-reduced-motion.
      • Right — an "Upcoming Events" preview (the next 2–3 events).
 
-   Data comes from the `useNotices()` / `useEvents()` hooks, which read the
-   seed data today and are rewired to the live API in prompt 32. Each panel
-   links out (View all notices → /notices, All events → /events) and falls back
-   to an <EmptyState> when its list is empty.
+   Data comes from the `useNotices()` / `useEvents()` hooks, now wired to the
+   live notices.php / events.php stores (published-only, with a silent fall back
+   to seed data so the band is never blank). Each panel links out (View all
+   notices → /notices, All events → /events) and falls back to an <EmptyState>
+   when its list is empty.
 
    Following the section precedent (Highlights / WhyChoose), entrance motion is
    owned by the outer <Reveal>/<RevealGroup> wrappers (reduced-motion safe) while

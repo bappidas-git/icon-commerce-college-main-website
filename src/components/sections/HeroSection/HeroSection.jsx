@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 import Container from '../../common/Container/Container';
 import EnquiryButton from '../../common/EnquiryButton/EnquiryButton';
+import ProspectusButton from '../../common/ProspectusDownload/ProspectusButton';
 import UnifiedLeadForm from '../../common/UnifiedLeadForm/UnifiedLeadForm';
 import {
   useReducedMotionVariants,
@@ -95,15 +96,14 @@ const HeroSection = () => {
               >
                 Apply Now
               </EnquiryButton>
-              <EnquiryButton
-                preset="prospectus"
+              <ProspectusButton
                 source="hero"
                 variant="outline"
                 size="large"
                 startIcon="mdi:download-outline"
               >
                 Download Prospectus
-              </EnquiryButton>
+              </ProspectusButton>
             </div>
             <Link to="/courses" className={styles.exploreLink}>
               <span>Explore Courses</span>

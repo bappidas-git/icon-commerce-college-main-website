@@ -10,7 +10,7 @@
    the existing components are used as-is for now.
    ============================================ */
 
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useTheme, useMediaQuery } from '@mui/material';
 
@@ -24,6 +24,7 @@ import BackToTop from '../common/BackToTop/BackToTop';
 import FloatingActions from '../common/FloatingActions/FloatingActions';
 import PageLoader from './PageLoader';
 import { useModal } from '../../context/ModalContext';
+import { triggerProspectusDownload } from '../common/ProspectusDownload/downloadProspectus';
 
 const PublicLayout = () => {
   const theme = useTheme();
@@ -33,6 +34,15 @@ const PublicLayout = () => {
   const { openLeadDrawer, isDrawerOpen, drawerConfig, closeLeadDrawer } = useModal();
 
   const handleEnquiryClick = () => openLeadDrawer('apply-now');
+
+  // Lead-gated prospectus download: only fires once a `prospectus`-preset lead
+  // submit has succeeded (UnifiedLeadForm calls this before redirecting to
+  // /thank-you). The file is never fetched before the lead is captured.
+  const handleDrawerSubmitSuccess = useCallback(() => {
+    if (drawerConfig.preset === 'prospectus') {
+      triggerProspectusDownload();
+    }
+  }, [drawerConfig.preset]);
 
   return (
     <>
@@ -59,6 +69,7 @@ const PublicLayout = () => {
         subtitle={drawerConfig.subtitle}
         source={drawerConfig.source}
         programInterest={drawerConfig.programInterest}
+        onSubmitSuccess={handleDrawerSubmitSuccess}
       />
 
       {/* Floating enquiry / WhatsApp (desktop) */}

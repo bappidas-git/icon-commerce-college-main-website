@@ -4,6 +4,45 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.4 — Notices API store
+
+Twenty-eighth prompt of the rebuild (`prompts/28-notices-api-store.md`). A
+server-side notices store that is the single source of truth for the notices
+shown on the public site (Home notice board + `/notices`) and managed from the
+admin panel. It mirrors `leads.php` exactly so every browser/device sees the
+same notices — no localStorage copy. Wired to `REACT_APP_NOTICES_API_URL=/api/notices.php`
+(already present in `.env`); consumed by `noticeService.js` (prompt 29) and the
+public `useNotices()` hook (prompt 32).
+
+**`public/api/notices.php`** — one file, four actions, JSON file store at
+`api/data/notices.json` (flock-guarded read/write, `data/` auto-created on first
+use and protected with a `.htaccess` "Deny from all", just like leads):
+- `GET ?action=list` — **public, no auth** (the website reads notices here).
+  Returns `published` notices, sorted **pinned-first then `date` desc**. When a
+  valid `X-Admin-Key` is supplied it also returns **drafts** (`published=false`)
+  so the admin panel can manage them.
+- `POST ?action=create` — **admin key required**. Body `{ notice: {...} }`.
+  Validates required `title` + `date` (400 otherwise); generates `id` (UUID v4),
+  `created_at` and `updated_at` server-side when missing; coerces `pinned` /
+  `published` to real booleans and an unknown `category` to `General`. Idempotent
+  on a re-sent `id` (`duplicate: true`).
+- `POST ?action=update` — **admin key required**. Body `{ id, patch: {...} }`.
+  Last-write-wins merge with `id` / `created_at` immutable and `updated_at`
+  refreshed; 404 if the `id` is unknown.
+- `POST ?action=delete` — **admin key required**. Body `{ ids: [...] }`. Returns
+  `removed` count.
+- Record shape: `{ id, title, body, category (Admission|Examination|Event|General|Result|Holiday),
+  date, pinned, published, attachment_url?, created_at, updated_at }`. Field-agnostic
+  like leads — extra fields the client sends are stored untouched.
+- **Auth** reuses the leads handshake (`config.php` → env → committed default
+  matching `REACT_APP_LEADS_ADMIN_KEY`), so notices and leads always agree on the
+  key. Responses are `{ success, notices|notice|error }` with 400/401/404/500
+  codes; `503` if no key is configured. CORS + `OPTIONS` preflight handled.
+
+**`.gitignore`** — the runtime data comment now reads "data stores (leads,
+notices, events)" since `notices.json` joins `leads.json` under the
+already-ignored `/public/api/data/`.
+
 ### Phase 3.3 — Admin lead management
 
 Twenty-seventh prompt of the rebuild (`prompts/27-admin-lead-management.md`).

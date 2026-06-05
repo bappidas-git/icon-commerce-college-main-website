@@ -24,7 +24,7 @@ yarn-error.log*
 
 # Server-side PHP config (holds secrets)
 /public/api/config.php
-# Runtime-generated lead store
+# Runtime-generated data stores (leads, notices, events)
 /public/api/data/
 
 # Local visual-QA screenshots (generated, not part of the repo)

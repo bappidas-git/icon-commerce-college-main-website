@@ -99,6 +99,83 @@ const NotesSection = ({ leadId, notes, onNoteAdded }) => {
 };
 
 /* ============================================
+   Quick Actions — Call / WhatsApp / Email
+   ============================================
+   One-tap outreach for the admission team. Each action is a real link
+   (tel: / wa.me / mailto:) so it works on desktop and mobile; an action with no
+   underlying value (no mobile / no email) renders disabled instead of a dead
+   link. Mobile numbers are stored as 10 digits, so +91 / 91 is prefixed for the
+   call and WhatsApp targets.
+   ============================================ */
+const QuickActions = ({ mobile, email }) => {
+  const digits = (mobile || "").replace(/\D/g, "");
+  const actions = [
+    {
+      key: "call",
+      label: "Call",
+      icon: "mdi:phone",
+      href: digits ? `tel:+91${digits}` : null,
+      cls: styles.quickActionCall,
+      missing: "mobile number",
+    },
+    {
+      key: "whatsapp",
+      label: "WhatsApp",
+      icon: "mdi:whatsapp",
+      href: digits ? `https://wa.me/91${digits}` : null,
+      cls: styles.quickActionWhatsapp,
+      external: true,
+      missing: "mobile number",
+    },
+    {
+      key: "email",
+      label: "Email",
+      icon: "mdi:email-outline",
+      href: email ? `mailto:${email}` : null,
+      cls: styles.quickActionEmail,
+      missing: "email",
+    },
+  ];
+
+  return (
+    <div className={styles.card}>
+      <h3 className={styles.cardTitle}>
+        <Icon icon="mdi:flash-outline" width={16} />
+        Quick Actions
+      </h3>
+      <div className={styles.quickActions}>
+        {actions.map((a) =>
+          a.href ? (
+            <a
+              key={a.key}
+              href={a.href}
+              className={`${styles.quickAction} ${a.cls}`}
+              aria-label={a.label}
+              {...(a.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              <Icon icon={a.icon} width={18} />
+              {a.label}
+            </a>
+          ) : (
+            <span
+              key={a.key}
+              className={`${styles.quickAction} ${styles.quickActionDisabled}`}
+              aria-disabled="true"
+              title={`No ${a.missing} on file`}
+            >
+              <Icon icon={a.icon} width={18} />
+              {a.label}
+            </span>
+          )
+        )}
+      </div>
+    </div>
+  );
+};
+
+/* ============================================
    Lead Detail Page
    ============================================ */
 const LeadDetail = () => {
@@ -313,9 +390,9 @@ const LeadDetail = () => {
             </h3>
             <div className={styles.infoGrid}>
               <div className={styles.infoField}>
-                <span className={styles.infoLabel}>Course Interested</span>
-                <span className={lead.service_interest ? styles.infoValue : styles.infoDash}>
-                  {lead.service_interest || "\u2014"}
+                <span className={styles.infoLabel}>Program Interest</span>
+                <span className={lead.program_interest ? styles.infoValue : styles.infoDash}>
+                  {lead.program_interest || "\u2014"}
                 </span>
               </div>
               <div className={styles.infoField}>
@@ -372,6 +449,12 @@ const LeadDetail = () => {
                 <span className={styles.infoLabel}>Submitted At</span>
                 <span className={styles.infoValue}>{formatDate(lead.submitted_at)}</span>
               </div>
+              <div className={styles.infoField}>
+                <span className={styles.infoLabel}>Last Updated</span>
+                <span className={lead.updated_at ? styles.infoValue : styles.infoDash}>
+                  {lead.updated_at ? formatDate(lead.updated_at) : "—"}
+                </span>
+              </div>
               <div className={styles.infoFieldFull}>
                 <span className={styles.infoLabel}>Page URL</span>
                 <span
@@ -405,6 +488,9 @@ const LeadDetail = () => {
 
         {/* Right Column — Actions & Activity */}
         <div className={styles.rightColumn}>
+          {/* Quick Actions — Call / WhatsApp / Email */}
+          <QuickActions mobile={lead.mobile} email={lead.email} />
+
           {/* Notes Section (isolated component) */}
           <NotesSection
             leadId={lead.lead_id}

@@ -337,7 +337,7 @@ const Dashboard = () => {
                       <tr>
                         <th>Name</th>
                         <th>Mobile</th>
-                        <th>Course</th>
+                        <th>Program</th>
                         <th>Status</th>
                         <th>Date</th>
                         <th aria-label="Open lead" />
@@ -350,7 +350,7 @@ const Dashboard = () => {
                           <tr key={lead.lead_id} onClick={() => goToLead(lead.lead_id)}>
                             <td className={styles.leadName}>{lead.name || '—'}</td>
                             <td className={styles.mono}>{lead.mobile || '—'}</td>
-                            <td>{lead.service_interest || '—'}</td>
+                            <td>{lead.program_interest || '—'}</td>
                             <td>
                               <Chip
                                 label={sc.label}
@@ -389,7 +389,7 @@ const Dashboard = () => {
                         </div>
                         <div className={styles.leadCardRow}>
                           <Icon icon="mdi:school-outline" width={14} height={14} />
-                          <span>{lead.service_interest || '—'}</span>
+                          <span>{lead.program_interest || '—'}</span>
                           <span className={styles.leadCardDate}>{shortDate(lead.submitted_at)}</span>
                         </div>
                       </li>

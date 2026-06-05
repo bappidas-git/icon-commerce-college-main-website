@@ -1,0 +1,404 @@
+/* ============================================
+   Facilities page styles — Icon Commerce College
+   --------------------------------------------
+   Intro focus-area strip · facilities card grid · feature spotlights
+   (alternating image + copy rows) · campus glimpse tiles · "Visit our campus"
+   CTA (design-system §2–§4, §6).
+
+   Section background tones + headers come from the shared <Section>; this module
+   lays out the grids, the alternating spotlight rows and the CTA. Navy =
+   structure, Gold = emphasis only, Warm Red lives in the single CTA button.
+   ============================================ */
+
+/* ============================================
+   2 — Intro focus-area strip
+   ============================================ */
+.focusAreas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.focusArea {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.focusArea svg {
+  font-size: 1.15rem;
+  color: var(--color-accent-dark);
+}
+
+/* ============================================
+   3 — Facilities card grid
+   auto-fill (not auto-fit) keeps a trailing partial row at the normal card
+   width rather than stretching a lone card across the row.
+   ============================================ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-5);
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Reveal wrapper fills its cell so cards stretch to equal height. */
+.gridCell {
+  display: flex;
+}
+
+/* ============================================
+   4 — Feature spotlights (alternating image + copy)
+   ============================================ */
+.spotlights {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vw, 5.5rem);
+}
+
+.spotlight {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+/* Reversed rows: copy left, image right. */
+.spotlight.reversed .spotlightMedia {
+  order: 2;
+}
+
+.spotlightMedia {
+  position: relative;
+}
+
+.spotlightFigure {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.spotlightImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.spotlightFigure:hover .spotlightImage {
+  transform: scale(1.03);
+}
+
+/* Floating gold icon badge (gold = emphasis; legible on any image). */
+.spotlightBadge {
+  position: absolute;
+  left: var(--space-5);
+  bottom: var(--space-5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-md);
+  background: var(--gradient-gold);
+  color: var(--color-primary-dark);
+  font-size: 28px;
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Spotlight copy ---------- */
+.spotlightCopy {
+  max-width: 560px;
+}
+
+.spotlightEyebrow {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.spotlightHeading {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+.spotlightLead {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Feature points ---------- */
+.points {
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.point {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+}
+
+.pointIcon {
+  flex-shrink: 0;
+  margin-top: 0.15em;
+  font-size: 1.25rem;
+  color: var(--color-accent-dark);
+}
+
+/* ============================================
+   5 — Campus glimpse tiles
+   ============================================ */
+.glimpses {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.glimpseCell {
+  display: flex;
+}
+
+.glimpse {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  isolation: isolate;
+}
+
+.glimpseImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.glimpse:hover .glimpseImage {
+  transform: scale(1.04);
+}
+
+/* Navy gradient caption overlay (structure; keeps the label legible). */
+.glimpseCaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-8) var(--space-5) var(--space-5);
+  background: linear-gradient(
+    180deg,
+    rgba(17, 29, 58, 0) 0%,
+    rgba(17, 29, 58, 0.82) 100%
+  );
+  color: #ffffff;
+}
+
+.glimpseTitle {
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: #ffffff;
+}
+
+.glimpseText {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* ============================================
+   6 — "Visit our campus" CTA (navy + gold glow)
+   ============================================ */
+.cta {
+  position: relative;
+  overflow: hidden;
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+  background: var(--gradient-navy);
+  color: #ffffff;
+  isolation: isolate;
+}
+
+/* Soft gold glow accent (gold = emphasis only — never a full fill behind text). */
+.ctaGlow {
+  position: absolute;
+  inset: -55% auto auto -10%;
+  width: clamp(320px, 50vw, 640px);
+  height: clamp(320px, 50vw, 640px);
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle,
+    rgba(200, 160, 77, 0.26) 0%,
+    rgba(200, 160, 77, 0) 70%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ctaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.ctaEyebrow {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-widest);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.ctaHeading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: #ffffff;
+}
+
+.ctaSubtitle {
+  margin: var(--space-5) 0 0;
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.ctaLinkRow {
+  margin-top: var(--space-6);
+}
+
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+
+.ctaLink:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+.ctaLink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.ctaLink svg {
+  font-size: 1.05em;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+/* Spotlights stack; image always leads above the copy. */
+@media (max-width: 860px) {
+  .spotlight {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .spotlight.reversed .spotlightMedia {
+    order: 0;
+  }
+
+  .spotlightCopy {
+    max-width: none;
+  }
+
+  /* Glimpses: 3 → 2 columns. */
+  .glimpses {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Glimpses: 2 → 1 column. */
+@media (max-width: 560px) {
+  .glimpses {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CTA button goes full-width on small phones. */
+@media (max-width: 420px) {
+  .ctaActions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ============================================
+   Reduced motion — drop hover transforms (§4)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .spotlightFigure:hover .spotlightImage,
+  .glimpse:hover .glimpseImage {
+    transform: none;
+  }
+}

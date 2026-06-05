@@ -32,6 +32,7 @@ import Section from '../../components/common/Section/Section';
 import Container from '../../components/common/Container/Container';
 import Button from '../../components/common/Button/Button';
 import Tabs from '../../components/common/Tabs/Tabs';
+import ProspectusButton from '../../components/common/ProspectusDownload/ProspectusButton';
 import { Reveal, RevealGroup } from '../../components/common/Reveal/Reveal';
 import ProgramCard from '../../components/sections/ProgramsSection/ProgramCard';
 import NotFound from '../NotFound/NotFound';
@@ -272,12 +273,11 @@ const CourseDetail = () => {
     return <NotFound />;
   }
 
-  // Lead helpers — every CTA pre-selects this programme so admission leads are
-  // attributed to the right course + page location (design-system §8).
+  // Apply CTAs pre-select this programme so admission leads are attributed to
+  // the right course + page location (design-system §8). The lead-gated
+  // prospectus download is handled by <ProspectusButton/> (same preselect).
   const apply = (source) =>
     openLeadDrawer('apply-now', { source, programInterest: course.shortName });
-  const prospectus = (source) =>
-    openLeadDrawer('prospectus', { source, programInterest: course.shortName });
 
   const otherCourses = coursesData.filter((c) => c.slug !== course.slug);
 
@@ -394,14 +394,14 @@ const CourseDetail = () => {
                   >
                     Apply for {course.shortName}
                   </Button>
-                  <Button
+                  <ProspectusButton
                     variant="outline"
                     fullWidth
-                    startIcon="mdi:file-download-outline"
-                    onClick={() => prospectus('course-detail-rail')}
+                    source="course-detail-rail"
+                    programInterest={course.shortName}
                   >
                     Download Prospectus
-                  </Button>
+                  </ProspectusButton>
                   <Button
                     variant="outline"
                     fullWidth
@@ -493,14 +493,14 @@ const CourseDetail = () => {
               >
                 Apply for {course.shortName}
               </Button>
-              <Button
+              <ProspectusButton
                 variant="outline"
                 size="large"
-                startIcon="mdi:file-download-outline"
-                onClick={() => prospectus('course-detail-cta')}
+                source="course-detail-cta"
+                programInterest={course.shortName}
               >
                 Download Prospectus
-              </Button>
+              </ProspectusButton>
             </Reveal>
 
             <Reveal className={styles.ctaLinkRow} variant="fadeUp">

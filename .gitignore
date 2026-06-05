@@ -26,3 +26,6 @@ yarn-error.log*
 /public/api/config.php
 # Runtime-generated lead store
 /public/api/data/
+
+# Local visual-QA screenshots (generated, not part of the repo)
+/qa-screens/

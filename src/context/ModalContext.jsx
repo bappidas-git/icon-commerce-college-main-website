@@ -74,6 +74,7 @@ export const ModalProvider = ({ children }) => {
   // Lead Form Drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerConfig, setDrawerConfig] = useState({
+    preset: 'default',
     title: DRAWER_TITLES.default.title,
     subtitle: DRAWER_TITLES.default.subtitle,
     source: 'general',
@@ -160,11 +161,15 @@ export const ModalProvider = ({ children }) => {
   // Open lead form drawer with specific title based on context
   const openLeadDrawer = useCallback((titleKey = 'default', extraData = {}) => {
     const titleConfig = DRAWER_TITLES[titleKey] || DRAWER_TITLES.default;
+    // `preset` records the titleKey (e.g. 'prospectus') regardless of any
+    // per-CTA `source` override, so success handlers can branch on it (the
+    // lead-gated prospectus download keys off `preset === 'prospectus'`).
     setDrawerConfig({
+      ...extraData,
+      preset: titleKey,
       title: extraData.title || titleConfig.title,
       subtitle: extraData.subtitle || titleConfig.subtitle,
       source: extraData.source || titleConfig.source,
-      ...extraData,
     });
     setIsDrawerOpen(true);
     // Track which CTA triggered the drawer

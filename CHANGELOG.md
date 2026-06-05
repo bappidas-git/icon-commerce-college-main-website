@@ -4,6 +4,81 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.13 — Admissions + lead-gated prospectus
+
+Twenty-third prompt of the rebuild (`prompts/23-admissions-and-prospectus.md`).
+Replaces the `/admissions` `ComingSoon` shell with the full admissions page and
+makes the "Download Prospectus" flow **lead-gated** — the prospectus file is
+never fetched until a lead is captured.
+
+**Admission data (`src/data/admissionData.js`)**
+- Added `documentsRequired` (verification checklist, §6), `scholarshipNote`
+  (Government-approved schemes via the college / Nodal Officer) and `admissionFaqs`
+  (eligibility, how-to-apply, fees, dates `TODO`, hostel `TODO`, contact). Dates
+  and hostel answers stay honest — they point to the Notices page / admission
+  office rather than inventing specifics (client `TODO`s flagged in comments).
+- `prospectus.file` now points to the real shipped placeholder PDF
+  (`/prospectus/icon-commerce-college-prospectus.pdf`) instead of a `TODO` string.
+
+**Lead-gated prospectus download (`src/components/common/ProspectusDownload/`)**
+- `downloadProspectus.js` — `triggerProspectusDownload()` + `PROSPECTUS_FILE`
+  (single source of truth = `admissionData.prospectus.file`). Downloads via a
+  transient `<a download>` (same-origin, so the post-submit `/thank-you` redirect
+  is unaffected); fails quietly if the file path is still a `TODO` placeholder.
+- `ProspectusButton.jsx` — the canonical reusable CTA. It NEVER downloads
+  directly; it opens the lead drawer with the `prospectus` preset
+  (`UnifiedLeadForm`, source `prospectus`) and passes every `<Button/>` prop
+  through (variant, size, fullWidth…). Accepts optional `source` + `programInterest`.
+- Wired the actual download into the **global** drawer success flow: `ModalContext`
+  now records the drawer `preset`, and `PublicLayout` passes an `onSubmitSuccess`
+  to `LeadFormDrawer` that fires `triggerProspectusDownload()` only when
+  `preset === 'prospectus'`. So **every** prospectus CTA across the site (Hero,
+  Footer, Courses, Course detail, About, Departments, Home CTA, Admissions) now
+  downloads the file on a successful submit — and only then.
+- Adopted `<ProspectusButton/>` in the **Hero** and **Course detail** (rail + CTA,
+  preserving the per-course program preselect); the Footer keeps its bespoke
+  footer-styled button but flows through the same gated download.
+
+**Placeholder PDF (`public/prospectus/icon-commerce-college-prospectus.pdf`)** — a
+small, valid 1-page placeholder so the gated download has a real same-origin file.
+`TODO` (client): replace with the official prospectus.
+
+**Admissions page (`src/pages/Admissions/Admissions.jsx` + `.module.css`)**
+- **PageHero** — "Admissions 2026-27", subtitle "Affiliated to Gauhati University ·
+  NEP 2020 (FYUGP)", Home / Admissions breadcrumb, Apply Now CTA, `hero-students` bg.
+- **How to Apply** — 4-step numbered process from `admissionData.steps`, plus a
+  prominent "Go to Samarth Portal ↗" (official URL) and an "Apply / Enquire" drawer CTA.
+- **Eligibility** — general note + per-programme cards (eligibility text from
+  `coursesData`, the single source of truth).
+- **Fee structure** — accessible `<Tabs>` (one per programme) of fee-breakdown
+  tables + monthly tuition + application fee + the GU/non-refundable N.B. note
+  (figures from `coursesData`).
+- **Documents & Scholarships** — verification checklist + scholarship callout.
+- **Admission FAQ** — `<Accordion>` rendered from `admissionData.faqs`, with the
+  matching **FAQPage** JSON-LD kept in sync via `useSeo({ faqs })`.
+- **CTA band** — navy + gold band: Apply Now / Download Prospectus (lead-gated) /
+  Call Admissions, plus the Samarth "College Code 842" pill.
+- Reveal-on-scroll is reduced-motion safe; card/hover lifts are CSS-only. The fee
+  table and CTA band reuse the established CourseDetail styling.
+
+**Navigation** — confirmed there is **no "Prospectus" item** in the header nav,
+the mobile drawer or the mobile bottom nav (all derive from `data/navigation.js`,
+which has none); the prospectus is surfaced only via CTAs and the Admissions page,
+per the brief. No nav change was required.
+
+**Build/QA** — `npm run build` passes (the one remaining warning is the pre-existing
+`src/utils/formatters.js` anonymous-default-export, untouched here); the new/changed
+files lint clean.
+
+**Visual QA (Desktop 1440 / Tablet 820 / Mobile 390 + the prospectus drawer)** —
+captured the assembled page and the lead-gated drawer at all three breakpoints. The
+hero, 4-step grid, eligibility cards, fee Tabs/table, Documents & Scholarships, FAQ
+accordion and the navy CTA band all render and stack correctly (steps/eligibility →
+1 col on mobile, fee tabs wrap to two centred rows, CTA buttons stack).
+- **Fix from QA:** the hero `<h1>` year now uses a non-breaking hyphen
+  (`Admissions 2026‑27`) so it never breaks mid-token (`2026-` / `27`) during the
+  `font-display:swap` FOUT or at very narrow widths — it wraps at the space instead.
+
 ### Phase 2.12 — Gallery page
 
 Twenty-second prompt of the rebuild (`prompts/22-gallery-page.md`). Replaces the

@@ -4,6 +4,69 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.11 — Facilities page
+
+Twenty-first prompt of the rebuild (`prompts/21-facilities-page.md`). Replaces the
+`/facilities` `ComingSoon` shell with a polished campus page:
+
+    PageHero → intro (learning environment + focus areas) → facilities grid →
+    feature spotlights (alternating image + copy rows) → campus glimpses →
+    "Visit our campus" CTA (Book a Campus Visit drawer + gallery link).
+
+**Facilities data (`src/data/facilitiesData.js`)**
+- Added two exports alongside the existing `facilitiesData` (the 10 facilities,
+  unchanged): `facilitySpotlights` — three richer two-column rows (Digital
+  Library · Computer Lab · Sports & College Week) each with an image, lead and
+  feature points; and `campusGlimpses` — three image tiles (Smart Classrooms ·
+  Canteen · Wi-Fi) reusing the remaining labelled placeholders. All copy is
+  grounded in the design-system / prospectus facts (College Week, ICON Shield in
+  memory of Rupam Patgiri, ICON Trophy in memory of Jadav Dutta) — nothing
+  invented. Images resolve through `utils/assets` `placeholder()`.
+
+**SEO (`src/utils/seo.js`)**
+- Added `generateFacilityListSchema(facilities)` — an `ItemList` of the campus
+  facility names, applied via `useSeo()` on `/facilities`. Mirrors the existing
+  `generateDepartmentListSchema` / `generateFacultyListSchema` pattern; purely
+  additive. (The `/facilities` route meta already existed in `src/config/seo.js`.)
+
+**FacilityCard (`src/pages/Facilities/FacilityCard.jsx` + `.module.css`)**
+- A compact facility tile: gold icon chip, title and one-line blurb. Following
+  the WhyChoose / Highlights precedent it is plain markup with a CSS-only hover
+  lift and is wrapped in `<Reveal>` by the page, so the entrance animation routes
+  through `useReducedMotionVariants()` and never double-animates against a
+  motion-driven card.
+
+**Facilities page (`src/pages/Facilities/Facilities.jsx` + `.module.css`)**
+- **PageHero** — "Campus & Facilities", subtitle on the student-first campus,
+  Home / Facilities breadcrumb, `hero-campus` background.
+- **Intro** — one-line on the learning environment plus a focus-area strip
+  (Academics · Technology · Sports & Culture · Student Support) — category
+  labels, no invented numbers.
+- **Facilities grid** — all 10 facilities render from `facilitiesData` as
+  `FacilityCard`s in a centered flex-wrap grid (the Faculty highlight-strip
+  precedent) so the cards read as a balanced 5 + 5 on wide screens and any
+  trailing partial row stays centered (cards stretch to equal height per row).
+- **Feature spotlights** — three alternating image + copy rows from
+  `facilitySpotlights` (image with a floating gold badge; eyebrow, heading, lead
+  and a checked feature list), each anchored by `id` for deep links.
+- **Campus glimpses** — three image tiles from `campusGlimpses` with a navy
+  gradient caption overlay (`<figure>`/`<figcaption>`).
+- **CTA** — navy + gold-glow band: "Visit our campus" with a single Warm-Red
+  "Book a Campus Visit" button (opens the `visit` lead drawer) and a link to the
+  `/gallery` page.
+- Reveal-on-scroll is reduced-motion safe (`<Reveal>`/`<RevealGroup>`); all card
+  and image hover lifts are CSS-only. `npm run build` stays green.
+
+**Visual QA (multi-viewport screenshots — Desktop / Tablet / Mobile)**
+- Facilities grid: the original responsive `auto-fill` grid left the 10 cards as a
+  left-heavy 4 + 4 + 2 on desktop (two empty columns trailing). Switched to the
+  centered flex-wrap pattern so desktop reads as a balanced 5 + 5, tablet as a
+  centered 3 + 3 + 3 + 1, and phones as full-width single cards — no stranded
+  trailing row at any width.
+- Verified hero, intro, alternating spotlights, glimpse tiles and the CTA across
+  all three breakpoints (reveal-on-scroll, stacking and the navy CTA contrast all
+  correct).
+
 ### Phase 2.10 — Faculty page
 
 Twentieth prompt of the rebuild (`prompts/20-faculty-page.md`). Replaces the

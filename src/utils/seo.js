@@ -8,6 +8,7 @@ import { seoConfig } from '../config/seo';
 import { coursesData, getCourseBySlug } from '../data/coursesData';
 import { departmentsData } from '../data/departmentsData';
 import { facultyData } from '../data/facultyData';
+import { facilitiesData } from '../data/facilitiesData';
 
 // =========================================
 // URL helpers
@@ -488,6 +489,26 @@ export function generateFacultyListSchema(faculty = facultyData) {
           sameAs: seoConfig.organization.url,
         },
       },
+    })),
+  };
+}
+
+/**
+ * Generate an ItemList schema of the campus facilities (the /facilities page).
+ * Each entry is a named facility offered by the college, in catalogue order.
+ * Mirrors the existing list-schema helpers; purely additive.
+ * @param {Array} [facilities] - facility records (defaults to facilitiesData)
+ * @returns {Object} JSON-LD ItemList of facility names
+ */
+export function generateFacilityListSchema(facilities = facilitiesData) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Campus Facilities',
+    itemListElement: (facilities || []).map((facility, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: facility.title,
     })),
   };
 }

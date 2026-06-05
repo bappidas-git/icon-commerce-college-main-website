@@ -1,0 +1,70 @@
+/* ============================================
+   FacilityCard styles — Icon Commerce College
+   --------------------------------------------
+   Gold icon chip + title + blurb. CSS-only hover lift (the entrance transform
+   is owned by the page's <Reveal>). Navy = structure, Gold = emphasis only
+   (design-system §2–§4).
+   ============================================ */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+}
+
+/* Gold icon chip (gold = emphasis only, §2). */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-dark);
+  font-size: 28px;
+  flex-shrink: 0;
+  transition: transform var(--transition-base);
+}
+
+.card:hover .chip {
+  transform: scale(1.05);
+}
+
+.title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+.blurb {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+/* Reduced motion — drop hover transforms (§4). */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .card:hover .chip {
+    transform: none;
+  }
+}

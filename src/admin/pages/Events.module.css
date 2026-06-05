@@ -83,6 +83,9 @@
 .viewBar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .viewToggle {
@@ -210,19 +213,6 @@
 /* ============================================
    Calendar view
    ============================================ */
-.calendarPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.calendarControls {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
 /* Hint shown when no day is selected. */
 .calHint {
   display: flex;

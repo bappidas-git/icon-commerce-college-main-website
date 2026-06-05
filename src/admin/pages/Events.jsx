@@ -569,7 +569,9 @@ const Events = () => {
         <StatTile icon="mdi:file-document-edit-outline" value={stats.drafts} label="Drafts" tone="gold" />
       </div>
 
-      {/* View toggle */}
+      {/* View toggle (+ the calendar's category filter, kept on the same row so
+          it isn't an orphaned control above the grid; the list view carries its
+          own filters in the DataTable toolbar). */}
       <div className={styles.viewBar}>
         <div className={styles.viewToggle} role="group" aria-label="Choose how to view events">
           {VIEWS.map((v) => {
@@ -588,6 +590,7 @@ const Events = () => {
             );
           })}
         </div>
+        {view === "calendar" && categorySelect}
       </div>
 
       {view === "list" ? (
@@ -608,10 +611,7 @@ const Events = () => {
           }
         />
       ) : (
-        <div className={styles.calendarPanel}>
-          <div className={styles.calendarControls}>{categorySelect}</div>
-          <MonthGrid events={categoryFiltered} renderDetail={renderCalendarDetail} />
-        </div>
+        <MonthGrid events={categoryFiltered} renderDetail={renderCalendarDetail} />
       )}
 
       <EventFormDialog

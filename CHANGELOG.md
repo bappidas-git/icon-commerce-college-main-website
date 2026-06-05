@@ -4,6 +4,71 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 2.12 — Gallery page
+
+Twenty-second prompt of the rebuild (`prompts/22-gallery-page.md`). Replaces the
+`/gallery` `ComingSoon` shell with a single page that unifies the old separate
+photo and video galleries:
+
+    PageHero → intro → accessible Tabs ("Photos" | "Videos")
+      • Photos → category filter chips + responsive masonry + lightbox
+      • Videos → responsive cards + lazy-loaded YouTube modal
+
+**Gallery data (`src/data/galleryData.js`)** — unchanged. The page renders
+entirely from the existing exports (`galleryPhotos` — 12 labelled placeholders;
+`galleryVideos` — three seed videos with `TODO` YouTube ids; `galleryCategories`
+— Campus · Events · Classrooms · Sports · Cultural).
+
+**Gallery page (`src/pages/Gallery/Gallery.jsx` + `.module.css`)**
+- **PageHero** — "Gallery", subtitle on campus/college life, Home / Gallery
+  breadcrumb, `hero-students` background.
+- **Tabs** — a centered, accessible `<Tabs>` tablist ("Photos" | "Videos", gold
+  shuttle underline) below the shared `<Section>` header; the two panels own
+  their own layout and modal state so the shell stays thin.
+- **SEO** — `useSeo()` applies the existing `/gallery` route meta (title,
+  description, keywords) from `src/config/seo.js`.
+
+**PhotoGallery (`src/pages/Gallery/PhotoGallery.jsx` + `.module.css`)**
+- **Filter chips** — `All` + the five `galleryCategories`, as a
+  `role="group"` of `aria-pressed` toggle buttons (active = navy).
+- **Masonry** — a responsive CSS-columns masonry (4 → 3 → 2 → 1) of the photo
+  placeholders; images are `loading="lazy"` and tiles carry a deterministic
+  aspect-ratio cycle so the uniform placeholders read as a real masonry. The
+  grid reveals with a single reduced-motion-safe fade (per-tile transforms
+  inside CSS columns are avoided — the Facilities precedent); tile + image hover
+  lifts are CSS-only.
+- **Lightbox** — clicking a tile opens an accessible, header-less `<Modal/>`
+  (navy stage + caption bar) with prev/next buttons, a category badge and a
+  `n / total` counter. Prev/next also respond to the ←/→ keys and Esc closes
+  (handled by `<Modal/>`); focus moves into the dialog on open. Navigation and
+  filtering both operate on the filtered set, and the lightbox content is only
+  rendered while open.
+
+**VideoGallery (`src/pages/Gallery/VideoGallery.jsx` + `.module.css`)**
+- **Cards** — responsive grid (3 → 2 → 1) of video cards (thumbnail + gold play
+  badge + title), each a single accessible button; thumbnails are
+  `loading="lazy"`.
+- **Video modal** — clicking a card opens a `<Modal/>` with a 16:9 YouTube embed
+  that is only mounted while the modal is open and never autoplays on load (for
+  performance). Seed videos still carry a `TODO` id, so those show a tasteful
+  "coming soon" panel instead of a broken iframe — the embed wires up
+  automatically once the client fills in a real YouTube id.
+- Entrance is reduced-motion-safe (`<RevealGroup>`); card/thumbnail hover lifts
+  are CSS-only. `npm run build` stays green and the new files lint clean.
+
+**Visual QA (multi-viewport screenshots — Desktop / Tablet / Mobile)**
+- Captured the assembled page at Desktop (1440), Tablet (820) and Mobile (390)
+  across every state (photos masonry, category filters, lightbox, videos tab and
+  video modal). Tabs, filters, the lightbox (prev/next + caption + counter) and
+  the video modal all behaved correctly; the masonry reflows 4 → 3 → 1 columns
+  and the modals adapt to a bottom-sheet on mobile.
+- **Fix from review:** filtering to a small category (1–3 photos) left the
+  `column-count` masonry stranding tiles in the leftmost columns with the rest
+  of the row empty. The grid now caps its effective columns **and** width to the
+  photo count (`column-count: min(--cols, --photo-count)` + a width cap that is a
+  no-op once the row is full), so any filtered set stays centered at a consistent
+  tile size while the full "All" view is unchanged.
+
 ### Phase 2.11 — Facilities page
 
 Twenty-first prompt of the rebuild (`prompts/21-facilities-page.md`). Replaces the

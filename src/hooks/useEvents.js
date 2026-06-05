@@ -4,18 +4,22 @@
    --------------------------------------------
    Returns the published events sorted by start date (soonest first). It
    currently reads the bundled `seedEvents`; prompt 32 swaps the internals to
-   the live `events.php` store WITHOUT changing the `{ events, loading, error }`
-   return shape, so consumers (NoticeBoard, the Events page) stay untouched.
+   the live `events.php` store WITHOUT changing the return shape, so consumers
+   stay untouched.
+
+   The result exposes the list under BOTH `items` (the generic shape the Events
+   page consumes, per prompt 24) and `events` (kept for the existing Home
+   NoticeBoard band) — they reference the same array.
    ============================================ */
 
 import { useMemo } from 'react';
 import { seedEvents } from '../data/seedEvents';
 
 /**
- * @returns {{ events: import('../data/seedEvents').CollegeEvent[], loading: boolean, error: (Error|null) }}
+ * @returns {{ items: import('../data/seedEvents').CollegeEvent[], events: import('../data/seedEvents').CollegeEvent[], loading: boolean, error: (Error|null) }}
  */
 export default function useEvents() {
-  const events = useMemo(
+  const items = useMemo(
     () =>
       seedEvents
         .filter((e) => e.published)
@@ -24,7 +28,7 @@ export default function useEvents() {
     []
   );
 
-  return { events, loading: false, error: null };
+  return { items, events: items, loading: false, error: null };
 }
 
 export { useEvents };

@@ -1,0 +1,149 @@
+/* ============================================
+   EventCard styles — Icon Commerce College (prompt 24)
+   --------------------------------------------
+   Navy date block + details. CSS-only hover lift (entrance owned by the page's
+   <Reveal>). Navy = structure, Gold = emphasis only (category badge, meta
+   icons). Past events read slightly muted.
+   ============================================ */
+
+.card {
+  display: flex;
+  gap: var(--space-5);
+  height: 100%;
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+}
+
+.past {
+  background: var(--color-bg);
+}
+
+.past .dateBlock {
+  background: var(--color-primary-light);
+}
+
+/* ---------- Date block ---------- */
+.dateBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 76px;
+  border-radius: var(--radius-md);
+  background: var(--gradient-navy);
+  color: #ffffff;
+  padding: var(--space-3);
+}
+
+.day {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: var(--fw-bold);
+  line-height: 1;
+}
+
+.month {
+  margin-top: 2px;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--color-accent);
+}
+
+/* ---------- Body ---------- */
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  align-self: flex-start;
+  padding: 3px var(--space-3);
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-primary-dark);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+}
+
+.category svg {
+  font-size: 14px;
+}
+
+.title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-primary);
+}
+
+.metaRow {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0 0 var(--space-3);
+  padding: 0;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+.metaItem svg {
+  font-size: 16px;
+  color: var(--color-accent-dark);
+}
+
+.desc {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 460px) {
+  .card {
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .dateBlock {
+    width: 60px;
+  }
+
+  .day {
+    font-size: 1.4rem;
+  }
+}
+
+/* Reduced motion — drop hover transforms (§4). */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+}

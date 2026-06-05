@@ -1,0 +1,176 @@
+/* ============================================
+   Events page styles — Icon Commerce College (prompt 24)
+   --------------------------------------------
+   A controls bar (category chips + List/Calendar segmented toggle) above either
+   the grouped list (Upcoming / Past) or the calendar. Chips follow the gallery
+   precedent (navy active chip, gold focus ring). Navy = structure, Gold =
+   emphasis only.
+   ============================================ */
+
+/* ============================================
+   Controls
+   ============================================ */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.chip:hover {
+  color: var(--color-primary);
+  border-color: var(--color-accent);
+}
+
+.chipActive,
+.chipActive:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.chip:focus-visible,
+.viewBtn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- View toggle (segmented) ---------- */
+.viewToggle {
+  display: inline-flex;
+  padding: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+}
+
+.viewBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: none;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-heading);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.viewBtn svg {
+  font-size: 18px;
+}
+
+.viewBtn:hover {
+  color: var(--color-primary);
+}
+
+.viewBtnActive,
+.viewBtnActive:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+/* ============================================
+   List view (Upcoming / Past groups)
+   ============================================ */
+.listView {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+/* min-width:0 lets the inner grid shrink instead of overflowing the column. */
+.group {
+  min-width: 0;
+}
+
+.groupTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-6);
+  font-family: var(--font-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+}
+
+.groupTitle svg {
+  font-size: 24px;
+  color: var(--color-accent-dark);
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.groupEmpty {
+  margin: 0;
+  padding: var(--space-6);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--space-1);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .chip {
+    flex: 0 0 auto;
+  }
+}

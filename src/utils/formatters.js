@@ -215,7 +215,8 @@ export const slugify = (text) => {
     .replace(/^-+|-+$/g, '');
 };
 
-export default {
+// Named before export (avoids import/no-anonymous-default-export under CI lint).
+const formatters = {
   formatCurrency,
   formatIndianNumber,
   formatPhoneNumber,
@@ -227,3 +228,5 @@ export default {
   capitalizeWords,
   slugify,
 };
+
+export default formatters;

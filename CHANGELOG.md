@@ -68,8 +68,16 @@ per the brief. No nav change was required.
 
 **Build/QA** — `npm run build` passes (the one remaining warning is the pre-existing
 `src/utils/formatters.js` anonymous-default-export, untouched here); the new/changed
-files lint clean. Browser-based visual QA wasn't run in this environment (no headless
-browser available), but the page reuses proven primitives and CourseDetail's styles.
+files lint clean.
+
+**Visual QA (Desktop 1440 / Tablet 820 / Mobile 390 + the prospectus drawer)** —
+captured the assembled page and the lead-gated drawer at all three breakpoints. The
+hero, 4-step grid, eligibility cards, fee Tabs/table, Documents & Scholarships, FAQ
+accordion and the navy CTA band all render and stack correctly (steps/eligibility →
+1 col on mobile, fee tabs wrap to two centred rows, CTA buttons stack).
+- **Fix from QA:** the hero `<h1>` year now uses a non-breaking hyphen
+  (`Admissions 2026‑27`) so it never breaks mid-token (`2026-` / `27`) during the
+  `font-display:swap` FOUT or at very narrow widths — it wraps at the space instead.
 
 ### Phase 2.12 — Gallery page
 

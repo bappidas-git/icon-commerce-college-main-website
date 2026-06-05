@@ -41,6 +41,10 @@ import styles from './Admissions.module.css';
 
 // Current admission intake (matches the seed notices / site CTAs, §6).
 const ADMISSION_SESSION = '2026-27';
+// Hero <h1> variant with a non-breaking hyphen (U+2011) so the year never
+// splits mid-token (e.g. "2026-" / "27") during the font-display:swap FOUT or
+// at very narrow widths — it wraps at the space instead.
+const HERO_SESSION = ADMISSION_SESSION.replace('-', '‑');
 
 /* ------------------------------------------------------------------
    Per-programme fee table (reused inside each Fees tab).
@@ -113,7 +117,7 @@ const Admissions = () => {
       {/* 1 — Hero */}
       <PageHero
         eyebrow="Admissions Open"
-        title={`Admissions ${ADMISSION_SESSION}`}
+        title={`Admissions ${HERO_SESSION}`}
         subtitle="Affiliated to Gauhati University · NEP 2020 (FYUGP)"
         image="hero-students"
         breadcrumb={[{ label: 'Admissions' }]}

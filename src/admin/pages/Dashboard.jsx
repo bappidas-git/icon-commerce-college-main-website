@@ -98,7 +98,7 @@ const Dashboard = () => {
   };
 
   const handleViewLead = (leadId) => {
-    navigate(`/admin/lms/lead/${leadId}`);
+    navigate(`/admin/leads/${leadId}`);
   };
 
   const handleRefresh = async () => {
@@ -187,7 +187,7 @@ const Dashboard = () => {
           <Icon icon="mdi:download-outline" width={18} height={18} />
           Export All Leads
         </button>
-        <Link to="/admin/lms" className={styles.actionSolid}>
+        <Link to="/admin/leads" className={styles.actionSolid}>
           <Icon icon="mdi:account-group-outline" width={18} height={18} />
           View All Leads
         </Link>
@@ -197,7 +197,7 @@ const Dashboard = () => {
       <div className={styles.recentSection}>
         <div className={styles.recentHeader}>
           <h2 className={styles.sectionTitle}>Recent Admission Leads</h2>
-          <Link to="/admin/lms" className={styles.viewAllLink}>
+          <Link to="/admin/leads" className={styles.viewAllLink}>
             View All <Icon icon="mdi:arrow-right" width={16} height={16} style={{ verticalAlign: 'middle' }} />
           </Link>
         </div>

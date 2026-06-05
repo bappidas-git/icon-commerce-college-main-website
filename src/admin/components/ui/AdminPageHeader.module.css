@@ -1,0 +1,78 @@
+/* ============================================
+   AdminPageHeader Styles
+   ============================================ */
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.heading {
+  min-width: 0;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--admin-accent, #C8A04D);
+  margin-bottom: 6px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.titleIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--admin-accent-soft, #F3E9D2);
+  color: var(--admin-primary, #1A2A52);
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-weight: 700;
+  color: var(--admin-primary, #1A2A52);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--admin-text-secondary, #5B6678);
+  margin: 6px 0 0;
+  max-width: 70ch;
+  line-height: 1.55;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .header {
+    align-items: stretch;
+  }
+
+  .actions {
+    width: 100%;
+  }
+}

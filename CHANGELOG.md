@@ -4,6 +4,65 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.1 — Admin cleanup & shell
+
+Twenty-fifth prompt of the rebuild (`prompts/25-admin-cleanup-and-shell.md`).
+Strips the leftover CIT ad-tech admin modules and rebuilds the admin shell for
+the college feature set (Leads · Notices · Events · Settings) with a Navy+Gold
+sidebar layout and a reusable shared-UI kit that the Leads/Notices/Events
+modules build on in the next prompts.
+
+**Removed (CIT ad-tech modules)**
+- Deleted the tele-calling module end-to-end: `src/admin/pages/TeleCalling.jsx`,
+  `TeleCallDetail.jsx`, `src/admin/components/TelecallFormDialog.jsx`,
+  `src/admin/utils/telecallService.js`, `telecallStatus.js` and the
+  `public/api/telecalls.php` store.
+- Dropped the unused `TELECALLS_API_URL` config from `src/utils/webhookSubmit.js`
+  (and from `getConfig()`); no source references remain (grep-clean).
+
+**Admin shell**
+- **`AdminSidebar` (new)** — navy gradient sidebar with the five sections
+  (Dashboard · Leads · Notices · Events · Settings), gold active indicator
+  (left rule + gold icon/label), brand mark and footer. A fixed column on
+  desktop; an off-canvas drawer with overlay on ≤1024px.
+- **`AdminLayout`** — reworked into a sidebar + topbar + routed-content shell.
+  Lazy-loads every page, warms the shared leads cache on mount (lead sync only),
+  owns the mobile-drawer state and closes it on navigation. Routes:
+  `/admin/dashboard`, `/admin/leads` (+`/admin/leads/:leadId`), `/admin/notices`,
+  `/admin/events`, `/admin/settings` (unknown admin paths redirect to Dashboard).
+- **`AdminTopbar`** — restyled to the section header: college name + current
+  section title (derived from the route via `navItems.js`), a "View site" link,
+  the logged-in user and logout, plus the hamburger that opens the drawer.
+- **`navItems.js` (new)** — single source of truth for the admin nav; the sidebar
+  renders it and the topbar derives the active section title from it.
+- **Lead route rename** — the Leads list/detail moved from `/admin/lms` to
+  `/admin/leads` (+`/admin/leads/:leadId`); Dashboard, LeadManagement and
+  LeadDetail links updated to match.
+
+**Auth** — `AdminAuthContext`, `adminAuth.js`, `ProtectedRoute` kept as-is (24h
+localStorage session + remember-me, env credentials). `AdminLogin` restyled to a
+navy+gold card (gold top rule, logo, lock CTA) with refreshed copy.
+
+**Shared admin UI kit (`src/admin/components/ui/`, new)** — reused across modules:
+`AdminPageHeader` (eyebrow/title/subtitle/actions), `StatTile` (metric card with
+tones), `DataTable` (sortable, searchable, paginated, empty-state), `ConfirmDialog`
+(MUI), `FormField` (labelled wrapper), `Toast` + `useToast` (MUI Snackbar). Barrel
+`index.js` re-exports them.
+
+**Placeholder module pages** — `Notices`/`Events` render the shared header + an
+empty `DataTable` preview; `Settings` is functional (session StatTiles, read-only
+endpoint config with copy-to-clipboard `Toast`, and a confirmed sign-out via
+`ConfirmDialog`). Full publishing tools arrive in prompts 29/31/33.
+
+**Responsive polish** (post screenshot QA across desktop/tablet/mobile) —
+`DataTable` empty state now renders at card width outside the horizontal-scroll
+area so its message is never clipped on narrow screens; the sidebar drawer brand
+keeps "Icon Commerce" on one line (corner-anchored close button) to match
+desktop; `StatTile` values truncate with an ellipsis instead of overflowing.
+
+**Tokens** — added `--admin-accent-dark`, `--admin-accent-soft`, `--admin-cta`,
+`--admin-cta-dark` to the admin palette in `src/styles/variables.css`.
+
 ### Phase 2.14 — Contact, Notices & Events (public)
 
 Twenty-fourth prompt of the rebuild (`prompts/24-contact-notices-events.md`).

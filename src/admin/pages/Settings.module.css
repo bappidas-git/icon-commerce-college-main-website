@@ -1,0 +1,102 @@
+/* ============================================
+   Admin Settings Styles
+   ============================================ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: var(--admin-card-bg, #fff);
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(20, 35, 61, 0.06));
+  padding: 24px;
+  margin-bottom: 20px;
+  max-width: 640px;
+}
+
+.cardTitle {
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--admin-primary, #1A2A52);
+  margin: 0 0 4px;
+}
+
+.cardLead {
+  font-size: 0.85rem;
+  color: var(--admin-text-secondary, #5B6678);
+  margin: 0 0 18px;
+  line-height: 1.55;
+}
+
+.endpoints {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.endpointRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.endpointRow input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.82rem;
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 10px;
+  background: var(--admin-bg, #F7F8FB);
+  color: var(--admin-text-secondary, #5B6678);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.copyBtn:hover {
+  color: var(--admin-accent-dark, #A8823A);
+  border-color: var(--admin-accent, #C8A04D);
+  background: var(--admin-accent-soft, #F3E9D2);
+}
+
+.dangerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 18px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(224, 48, 30, 0.35);
+  background: rgba(224, 48, 30, 0.06);
+  color: var(--admin-cta, #E0301E);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.dangerBtn:hover {
+  background: rgba(224, 48, 30, 0.12);
+  border-color: var(--admin-cta, #E0301E);
+}

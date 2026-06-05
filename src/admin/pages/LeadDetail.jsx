@@ -203,7 +203,7 @@ const LeadDetail = () => {
   const handleDelete = () => {
     deleteLead(leadId);
     showSnackbar("Lead deleted");
-    navigate("/admin/lms");
+    navigate("/admin/leads");
   };
 
   // Not found state
@@ -217,7 +217,7 @@ const LeadDetail = () => {
         <p className={styles.notFoundText}>
           The admission lead you're looking for doesn't exist or has been deleted.
         </p>
-        <button className={styles.backBtn} onClick={() => navigate("/admin/lms")}>
+        <button className={styles.backBtn} onClick={() => navigate("/admin/leads")}>
           <Icon icon="mdi:arrow-left" width={16} />
           Back to Leads
         </button>
@@ -235,7 +235,7 @@ const LeadDetail = () => {
       {/* Page Header */}
       <div className={styles.pageHeader}>
         <div className={styles.headerLeft}>
-          <button className={styles.backBtn} onClick={() => navigate("/admin/lms")}>
+          <button className={styles.backBtn} onClick={() => navigate("/admin/leads")}>
             <Icon icon="mdi:arrow-left" width={16} />
             Back to Leads
           </button>

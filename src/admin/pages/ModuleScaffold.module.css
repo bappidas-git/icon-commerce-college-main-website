@@ -1,0 +1,24 @@
+/* ============================================
+   Shared scaffold styles for not-yet-built admin
+   module pages (Notices / Events). The page shells,
+   routing and shared UI land in this prompt; the
+   publishing tools arrive in later prompts.
+   ============================================ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.comingSoon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--admin-accent-soft, #F3E9D2);
+  color: var(--admin-accent-dark, #A8823A);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}

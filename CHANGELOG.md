@@ -43,7 +43,9 @@ Twenty-first prompt of the rebuild (`prompts/21-facilities-page.md`). Replaces t
   (Academics · Technology · Sports & Culture · Student Support) — category
   labels, no invented numbers.
 - **Facilities grid** — all 10 facilities render from `facilitiesData` as
-  `FacilityCard`s in a responsive `auto-fill` grid (stretched to equal height).
+  `FacilityCard`s in a centered flex-wrap grid (the Faculty highlight-strip
+  precedent) so the cards read as a balanced 5 + 5 on wide screens and any
+  trailing partial row stays centered (cards stretch to equal height per row).
 - **Feature spotlights** — three alternating image + copy rows from
   `facilitySpotlights` (image with a floating gold badge; eyebrow, heading, lead
   and a checked feature list), each anchored by `id` for deep links.
@@ -54,6 +56,16 @@ Twenty-first prompt of the rebuild (`prompts/21-facilities-page.md`). Replaces t
   `/gallery` page.
 - Reveal-on-scroll is reduced-motion safe (`<Reveal>`/`<RevealGroup>`); all card
   and image hover lifts are CSS-only. `npm run build` stays green.
+
+**Visual QA (multi-viewport screenshots — Desktop / Tablet / Mobile)**
+- Facilities grid: the original responsive `auto-fill` grid left the 10 cards as a
+  left-heavy 4 + 4 + 2 on desktop (two empty columns trailing). Switched to the
+  centered flex-wrap pattern so desktop reads as a balanced 5 + 5, tablet as a
+  centered 3 + 3 + 3 + 1, and phones as full-width single cards — no stranded
+  trailing row at any width.
+- Verified hero, intro, alternating spotlights, glimpse tiles and the CTA across
+  all three breakpoints (reveal-on-scroll, stacking and the navy CTA contrast all
+  correct).
 
 ### Phase 2.10 — Faculty page
 

@@ -43,22 +43,26 @@
 
 /* ============================================
    3 — Facilities card grid
-   auto-fill (not auto-fit) keeps a trailing partial row at the normal card
-   width rather than stretching a lone card across the row.
+   Centered flex-wrap (the Faculty highlight-strip precedent): cells grow to
+   fill their row but cap their width, and any trailing partial row stays
+   centered — so the 10 facilities read as a balanced 5 + 5 on wide screens
+   instead of a left-heavy 4 + 4 + 2.
    ============================================ */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-5);
-  align-items: stretch;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/* Reveal wrapper fills its cell so cards stretch to equal height. */
+/* Each cell is flex so the card inside stretches to the row's height. */
 .gridCell {
   display: flex;
+  flex: 1 1 224px;
+  max-width: 300px;
 }
 
 /* ============================================
@@ -378,6 +382,13 @@
 @media (max-width: 560px) {
   .glimpses {
     grid-template-columns: 1fr;
+  }
+
+  /* Facility cards fill the row on phones (the max-width cap would otherwise
+     leave a lone card narrow and inset). */
+  .gridCell {
+    flex-basis: 100%;
+    max-width: none;
   }
 }
 

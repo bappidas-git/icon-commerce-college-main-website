@@ -1,5 +1,8 @@
 /* ============================================
-   Admin Settings Styles
+   Admin Settings & Help — styles
+   ============================================
+   Session, connection status, data export, in-app guide and a read-only
+   branding snapshot. Built on the admin navy + gold tokens.
    ============================================ */
 
 .page {
@@ -16,69 +19,110 @@
 
 .card {
   background: var(--admin-card-bg, #fff);
-  border: 1px solid var(--admin-border, #E6E9F0);
+  border: 1px solid var(--admin-border, #e6e9f0);
   border-radius: 16px;
   box-shadow: var(--shadow-sm, 0 2px 8px rgba(20, 35, 61, 0.06));
   padding: 24px;
   margin-bottom: 20px;
-  max-width: 640px;
+  max-width: 680px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 4px;
 }
 
 .cardTitle {
   font-family: var(--font-heading, 'Poppins', sans-serif);
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--admin-primary, #1A2A52);
+  color: var(--admin-primary, #1a2a52);
   margin: 0 0 4px;
+}
+
+.cardHead .cardTitle {
+  margin-bottom: 6px;
 }
 
 .cardLead {
   font-size: 0.85rem;
-  color: var(--admin-text-secondary, #5B6678);
+  color: var(--admin-text-secondary, #5b6678);
   margin: 0 0 18px;
   line-height: 1.55;
 }
 
-.endpoints {
+.cardHead .cardLead {
+  margin-bottom: 0;
+}
+
+/* ----- Info note callout ----- */
+.note {
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-top: 16px;
+  border-radius: 10px;
+  background: var(--admin-accent-soft, #f3e9d2);
+  color: var(--admin-text-primary, #14233d);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.noteIcon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--admin-accent-dark, #a8823a);
+}
+
+.note code {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.82em;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+/* ----- Key / value rows (session, branding) ----- */
+.kv {
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
-.endpointRow {
+.kvTop {
+  margin-top: 18px;
+}
+
+.kvRow {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--admin-border, #e6e9f0);
 }
 
-.endpointRow input {
-  flex: 1;
-  min-width: 0;
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+.kvRow:last-child {
+  border-bottom: none;
+}
+
+.kvLabel {
+  flex-shrink: 0;
+  color: var(--admin-text-secondary, #5b6678);
   font-size: 0.82rem;
 }
 
-.copyBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  border: 1px solid var(--admin-border, #E6E9F0);
-  border-radius: 10px;
-  background: var(--admin-bg, #F7F8FB);
-  color: var(--admin-text-secondary, #5B6678);
-  cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+.kvValue {
+  color: var(--admin-text-primary, #14233d);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
 }
 
-.copyBtn:hover {
-  color: var(--admin-accent-dark, #A8823A);
-  border-color: var(--admin-accent, #C8A04D);
-  background: var(--admin-accent-soft, #F3E9D2);
-}
-
+/* ----- Sign-out (danger) button ----- */
 .dangerBtn {
   display: inline-flex;
   align-items: center;
@@ -88,7 +132,7 @@
   border-radius: 10px;
   border: 1px solid rgba(224, 48, 30, 0.35);
   background: rgba(224, 48, 30, 0.06);
-  color: var(--admin-cta, #E0301E);
+  color: var(--admin-cta, #e0301e);
   font-family: inherit;
   font-size: 0.875rem;
   font-weight: 600;
@@ -98,5 +142,308 @@
 
 .dangerBtn:hover {
   background: rgba(224, 48, 30, 0.12);
-  border-color: var(--admin-cta, #E0301E);
+  border-color: var(--admin-cta, #e0301e);
+}
+
+/* ----- Re-check button ----- */
+.recheckBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border: 1px solid var(--admin-border, #e6e9f0);
+  border-radius: 10px;
+  background: var(--admin-card-bg, #fff);
+  color: var(--admin-text-secondary, #5b6678);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.recheckBtn:hover:not(:disabled) {
+  border-color: var(--admin-accent, #c8a04d);
+  color: var(--admin-accent-dark, #a8823a);
+}
+
+.recheckBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ----- Connection status list ----- */
+.statusList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 18px;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--admin-border, #e6e9f0);
+}
+
+.statusRow:last-child {
+  border-bottom: none;
+}
+
+.statusMain {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.statusLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--admin-text-primary, #14233d);
+}
+
+.statusUrl {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.76rem;
+  color: var(--admin-text-secondary, #5b6678);
+}
+
+.statusDetail {
+  font-size: 0.76rem;
+  color: var(--admin-text-muted, #8e9bad);
+  line-height: 1.45;
+}
+
+.statusRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.handshakeRow {
+  margin-top: 6px;
+  padding: 14px;
+  border: 1px solid var(--admin-border, #e6e9f0);
+  border-radius: 12px;
+  background: var(--admin-bg, #f7f8fb);
+}
+
+/* ----- Status pill ----- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pill_ok {
+  color: var(--admin-success, #1e8e5a);
+  background: #e7f6ef;
+}
+
+.pill_warn {
+  color: var(--admin-accent-dark, #a8823a);
+  background: var(--admin-accent-soft, #f3e9d2);
+}
+
+.pill_error {
+  color: var(--admin-error, #e0301e);
+  background: rgba(224, 48, 30, 0.08);
+}
+
+.pill_idle {
+  color: var(--admin-text-muted, #8e9bad);
+  background: #f1f5f9;
+}
+
+/* ----- Copy endpoint button ----- */
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 1px solid var(--admin-border, #e6e9f0);
+  border-radius: 9px;
+  background: var(--admin-bg, #f7f8fb);
+  color: var(--admin-text-secondary, #5b6678);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.copyBtn:hover {
+  color: var(--admin-accent-dark, #a8823a);
+  border-color: var(--admin-accent, #c8a04d);
+  background: var(--admin-accent-soft, #f3e9d2);
+}
+
+/* ----- Data export ----- */
+.exportGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.exportBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid var(--admin-border, #e6e9f0);
+  border-radius: 12px;
+  background: var(--admin-bg, #f7f8fb);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.exportBtn:hover:not(:disabled) {
+  border-color: var(--admin-accent, #c8a04d);
+  background: var(--admin-card-bg, #fff);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(20, 35, 61, 0.06));
+  transform: translateY(-2px);
+}
+
+.exportBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.exportTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--admin-text-primary, #14233d);
+}
+
+.exportTop svg {
+  color: var(--admin-accent-dark, #a8823a);
+}
+
+.exportSub {
+  font-size: 0.76rem;
+  color: var(--admin-text-muted, #8e9bad);
+}
+
+/* ----- Help / guide (native <details>) ----- */
+.help {
+  border: 1px solid var(--admin-border, #e6e9f0);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: var(--admin-card-bg, #fff);
+  overflow: hidden;
+}
+
+.help:last-of-type {
+  margin-bottom: 0;
+}
+
+.helpSummary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--admin-text-primary, #14233d);
+  cursor: pointer;
+  list-style: none;
+}
+
+.helpSummary::-webkit-details-marker {
+  display: none;
+}
+
+.helpSummary > svg:first-child {
+  color: var(--admin-accent-dark, #a8823a);
+  flex-shrink: 0;
+}
+
+.chevron {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--admin-text-muted, #8e9bad);
+  transition: transform 0.2s ease;
+}
+
+.help[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.helpBody {
+  padding: 0 16px 16px 44px;
+  font-size: 0.85rem;
+  color: var(--admin-text-secondary, #5b6678);
+  line-height: 1.6;
+}
+
+.helpBody p {
+  margin: 0 0 8px;
+}
+
+.helpBody p:last-child {
+  margin-bottom: 0;
+}
+
+.cardLead code,
+.helpBody code,
+.statusDetail code {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 0.82em;
+  background: var(--admin-bg, #f7f8fb);
+  padding: 1px 5px;
+  border-radius: 5px;
+  color: var(--admin-text-primary, #14233d);
+}
+
+/* ----- Spinner ----- */
+.spin {
+  animation: settings-spin 0.8s linear infinite;
+}
+
+@keyframes settings-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
+  .chevron,
+  .exportBtn {
+    transition: none;
+  }
+  .exportBtn:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .cardHead {
+    flex-direction: column;
+  }
+  .statusUrl {
+    max-width: 200px;
+  }
 }

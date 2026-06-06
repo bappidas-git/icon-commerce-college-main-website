@@ -433,6 +433,66 @@
 }
 
 /* ============================================
+   8 — General Instructions & Student Information
+   ============================================ */
+.infoTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.infoTitleIcon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  color: var(--color-accent-dark);
+}
+
+.infoList {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+}
+
+.infoBullet {
+  flex-shrink: 0;
+  margin-top: 0.15em;
+  font-size: 1.4rem;
+  color: var(--color-accent);
+}
+
+.infoNote {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  border: 1px solid rgba(200, 160, 77, 0.4);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--color-text);
+}
+
+.infoNote svg {
+  flex-shrink: 0;
+  margin-top: 0.1em;
+  font-size: 1.2rem;
+  color: var(--color-accent-dark);
+}
+
+/* ============================================
    8 — CTA band (navy + gold glow) — mirrors CourseDetail
    ============================================ */
 .cta {

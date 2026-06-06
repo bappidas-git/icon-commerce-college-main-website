@@ -268,6 +268,11 @@
   color: var(--color-text);
 }
 
+/* Space between consecutive message paragraphs (multi-paragraph desk copy). */
+.quoteText + .quoteText {
+  margin-top: var(--space-4);
+}
+
 /* ---------- Signature line ---------- */
 .signature {
   display: flex;

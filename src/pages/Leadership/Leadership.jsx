@@ -179,14 +179,18 @@ const Leadership = () => {
                     )}
                   </Reveal>
 
-                  {/* Gold quote accent. TODO (prompt 37): full prospectus message. */}
+                  {/* Gold quote accent — full prospectus message (one <p> per paragraph). */}
                   <Reveal as="blockquote" className={styles.quote} variant="fadeUp">
                     <Icon
                       icon="mdi:format-quote-open"
                       className={styles.quoteMark}
                       aria-hidden="true"
                     />
-                    <p className={styles.quoteText}>{leader.message}</p>
+                    {leader.message.map((paragraph, paraIndex) => (
+                      <p key={paraIndex} className={styles.quoteText}>
+                        {paragraph}
+                      </p>
+                    ))}
                   </Reveal>
 
                   {/* Signature line */}

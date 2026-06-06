@@ -4,6 +4,39 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Fixes — lead capture, admin notices/events & faculty filter
+
+Bugs found while testing the live site (reported with screenshots). Root-caused
+and fixed; `npm run build` stays green.
+
+- **Admin API key mismatch → notices/events couldn't be created, admin couldn't
+  see leads.** `src/admin/utils/{leadService,noticeService,eventService}.js` all
+  authenticate with `REACT_APP_LEADS_ADMIN_KEY` (sent as `X-Admin-Key`), but
+  `.env` still held the unedited placeholder `CHANGE_ME_TO_A_LONG_RANDOM_STRING`
+  while the PHP API (`public/api/leads.php` / `notices.php` / `events.php`)
+  resolves a **committed default** (`skdfjsdfweiormcnzxmzdlkfjds`) when no
+  `config.php`/env override is set. The mismatch returned **401** on every admin
+  write/list. Aligned the client key in **`.env`** to that default and clarified
+  **`.env.example`** + **`public/api/config.example.php`** (the example now ships
+  the same default, so a verbatim `config.php` copy keeps working). The key is a
+  non-secret handshake — it is compiled into the public bundle by design.
+  **A rebuild + redeploy is required** for the corrected key to take effect.
+- **Lead submit returned 500 / "couldn't submit".** The server-side JSON store
+  folder was created at runtime (`@mkdir`), which fails on hosts where the parent
+  isn't writable. **`public/api/data/`** is now shipped with the build (its
+  `Deny from all` `.htaccess` + empty `index.html`, plus a `.gitignore` so live
+  `*.json` is never committed) so lead/notice/event writes always have a real,
+  present target. (Note: this path still requires the host to **execute PHP** —
+  a static-only deploy can't run the API.)
+- **Faculty department filter showed the right count but no cards.**
+  `src/pages/Faculty/Faculty.jsx` rendered the directory through a `RevealGroup`
+  whose grouped children share a single viewport-triggered `whileInView`; when
+  the filtered set changed, the new cards stayed pinned at the hidden
+  (`opacity:0`) reveal variant. Switched the directory to independent per-item
+  `<Reveal>`s — the same pattern the working Notices/Events lists use — so cards
+  stay visible across filter changes. (Gallery/Departments use safe variants and
+  were unaffected.)
+
 ### Phase 4.2 — Thank-you, 404 & error states
 
 Thirty-fifth prompt of the rebuild (`prompts/35-thankyou-404-error-states.md`).

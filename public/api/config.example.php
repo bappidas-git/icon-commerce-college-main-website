@@ -25,10 +25,12 @@ define('META_API_VERSION', 'v19.0');
 define('META_TEST_EVENT_CODE', '');
 
 // ============================================
-// Lead Storage API (leads.php)
-// Shared secret that gates admin-only endpoints
-// (list / update / delete). MUST match the value
-// of REACT_APP_LEADS_ADMIN_KEY used by the admin
-// panel build. Generate a long random string.
+// Lead / Notices / Events API admin key
+// Shared handshake that gates admin-only endpoints (list / create / update /
+// delete). MUST match REACT_APP_LEADS_ADMIN_KEY in the admin panel build.
+// This defaults to the SAME committed key that leads.php / notices.php /
+// events.php fall back to, so copying this file to config.php verbatim keeps
+// the admin panel working out of the box. To lock the API down to a private
+// key, change this AND REACT_APP_LEADS_ADMIN_KEY together.
 // ============================================
-define('ADMIN_API_KEY', 'CHANGE_ME_TO_A_LONG_RANDOM_STRING');
+define('ADMIN_API_KEY', 'skdfjsdfweiormcnzxmzdlkfjds');

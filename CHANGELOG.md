@@ -4,6 +4,67 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 4.2 — Thank-you, 404 & error states
+
+Thirty-fifth prompt of the rebuild (`prompts/35-thankyou-404-error-states.md`).
+Finishes the supporting pages and makes the app resilient to render and
+network/API failures — a thrown component or an unreachable store can no longer
+blank the screen. `npm run build` stays green with no warnings.
+
+**Thank-You — renders standalone, new CTAs, Samarth pill**
+
+- **`src/pages/ThankYou/ThankYou.jsx` / `ThankYou.module.css`** — the page used
+  to **redirect to Home** when reached without a fresh submission; it now
+  **renders gracefully either way**. A submission still gets the celebratory
+  treatment (reduced-motion-safe `canvas-confetti`, personalised greeting,
+  "what happens next" checklist and the `lead_form_submission_complete`
+  conversion event); a direct visit (refresh, shared link) shows a calm welcome
+  variant (navy/gold icon, no confetti, no conversion event) with the same
+  helpful CTAs. CTA set is now **Explore Courses** (the single warm-red action),
+  **Download Prospectus** and **Back to Home**, plus a **Samarth pill** (College
+  Code 842). The prospectus CTA is lead-gate aware: a captured lead downloads
+  the file directly, "if not already" delivered (the button collapses to a
+  "Prospectus downloaded" chip); a standalone visitor is routed to `/admissions`
+  so the gate is respected. Contact details now come from `collegeInfo`. Still
+  `noindex`.
+- **`src/components/common/ProspectusDownload/downloadProspectus.js`** — records
+  a one-shot `icc_prospectus_downloaded` session flag (new exported
+  `PROSPECTUS_DOWNLOADED_KEY`) on a successful download, so Thank-You knows not
+  to re-offer a file already delivered by the gated flow.
+
+**404 — finalized**
+
+- **`src/pages/NotFound/NotFound.jsx`** — swapped `useDocumentTitle` for
+  `useSeo()` so the page applies the canonical **noindex** 404 SEO (covers both
+  the `*` route and the CourseDetail unknown-slug case), and switched the root
+  element from `<section>` to `<main id="main-content">` so the global skip-link
+  has a landmark target on this standalone route. Helpful copy, navy hero and
+  the Courses / Admissions / Notices / Contact suggestions are retained.
+
+**Global + per-section ErrorBoundary**
+
+- **`src/components/common/ErrorBoundary/`** (new) — a class boundary with two
+  presentations: a full **navy "Something went wrong" card** (reload + back to
+  home) and a quiet, recoverable **per-section** inline card ("Try again").
+  Errors are logged to the **console only**.
+- **`src/App.jsx`** — wraps the router in the page-level `<ErrorBoundary>`.
+- **`src/pages/Home/Home.jsx`** — every Home section (eager hero/highlights and
+  each lazy section) is wrapped in a `variant="section"` boundary, so one failed
+  section degrades to an inline retry card instead of taking the page down.
+
+**Network / API error UX (retry, never blank)**
+
+- **`src/components/common/InlineNotice/`** (new) — a subtle, non-blocking
+  banner with an optional action, for surfacing a friendly message alongside
+  fallback content.
+- **`src/hooks/useNotices.js` / `src/hooks/useEvents.js`** — expose a `reload`
+  function for manual retry.
+- **`src/pages/Notices/Notices.jsx` / `src/pages/Events/Events.jsx`** — when the
+  live store can't be reached the page already falls back to saved items (never
+  blank); it now also shows an `InlineNotice` ("showing saved … · Retry") so the
+  state is visible and recoverable. The lead submit already surfaces friendly
+  `swal` errors with a call-us fallback (unchanged).
+
 ### Phase 4.1 — Responsive / animation / a11y pass
 
 Thirty-fourth prompt of the rebuild (`prompts/34-responsive-animation-a11y-pass.md`).

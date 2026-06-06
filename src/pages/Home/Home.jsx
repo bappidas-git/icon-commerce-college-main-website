@@ -20,6 +20,7 @@
 
 import React, { Suspense, lazy } from 'react';
 import useDocumentTitle from '../../hooks/useDocumentTitle';
+import ErrorBoundary from '../../components/common/ErrorBoundary';
 
 // Above the fold — eager.
 import HeroSection from '../../components/sections/HeroSection';
@@ -38,10 +39,15 @@ const HomeCTASection = lazy(() => import('../../components/sections/HomeCTA'));
 
 // Spacer fallback — reserves height so the page doesn't jump while a section
 // chunk streams in (no visible spinner; sections fade in via their own Reveal).
+// Each lazy section is wrapped in a per-section <ErrorBoundary> so a single
+// failed section (render error or a chunk that won't load) degrades to a quiet,
+// retryable inline card instead of taking the whole Home page down.
 const LazySection = ({ minHeight = 480, children }) => (
-  <Suspense fallback={<div style={{ minHeight }} aria-hidden="true" />}>
-    {children}
-  </Suspense>
+  <ErrorBoundary variant="section">
+    <Suspense fallback={<div style={{ minHeight }} aria-hidden="true" />}>
+      {children}
+    </Suspense>
+  </ErrorBoundary>
 );
 
 const Home = () => {
@@ -49,8 +55,12 @@ const Home = () => {
 
   return (
     <>
-      <HeroSection />
-      <HighlightsSection />
+      <ErrorBoundary variant="section">
+        <HeroSection />
+      </ErrorBoundary>
+      <ErrorBoundary variant="section">
+        <HighlightsSection />
+      </ErrorBoundary>
 
       <LazySection minHeight={560}>
         <AboutSection />

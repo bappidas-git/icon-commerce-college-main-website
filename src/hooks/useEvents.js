@@ -134,7 +134,9 @@ export default function useEvents({ from = '', to = '' } = {}) {
     [items, today]
   );
 
-  return { items, events: items, upcoming, past, loading, error };
+  // `reload` lets the page offer a manual retry after a failed fetch (the UI
+  // shows the seed/last-good list meanwhile, so it's never blank).
+  return { items, events: items, upcoming, past, loading, error, reload: load };
 }
 
 export { useEvents };

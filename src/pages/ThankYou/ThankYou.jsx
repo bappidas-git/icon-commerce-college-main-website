@@ -1,10 +1,17 @@
 /* ============================================
-   ThankYou Page
-   Post lead submission confirmation page
+   ThankYou Page (prompt 35)
+   Icon Commerce College
+   --------------------------------------------
+   Post lead-submission confirmation. Celebrates a real submission (subtle,
+   reduced-motion-safe confetti + personalised "what happens next"), but ALSO
+   renders gracefully when reached directly (refresh, shared link) — it never
+   bounces the visitor away. CTAs: Explore Courses, Download Prospectus (unless
+   already downloaded in this session), Back to Home, plus the Samarth pill.
+   `noindex`.
    ============================================ */
 
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container, Typography, Grid } from "@mui/material";
 import { motion, useReducedMotion } from "framer-motion";
 import { Icon } from "@iconify/react";
@@ -12,6 +19,15 @@ import confetti from "canvas-confetti";
 import styles from "./ThankYou.module.css";
 import { updatePageSEO } from "../../utils/seo";
 import { seoConfig } from "../../config/seo";
+import { collegeInfo, phoneHref, whatsappHref } from "../../data/collegeInfo";
+import {
+  triggerProspectusDownload,
+  PROSPECTUS_DOWNLOADED_KEY,
+} from "../../components/common/ProspectusDownload/downloadProspectus";
+
+// Pre-filled WhatsApp message for the post-enquiry contact paths.
+const WHATSAPP_MESSAGE =
+  "Hi Icon Commerce College, I just submitted the enquiry form and would like to know more about admissions.";
 
 // Trust badges
 const trustBadges = [
@@ -32,14 +48,7 @@ const trustBadges = [
   },
 ];
 
-// Contact details
-const contactInfo = {
-  phone: "+91 93653 75782",
-  whatsapp: "+91 93653 75782",
-  officeHours: "Mon - Sat: 9:00 AM - 5:00 PM",
-};
-
-// Next steps after form submission
+// What-happens-next checklist (shown after a real submission).
 const nextSteps = [
   "Keep your phone reachable — our admission team will call you shortly on the number you shared.",
   "Have your HS (Class 12) marksheet and registration/migration certificate handy.",
@@ -47,53 +56,68 @@ const nextSteps = [
 ];
 
 const ThankYou = () => {
-  const navigate = useNavigate();
   const reduceMotion = useReducedMotion();
+  const [submitted, setSubmitted] = useState(false);
   const [userName, setUserName] = useState("");
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [prospectusDownloaded, setProspectusDownloaded] = useState(false);
 
-  // Check if user is authorized to view this page
+  // Detect the arrival context (a real submission vs. a direct visit), set the
+  // noindex SEO and push analytics. The page renders either way — no redirect.
   useEffect(() => {
-    const leadSubmitted = sessionStorage.getItem("lead_submitted");
-    const name = sessionStorage.getItem("lead_name");
-
-    if (!leadSubmitted) {
-      // Redirect to home if accessed directly
-      navigate("/", { replace: true });
-      return;
+    let didSubmit = false;
+    let name = "";
+    let prospectus = false;
+    try {
+      didSubmit = sessionStorage.getItem("lead_submitted") === "true";
+      name = sessionStorage.getItem("lead_name") || "";
+      prospectus = sessionStorage.getItem(PROSPECTUS_DOWNLOADED_KEY) === "true";
+    } catch (_) {
+      /* sessionStorage unavailable — fall back to the standalone view */
     }
 
-    setIsAuthorized(true);
-    setUserName(name || "");
+    setSubmitted(didSubmit);
+    setUserName(name);
+    setProspectusDownloaded(prospectus);
 
-    // Set noindex meta and update page title for Thank You page
+    // noindex meta (mirrors the /thank-you route SEO; explicit here for the
+    // standalone render too).
     updatePageSEO({
       title: seoConfig.pages.thankYou.title,
       description: seoConfig.pages.thankYou.description,
-      url: seoConfig.siteUrl + '/thank-you',
-      robots: 'noindex, nofollow',
+      url: seoConfig.siteUrl + "/thank-you",
+      robots: "noindex, nofollow",
     });
 
-    // Push virtual pageview and conversion event to GTM dataLayer
+    // GTM: always a virtual pageview; the conversion event only fires for a real
+    // submission (a direct visit isn't a fresh conversion).
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      event: 'virtualPageview',
-      pagePath: '/thank-you',
-      pageTitle: 'Thank You',
+      event: "virtualPageview",
+      pagePath: "/thank-you",
+      pageTitle: "Thank You",
     });
-    window.dataLayer.push({
-      event: 'lead_form_submission_complete',
-      pagePath: '/thank-you',
-    });
+    if (didSubmit) {
+      window.dataLayer.push({
+        event: "lead_form_submission_complete",
+        pagePath: "/thank-you",
+      });
+    }
 
-    // Clear the session flag after some time to prevent re-access
-    const timeout = setTimeout(() => {
-      sessionStorage.removeItem("lead_submitted");
-      sessionStorage.removeItem("lead_name");
-    }, 300000); // 5 minutes
-
-    return () => clearTimeout(timeout);
-  }, [navigate]);
+    // Clear the one-shot flags after a while, so a later refresh shows the calm
+    // standalone view rather than re-celebrating a stale submission.
+    if (didSubmit) {
+      const timeout = setTimeout(() => {
+        try {
+          sessionStorage.removeItem("lead_submitted");
+          sessionStorage.removeItem("lead_name");
+        } catch (_) {
+          /* ignore */
+        }
+      }, 300000); // 5 minutes
+      return () => clearTimeout(timeout);
+    }
+    return undefined;
+  }, []);
 
   // Fire confetti effect
   const fireConfetti = useCallback(() => {
@@ -146,15 +170,24 @@ const ThankYou = () => {
     });
   }, []);
 
-  // Trigger confetti on mount — skipped when the user prefers reduced motion
-  // (canvas-confetti runs outside Framer Motion, so it needs its own guard).
+  // Confetti celebrates a real submission only, and only when the user hasn't
+  // asked for reduced motion (canvas-confetti runs outside Framer Motion, so it
+  // needs its own guard).
   useEffect(() => {
-    if (isAuthorized && !reduceMotion) {
+    if (submitted && !reduceMotion) {
       const timer = setTimeout(fireConfetti, 300);
       return () => clearTimeout(timer);
     }
     return undefined;
-  }, [isAuthorized, reduceMotion, fireConfetti]);
+  }, [submitted, reduceMotion, fireConfetti]);
+
+  // Download the prospectus straight from here: a captured lead has already
+  // satisfied the download gate. If no real file is wired yet (placeholder),
+  // still flip to the "downloaded" state so the button isn't a dead end.
+  const handleDownloadProspectus = useCallback(() => {
+    triggerProspectusDownload();
+    setProspectusDownloaded(true);
+  }, []);
 
   // Animation variants
   const containerVariants = {
@@ -192,13 +225,12 @@ const ThankYou = () => {
     },
   };
 
-  if (!isAuthorized) {
-    return null; // Or a loading spinner
-  }
-
-  const greeting = userName
-    ? `Hi ${userName.split(" ")[0]}, our admission team will call you shortly to guide you through the admission process at Icon Commerce College.`
-    : "Our admission team will call you shortly to guide you through the admission process at Icon Commerce College.";
+  const firstName = userName ? userName.split(" ")[0] : "";
+  const greeting = submitted
+    ? firstName
+      ? `Hi ${firstName}, our admission team will call you shortly to guide you through the admission process at Icon Commerce College.`
+      : "Our admission team will call you shortly to guide you through the admission process at Icon Commerce College."
+    : "Looking to begin your admission journey? Explore our programs or reach out — our admission team is here to help you at every step.";
 
   return (
     <main id="main-content" className={styles.thankYouPage}>
@@ -214,22 +246,25 @@ const ThankYou = () => {
           animate="visible"
           className={styles.content}
         >
-          {/* Success Icon */}
+          {/* Success Icon — adapts to the arrival context */}
           <motion.div variants={scaleVariants} className={styles.successIcon}>
-            <div className={styles.iconWrapper}>
-              <Icon icon="mdi:check-circle" />
+            <div
+              className={`${styles.iconWrapper} ${
+                submitted ? "" : styles.iconWrapperAlt
+              }`}
+            >
+              <Icon icon={submitted ? "mdi:check-circle" : "mdi:school"} />
             </div>
             <div className={styles.iconRing} />
             <div className={styles.iconRing2} />
           </motion.div>
 
-          {/* Thank You Message */}
-          <motion.div
-            variants={itemVariants}
-            className={styles.thankYouMessage}
-          >
+          {/* Headline */}
+          <motion.div variants={itemVariants} className={styles.thankYouMessage}>
             <Typography variant="h2" className={styles.title}>
-              Thank You! Your Admission Enquiry is Received.
+              {submitted
+                ? "Thank You! Your Admission Enquiry is Received."
+                : "Welcome to Icon Commerce College"}
             </Typography>
             <Typography
               className={styles.subtitle}
@@ -239,42 +274,51 @@ const ThankYou = () => {
             </Typography>
           </motion.div>
 
-          {/* Confirmation Message & Next Steps */}
-          <motion.div variants={itemVariants} className={styles.responseNotice}>
-            <div className={styles.noticeIcon}>
-              <Icon icon="mdi:clock-check-outline" />
-            </div>
-            <div className={styles.noticeContent}>
-              <Typography className={styles.noticeTitle}>
-                What happens next?
-              </Typography>
-              <Typography
-                className={styles.noticeDesc}
-                sx={{ color: "#FFFFFFA6 !important" }}
+          {/* What happens next + checklist — only after a real submission */}
+          {submitted && (
+            <>
+              <motion.div
+                variants={itemVariants}
+                className={styles.responseNotice}
               >
-                A quick checklist so we can make your admission conversation
-                smooth and useful:
-              </Typography>
-            </div>
-          </motion.div>
+                <div className={styles.noticeIcon}>
+                  <Icon icon="mdi:clock-check-outline" />
+                </div>
+                <div className={styles.noticeContent}>
+                  <Typography className={styles.noticeTitle}>
+                    What happens next?
+                  </Typography>
+                  <Typography
+                    className={styles.noticeDesc}
+                    sx={{ color: "#FFFFFFA6 !important" }}
+                  >
+                    A quick checklist so we can make your admission conversation
+                    smooth and useful:
+                  </Typography>
+                </div>
+              </motion.div>
 
-          {/* Next Steps */}
-          <motion.div variants={itemVariants} className={styles.nextStepsSection}>
-            <ol className={styles.nextStepsList}>
-              {nextSteps.map((step, index) => (
-                <motion.li
-                  key={index}
-                  className={styles.nextStepItem}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                >
-                  <span className={styles.stepNumber}>{index + 1}</span>
-                  <span className={styles.stepText}>{step}</span>
-                </motion.li>
-              ))}
-            </ol>
-          </motion.div>
+              <motion.div
+                variants={itemVariants}
+                className={styles.nextStepsSection}
+              >
+                <ol className={styles.nextStepsList}>
+                  {nextSteps.map((step, index) => (
+                    <motion.li
+                      key={index}
+                      className={styles.nextStepItem}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4 + index * 0.1 }}
+                    >
+                      <span className={styles.stepNumber}>{index + 1}</span>
+                      <span className={styles.stepText}>{step}</span>
+                    </motion.li>
+                  ))}
+                </ol>
+              </motion.div>
+            </>
+          )}
 
           {/* Trust Badges */}
           <motion.div
@@ -306,6 +350,27 @@ const ThankYou = () => {
             </div>
           </motion.div>
 
+          {/* Samarth pill — official admission portal + college code */}
+          <motion.div variants={itemVariants} className={styles.samarthRow}>
+            <a
+              className={styles.samarthPill}
+              href={collegeInfo.samarthUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon icon="mdi:shield-account-outline" aria-hidden="true" />
+              <span>
+                Apply via Samarth Portal · College Code{" "}
+                <strong>{collegeInfo.samarthCode}</strong>
+              </span>
+              <Icon
+                icon="mdi:open-in-new"
+                className={styles.samarthExternal}
+                aria-hidden="true"
+              />
+            </a>
+          </motion.div>
+
           {/* Contact Information Card */}
           <motion.div variants={itemVariants} className={styles.contactCard}>
             <div className={styles.contactHeader}>
@@ -314,7 +379,7 @@ const ThankYou = () => {
                 <span>Admission Desk</span>
               </div>
               <Typography variant="h4" className={styles.companyName}>
-                Or call us now if it's urgent
+                Prefer to talk to us directly?
               </Typography>
             </div>
 
@@ -333,10 +398,10 @@ const ThankYou = () => {
                       Call Us
                     </span>
                     <a
-                      href="tel:+919365375782"
+                      href={phoneHref(collegeInfo.phones[0])}
                       className={styles.contactValue}
                     >
-                      {contactInfo.phone}
+                      {collegeInfo.phones[0]}
                     </a>
                   </div>
                 </div>
@@ -356,12 +421,12 @@ const ThankYou = () => {
                       WhatsApp
                     </span>
                     <a
-                      href="https://wa.me/919365375782?text=Hi%20Icon%20Commerce%20College%2C%0AI%20just%20submitted%20the%20enquiry%20form%20and%20would%20like%20to%20know%20more%20about%20admissions."
+                      href={whatsappHref(collegeInfo.phones[0], WHATSAPP_MESSAGE)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.contactValue}
                     >
-                      {contactInfo.whatsapp}
+                      {collegeInfo.phones[0]}
                     </a>
                   </div>
                 </div>
@@ -381,7 +446,7 @@ const ThankYou = () => {
                       Office Hours
                     </span>
                     <span className={styles.contactValue}>
-                      {contactInfo.officeHours}
+                      {collegeInfo.hours.days}: {collegeInfo.hours.time}
                     </span>
                   </div>
                 </div>
@@ -390,30 +455,40 @@ const ThankYou = () => {
           </motion.div>
 
           {/* CTA Buttons */}
-          <motion.div
-            variants={itemVariants}
-            className={styles.ctaSection}
-          >
-            <motion.a
-              href="/"
-              className={styles.backHomeBtn}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Icon icon="mdi:arrow-left" />
+          <motion.div variants={itemVariants} className={styles.ctaSection}>
+            <Link to="/courses" className={styles.primaryBtn}>
+              <Icon icon="mdi:school-outline" aria-hidden="true" />
+              <span>Explore Courses</span>
+            </Link>
+
+            {prospectusDownloaded ? (
+              <span className={styles.downloadedChip}>
+                <Icon icon="mdi:check-circle-outline" aria-hidden="true" />
+                <span>Prospectus downloaded</span>
+              </span>
+            ) : submitted ? (
+              <button
+                type="button"
+                className={styles.secondaryBtn}
+                onClick={handleDownloadProspectus}
+              >
+                <Icon icon="mdi:file-download-outline" aria-hidden="true" />
+                <span>Download Prospectus</span>
+              </button>
+            ) : (
+              // Standalone visit: keep the prospectus lead-gated by routing to
+              // /admissions (where the gated download CTA lives) instead of
+              // delivering the file to an unidentified visitor.
+              <Link to="/admissions" className={styles.secondaryBtn}>
+                <Icon icon="mdi:file-download-outline" aria-hidden="true" />
+                <span>Download Prospectus</span>
+              </Link>
+            )}
+
+            <Link to="/" className={styles.ghostBtn}>
+              <Icon icon="mdi:home-outline" aria-hidden="true" />
               <span>Back to Home</span>
-            </motion.a>
-            <motion.a
-              href="https://wa.me/919365375782?text=Hi%20Icon%20Commerce%20College%2C%0AI%20just%20submitted%20the%20enquiry%20form%20and%20would%20like%20to%20know%20more%20about%20admissions."
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.whatsappBtn}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Icon icon="mdi:whatsapp" />
-              <span>WhatsApp Us Now</span>
-            </motion.a>
+            </Link>
           </motion.div>
         </motion.div>
       </Container>

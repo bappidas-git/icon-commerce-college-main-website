@@ -23,6 +23,7 @@ import useSeo from '../../components/common/SEO/useSeo';
 import PageHero from '../../components/common/PageHero/PageHero';
 import Section from '../../components/common/Section/Section';
 import EmptyState from '../../components/common/EmptyState/EmptyState';
+import InlineNotice from '../../components/common/InlineNotice';
 import { Reveal } from '../../components/common/Reveal/Reveal';
 
 import useEvents from '../../hooks/useEvents';
@@ -39,7 +40,7 @@ const VIEWS = [
 const Events = () => {
   useSeo();
 
-  const { items } = useEvents();
+  const { items, error, reload } = useEvents();
   // Stable "today" so the upcoming/past memo doesn't churn on every render.
   const today = useMemo(() => startOfToday(), []);
 
@@ -128,6 +129,17 @@ const Events = () => {
             })}
           </div>
         </div>
+
+        {/* Live store unreachable — saved events are shown below; offer a retry. */}
+        {error && (
+          <InlineNotice
+            icon="mdi:wifi-alert"
+            action={{ label: 'Retry', icon: 'mdi:refresh', onClick: reload }}
+          >
+            We couldn&apos;t load the latest events, so you&apos;re seeing saved
+            ones. Check your connection and try again.
+          </InlineNotice>
+        )}
 
         {/* Content */}
         {items.length === 0 ? (

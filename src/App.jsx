@@ -27,6 +27,7 @@ import EngagementTracker from './components/common/EngagementTracker/EngagementT
 import ScrollToTop from './components/layout/ScrollToTop';
 import PageLoader from './components/layout/PageLoader';
 import PublicLayout from './components/layout/PublicLayout';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import NotFound from './pages/NotFound/NotFound';
 import { initGTM } from './utils/gtm';
 
@@ -119,7 +120,8 @@ const App = () => {
   }, []);
 
   return (
-    <BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
       <CustomThemeProvider>
         <ModalProvider>
           {/* Global reduced-motion guard: when the OS requests reduced motion,
@@ -207,7 +209,8 @@ const App = () => {
           </MotionConfig>
         </ModalProvider>
       </CustomThemeProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 };
 

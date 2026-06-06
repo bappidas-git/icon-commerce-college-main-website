@@ -32,7 +32,7 @@ export const facilitiesData = [
     icon: 'mdi:bookshelf',
     title: 'Digital Library',
     description:
-      'A well-stocked library with reference books, journals and digital resources for study and research.',
+      'A well-stocked library with reference books, a wide collection of journals and faculty-prepared study materials for study and research.',
   },
   {
     icon: 'mdi:desktop-classic',
@@ -44,19 +44,19 @@ export const facilitiesData = [
     icon: 'mdi:monitor-dashboard',
     title: 'Smart Classrooms',
     description:
-      'Technology-enabled classrooms for interactive, audio-visual and engaging learning.',
+      'Classrooms equipped with projectors and computers for interactive, PowerPoint-based smart learning.',
   },
   {
     icon: 'mdi:google-classroom',
     title: 'Online Classes (Google Meet)',
     description:
-      'Blended learning support with online classes conducted over Google Meet when needed.',
+      'Blended-learning support — online classes over Google Meet, with subject WhatsApp groups to clear doubts with teachers.',
   },
   {
     icon: 'mdi:silverware-fork-knife',
     title: 'College Canteen',
     description:
-      'A hygienic and affordable canteen serving fresh food and refreshments on campus.',
+      'An in-house canteen serving refreshments to students and staff at reasonable rates in a hygienic environment.',
   },
   {
     icon: 'mdi:wifi',
@@ -110,10 +110,10 @@ export const facilitySpotlights = [
     image: placeholder('facility-library'),
     alt: 'The digital library at Icon Commerce College',
     lead:
-      'Our digital library brings reference books, journals and online resources together in one calm, focused space — so every student has the materials they need to read, study and research.',
+      'Our library brings reference books, a varied collection of journals and faculty-prepared study materials together in one calm, focused space — so every student has the resources they need to read, study and research.',
     points: [
       'Reference books, textbooks and journals across all four programmes',
-      'Digital resources and e-content for study and research',
+      'Study materials prepared by our experienced faculty members',
       'A quiet reading area designed for focused, independent study',
     ],
   },

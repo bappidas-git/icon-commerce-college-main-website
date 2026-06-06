@@ -5,7 +5,12 @@
    Pure data module. Records match the events.php API shape (prompt 30):
    { id, title, description, category, start_date, end_date?, start_time?,
      end_time?, venue?, image_url?, published, created_at, updated_at }.
-   Seeded with the four signature events from design-system §6.
+   Seeded with the four signature events from the prospectus / design-system §6.
+
+   NOTE: the prospectus names these events but does not publish their calendar
+   dates, so every `start_date` / `end_date` below is an indicative placeholder
+   flagged `TODO (client)`. The client should set the real dates (the admin
+   Events module then supersedes this seed entirely).
    ============================================ */
 
 /**
@@ -33,10 +38,10 @@ export const seedEvents = [
     id: 'seed-event-college-week',
     title: 'Annual College Week',
     description:
-      'A week-long celebration featuring indoor & outdoor games, quiz, debate, and art & literature competitions — the highlight of the college calendar.',
+      'The college’s flagship week-long celebration — indoor & outdoor games, quiz and debate competitions, and art & literature events that bring out the latent skills and talent of our students.',
     category: 'Cultural',
-    start_date: '2026-09-21',
-    end_date: '2026-09-26',
+    start_date: '2026-09-21', // TODO (client): confirm actual dates.
+    end_date: '2026-09-26', // TODO (client): confirm actual dates.
     venue: 'College Campus',
     image_url: 'event-college-week',
     published: true,
@@ -45,12 +50,12 @@ export const seedEvents = [
   },
   {
     id: 'seed-event-cooking-competition',
-    title: 'Inter-College Cooking Competition',
+    title: 'Inter-College Cooking Competition 2026',
     description:
       'A lively inter-college culinary contest showcasing the creativity and skills of students from across the region.',
     category: 'Cultural',
-    start_date: '2026-11-13',
-    venue: 'College Playground',
+    start_date: '2026-11-13', // TODO (client): confirm actual date.
+    venue: 'College Campus',
     image_url: 'event-cooking-competition',
     published: true,
     created_at: now,
@@ -60,10 +65,10 @@ export const seedEvents = [
     id: 'seed-event-icon-shield',
     title: 'ICON Shield — Cricket Tournament',
     description:
-      'The annual ICON Shield cricket tournament, held in loving memory of Rupam Patgiri.',
+      'The annual cricket tournament organised by the ICON group in memory of Rupam Patgiri.',
     category: 'Sports',
-    start_date: '2026-08-17',
-    end_date: '2026-08-22',
+    start_date: '2026-08-17', // TODO (client): confirm actual dates.
+    end_date: '2026-08-22', // TODO (client): confirm actual dates.
     venue: 'College Playground',
     image_url: 'event-icon-shield',
     published: true,
@@ -74,10 +79,10 @@ export const seedEvents = [
     id: 'seed-event-icon-trophy',
     title: 'ICON Trophy — Cricket Tournament',
     description:
-      'The annual ICON Trophy cricket tournament, held in loving memory of Jadav Dutta.',
+      'The annual cricket tournament organised by the ICON group in memory of Jadav Dutta.',
     category: 'Sports',
-    start_date: '2027-01-18',
-    end_date: '2027-01-23',
+    start_date: '2027-01-18', // TODO (client): confirm actual dates.
+    end_date: '2027-01-23', // TODO (client): confirm actual dates.
     venue: 'College Playground',
     image_url: 'event-icon-trophy',
     published: true,

@@ -4,6 +4,68 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 4.4 — Content population from prospectus
+
+Thirty-seventh prompt of the rebuild (`prompts/37-content-population.md`). Fills
+every content stub with accurate copy sourced strictly from the official
+prospectus and the current college site — no invented facts. `npm run build`
+stays green under `CI=true`; gaps the client must supply remain clearly marked
+`TODO`.
+
+**Leadership desk messages (`src/data/leadershipData.js`)** — replaced the
+interim one-line excerpts with the full "From the Desk of …" copy for all seven
+desks (President Dipali Bora, Advisor Debasish Bora, Principal Dr. Mandira Saha,
+Rector Sawpon Dowerah, Director (Academic) Rajib Kumar Das, Director Dipanju
+Bora, Academic Advisor Dr. Nilanjan Bhattacharjee), lightly edited for clarity.
+`message` is now an **array of paragraphs**; the Leadership page renders one
+`<p>` per paragraph inside each desk's blockquote (added `.quoteText + .quoteText`
+spacing). The Home `LeadershipTeaser` keeps its own short teaser excerpts.
+
+**Faculty roster (`src/data/facultyData.js`)** — expanded the 8-person seed to
+the **full teaching staff** (30 members + 2 guest faculty), with names and
+qualifications transcribed from the prospectus and the current site's "Teaching
+Staff Members" table (e.g. Dr. Rubi Das — M.Com., M.Phil., B.Ed., SLET, Ph.D.).
+Principal, Academic Advisor and the three programme coordinators stay `featured`.
+`department` is documented as an **inferred UI grouping** for the directory
+filter (the source lists no per-member department).
+
+**Testimonials (`src/data/testimonialsData.js`)** — finalised all **11 alumni
+voices** from the prospectus (Raghav Sarma, Devika Adhyapak, Akash Paul,
+Dishangka Jiten Pathak, Pritam Saha, Bikash Bezbaruah, Banani Bhagawati, Ayushi
+Surana, Ankita Kumari Agarwal, Shahid Ansari, Tulika Devi), lightly trimmed for
+the carousel card format. The last `TODO` quote stub is gone, so the Home
+carousel now shows every alumnus.
+
+**Course detail — BCA objectives & topics (`src/data/coursesData.js`,
+`CourseDetail`)** — added prospectus-sourced **Programme objectives** and an
+indicative **"What you'll study"** topic list to the BCA record; the Overview tab
+renders both only when present (a gold topic-pill style). Fees and eligibility
+were re-verified against the prospectus across all four programmes.
+
+**Facilities (`src/data/facilitiesData.js`)** — sharpened the library (journals +
+faculty-prepared study materials), smart classrooms (projectors / PowerPoint),
+online classes (Google Meet + subject WhatsApp groups) and canteen (in-house,
+reasonable rates) copy to match the prospectus wording.
+
+**Events seed (`src/data/seedEvents.js`)** — refined the four signature events
+(Annual College Week, Inter-College Cooking Competition 2026, ICON Shield —
+Rupam Patgiri memorial, ICON Trophy — Jadav Dutta memorial). The prospectus
+publishes no calendar dates, so every `start_date` / `end_date` is an indicative
+placeholder explicitly flagged `TODO (client)`.
+
+**General Instructions & Student Information (new
+`src/data/studentInfoData.js` + Admissions accordion)** — a new accordion on
+`/admissions` carrying the prospectus's student rules (class timings &
+attendance, college uniform with the **Suman Dresses** vendor contact, discipline
+& conduct, anti-ragging, parents/guardians, scholarships).
+
+**Remaining client `TODO`s** (data the client must still supply — none fabricated):
+official social URLs (Facebook / YouTube / Instagram); gallery YouTube video IDs;
+the real prospectus PDF; per-programme Gauhati University syllabus PDF URLs;
+the four signature-event dates; the 2026-27 admission open/close dates and hostel
+availability; and confirmation that Dr. Urmimala Mahanta (in the printed
+prospectus, not the latest site table) is still current teaching staff.
+
 ### Phase 4.3 — Performance & images
 
 Thirty-sixth prompt of the rebuild (`prompts/36-performance-and-images.md`).

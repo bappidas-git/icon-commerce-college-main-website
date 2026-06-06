@@ -36,6 +36,7 @@ import ProspectusButton from '../../components/common/ProspectusDownload/Prospec
 import { useModal } from '../../context/ModalContext';
 import { admissionData } from '../../data/admissionData';
 import { coursesData } from '../../data/coursesData';
+import { studentInfo } from '../../data/studentInfoData';
 import { collegeInfo, phoneHref } from '../../data/collegeInfo';
 import styles from './Admissions.module.css';
 
@@ -275,7 +276,21 @@ const Admissions = () => {
         </Reveal>
       </Section>
 
-      {/* 8 — CTA band (navy + gold glow) */}
+      {/* 8 — General Instructions & Student Information */}
+      <Section
+        bg="light"
+        container="narrow"
+        eyebrow="Good to Know"
+        title="General Instructions & Student Information"
+        subtitle="Key college rules and information for students — timings, uniform, discipline, anti-ragging and scholarships."
+        aria-label="General instructions and information for students"
+      >
+        <Reveal variant="fadeUp">
+          <Accordion items={studentInfoItems(studentInfo)} accent="navy" />
+        </Reveal>
+      </Section>
+
+      {/* 9 — CTA band (navy + gold glow) */}
       <section className={styles.cta} aria-labelledby="admissions-cta-heading">
         <span className={styles.ctaGlow} aria-hidden="true" />
         <Container size="default">
@@ -351,6 +366,38 @@ function faqItems(faqs) {
   return faqs.map((faq) => ({
     title: faq.question,
     content: <p className={styles.faqAnswer}>{faq.answer}</p>,
+  }));
+}
+
+// Map the general-instructions data onto the Accordion's { title, content } shape.
+function studentInfoItems(groups) {
+  return groups.map((group) => ({
+    title: (
+      <span className={styles.infoTitle}>
+        <Icon icon={group.icon} className={styles.infoTitleIcon} aria-hidden="true" />
+        {group.title}
+      </span>
+    ),
+    content: (
+      <>
+        <ul className={styles.infoList}>
+          {group.points.map((point) => (
+            <li key={point} className={styles.infoItem}>
+              <Icon icon="mdi:circle-small" className={styles.infoBullet} aria-hidden="true" />
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+        {group.note && (
+          <p className={styles.infoNote}>
+            <Icon icon="mdi:storefront-outline" aria-hidden="true" />
+            <span>
+              <strong>{group.note.label}:</strong> {group.note.text}
+            </span>
+          </p>
+        )}
+      </>
+    ),
   }));
 }
 

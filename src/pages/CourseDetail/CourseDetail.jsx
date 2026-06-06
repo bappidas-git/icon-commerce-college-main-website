@@ -77,6 +77,39 @@ const OverviewPanel = ({ course }) => (
         </li>
       ))}
     </ul>
+
+    {/* Programme objectives — present for BCA (from the prospectus). */}
+    {course.objectives?.length > 0 && (
+      <>
+        <h3 className={styles.blockTitle}>Programme objectives</h3>
+        <ul className={styles.checklist}>
+          {course.objectives.map((item) => (
+            <li key={item} className={styles.checkItem}>
+              <Icon
+                icon="mdi:bullseye-arrow"
+                className={styles.checkIcon}
+                aria-hidden="true"
+              />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    {/* Indicative topics covered — present for BCA (from the prospectus). */}
+    {course.topics?.length > 0 && (
+      <>
+        <h3 className={styles.blockTitle}>What you’ll study</h3>
+        <ul className={styles.topicList}>
+          {course.topics.map((topic) => (
+            <li key={topic} className={styles.topic}>
+              {topic}
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
   </Reveal>
 );
 

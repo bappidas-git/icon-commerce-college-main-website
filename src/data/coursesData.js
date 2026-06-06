@@ -133,6 +133,8 @@ const FEES_BCA_BBA = {
  * @property {string} eligibility
  * @property {string} eligibilityShort  Compact eligibility for the comparison table
  * @property {string[]} highlights
+ * @property {string[]} [objectives]    Programme objectives (BCA — from the prospectus)
+ * @property {string[]} [topics]        Indicative topics covered (BCA — from the prospectus)
  * @property {string[]} careers
  * @property {{rows:{particular:string,amount:string}[], total:string,
  *            tuitionMonthly:string, application:string, note:string}} fees
@@ -221,6 +223,29 @@ export const coursesData = [
       'Databases, Networking & Web technologies',
       'Hands-on computer-lab practicals',
       'Pathway to MCA / IT careers',
+    ],
+    // Programme objectives & indicative topics — sourced from the prospectus
+    // (rendered only on the BCA detail page; the other programmes omit these).
+    objectives: [
+      'Develop the ability to think critically, logically and analytically, and to apply current technical concepts and practices to build solutions in information technology.',
+      'Gain the knowledge and skills that prepare graduates for a broad range of roles across education, research, government, business and industry.',
+      'Build a structured foundation in core computer science, reinforced through hands-on sessions in the computer lab using a range of programming languages and tools.',
+    ],
+    topics: [
+      'Computer Fundamentals',
+      'Numerical Methods',
+      'Data Structures',
+      'Algorithms & Complexity Analysis',
+      'Software Engineering',
+      'Programming (C, C++, Java)',
+      'Computer Networking',
+      'Operating Systems & System Administration',
+      'Computer Architecture & Microprocessors',
+      'Web Technology',
+      'Computer Graphics',
+      'Database Management Systems (DBMS)',
+      'Advanced Web & Mobile Application',
+      'Animation & Data Mining',
     ],
     careers: [
       'Software Developer',

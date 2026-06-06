@@ -26,6 +26,9 @@ How to edit content, run the admin panel, swap images and deploy the site. The
   fonts, bundle sizes and Lighthouse methodology.
 - **[qa-checklist.md](./qa-checklist.md)** — the cross-page QA & link-audit record
   (link/CTA matrices, end-to-end flow trace, route regression).
+- **[HANDOVER.md](./HANDOVER.md)** — the final build-verification record, the ticked
+  acceptance checklist, the security sanity notes and the consolidated client
+  TODO list (images, prospectus, social URLs, dates, keys & credentials).
 - **[../GTM_GUIDE.md](../GTM_GUIDE.md)** — optional Google Tag Manager / analytics
   setup.
 - **[../CHANGELOG.md](../CHANGELOG.md)** — detailed, phase-by-phase changelog.

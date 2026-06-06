@@ -208,6 +208,7 @@ Step-by-step: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 | [`docs/SEO.md`](docs/SEO.md) | Titles, descriptions, schema.org, sitemap & robots |
 | [`docs/performance.md`](docs/performance.md) | Code-splitting, the `<Img>` component, bundle sizes |
 | [`docs/qa-checklist.md`](docs/qa-checklist.md) | Cross-page QA & link audit record |
+| [`docs/HANDOVER.md`](docs/HANDOVER.md) | Final build verification, acceptance checklist & client TODO list |
 | [`GTM_GUIDE.md`](GTM_GUIDE.md) | Optional Google Tag Manager / analytics setup |
 | [`CHANGELOG.md`](CHANGELOG.md) | Detailed, phase-by-phase changelog |
 

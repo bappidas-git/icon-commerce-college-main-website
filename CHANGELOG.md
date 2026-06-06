@@ -4,6 +4,49 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 4.7 — Final build verification & handover
+
+Fortieth and final prompt of the rebuild (`prompts/40-final-build-verification.md`).
+A holistic verification pass to reach a handover-ready state — no feature work,
+no behavioural changes; the deliverables are the verification record, the
+completed acceptance checklist and a single-page handover doc.
+
+**Build verified clean** — fresh `npm ci` (exit 0) then `CI=true npm run build`
+(warnings treated as errors) compiled with **zero errors and zero ESLint
+warnings**. The production `build/` was served with an SPA fallback and smoke-
+tested: `/`, the deep links `/courses/b-com` and `/admin/dashboard`, a real
+hashed asset, `/robots.txt` and an unknown path (SPA fallback → in-app 404) all
+return the expected responses. Bundle profile unchanged from Phase 4.3/4.6
+(`main.*.js` 236 kB gzip, 40 JS + 32 CSS route/section chunks, admin split out).
+
+**Acceptance checklist — all items verified** — multi-page navy+gold site (14
+public routes + 4 course slugs + thank-you + 404); consolidated courses (4) and a
+single departments page (no 24-page sprawl); lead capture → PHP/JSON store →
+admin; lead-gated prospectus with Prospectus absent from the nav; admin
+Dashboard / Leads (+detail) / Notices / Events / Settings; admin-posted notices &
+events surfaced on the public site; **zero** CIT / engineering / ad-tech /
+tele-calling leftovers (full-tree grep); placeholders throughout; SEO + sitemap +
+robots + manifest; accessibility (skip-link, enforced `alt`, `aria-label`,
+`prefers-reduced-motion`).
+
+**Security sanity recorded** — admin routes `noindex` + `ProtectedRoute`; the
+admin-key handshake documented as a client-side soft gate (not a secret, since
+CRA inlines every `REACT_APP_*` into the bundle); real server key kept in the
+git-ignored `config.php`; `api/data/` locked by `.htaccess` (`Require all denied`);
+all 26 `target="_blank"` links carry `rel="noopener noreferrer"` (auto-injected by
+`<Button>`); PHP endpoints validate input and gate writes on `X-Admin-Key`;
+`.htaccess` sets `nosniff` / `Referrer-Policy` / `X-Frame-Options`. Noted (not a
+defect) that a `.env` of dev defaults is committed alongside `.env.example`.
+
+**New `docs/HANDOVER.md`** — the handover record: the build-verification result,
+the ticked acceptance checklist, the security record, the one intentional real
+asset (the Cloudinary brand logo, per design-system §1), the manual cross-browser
+/ Lighthouse sign-off steps, and a **consolidated client TODO list** (real images
++ OG raster, prospectus PDF, syllabus links, social/YouTube URLs, event dates,
+Google Maps key, GTM id, production admin credentials/API key) cross-referenced to
+exact files. Linked from `README.md` and `docs/README.md`. No source/runtime files
+changed.
+
 ### Phase 4.6 — Documentation
 
 Thirty-ninth prompt of the rebuild (`prompts/39-documentation.md`). Replaces the

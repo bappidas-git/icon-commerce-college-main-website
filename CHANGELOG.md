@@ -4,6 +4,34 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 4.5 — Cross-page QA & link audit
+
+Thirty-eighth prompt of the rebuild (`prompts/38-cross-page-qa.md`). End-to-end
+verification of the whole public site + admin: a full internal/external link
+crawl, the CTA→drawer-preset matrix, the lead/notice/event data flows, route
+regression and a console/network pass. `npm run build` stays green under
+`CI=true` with zero warnings.
+
+**QA checklist (new `docs/qa-checklist.md`)** — the filled, all-green checklist
+mapping every header / footer / drawer / bottom-nav / breadcrumb / in-page link
+to a real route (§5 site map), the Apply / Enquire / Prospectus / Callback /
+Visit CTA matrix (preset · `source` · preset `program_interest`), the
+end-to-end flow trace (lead → `/thank-you` → admin; lead-gated prospectus;
+notice/event publish; cross-tab + cross-device sync), the 14 public routes + 4
+course slugs + admin route regression, and the remaining client `TODO` gaps
+(social URLs, gallery video ids, syllabus/prospectus PDFs). Linked from
+`docs/README.md`.
+
+**Fix — share-image 404 (`public/index.html`, `src/config/seo.js`)** — the
+`og:image`, `twitter:image`, static Organization JSON-LD `image` and the runtime
+`seoConfig.defaultImage` all pointed at `og-default.jpg`, but the placeholder
+generator only emits `og-default.svg` (every other image reference resolves via
+`placeholder()`, which maps `.jpg`→`.svg`; these four were raw strings that
+bypassed it), so the social share-image URL 404'd. Repointed all four to the
+existing `og-default.svg` and added a "PRODUCTION SWAP → real 1200×630 raster"
+note in both files. No other broken links, wrong slugs, dead anchors or missing
+`rel="noopener"` attributes were found.
+
 ### Phase 4.4 — Content population from prospectus
 
 Thirty-seventh prompt of the rebuild (`prompts/37-content-population.md`). Fills

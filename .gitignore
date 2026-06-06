@@ -24,8 +24,10 @@ yarn-error.log*
 
 # Server-side PHP config (holds secrets)
 /public/api/config.php
-# Runtime-generated data stores (leads, notices, events)
-/public/api/data/
+# Runtime-generated data stores (leads, notices, events) — keep the (writable)
+# folder so the PHP API always has a present write target on deploy, but never
+# commit the live JSON the API writes into it.
+/public/api/data/*.json
 
 # Local visual-QA screenshots (generated, not part of the repo)
 /qa-screens/

@@ -112,7 +112,9 @@ export default function useNotices() {
     };
   }, [load]);
 
-  return { items, notices: items, loading, error };
+  // `reload` lets the page offer a manual retry after a failed fetch (the UI
+  // shows the seed/last-good list meanwhile, so it's never blank).
+  return { items, notices: items, loading, error, reload: load };
 }
 
 export { useNotices };

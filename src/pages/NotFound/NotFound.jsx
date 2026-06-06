@@ -11,7 +11,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
-import useDocumentTitle from '../../hooks/useDocumentTitle';
+import useSeo from '../../components/common/SEO/useSeo';
 import styles from './NotFound.module.css';
 
 // A small set of helpful destinations for a lost visitor.
@@ -23,10 +23,12 @@ const SUGGESTED_LINKS = [
 ];
 
 const NotFound = () => {
-  useDocumentTitle('Page Not Found');
+  // Resolves to the 404 SEO defaults for any unknown path (title + noindex).
+  // Also covers the CourseDetail unknown-slug case, which renders <NotFound/>.
+  useSeo();
 
   return (
-    <section className={styles.notFound}>
+    <main id="main-content" className={styles.notFound}>
       <div className={styles.inner}>
         <p className={styles.code} aria-hidden="true">
           404
@@ -55,7 +57,7 @@ const NotFound = () => {
           </ul>
         </div>
       </div>
-    </section>
+    </main>
   );
 };
 

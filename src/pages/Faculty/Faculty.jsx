@@ -245,13 +245,26 @@ const Faculty = () => {
         </p>
 
         {filtered.length > 0 ? (
-          <RevealGroup as="ul" className={styles.directoryGrid} stagger={0.05} amount={0.05}>
+          // Independent per-item <Reveal>s (NOT a RevealGroup). Grouped children
+          // share the parent's single, one-shot whileInView state, so when the
+          // filtered set changes the new cards stay stuck at the "hidden"
+          // (opacity:0) variant and the grid looks empty even though the count
+          // is right. Self-contained reveals — the same pattern the working
+          // Notices/Events lists use — keep already-revealed cards visible
+          // across filter changes.
+          <ul className={styles.directoryGrid}>
             {filtered.map((member) => (
-              <Reveal as="li" key={member.id} className={styles.directoryCell} variant="fadeUp">
+              <Reveal
+                as="li"
+                key={member.id}
+                className={styles.directoryCell}
+                variant="fadeUp"
+                amount={0.1}
+              >
                 <FacultyCard member={member} />
               </Reveal>
             ))}
-          </RevealGroup>
+          </ul>
         ) : (
           <EmptyState
             icon="mdi:account-search-outline"

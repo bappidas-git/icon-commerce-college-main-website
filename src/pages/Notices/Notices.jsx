@@ -24,6 +24,7 @@ import PageHero from '../../components/common/PageHero/PageHero';
 import Section from '../../components/common/Section/Section';
 import Button from '../../components/common/Button/Button';
 import EmptyState from '../../components/common/EmptyState/EmptyState';
+import InlineNotice from '../../components/common/InlineNotice';
 import { Reveal } from '../../components/common/Reveal/Reveal';
 
 import useNotices from '../../hooks/useNotices';
@@ -35,7 +36,7 @@ const PAGE_SIZE = 6;
 const Notices = () => {
   useSeo();
 
-  const { items, loading } = useNotices();
+  const { items, loading, error, reload } = useNotices();
 
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All');
@@ -125,6 +126,17 @@ const Notices = () => {
               })}
             </div>
           </div>
+
+          {/* Live store unreachable — saved notices are shown below; offer a retry. */}
+          {error && (
+            <InlineNotice
+              icon="mdi:wifi-alert"
+              action={{ label: 'Retry', icon: 'mdi:refresh', onClick: reload }}
+            >
+              We couldn&apos;t load the latest notices, so you&apos;re seeing saved
+              ones. Check your connection and try again.
+            </InlineNotice>
+          )}
 
           {/* Result summary */}
           {!loading && items.length > 0 && filtered.length > 0 && (

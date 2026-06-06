@@ -15,6 +15,13 @@ import { admissionData } from '../../../data/admissionData';
 /** Public path of the prospectus PDF (swap the file, not this constant). */
 export const PROSPECTUS_FILE = admissionData.prospectus.file;
 
+/**
+ * sessionStorage key set once the prospectus has downloaded in this session.
+ * The Thank-You page reads it to avoid re-offering a file already delivered
+ * by the lead-gated `prospectus` flow.
+ */
+export const PROSPECTUS_DOWNLOADED_KEY = 'icc_prospectus_downloaded';
+
 /** A real, fetchable target is an absolute URL or a root-relative path. */
 const isDownloadable = (path) => /^(https?:\/\/|\/)/.test(String(path || ''));
 
@@ -44,6 +51,15 @@ export function triggerProspectusDownload(file = PROSPECTUS_FILE) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+
+  // Record the one-shot download for this session so the Thank-You page can show
+  // "already downloaded" instead of re-offering the file (prompt 35). Wrapped —
+  // sessionStorage can throw in private/locked-down browsers.
+  try {
+    window.sessionStorage.setItem(PROSPECTUS_DOWNLOADED_KEY, 'true');
+  } catch (_) {
+    /* ignore storage failures — the download itself still succeeded */
+  }
   return true;
 }
 

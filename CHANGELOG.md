@@ -4,6 +4,86 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 4.6 — Documentation
+
+Thirty-ninth prompt of the rebuild (`prompts/39-documentation.md`). Replaces the
+leftover CIT / landing-page-boilerplate documentation with an accurate, complete
+documentation set for Icon Commerce College, so a new developer can run, edit
+content, use the admin panel and deploy from the docs alone. `npm run build`
+stays green under `CI=true`; no CIT references remain in the shipped docs or code
+comments.
+
+**README (`README.md`, rewritten)** — full project overview: tech stack,
+annotated project structure, local-dev commands (`npm install` / `start` /
+`build` / `gen:placeholders` / `analyze`), an **accurate env-var table**
+documenting only the eight variables the app actually reads (the three API URLs,
+the shared admin key, the two admin-login vars, `REACT_APP_GTM_ID`,
+`REACT_APP_ENABLE_ANALYTICS`) with a note that the contact/identity vars in
+`.env.example` are inert and that real content lives in `src/data/collegeInfo.js`,
+a content-location map, the placeholder-swap summary, the lead/notice/event
+storage model, an admin-panel pointer and a deploy summary, plus a docs index.
+
+**New `docs/CONTENT_GUIDE.md`** — how to edit every kind of content without code:
+the edit→rebuild loop and conventions (`TODO:`, `placeholder()`, Iconify icons),
+then a per-file walkthrough of `collegeInfo`, `coursesData` (with the "don't
+change the slugs" / shared-fee-object guidance), `departmentsData`,
+`leadershipData` (paragraph arrays), `facultyData`, `facilitiesData`,
+`galleryData` (photos + `TODO` YouTube IDs), `testimonialsData`, `statsData`,
+`admissionData` and `navigation`, plus how Notices/Events are managed in the admin
+panel (PHP/JSON store, no DB).
+
+**New `docs/ADMIN_GUIDE.md`** — login & 24h sessions, the dashboard, lead
+management (the six-stage admissions funnel, notes, activity timeline, CSV
+export/import, delete), the notices module (categories, publish/draft, pin), the
+events module (list + calendar views, categories), settings, the cross-device
+sync model (server source-of-truth + 15s poll + `BroadcastChannel`, no
+localStorage) and a full breakdown of the **admin-key handshake** (Verified / Key
+mismatch 401 / Server missing key 503 / Not set) with fixes.
+
+**`docs/DEPLOYMENT.md`** (supersedes the Phase 4.3 `docs/deployment.md`,
+expanded) — build with env set first, upload `build/` to a PHP host, create
+`api/config.php` with `ADMIN_API_KEY` matching `REACT_APP_LEADS_ADMIN_KEY`, make
+`api/data/` writable, the bundled `.htaccess` (SPA rewrite, caching, compression,
+security headers, with the Nginx equivalents), HTTPS, the SEO files
+(`robots.txt`/`sitemap.xml` domain), optional GTM, a post-deploy smoke test, and
+an "updating a live site (don't overwrite `config.php`/`api/data/`)" note.
+
+**`docs/IMAGES.md`** (supersedes the Phase 4.3 `docs/images.md`, expanded) — how
+paths resolve through `src/utils/assets.js`, the live-Cloudinary-logo note,
+drop-in vs. `public/images/` swap workflows, the recommended-dimensions table per
+slot, the complete 48-name placeholder list, the OG-raster swap, and the
+prospectus-PDF replace-in-place.
+
+**New `docs/SEO.md`** (refreshes the removed `SEO_GUIDE.md`, now accurate) —
+`src/config/seo.js` site-level settings, the per-route `pages` map, schema.org
+(Organization/CollegeOrUniversity, FAQ, breadcrumb) with the `sameAs`/`geo`/OG
+`TODO`s, and the `sitemap.xml`/`robots.txt` domain edits.
+
+**`GTM_GUIDE.md` (rewritten, lean & accurate)** — removed all references to the
+ad-tech that no longer exists (Meta Pixel, Google Ads, Conversions API, enhanced
+conversions, GCLID, consent mode). Now documents only what ships: runtime
+injection via `initGTM` from `App.jsx` (there is **no** snippet in `index.html`),
+the dual `REACT_APP_GTM_ID` + `REACT_APP_ENABLE_ANALYTICS=true` gate, the real
+`dataLayer` event list, and a GA4-via-GTM setup.
+
+**Removed stale boilerplate docs** — deleted `CUSTOMIZATION_GUIDE.md` and
+`SEO_GUIDE.md` (raw "Monjoven" landing-page boilerplate referencing removed data
+files like `servicesData.js`/`locationData.js` and a single-page architecture);
+their topics are now covered accurately by the README, `CONTENT_GUIDE.md`,
+`IMAGES.md` and `SEO.md`.
+
+**Config cleanup (`public/api/config.example.php`)** — dropped the dead Meta
+Conversions API block (`META_PIXEL_ID` / `META_ACCESS_TOKEN` / `META_API_VERSION`
+/ `META_TEST_EVENT_CODE`) left from the boilerplate — `meta-capi.php` and all
+Meta utilities were removed long ago and nothing reads those constants. The file
+now contains only `ADMIN_API_KEY`, matching what `DEPLOYMENT.md` describes.
+
+**Cross-links** — refreshed `docs/README.md` as the index for the new set, and
+updated the doc-link comments that pointed at the renamed files
+(`src/components/common/Img/Img.jsx`, `src/config/seo.js`, `docs/performance.md`:
+`images.md`→`IMAGES.md`, `deployment.md`→`DEPLOYMENT.md`). `docs/performance.md`
+and `docs/qa-checklist.md` are retained unchanged as accurate reference records.
+
 ### Phase 4.5 — Cross-page QA & link audit
 
 Thirty-eighth prompt of the rebuild (`prompts/38-cross-page-qa.md`). End-to-end

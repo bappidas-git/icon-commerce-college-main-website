@@ -2,8 +2,8 @@
 
 How the Icon Commerce College site stays fast, and what to keep in mind when
 swapping placeholders for real assets. Companion docs:
-[`images.md`](./images.md) (asset swap + dimensions) and
-[`deployment.md`](./deployment.md) (host config / caching / SPA routing).
+[`IMAGES.md`](./IMAGES.md) (asset swap + dimensions) and
+[`DEPLOYMENT.md`](./DEPLOYMENT.md) (host config / caching / SPA routing).
 
 > Numbers below are from a production build (`npm run build`) with the bundled
 > SVG placeholders. Re-measure after dropping in real photography.
@@ -47,7 +47,7 @@ per-component sizing / `object-fit` / `border-radius` (which already prevent
 layout shift) are preserved exactly — a behavioural upgrade, not a layout
 change. The hero is a CSS background image, so it gets `fetchpriority="high"` via
 a `<link rel="preload" as="image">` in `public/index.html` instead (see
-[`images.md`](./images.md)).
+[`IMAGES.md`](./IMAGES.md)).
 
 ## 3. Fonts
 
@@ -119,4 +119,4 @@ What this pass does for each metric:
 
 Record the actual scores in the PR once measured on the preview. With the SVG
 placeholders the page is very light; the real test is after high-resolution
-photography is added — follow [`images.md`](./images.md) so it stays fast.
+photography is added — follow [`IMAGES.md`](./IMAGES.md) so it stays fast.

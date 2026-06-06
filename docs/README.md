@@ -1,18 +1,31 @@
-# Docs — Icon Commerce College
+# Documentation — Icon Commerce College
 
-Operational notes for running, swapping assets in, and deploying the site. The
-**single source of truth for design, content and conventions** remains
-[`prompts/00-DESIGN-SYSTEM.md`](../prompts/00-DESIGN-SYSTEM.md).
+How to edit content, run the admin panel, swap images and deploy the site. The
+**single source of truth for design, content and conventions** is
+[`prompts/00-DESIGN-SYSTEM.md`](../prompts/00-DESIGN-SYSTEM.md); the top-level
+[`README.md`](../README.md) is the project overview and quick start.
 
-- **[performance.md](./performance.md)** — code-splitting, the `<Img>`
-  component, fonts, bundle sizes and Lighthouse methodology.
-- **[images.md](./images.md)** — how to swap the labelled placeholders for real
-  photography, with recommended dimensions per slot.
-- **[deployment.md](./deployment.md)** — Apache `.htaccess` (SPA fallback,
-  caching, compression), env vars and PHP-host requirements.
-- **[qa-checklist.md](./qa-checklist.md)** — Phase 4.5 cross-page QA & link
-  audit: link/CTA matrices, end-to-end flow trace, route regression and the
-  console/network pass.
+## Guides
 
-> A fuller documentation set (content editing, admin guide) is planned for a
-> later phase; these cover the Phase 4.3 performance & image-handling work.
+- **[CONTENT_GUIDE.md](./CONTENT_GUIDE.md)** — edit every kind of content
+  (college info, courses, departments, faculty, leadership, testimonials,
+  facilities, gallery, admissions, navigation) without writing code.
+- **[ADMIN_GUIDE.md](./ADMIN_GUIDE.md)** — log in and use the admin panel: leads
+  (statuses, notes, export), notices, events/calendar, settings, cross-device
+  sync and the admin-key handshake.
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** — build, upload `build/` to a PHP host,
+  `config.php` + writable `api/data/`, the `.htaccess` (SPA rewrite, caching,
+  compression), env/config, HTTPS and the SEO files.
+- **[IMAGES.md](./IMAGES.md)** — the labelled placeholders, recommended
+  dimensions per slot, and the replace-in-place swap workflow.
+- **[SEO.md](./SEO.md)** — titles, descriptions, schema.org, sitemap & robots.
+
+## Reference
+
+- **[performance.md](./performance.md)** — code-splitting, the `<Img>` component,
+  fonts, bundle sizes and Lighthouse methodology.
+- **[qa-checklist.md](./qa-checklist.md)** — the cross-page QA & link-audit record
+  (link/CTA matrices, end-to-end flow trace, route regression).
+- **[../GTM_GUIDE.md](../GTM_GUIDE.md)** — optional Google Tag Manager / analytics
+  setup.
+- **[../CHANGELOG.md](../CHANGELOG.md)** — detailed, phase-by-phase changelog.

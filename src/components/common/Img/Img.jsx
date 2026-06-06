@@ -24,7 +24,7 @@
 
    Production swap: keep referencing the logical placeholder names via
    utils/assets; drop real files into public/images/... (see
-   docs/images.md and design-system §7) and pass real width/height (or an
+   docs/IMAGES.md and design-system §7) and pass real width/height (or an
    `aspectRatio`) so the box is reserved before the photo arrives.
    ============================================ */
 

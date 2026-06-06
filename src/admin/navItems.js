@@ -3,8 +3,8 @@
    ============================================
    The sidebar renders these links and the topbar derives the current
    section title from the same list, so navigation and the page heading
-   can never drift. The legacy CIT ad-tech admin modules were removed in
-   the rebuild — these five are the complete admin surface.
+   can never drift. The legacy ad-tech admin modules were removed in the
+   rebuild — these five are the complete admin surface.
    ============================================ */
 
 export const ADMIN_NAV = [

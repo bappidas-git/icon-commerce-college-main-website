@@ -29,6 +29,7 @@ const LeadFormDrawer = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const drawerRef = useRef(null);
+  const previouslyFocused = useRef(null);
 
   // Handle escape key to close.
   useEffect(() => {
@@ -47,6 +48,9 @@ const LeadFormDrawer = ({
     if (!isOpen) return undefined;
     const node = drawerRef.current;
     if (!node) return undefined;
+
+    // Remember what was focused before opening so we can restore it on close.
+    previouslyFocused.current = document.activeElement;
 
     const focusFirst = () => {
       const focusables = node.querySelectorAll(FOCUSABLE);
@@ -75,6 +79,9 @@ const LeadFormDrawer = ({
     return () => {
       cancelAnimationFrame(raf);
       node.removeEventListener('keydown', handleTab);
+      // Return focus to the trigger (e.g. the Enquire button) on close.
+      const prev = previouslyFocused.current;
+      if (prev && typeof prev.focus === 'function') prev.focus();
     };
   }, [isOpen]);
 

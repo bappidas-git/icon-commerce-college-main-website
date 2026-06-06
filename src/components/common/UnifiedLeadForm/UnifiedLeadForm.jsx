@@ -661,6 +661,7 @@ const UnifiedLeadForm = ({
             }}
             inputProps={{
               "aria-label": "Your name",
+              "aria-required": true,
               maxLength: 50,
             }}
           />
@@ -717,6 +718,7 @@ const UnifiedLeadForm = ({
             }}
             inputProps={{
               "aria-label": "Mobile number",
+              "aria-required": true,
               maxLength: 10,
               inputMode: "numeric",
               pattern: "[0-9]*",

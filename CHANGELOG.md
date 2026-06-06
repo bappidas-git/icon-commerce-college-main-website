@@ -4,6 +4,79 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 4.1 — Responsive / animation / a11y pass
+
+Thirty-fourth prompt of the rebuild (`prompts/34-responsive-animation-a11y-pass.md`).
+A holistic polish sweep for responsiveness, consistent minimalist animation and
+accessibility — **no new features**. Most fixes land in shared chrome/components,
+so they apply across every route. The responsive audit (360–1440) found the
+overflow guards, table scroll-wrappers, `clamp()` heroes and mobile-FAB handling
+already solid, so this pass focuses on motion-reduction, focus management and
+colour contrast. `npm run build` stays green.
+
+**Animation — `prefers-reduced-motion` everywhere**
+
+- **`src/App.jsx`** — wrapped the app in `<MotionConfig reducedMotion="user">`.
+  When the OS requests reduced motion, Framer Motion now drops transform/layout
+  animations **globally**, catching any ad-hoc `motion.*` that lives outside the
+  shared `Reveal`/`RevealGroup` (Modal, Button, BackToTop, SectionTitle,
+  FloatingActions, ThankYou …) while keeping gentle opacity fades. Pairs with the
+  existing CSS `@media (prefers-reduced-motion)` rules and `useReducedMotionVariants`.
+- **`src/pages/ThankYou/ThankYou.jsx`** — the celebratory `canvas-confetti` burst
+  runs outside Framer Motion, so it now has its own guard: skipped entirely when
+  `useReducedMotion()` is set.
+
+**Accessibility (WCAG AA)**
+
+- **`src/components/common/Modal/Modal.jsx`** — added real dialog focus management:
+  focus moves into the dialog on open, a Tab focus-trap keeps it inside, and focus
+  is **restored to the triggering element on close** (the `role="dialog"` /
+  `aria-modal` / Esc-to-close were already present).
+- **`src/components/common/LeadFormDrawer/LeadFormDrawer.jsx`** — the existing
+  focus-trap now also **restores focus** to the trigger (e.g. the Enquire button)
+  on close.
+- **`src/components/common/Modal/Modal.module.css`** — close button enlarged from
+  36 → **44px** (WCAG 2.5.5 tap target).
+- **`src/admin/pages/LeadManagement.jsx`** — `aria-label`s added to the three
+  icon-only buttons (more-menu, view details, delete) that were missing them.
+- **`src/components/common/UnifiedLeadForm/UnifiedLeadForm.jsx`** — `aria-required`
+  added to the required **Name** and **Mobile** fields (errors are already
+  associated via MUI's `helperText` → `aria-describedby`).
+- **`src/pages/ThankYou/ThankYou.jsx`** — the standalone page now wraps its content
+  in `<main id="main-content">`, giving it a proper landmark and a skip-link target.
+
+**Colour contrast (gold label text on light backgrounds)**
+
+- **`src/styles/variables.css`** — new `--color-accent-text: #7A5C20` (and
+  `--admin-accent-text`): an AA-safe **deep gold** for small gold **label text** on
+  light surfaces (≈5.5:1 on the page background, ≥4.5:1 everywhere it is used). The
+  bright brand gold `--color-accent` (#C8A04D) is unchanged and still used for all
+  **decorative** gold — underlines, icon chips, dividers — and for eyebrows on
+  navy/dark backgrounds (which already passed at ~5.5:1).
+- Applied the new token to gold **eyebrow labels on light backgrounds** only:
+  global `.eyebrow` (`global.css`), `SectionTitle` light variant, `AboutSection`,
+  the About page, and the admin topbar + page header. Dark-background eyebrows
+  (`HeroSection`, `PageHero`, `HomeCTA` over `--gradient-navy`, `Section.bg-navy`)
+  keep the brighter gold/white via their existing dark styles — `SectionTitle` is
+  only ever rendered through `Section`, which always passes the correct
+  `light`/`dark` variant, so no dark eyebrow regresses. Larger gold *display*
+  treatments (highlight words, stat numbers) are intentionally left on the brand
+  gold and tracked as a follow-up.
+
+**Verified already-compliant (no change needed)**
+
+- Responsive: `overflow-x: hidden` on `html`/`body`, `img { max-width:100% }`,
+  table `overflow-x:auto` wrappers, `clamp()` hero sizing, FloatingActions hidden
+  on mobile (no bottom-nav overlap), and a coarse-pointer media query that already
+  forces 44px targets on touch devices — no horizontal scroll at any breakpoint.
+- Animation: every section already routes through `Reveal`/`RevealGroup` +
+  `motion.js`; CSS keyframes are globally reduced-motion-guarded.
+- States: `EmptyState` is used for empty/no-match on notices & events, and the
+  `useNotices`/`useEvents` hooks fall back to seed data on error/empty (the UI is
+  never blank and there is no loading flicker).
+- Landmarks/headings/alt: skip-link → `#main-content` matches `PublicLayout`'s
+  `<main>`, one `<h1>` per page (`HeroSection`/`PageHero`), every `<img>` has alt.
+
 ### Phase 3.9 — Admin settings & help
 
 Thirty-third prompt of the rebuild (`prompts/33-admin-settings-and-help.md`). The

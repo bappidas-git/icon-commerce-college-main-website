@@ -11,6 +11,7 @@
 
 import React, { Suspense, lazy, useEffect, useState, memo } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import { Box } from '@mui/material';
 
 // App Styles
@@ -121,6 +122,11 @@ const App = () => {
     <BrowserRouter>
       <CustomThemeProvider>
         <ModalProvider>
+          {/* Global reduced-motion guard: when the OS requests reduced motion,
+              Framer Motion drops transform/layout animations everywhere (covers
+              any ad-hoc motion outside Reveal/RevealGroup) while keeping gentle
+              opacity fades. Pairs with the CSS `prefers-reduced-motion` rules. */}
+          <MotionConfig reducedMotion="user">
           <div className="app" id="app-root">
             {/* SEO Head — manages meta tags and schemas per route */}
             <SEOHead />
@@ -198,6 +204,7 @@ const App = () => {
             {/* Engagement Tracker — invisible analytics helper (no-op when disabled) */}
             <EngagementTracker />
           </div>
+          </MotionConfig>
         </ModalProvider>
       </CustomThemeProvider>
     </BrowserRouter>

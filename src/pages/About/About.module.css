@@ -80,7 +80,8 @@
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-widest);
   text-transform: uppercase;
-  color: var(--color-accent);
+  /* AA-safe deep gold for this label on the light page surface. */
+  color: var(--color-accent-text);
 }
 
 .heading {

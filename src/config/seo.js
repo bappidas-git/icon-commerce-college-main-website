@@ -16,7 +16,10 @@ export const seoConfig = {
   titleTemplate: "%s | Icon Commerce College",
   defaultDescription:
     "Icon Commerce College, Guwahati — empowering Commerce, Arts & Computer Application graduates since 2004. Affiliated to Gauhati University under NEP 2020 (FYUGP). B.Com, BBA, BCA and B.A. programs.",
-  defaultImage: "/images/placeholders/og-default.jpg",
+  // PRODUCTION SWAP: replace with a real 1200×630 raster (JPG/PNG) — social
+  // platforms don't render SVG share images. The placeholder keeps the
+  // og:image / twitter:image / schema reference resolvable (see docs/images.md).
+  defaultImage: "/images/placeholders/og-default.svg",
   locale: "en_IN",
   language: "en",
   twitterHandle: "", // TODO: set the official @handle when available.

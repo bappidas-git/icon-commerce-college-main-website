@@ -54,7 +54,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--admin-accent, #C8A04D);
+  color: var(--admin-accent-text, #7A5C20);
 }
 
 .section {

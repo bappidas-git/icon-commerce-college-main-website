@@ -82,11 +82,11 @@
   margin: 0;
 }
 
-/* Close Button */
+/* Close Button — 44px min tap target (WCAG 2.5.5) */
 .closeButton {
   flex-shrink: 0;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   color: var(--text-gray);
   transition: all var(--transition-fast);
 }

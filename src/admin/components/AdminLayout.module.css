@@ -16,6 +16,14 @@
   flex-direction: column;
 }
 
+/* Desktop: the sidebar is position:fixed, so reserve its width here. Below
+   1024px the sidebar becomes an overlay drawer and the content is full-width. */
+@media (min-width: 1025px) {
+  .main {
+    margin-left: var(--admin-sidebar-width, 252px);
+  }
+}
+
 .content {
   flex: 1;
   width: 100%;

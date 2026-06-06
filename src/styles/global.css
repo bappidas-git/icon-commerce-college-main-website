@@ -573,7 +573,9 @@ table {
   line-height: 1.5;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--color-accent);
+  /* AA-safe deep gold for small label text on light surfaces (decorative gold
+     stays --color-accent; on navy sections Section.bg-navy overrides to white). */
+  color: var(--color-accent-text);
 }
 
 /* ========== Gold Underline Decoration ========== */

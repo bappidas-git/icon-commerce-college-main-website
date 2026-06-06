@@ -33,7 +33,8 @@
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-widest); /* 0.12em */
   text-transform: uppercase;
-  color: var(--color-accent);
+  /* AA-safe deep gold on light sections; brighter gold on dark (below). */
+  color: var(--color-accent-text);
   margin-bottom: var(--space-3);
 }
 

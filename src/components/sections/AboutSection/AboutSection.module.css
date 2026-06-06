@@ -73,7 +73,8 @@
   font-weight: var(--fw-semibold);
   letter-spacing: var(--ls-widest);
   text-transform: uppercase;
-  color: var(--color-accent);
+  /* AA-safe deep gold — this band sits on the light --color-bg surface. */
+  color: var(--color-accent-text);
 }
 
 .heading {

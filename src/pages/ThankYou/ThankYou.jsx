@@ -6,7 +6,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Typography, Grid } from "@mui/material";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import confetti from "canvas-confetti";
 import styles from "./ThankYou.module.css";
@@ -48,6 +48,7 @@ const nextSteps = [
 
 const ThankYou = () => {
   const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
   const [userName, setUserName] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
 
@@ -145,13 +146,15 @@ const ThankYou = () => {
     });
   }, []);
 
-  // Trigger confetti on mount
+  // Trigger confetti on mount — skipped when the user prefers reduced motion
+  // (canvas-confetti runs outside Framer Motion, so it needs its own guard).
   useEffect(() => {
-    if (isAuthorized) {
+    if (isAuthorized && !reduceMotion) {
       const timer = setTimeout(fireConfetti, 300);
       return () => clearTimeout(timer);
     }
-  }, [isAuthorized, fireConfetti]);
+    return undefined;
+  }, [isAuthorized, reduceMotion, fireConfetti]);
 
   // Animation variants
   const containerVariants = {
@@ -198,7 +201,7 @@ const ThankYou = () => {
     : "Our admission team will call you shortly to guide you through the admission process at Icon Commerce College.";
 
   return (
-    <div className={styles.thankYouPage}>
+    <main id="main-content" className={styles.thankYouPage}>
       {/* Background Elements */}
       <div className={styles.bgPattern} />
       <div className={styles.bgGlow1} />
@@ -414,7 +417,7 @@ const ThankYou = () => {
           </motion.div>
         </motion.div>
       </Container>
-    </div>
+    </main>
   );
 };
 

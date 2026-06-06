@@ -474,6 +474,7 @@ const LeadManagement = () => {
               className={styles.moreMenuBtn}
               onClick={(e) => setMoreMenuAnchor(e.currentTarget)}
               size="small"
+              aria-label="More actions"
               sx={{ border: "1px solid var(--admin-border)", borderRadius: "8px" }}
             >
               <Icon icon="mdi:dots-vertical" width={20} />
@@ -1249,6 +1250,7 @@ const LeadManagement = () => {
                       <IconButton
                         size="small"
                         onClick={() => handleViewDetail(lead)}
+                        aria-label="View lead details"
                         sx={{ color: "var(--admin-text-muted)" }}
                       >
                         <Icon icon="mdi:eye-outline" width={18} />
@@ -1259,6 +1261,7 @@ const LeadManagement = () => {
                           setDeleteTarget(lead.lead_id);
                           setDeleteDialogOpen(true);
                         }}
+                        aria-label="Delete lead"
                         sx={{
                           color: "var(--admin-text-muted)",
                           "&:hover": { color: "var(--admin-error)" },

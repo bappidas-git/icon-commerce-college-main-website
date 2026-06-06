@@ -3,7 +3,7 @@
    Animated modal/dialog with multiple variants
    ============================================ */
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IconButton } from '@mui/material';
@@ -16,6 +16,10 @@ import { useModal } from '../../../context/ModalContext';
 
 // Initialize SweetAlert with React
 const MySwal = withReactContent(Swal);
+
+// Tabbable elements used by the dialog focus trap.
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
 const Modal = ({
   isOpen: propsIsOpen,
@@ -48,6 +52,9 @@ const Modal = ({
   const finalMaxWidth = propsIsOpen !== undefined ? maxWidth : config.maxWidth;
   const finalFullScreen = propsIsOpen !== undefined ? fullScreen : config.fullScreen;
 
+  const modalRef = useRef(null);
+  const previouslyFocused = useRef(null);
+
   // Handle escape key
   const handleEscapeKey = useCallback((e) => {
     if (e.key === 'Escape' && finalCloseOnEscape && isOpen) {
@@ -69,6 +76,45 @@ const Modal = ({
       document.body.style.width = '';
     };
   }, [isOpen, handleEscapeKey]);
+
+  // Focus management: move focus into the dialog on open, trap Tab inside it,
+  // and restore focus to the triggering element on close (WCAG 2.4.3 / 2.1.2).
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    previouslyFocused.current = document.activeElement;
+    const node = modalRef.current;
+    if (!node) return undefined;
+
+    const raf = requestAnimationFrame(() => {
+      const focusables = node.querySelectorAll(FOCUSABLE);
+      (focusables[0] || node).focus();
+    });
+
+    const handleTab = (e) => {
+      if (e.key !== 'Tab') return;
+      const focusables = Array.from(node.querySelectorAll(FOCUSABLE)).filter(
+        (el) => el.offsetParent !== null,
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    node.addEventListener('keydown', handleTab);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      node.removeEventListener('keydown', handleTab);
+      const prev = previouslyFocused.current;
+      if (prev && typeof prev.focus === 'function') prev.focus();
+    };
+  }, [isOpen]);
 
   // Handle backdrop click
   const handleBackdropClick = (e) => {
@@ -146,6 +192,8 @@ const Modal = ({
           onClick={handleBackdropClick}
         >
           <motion.div
+            ref={modalRef}
+            tabIndex={-1}
             className={modalClassNames}
             variants={modalVariants}
             initial="hidden"

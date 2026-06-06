@@ -14,6 +14,7 @@
   --color-primary-light:  #2C3E6B;  /* Navy 600 — hovers                                  */
   --color-accent:         #C8A04D;  /* Gold — accents, underlines, icons, dividers        */
   --color-accent-dark:    #A8823A;  /* Gold dark — hover                                  */
+  --color-accent-text:    #7A5C20;  /* Deep gold — small gold LABEL TEXT on light bg (AA ≥4.5:1); decorative gold stays --color-accent */
   --color-accent-soft:    #F3E9D2;  /* Gold tint — card backgrounds, badges               */
   --color-cta:            #E0301E;  /* Warm Red — primary CTA buttons ONLY                */
   --color-cta-dark:       #B91E10;
@@ -320,6 +321,7 @@
   --admin-accent: #C8A04D;
   --admin-accent-light: #D8B871;
   --admin-accent-dark: #A8823A;
+  --admin-accent-text: #7A5C20; /* AA-safe deep gold for small gold label text on light admin surfaces */
   --admin-accent-soft: #F3E9D2;
   --admin-cta: #E0301E;
   --admin-cta-dark: #B91E10;
@@ -332,6 +334,7 @@
   --admin-bg: #F7F8FB;
   --admin-card-bg: #FFFFFF;
   --admin-border: #E6E9F0;
+  --admin-sidebar-width: 252px; /* fixed desktop sidebar width; .main offsets by this */
   --admin-text-primary: #14233D;
   --admin-text-secondary: #5B6678;
   --admin-text-muted: #8E9BAD;

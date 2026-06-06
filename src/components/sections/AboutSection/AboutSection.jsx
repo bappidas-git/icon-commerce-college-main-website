@@ -17,6 +17,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import Container from '../../common/Container/Container';
+import Img from '../../common/Img';
 import { Reveal, RevealGroup } from '../../common/Reveal/Reveal';
 import { placeholder } from '../../../utils/assets';
 import { collegeInfo } from '../../../data/collegeInfo';
@@ -37,11 +38,11 @@ const AboutSection = () => (
         {/* Media — campus building placeholder with a gold "Estd." badge */}
         <Reveal className={styles.media} variant="slideInLeft">
           <figure className={styles.figure}>
-            <img
+            <Img
               src={placeholder('about-college-building')}
               alt="Icon Commerce College campus building"
               className={styles.image}
-              loading="lazy"
+              fallback="about-college-building"
             />
             <figcaption className={styles.badge}>
               <span className={styles.badgeLabel}>Estd.</span>

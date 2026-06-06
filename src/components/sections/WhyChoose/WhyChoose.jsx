@@ -15,6 +15,7 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import Section from '../../common/Section/Section';
+import Img from '../../common/Img';
 import { Reveal, RevealGroup } from '../../common/Reveal/Reveal';
 import { placeholder } from '../../../utils/assets';
 import styles from './WhyChoose.module.css';
@@ -72,11 +73,11 @@ const WhyChoose = () => (
       {/* Media — students placeholder with a floating gold stat callout */}
       <Reveal className={styles.media} variant="slideInLeft">
         <figure className={styles.figure}>
-          <img
+          <Img
             src={placeholder('hero-students')}
             alt="Students at Icon Commerce College"
             className={styles.image}
-            loading="lazy"
+            fallback="hero-students"
           />
           <figcaption className={styles.callout}>
             <Icon

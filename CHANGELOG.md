@@ -4,6 +4,70 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 4.3 — Performance & images
+
+Thirty-sixth prompt of the rebuild (`prompts/36-performance-and-images.md`).
+Makes the site fast and the image handling production-ready (still using
+placeholders). `npm run build` stays green under `CI=true` (warnings-as-errors);
+no console errors on touched routes.
+
+**Reusable `<Img>` component (`src/components/common/Img/`)** — a drop-in
+`<img>` replacement that bakes in the performance + resilience defaults so no
+call site has to remember them:
+- `loading="lazy"` + `decoding="async"` by default; a `priority` prop switches
+  to `loading="eager"` + `fetchpriority="high"` for above-the-fold images.
+- a **gold→white shimmer** placeholder while the file loads (cleared on load,
+  reduced-motion safe) so a slow real photo never shows as a blank gap.
+- a graceful **`onError` fallback** to the labelled §7 placeholder (guarded so a
+  broken fallback can't loop), and a re-arm on `src` change (gallery lightbox).
+- It renders a **single `<img>`** and forwards `className` untouched, so every
+  component's existing sizing / `object-fit` / `border-radius` / `aspect-ratio`
+  (which already keep CLS at bay) is preserved exactly — a behavioural upgrade,
+  not a layout change. Adopted at **every** image site (`grep -r "<img" src` now
+  only matches the component's own internals): all Home sections, About, Vision,
+  WhyChoose, Programs, Leadership (+ teaser), Testimonials, Departments,
+  Facilities, Faculty, Gallery (tiles + lightbox stage, the latter `priority`),
+  the Card kit, the Header/Footer/MobileDrawer logos (`priority` on the header)
+  and the admin login. Avatars/logos pass an appropriate `fallback`.
+
+**Hero LCP preload (`public/index.html`)** — the home hero is painted as a CSS
+`background-image` (discovered late), so it now gets a
+`<link rel="preload" as="image" fetchpriority="high">` to start the fetch during
+HTML parse. Documented as the first thing to update on the production photo swap.
+
+**Fonts** — `public/index.html` already preconnects + preloads the Inter/Poppins
+subset (400/500/600 + 600/700) with `display=swap`; removed the **redundant
+JS-injected font `<link>`** in `src/index.js` that pulled a wider 300–800 weight
+range (an extra request + a swap-shift risk). `index.html` is now the single
+font loader.
+
+**Idle route preload (`src/App.jsx`)** — after first paint, the **Courses** and
+**Admissions** chunks are preloaded during browser idle (`requestIdleCallback`,
+`setTimeout` fallback) so a click from Home is instant; `lazy()` and the
+preloader share one import thunk (same chunk). Confirmed every route + heavy
+section is `React.lazy`-split and the **admin bundle is separate** from the
+public bundle (Swiper is isolated to the lazy Testimonials chunk, ~30 kB gzip).
+
+**Bundle hygiene (`package.json`)** — removed dead deps verified at 0 imports:
+**`@mui/lab`** and **`react-intersection-observer`** (the app uses its own
+`useInView` on the native `IntersectionObserver`). Added **`source-map-explorer`**
+to `devDependencies` so `npm run analyze` works. Lockfile synced. Main entry is
+~236 kB gzip (React + MUI + Framer Motion + Router + chrome); 40 JS / 32 CSS
+chunks total.
+
+**`public/.htaccess` (new)** — ships in the build root: an **SPA fallback
+rewrite** (deep links → `index.html`, with `/api/` and real files skipped so the
+PHP store keeps working), **caching** (immutable 1-year for hashed `/static`
+assets, ~30-day for non-hashed images, `no-cache` for `index.html` /
+service-worker / manifest), `mod_deflate` compression and a few safe security
+headers.
+
+**Docs (`docs/`, new)** — `performance.md` (code-splitting, `<Img>`, fonts,
+bundle sizes, Lighthouse methodology + targets — measured on the deploy, not in
+CI, since the sandbox has no Chrome), `images.md` (production swap workflow +
+recommended dimensions per slot) and `deployment.md` (the `.htaccess` explained,
+env vars, PHP-host requirements), plus an index `README.md`.
+
 ### Fixes — lead capture, admin notices/events & faculty filter
 
 Bugs found while testing the live site (reported with screenshots). Root-caused

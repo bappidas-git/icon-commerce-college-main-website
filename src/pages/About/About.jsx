@@ -28,6 +28,7 @@ import PageHero from '../../components/common/PageHero/PageHero';
 import Section from '../../components/common/Section/Section';
 import Container from '../../components/common/Container/Container';
 import Button from '../../components/common/Button/Button';
+import Img from '../../components/common/Img';
 import AnimatedCounter from '../../components/common/AnimatedCounter/AnimatedCounter';
 import { Reveal, RevealGroup } from '../../components/common/Reveal/Reveal';
 import VisionMission from '../../components/sections/VisionMission';
@@ -152,11 +153,11 @@ const About = () => {
             {/* Media — campus building placeholder with a gold "Estd." badge */}
             <Reveal className={styles.profileMedia} variant="slideInLeft">
               <figure className={styles.profileFigure}>
-                <img
+                <Img
                   src={placeholder('about-college-building')}
                   alt="Icon Commerce College campus building"
                   className={styles.profileImage}
-                  loading="lazy"
+                  fallback="about-college-building"
                 />
                 <figcaption className={styles.profileBadge}>
                   <span className={styles.profileBadgeLabel}>Estd.</span>

@@ -19,6 +19,8 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 
+import Img from "../Img";
+
 import {
   collegeInfo,
   phoneHref,
@@ -460,10 +462,13 @@ const Footer = () => {
                   className={styles.logoWrapper}
                   aria-label={`${collegeInfo.name} — Home`}
                 >
-                  <img
+                  <Img
                     src={LOGO_URL}
                     alt={`${collegeInfo.name} logo`}
                     className={styles.logo}
+                    width="360"
+                    height="96"
+                    fallback="logo-icon-commerce"
                   />
                   <span className={styles.brandText}>
                     <span className={styles.brandName}>{collegeInfo.name}</span>
@@ -664,10 +669,10 @@ const Footer = () => {
                   className={styles.mapThumb}
                   aria-label="View Icon Commerce College on Google Maps"
                 >
-                  <img
+                  <Img
                     src={MAP_PLACEHOLDER}
                     alt="Map showing the location of Icon Commerce College, Chandmari, Guwahati"
-                    loading="lazy"
+                    fallback="map-location"
                   />
                   <span className={styles.mapThumbOverlay}>
                     <Icon icon="mdi:map-marker-radius" aria-hidden="true" />

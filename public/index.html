@@ -106,6 +106,22 @@
     </noscript>
 
     <!-- =========================================
+         Preload the Home hero (LCP) image
+         The hero is painted as a CSS background-image, which the browser
+         discovers late (after JS renders). Preloading it here, at high
+         priority, lets the fetch start during HTML parse so it owns the LCP.
+         PRODUCTION SWAP: when a real hero-campus photo replaces the
+         placeholder, update this href + `type` to match (see docs/images.md).
+         ========================================= -->
+    <link
+      rel="preload"
+      as="image"
+      href="%PUBLIC_URL%/images/placeholders/hero-campus.svg"
+      type="image/svg+xml"
+      fetchpriority="high"
+    />
+
+    <!-- =========================================
          Page Title
          ========================================= -->
     <title>

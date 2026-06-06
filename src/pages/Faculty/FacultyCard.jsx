@@ -17,6 +17,7 @@
 import React, { useId, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
+import Img from '../../components/common/Img';
 import { useReducedMotionVariants } from '../../utils/motion';
 import styles from './FacultyCard.module.css';
 
@@ -33,13 +34,13 @@ const FacultyCard = ({ member }) => {
   return (
     <article className={`${styles.card} ${open ? styles.open : ''}`}>
       <div className={styles.avatarWrap}>
-        <img
+        <Img
           src={member.image}
           alt={`${member.name}, ${member.designation} at Icon Commerce College`}
           className={styles.avatar}
-          loading="lazy"
           width="112"
           height="112"
+          fallback="faculty-placeholder"
         />
       </div>
 

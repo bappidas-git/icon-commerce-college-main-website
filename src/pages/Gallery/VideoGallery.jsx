@@ -16,6 +16,7 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 
 import Modal from '../../components/common/Modal/Modal';
+import Img from '../../components/common/Img';
 import { Reveal, RevealGroup } from '../../components/common/Reveal/Reveal';
 import styles from './VideoGallery.module.css';
 
@@ -50,11 +51,10 @@ const VideoGallery = ({ videos = [] }) => {
                 aria-label={`Play video: ${video.title}`}
               >
                 <span className={styles.thumbWrap}>
-                  <img
+                  <Img
                     src={video.thumb}
                     alt={`${video.title} thumbnail`}
                     className={styles.thumb}
-                    loading="lazy"
                   />
                   <span className={styles.play} aria-hidden="true">
                     <Icon icon="mdi:play" />

@@ -18,6 +18,7 @@ import { Autoplay, Pagination, A11y, Keyboard } from 'swiper/modules';
 import { Icon } from '@iconify/react';
 import { useReducedMotion } from 'framer-motion';
 import Section from '../../common/Section/Section';
+import Img from '../../common/Img';
 import { Reveal } from '../../common/Reveal/Reveal';
 import EmptyState from '../../common/EmptyState/EmptyState';
 import { testimonialsData } from '../../../data/testimonialsData';
@@ -77,13 +78,13 @@ const TestimonialsSection = () => {
                   />
                   <blockquote className={styles.quote}>{t.quote}</blockquote>
                   <figcaption className={styles.person}>
-                    <img
+                    <Img
                       src={t.avatar}
                       alt={t.name}
                       className={styles.avatar}
-                      loading="lazy"
                       width="52"
                       height="52"
+                      fallback="testimonial-avatar"
                     />
                     <span className={styles.meta}>
                       <span className={styles.name}>{t.name}</span>

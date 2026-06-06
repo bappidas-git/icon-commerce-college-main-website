@@ -31,15 +31,11 @@ import reportWebVitals from './reportWebVitals';
 // Performance Optimizations
 // ===========================================
 
-// Preload critical resources
-const preloadResources = () => {
-  // Preload fonts if not already done in HTML
-  const fontLink = document.createElement('link');
-  fontLink.rel = 'preload';
-  fontLink.as = 'style';
-  fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap';
-  document.head.appendChild(fontLink);
-};
+// NOTE: Fonts are preconnected + preloaded (display=swap, weight-subset) in
+// public/index.html — the single, optimal place to load them before JS runs.
+// We deliberately do NOT inject a second font <link> here: the old one pulled
+// in a wider weight range than the design system uses (Inter 400/500/600 +
+// Poppins 600/700), costing an extra request and risking a font-swap shift.
 
 // Enable passive event listeners for better scroll performance
 const enablePassiveEventListeners = () => {
@@ -87,7 +83,6 @@ window.addEventListener('unhandledrejection', handleUnhandledRejection);
 // ===========================================
 
 // Run optimizations
-preloadResources();
 enablePassiveEventListeners();
 
 // Get root element

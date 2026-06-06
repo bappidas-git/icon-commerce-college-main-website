@@ -14,6 +14,7 @@ import { useLocation, NavLink } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 
+import Img from '../Img';
 import { mainNav } from '../../../data/navigation';
 import {
   collegeInfo,
@@ -73,7 +74,14 @@ const MobileDrawer = ({ open, onClose, onApply }) => {
         {/* Header row */}
         <div className={styles.header}>
           <NavLink to="/" className={styles.brand} aria-label="Icon Commerce College — Home">
-            <img src={LOGO_URL} alt="Icon Commerce College logo" className={styles.logo} />
+            <Img
+              src={LOGO_URL}
+              alt="Icon Commerce College logo"
+              className={styles.logo}
+              width="360"
+              height="96"
+              fallback="logo-icon-commerce"
+            />
             <span className={styles.brandText}>
               <span className={styles.brandName}>Icon Commerce College</span>
               <span className={styles.brandSub}>{collegeInfo.assameseName}</span>

@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { TextField, Checkbox, CircularProgress } from '@mui/material';
 import { Icon } from '@iconify/react';
+import Img from '../../components/common/Img';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import styles from './AdminLogin.module.css';
 
@@ -52,7 +53,14 @@ const AdminLogin = () => {
       <div className={styles.loginCard}>
         <div className={styles.loginHeader}>
           <div className={styles.loginLogo}>
-            <img src="/images/placeholders/logo-icon-commerce.svg" alt="Icon Commerce College" />
+            <Img
+              src="/images/placeholders/logo-icon-commerce.svg"
+              alt="Icon Commerce College"
+              width="360"
+              height="96"
+              priority
+              fallback="logo-icon-commerce"
+            />
           </div>
           <span className={styles.accentRule} aria-hidden="true" />
           <h1 className={styles.loginTitle}>Admin Panel</h1>

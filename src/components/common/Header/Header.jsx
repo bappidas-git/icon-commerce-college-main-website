@@ -20,6 +20,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Container } from '@mui/material';
 import { Icon } from '@iconify/react';
 
+import Img from '../Img';
 import { mainNav } from '../../../data/navigation';
 import {
   collegeInfo,
@@ -250,7 +251,15 @@ const Header = ({ mobileMenuOpen = false, onMobileMenuToggle }) => {
         <Container maxWidth="xl" className={styles.mainInner}>
           {/* Logo + wordmark */}
           <NavLink to="/" className={styles.brand} aria-label="Icon Commerce College — Home">
-            <img src={LOGO_URL} alt="Icon Commerce College logo" className={styles.logo} />
+            <Img
+              src={LOGO_URL}
+              alt="Icon Commerce College logo"
+              className={styles.logo}
+              width="360"
+              height="96"
+              priority
+              fallback="logo-icon-commerce"
+            />
             <span className={styles.wordmark}>
               <span className={styles.wordmarkName}>Icon Commerce College</span>
               <span className={styles.wordmarkSub}>{collegeInfo.assameseName}</span>

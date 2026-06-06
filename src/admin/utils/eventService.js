@@ -332,3 +332,30 @@ export const deleteEvents = (ids = []) => {
   }
   return true;
 };
+
+/**
+ * Export events to a self-describing JSON file and trigger a client-side
+ * download (used by the admin Settings → Data export). Mirrors exportLeadsCSV
+ * in leadService: the service owns its export and the download itself. The
+ * record shape matches what events.php stores, so the file doubles as a
+ * portable backup. Defaults to the full server-backed cache.
+ */
+export const exportEventsJSON = (events) => {
+  const rows = Array.isArray(events) ? events : getEvents();
+  const payload = {
+    type: "events",
+    exported_at: new Date().toISOString(),
+    count: rows.length,
+    events: rows,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {
+    type: "application/json;charset=utf-8;",
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  const date = new Date().toISOString().split("T")[0];
+  link.href = url;
+  link.download = `events_export_${date}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+};

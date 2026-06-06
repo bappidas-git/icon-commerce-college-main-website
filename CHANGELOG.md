@@ -4,6 +4,48 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Phase 3.9 — Admin settings & help
+
+Thirty-third prompt of the rebuild (`prompts/33-admin-settings-and-help.md`). The
+placeholder Settings page is rebuilt into a proper **Settings & Help** control
+room (`/admin/settings`) — the in-app docs that replace the deleted CIT guideline
+content, plus session, connection and export conveniences. Built entirely on the
+shared admin UI kit and the existing data services (no new dependencies).
+
+**`src/admin/pages/Settings.jsx`** — five sections:
+
+- **Account** — the logged-in username (read-only, env `REACT_APP_ADMIN_USERNAME`),
+  a "change password" note explaining the password is set via
+  `REACT_APP_ADMIN_PASSWORD` in `.env` (no in-app store), live session info
+  (signed-in time, expiry and time remaining, read from the stored auth) and a
+  confirmed sign-out.
+- **Connection status** — pings the **leads / notices / events** stores via each
+  service's own `?action=list` sync and shows a green / amber / red pill per
+  endpoint (Connected · Not configured · Unauthorized 401 · No server key 503 ·
+  Unreachable), plus a dedicated **admin-key handshake** row derived from the
+  leads ping (Verified / Key mismatch / Server missing key / Not set). A
+  **Re-check** button re-runs all three; the same pass warms the caches the
+  exports read and feeds a "stores online" stat tile.
+- **Data export** — client-side downloads for **Leads CSV**, **Notices JSON** and
+  **Events JSON** (each disabled until its store has records); nothing is uploaded.
+- **Help & guide** — concise collapsible (`<details>`) docs: how leads are
+  captured & stored (PHP/JSON single source of truth), how to post a notice/event
+  and where they appear publicly, how to swap `/images/placeholders/*`, and
+  deployment basics (PHP host, writable `api/data/`, env vars). Points to the full
+  `/docs` (prompt 39).
+- **Branding & content** — a read-only snapshot of `collegeInfo` with a note that
+  content is edited in `src/data/*` (no database).
+
+**`src/admin/utils/noticeService.js` / `eventService.js`** — added
+`exportNoticesJSON()` / `exportEventsJSON()`, mirroring `exportLeadsCSV` in
+`leadService` (the service owns its export + the download), producing
+self-describing JSON backups whose shape matches the server stores.
+
+**`src/admin/pages/Settings.module.css`** — restyled for the new sections (status
+pills, export tiles, `<details>` guide, key/value rows, info callouts), staying on
+the navy + gold tokens and guarding all motion with `prefers-reduced-motion`. No
+references to the removed CIT guides remain; `npm run build` stays green.
+
 ### Phase 3.8 — Wire public notices/events to live APIs
 
 Thirty-second prompt of the rebuild (`prompts/32-public-dynamic-wiring.md`). The

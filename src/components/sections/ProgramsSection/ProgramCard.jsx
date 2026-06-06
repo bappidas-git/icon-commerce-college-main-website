@@ -25,6 +25,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import Img from '../../common/Img';
 import { useModal } from '../../../context/ModalContext';
 import styles from './ProgramCard.module.css';
 
@@ -50,11 +51,10 @@ const ProgramCard = ({ course, source = 'home-programs', showEligibility = false
     <article className={styles.card}>
       {/* Media — placeholder course image + gold shortName badge */}
       <div className={styles.media}>
-        <img
+        <Img
           src={course.image}
           alt={`${course.name} at Icon Commerce College`}
           className={styles.image}
-          loading="lazy"
         />
         <span className={styles.shortBadge}>{course.shortName}</span>
         {course.badge && <span className={styles.ribbon}>{course.badge}</span>}

@@ -31,13 +31,31 @@ export function placeholder(name) {
 }
 
 /**
+ * Real brand logo (hosted on Cloudinary). Two variants by background:
+ *   normal — for LIGHT backgrounds (header when solid, mobile drawer, admin
+ *            login, the splash loader)
+ *   white  — for DARK backgrounds (header over the hero, footer)
+ * The wide horizontal lockup already includes the college name, so components
+ * render the logo on its own — no separate wordmark text beside it.
+ */
+export const LOGO = {
+  normal:
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1777447286/icon-logo_ssglnp.png',
+  white:
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1777456540/icon-logo-white_cgp9nr.png',
+};
+
+/** Intrinsic logo dimensions (both variants) for CLS-safe width/height. */
+export const LOGO_SIZE = { width: 441, height: 74 };
+
+/**
  * Canonical map of logical (camelCase) keys → placeholder URLs.
  * Mirrors the §7 manifest so components reference `IMAGES.heroCampus`
  * instead of raw strings.
  */
 export const IMAGES = {
   // Brand
-  logo: placeholder('logo-icon-commerce'),
+  logo: LOGO.normal,
   favicon: placeholder('favicon'),
 
   // Hero

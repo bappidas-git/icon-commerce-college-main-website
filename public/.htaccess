@@ -1,0 +1,102 @@
+# ============================================================================
+# Icon Commerce College — Apache config for the production (PHP) host
+# ----------------------------------------------------------------------------
+# Ships in the build root (CRA copies public/.htaccess → build/.htaccess).
+# Three jobs:
+#   1. SPA fallback  — deep links to client-side routes (/courses, /admissions,
+#      /admin/...) serve index.html so React Router can take over.
+#   2. Caching       — long, immutable cache for content-hashed build assets;
+#      always-revalidate for the HTML shell + service worker.
+#   3. Compression   — gzip text assets on the wire.
+# The PHP API under /api/ is left completely untouched.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# 1. SPA fallback rewrite
+# ----------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Avoid Apache MultiViews guessing extensions and shadowing the rewrite.
+  Options -MultiViews
+
+  # Never rewrite the PHP API — let leads.php / notices.php / events.php run.
+  RewriteRule ^api/ - [L]
+
+  # Serve real files and directories as-is (hashed JS/CSS, images, fonts…).
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything else is a client-side route → hand it to the SPA entry point.
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ----------------------------------------------------------------------------
+# 2. Caching
+# ----------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  # Content-hashed build assets (CRA emits these under /static with a hash in
+  # the filename) — safe to cache for a year and mark immutable.
+  <FilesMatch "\.(?:js|mjs|css|woff2?|ttf|otf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Static images that are NOT content-hashed (e.g. /images/placeholders/*) —
+  # cache for a month so a production image swap is picked up reasonably soon.
+  <FilesMatch "\.(?:jpg|jpeg|png|gif|webp|avif|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+  # The HTML shell, service worker and manifest must always revalidate, so a
+  # new deploy (with new hashed asset names) is picked up on the next visit.
+  # NOTE: keep this block LAST so it overrides the generic rules above.
+  <FilesMatch "(?:^|/)(?:index\.html|service-worker\.js|manifest\.json)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+
+  # Lightweight, safe security headers (also help the Lighthouse Best-Practices
+  # audit). These govern how *our* pages behave; they don't affect the embedded
+  # Google Maps iframe.
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# Fallback expiry for hosts without mod_headers (mirrors the Cache-Control above).
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                "access plus 1 year"
+  ExpiresByType application/javascript  "access plus 1 year"
+  ExpiresByType text/javascript         "access plus 1 year"
+  ExpiresByType font/woff2              "access plus 1 year"
+  ExpiresByType font/woff              "access plus 1 year"
+  ExpiresByType image/jpeg             "access plus 1 month"
+  ExpiresByType image/png              "access plus 1 month"
+  ExpiresByType image/gif              "access plus 1 month"
+  ExpiresByType image/webp             "access plus 1 month"
+  ExpiresByType image/avif             "access plus 1 month"
+  ExpiresByType image/svg+xml          "access plus 1 month"
+  ExpiresByType image/x-icon           "access plus 1 month"
+  ExpiresByType text/html              "access plus 0 seconds"
+  ExpiresByType application/json       "access plus 0 seconds"
+</IfModule>
+
+# Make sure modern formats carry the right MIME type for caching/compression.
+<IfModule mod_mime.c>
+  AddType image/webp                .webp
+  AddType image/avif                .avif
+  AddType font/woff2                .woff2
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# ----------------------------------------------------------------------------
+# 3. Compression
+# ----------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript text/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml application/xml application/rss+xml
+  AddOutputFilterByType DEFLATE font/ttf font/otf application/vnd.ms-fontobject
+</IfModule>

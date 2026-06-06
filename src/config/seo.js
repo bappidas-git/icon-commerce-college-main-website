@@ -28,7 +28,7 @@ export const seoConfig = {
     name: "Icon Commerce College",
     alternateName: "ICC",
     url: "https://iconcommercecollege.in",
-    logo: "/images/placeholders/logo-icon-commerce.svg",
+    logo: "https://res.cloudinary.com/dn9gyaiik/image/upload/v1777447286/icon-logo_ssglnp.png",
     phone: "+91 93653 75782",
     email: "iconcom.2004@gmail.com",
     description:

@@ -23,6 +23,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import Section from '../../common/Section/Section';
+import Img from '../../common/Img';
 import { Reveal, RevealGroup } from '../../common/Reveal/Reveal';
 import { leadershipData } from '../../../data/leadershipData';
 import { slugify } from '../../../utils/formatters';
@@ -69,13 +70,13 @@ const LeadershipTeaser = () => (
         <Reveal as="li" key={leader.slug} className={styles.cell} variant="fadeUp">
           <article className={styles.card}>
             <div className={styles.avatarWrap}>
-              <img
+              <Img
                 src={leader.image}
                 alt={`${leader.name}, ${leader.role}`}
                 className={styles.avatar}
-                loading="lazy"
                 width="96"
                 height="96"
+                fallback="faculty-placeholder"
               />
               <span className={styles.quoteMark} aria-hidden="true">
                 <Icon icon="mdi:format-quote-close" />

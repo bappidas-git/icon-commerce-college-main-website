@@ -20,6 +20,8 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Container } from '@mui/material';
 import { Icon } from '@iconify/react';
 
+import Img from '../Img';
+import { LOGO, LOGO_SIZE } from '../../../utils/assets';
 import { mainNav } from '../../../data/navigation';
 import {
   collegeInfo,
@@ -34,7 +36,6 @@ import {
 } from '../../../utils/gtm';
 import styles from './Header.module.css';
 
-const LOGO_URL = '/images/placeholders/logo-icon-commerce.svg';
 const SCROLL_THRESHOLD = 24;
 
 /** Returns true for absolute http(s) URLs (placeholder TODOs resolve to false). */
@@ -248,13 +249,18 @@ const Header = ({ mobileMenuOpen = false, onMobileMenuToggle }) => {
       {/* ── Main bar ────────────────────────────────────────────── */}
       <div className={styles.mainBar}>
         <Container maxWidth="xl" className={styles.mainInner}>
-          {/* Logo + wordmark */}
+          {/* Logo — white variant over the dark hero, normal once solid. The
+              wide lockup already includes the college name, so no wordmark. */}
           <NavLink to="/" className={styles.brand} aria-label="Icon Commerce College — Home">
-            <img src={LOGO_URL} alt="Icon Commerce College logo" className={styles.logo} />
-            <span className={styles.wordmark}>
-              <span className={styles.wordmarkName}>Icon Commerce College</span>
-              <span className={styles.wordmarkSub}>{collegeInfo.assameseName}</span>
-            </span>
+            <Img
+              src={solid ? LOGO.normal : LOGO.white}
+              alt="Icon Commerce College"
+              className={styles.logo}
+              width={LOGO_SIZE.width}
+              height={LOGO_SIZE.height}
+              priority
+              fallback="logo-icon-commerce"
+            />
           </NavLink>
 
           {/* Desktop navigation */}

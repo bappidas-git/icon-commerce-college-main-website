@@ -25,6 +25,7 @@ import PageHero from '../../components/common/PageHero/PageHero';
 import Section from '../../components/common/Section/Section';
 import Container from '../../components/common/Container/Container';
 import Button from '../../components/common/Button/Button';
+import Img from '../../components/common/Img';
 import { Reveal, RevealGroup } from '../../components/common/Reveal/Reveal';
 
 import FacilityCard from './FacilityCard';
@@ -130,11 +131,10 @@ const Facilities = () => {
                   amount={0.3}
                 >
                   <figure className={styles.spotlightFigure}>
-                    <img
+                    <Img
                       src={spotlight.image}
                       alt={spotlight.alt}
                       className={styles.spotlightImage}
-                      loading="lazy"
                     />
                     <span className={styles.spotlightBadge} aria-hidden="true">
                       <Icon icon={spotlight.icon} />
@@ -189,11 +189,10 @@ const Facilities = () => {
               variant="fadeUp"
             >
               <figure className={styles.glimpse}>
-                <img
+                <Img
                   src={glimpse.image}
                   alt={glimpse.title}
                   className={styles.glimpseImage}
-                  loading="lazy"
                 />
                 <figcaption className={styles.glimpseCaption}>
                   <span className={styles.glimpseTitle}>{glimpse.title}</span>

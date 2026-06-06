@@ -26,6 +26,7 @@ import PageHero from '../../components/common/PageHero/PageHero';
 import Section from '../../components/common/Section/Section';
 import Container from '../../components/common/Container/Container';
 import Button from '../../components/common/Button/Button';
+import Img from '../../components/common/Img';
 import { Reveal, RevealGroup } from '../../components/common/Reveal/Reveal';
 
 import DepartmentCard from './DepartmentCard';
@@ -182,11 +183,10 @@ const Departments = () => {
                   amount={0.3}
                 >
                   <figure className={styles.streamFigure}>
-                    <img
+                    <Img
                       src={stream.image}
                       alt={`${stream.label} stream at Icon Commerce College`}
                       className={styles.streamImage}
-                      loading="lazy"
                     />
                     <span className={styles.streamBadge} aria-hidden="true">
                       <Icon icon={stream.icon} />

@@ -6,6 +6,7 @@
 import React, { forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import { Icon } from '@iconify/react';
+import Img from '../Img';
 import styles from './Card.module.css';
 
 const Card = forwardRef(({
@@ -195,7 +196,7 @@ export const CardFooter = ({ children, className = '' }) => (
 
 export const CardImage = ({ src, alt, className = '' }) => (
   <div className={`${styles.cardImageWrapper} ${className}`}>
-    <img src={src} alt={alt} className={styles.cardImage} loading="lazy" />
+    <Img src={src} alt={alt} className={styles.cardImage} />
   </div>
 );
 
@@ -272,11 +273,11 @@ export const ProfileCard = ({
   <Card className={`${styles.profileCard} ${className}`} {...props}>
     {image && (
       <div className={styles.avatarWrapper}>
-        <img
+        <Img
           src={image}
           alt={alt || name}
           className={styles.avatar}
-          loading="lazy"
+          fallback="faculty-placeholder"
         />
       </div>
     )}

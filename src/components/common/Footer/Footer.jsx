@@ -19,6 +19,9 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 
+import Img from "../Img";
+import { LOGO, LOGO_SIZE } from "../../../utils/assets";
+
 import {
   collegeInfo,
   phoneHref,
@@ -36,7 +39,6 @@ import {
 } from "../../../utils/gtm";
 import styles from "./Footer.module.css";
 
-const LOGO_URL = "/images/placeholders/logo-icon-commerce.svg";
 const MAP_PLACEHOLDER = "/images/placeholders/map-location.svg";
 
 /** Returns true for absolute http(s) URLs (placeholder TODOs resolve to false). */
@@ -460,17 +462,14 @@ const Footer = () => {
                   className={styles.logoWrapper}
                   aria-label={`${collegeInfo.name} — Home`}
                 >
-                  <img
-                    src={LOGO_URL}
-                    alt={`${collegeInfo.name} logo`}
+                  <Img
+                    src={LOGO.white}
+                    alt={`${collegeInfo.name}`}
                     className={styles.logo}
+                    width={LOGO_SIZE.width}
+                    height={LOGO_SIZE.height}
+                    fallback="logo-icon-commerce"
                   />
-                  <span className={styles.brandText}>
-                    <span className={styles.brandName}>{collegeInfo.name}</span>
-                    <span className={styles.brandSub}>
-                      {collegeInfo.assameseName}
-                    </span>
-                  </span>
                 </Link>
                 <p className={styles.tagline}>
                   {collegeInfo.taglineSecondary} Affiliated to{" "}
@@ -664,10 +663,10 @@ const Footer = () => {
                   className={styles.mapThumb}
                   aria-label="View Icon Commerce College on Google Maps"
                 >
-                  <img
+                  <Img
                     src={MAP_PLACEHOLDER}
                     alt="Map showing the location of Icon Commerce College, Chandmari, Guwahati"
-                    loading="lazy"
+                    fallback="map-location"
                   />
                   <span className={styles.mapThumbOverlay}>
                     <Icon icon="mdi:map-marker-radius" aria-hidden="true" />

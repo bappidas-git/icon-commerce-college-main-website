@@ -16,6 +16,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Icon } from '@iconify/react';
 
 import Modal from '../../components/common/Modal/Modal';
+import Img from '../../components/common/Img';
 import { Reveal } from '../../components/common/Reveal/Reveal';
 import styles from './PhotoGallery.module.css';
 
@@ -122,11 +123,10 @@ const PhotoGallery = ({ photos = [], categories = [] }) => {
                 onClick={() => openLightbox(index)}
                 aria-label={`Open “${photo.caption}” in the lightbox`}
               >
-                <img
+                <Img
                   src={photo.src}
                   alt={photo.caption}
                   className={styles.tileImage}
-                  loading="lazy"
                 />
                 <span className={styles.tileOverlay} aria-hidden="true">
                   <span className={styles.tileCaption}>{photo.caption}</span>
@@ -172,10 +172,11 @@ const PhotoGallery = ({ photos = [], categories = [] }) => {
                 </button>
               )}
 
-              <img
+              <Img
                 src={activePhoto.src}
                 alt={activePhoto.caption}
                 className={styles.stageImage}
+                priority
               />
 
               {count > 1 && (

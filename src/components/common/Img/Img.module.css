@@ -1,0 +1,51 @@
+/* ============================================
+   Img.module.css — load-state shimmer for <Img>
+   Icon Commerce College
+   --------------------------------------------
+   Only the load-state background lives here; sizing, object-fit,
+   border-radius etc. stay on each caller's own className, so <Img> never
+   alters layout. The shimmer respects the element's border-radius (an
+   avatar's circle clips the gold sheen too) and is reduced-motion safe.
+   ============================================ */
+
+/* Marker/base class — intentionally layout-neutral. */
+.img {
+  background-repeat: no-repeat;
+}
+
+/* Gold → white shimmer shown while the file is in flight. The base is the
+   gold tint (--color-accent-soft) with a moving white highlight band. */
+.loading {
+  background-color: var(--color-accent-soft, #f3e9d2);
+  background-image: linear-gradient(
+    100deg,
+    rgba(243, 233, 210, 0) 25%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(243, 233, 210, 0) 75%
+  );
+  background-size: 220% 100%;
+  background-position: 180% 0;
+  animation: iccImgShimmer 1.25s ease-in-out infinite;
+}
+
+/* Once decoded, drop the placeholder so the real pixels show cleanly. */
+.loaded {
+  background-image: none;
+  background-color: transparent;
+  animation: none;
+}
+
+@keyframes iccImgShimmer {
+  from {
+    background-position: 180% 0;
+  }
+  to {
+    background-position: -80% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading {
+    animation: none;
+  }
+}

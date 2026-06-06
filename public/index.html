@@ -90,8 +90,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.iconify.design" />
+    <!-- Brand logo is served from Cloudinary — warm the connection early. -->
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     <link
       rel="preload"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap"
@@ -104,6 +107,22 @@
         rel="stylesheet"
       />
     </noscript>
+
+    <!-- =========================================
+         Preload the Home hero (LCP) image
+         The hero is painted as a CSS background-image, which the browser
+         discovers late (after JS renders). Preloading it here, at high
+         priority, lets the fetch start during HTML parse so it owns the LCP.
+         PRODUCTION SWAP: when a real hero-campus photo replaces the
+         placeholder, update this href + `type` to match (see docs/images.md).
+         ========================================= -->
+    <link
+      rel="preload"
+      as="image"
+      href="%PUBLIC_URL%/images/placeholders/hero-campus.svg"
+      type="image/svg+xml"
+      fetchpriority="high"
+    />
 
     <!-- =========================================
          Page Title
@@ -123,7 +142,7 @@
         "name": "Icon Commerce College",
         "alternateName": "ICC",
         "url": "https://iconcommercecollege.in",
-        "logo": "https://iconcommercecollege.in/images/placeholders/logo-icon-commerce.svg",
+        "logo": "https://res.cloudinary.com/dn9gyaiik/image/upload/v1777447286/icon-logo_ssglnp.png",
         "image": "https://iconcommercecollege.in/images/placeholders/og-default.jpg",
         "description": "Commerce, Arts & Computer Application college established in 2004, affiliated to Gauhati University (NEP 2020 / FYUGP).",
         "telephone": "+91-9365375782",
@@ -403,13 +422,20 @@
     >
       <div class="loader-wrapper">
         <div class="loader-brand">
-          <img
-            src="%PUBLIC_URL%/images/placeholders/logo-icon-commerce.svg"
-            alt="Icon Commerce College"
-            class="loader-logo-img"
-            width="220"
-            height="auto"
-          />
+          <picture>
+            <!-- White lockup if the OS is in dark mode (loader turns navy). -->
+            <source
+              media="(prefers-color-scheme: dark)"
+              srcset="https://res.cloudinary.com/dn9gyaiik/image/upload/v1777456540/icon-logo-white_cgp9nr.png"
+            />
+            <img
+              src="https://res.cloudinary.com/dn9gyaiik/image/upload/v1777447286/icon-logo_ssglnp.png"
+              alt="Icon Commerce College"
+              class="loader-logo-img"
+              width="441"
+              height="74"
+            />
+          </picture>
           <p class="loader-tagline">Where Knowledge Meets Character</p>
         </div>
 

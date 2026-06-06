@@ -14,6 +14,7 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import Section from '../../common/Section/Section';
+import Img from '../../common/Img';
 import { Reveal, RevealGroup } from '../../common/Reveal/Reveal';
 import { placeholder } from '../../../utils/assets';
 import styles from './VisionMission.module.css';
@@ -69,11 +70,11 @@ const VisionMissionSection = () => (
 
       {/* Side accent image (desktop) */}
       <Reveal className={styles.media} variant="slideInRight">
-        <img
+        <Img
           src={placeholder('vision-mission')}
           alt="Icon Commerce College — vision and mission"
           className={styles.image}
-          loading="lazy"
+          fallback="vision-mission"
         />
       </Reveal>
     </div>

@@ -169,26 +169,9 @@
 .logo {
   height: 44px;
   width: auto;
-  /* Footer sits on dark navy — render the brand logo in white */
-  filter: brightness(0) invert(1);
-}
-
-.brandText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
-
-.brandName {
-  font-family: var(--font-heading);
-  font-size: var(--fs-base);
-  font-weight: var(--fw-bold);
-  color: var(--color-white);
-}
-
-.brandSub {
-  font-size: var(--fs-xs);
-  color: var(--color-accent);
+  object-fit: contain;
+  /* Footer sits on dark navy — we use the supplied WHITE logo (LOGO.white),
+     so no CSS colour filter is needed. */
 }
 
 .tagline {

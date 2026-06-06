@@ -14,6 +14,8 @@ import { useLocation, NavLink } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Icon } from '@iconify/react';
 
+import Img from '../Img';
+import { LOGO, LOGO_SIZE } from '../../../utils/assets';
 import { mainNav } from '../../../data/navigation';
 import {
   collegeInfo,
@@ -23,8 +25,6 @@ import {
 } from '../../../data/collegeInfo';
 import { trackPhoneClick, trackCTAClick, trackNavigation } from '../../../utils/gtm';
 import styles from './MobileDrawer.module.css';
-
-const LOGO_URL = '/images/placeholders/logo-icon-commerce.svg';
 
 const MobileDrawer = ({ open, onClose, onApply }) => {
   const { pathname } = useLocation();
@@ -73,11 +73,14 @@ const MobileDrawer = ({ open, onClose, onApply }) => {
         {/* Header row */}
         <div className={styles.header}>
           <NavLink to="/" className={styles.brand} aria-label="Icon Commerce College — Home">
-            <img src={LOGO_URL} alt="Icon Commerce College logo" className={styles.logo} />
-            <span className={styles.brandText}>
-              <span className={styles.brandName}>Icon Commerce College</span>
-              <span className={styles.brandSub}>{collegeInfo.assameseName}</span>
-            </span>
+            <Img
+              src={LOGO.normal}
+              alt="Icon Commerce College"
+              className={styles.logo}
+              width={LOGO_SIZE.width}
+              height={LOGO_SIZE.height}
+              fallback="logo-icon-commerce"
+            />
           </NavLink>
           <IconButton onClick={onClose} aria-label="Close menu" className={styles.close}>
             <Icon icon="mdi:close" />

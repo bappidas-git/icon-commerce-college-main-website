@@ -31,6 +31,7 @@ import useSeo from '../../components/common/SEO/useSeo';
 import PageHero from '../../components/common/PageHero/PageHero';
 import Section from '../../components/common/Section/Section';
 import Container from '../../components/common/Container/Container';
+import Img from '../../components/common/Img';
 import { Reveal, RevealGroup } from '../../components/common/Reveal/Reveal';
 
 import { leadershipData } from '../../data/leadershipData';
@@ -98,13 +99,13 @@ const Leadership = () => {
                 aria-label={`Read the message from ${leader.name}, ${leader.role}`}
               >
                 <span className={styles.cardAvatarWrap}>
-                  <img
+                  <Img
                     src={leader.image}
                     alt={`${leader.name}, ${leader.role}`}
                     className={styles.cardAvatar}
-                    loading="lazy"
                     width="112"
                     height="112"
+                    fallback="faculty-placeholder"
                   />
                 </span>
                 <h3 className={styles.cardName}>{leader.name}</h3>
@@ -144,11 +145,11 @@ const Leadership = () => {
                   variant={reversed ? 'slideInRight' : 'slideInLeft'}
                 >
                   <figure className={styles.portraitFigure}>
-                    <img
+                    <Img
                       src={leader.image}
                       alt={`${leader.name}, ${leader.role} at Icon Commerce College`}
                       className={styles.portraitImg}
-                      loading="lazy"
+                      fallback="faculty-placeholder"
                     />
                     <span className={styles.portraitQuote} aria-hidden="true">
                       <Icon icon="mdi:format-quote-open" />

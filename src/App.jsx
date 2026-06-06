@@ -42,13 +42,19 @@ import ProtectedRoute from './admin/components/ProtectedRoute';
 const Home = lazy(() => import('./pages/Home/Home'));
 const About = lazy(() => import('./pages/About/About'));
 const Leadership = lazy(() => import('./pages/Leadership/Leadership'));
-const Courses = lazy(() => import('./pages/Courses/Courses'));
+
+// Likely-next pages keep their import thunk so lazy() and the idle-time
+// preloader (see effect in <App/>) resolve to the *same* webpack chunk.
+const importCourses = () => import('./pages/Courses/Courses');
+const importAdmissions = () => import('./pages/Admissions/Admissions');
+const Courses = lazy(importCourses);
+
 const CourseDetail = lazy(() => import('./pages/CourseDetail/CourseDetail'));
 const Departments = lazy(() => import('./pages/Departments/Departments'));
 const Faculty = lazy(() => import('./pages/Faculty/Faculty'));
 const Facilities = lazy(() => import('./pages/Facilities/Facilities'));
 const Gallery = lazy(() => import('./pages/Gallery/Gallery'));
-const Admissions = lazy(() => import('./pages/Admissions/Admissions'));
+const Admissions = lazy(importAdmissions);
 const Notices = lazy(() => import('./pages/Notices/Notices'));
 const Events = lazy(() => import('./pages/Events/Events'));
 const Contact = lazy(() => import('./pages/Contact/Contact'));
@@ -117,6 +123,21 @@ const App = () => {
         initialLoader.style.display = 'none';
       }, 400);
     }
+  }, []);
+
+  // Idle-preload the most likely next routes (Courses + Admissions) so a click
+  // from Home navigates instantly. Runs only when the browser is idle so it
+  // never competes with the initial render or the LCP; falls back to a delayed
+  // timeout where requestIdleCallback is unavailable (e.g. Safari).
+  useEffect(() => {
+    const ric =
+      window.requestIdleCallback || ((cb) => window.setTimeout(cb, 1500));
+    const cic = window.cancelIdleCallback || window.clearTimeout;
+    const handle = ric(() => {
+      importCourses();
+      importAdmissions();
+    });
+    return () => cic(handle);
   }, []);
 
   return (

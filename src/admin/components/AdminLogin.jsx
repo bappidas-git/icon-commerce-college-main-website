@@ -11,6 +11,7 @@ import { Navigate } from 'react-router-dom';
 import { TextField, Checkbox, CircularProgress } from '@mui/material';
 import { Icon } from '@iconify/react';
 import Img from '../../components/common/Img';
+import { LOGO, LOGO_SIZE } from '../../utils/assets';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import styles from './AdminLogin.module.css';
 
@@ -54,10 +55,10 @@ const AdminLogin = () => {
         <div className={styles.loginHeader}>
           <div className={styles.loginLogo}>
             <Img
-              src="/images/placeholders/logo-icon-commerce.svg"
+              src={LOGO.normal}
               alt="Icon Commerce College"
-              width="360"
-              height="96"
+              width={LOGO_SIZE.width}
+              height={LOGO_SIZE.height}
               priority
               fallback="logo-icon-commerce"
             />

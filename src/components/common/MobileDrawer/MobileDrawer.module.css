@@ -48,26 +48,6 @@
   flex-shrink: 0;
 }
 
-.brandText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  min-width: 0;
-}
-
-.brandName {
-  font-family: var(--font-heading);
-  font-weight: var(--fw-bold);
-  font-size: 0.95rem;
-  color: var(--color-primary);
-}
-
-.brandSub {
-  font-size: 0.72rem;
-  color: var(--color-text-muted);
-  margin-top: 2px;
-}
-
 .close {
   color: var(--color-primary) !important;
   flex-shrink: 0;

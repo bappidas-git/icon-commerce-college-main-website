@@ -168,46 +168,13 @@ a.utilityItem:hover {
   height: 48px;
   width: auto;
   object-fit: contain;
-  transition: filter var(--transition-base), height var(--transition-base);
-}
-
-.header.transparent .logo {
-  filter: brightness(0) invert(1);
+  /* The white/normal variant is swapped by `src` (see Header.jsx) — no CSS
+     colour filter, so the supplied white logo renders as-is over the hero. */
+  transition: height var(--transition-base);
 }
 
 .header.scrolled .logo {
   height: 42px;
-}
-
-.wordmark {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-.wordmarkName {
-  font-family: var(--font-heading);
-  font-weight: var(--fw-bold);
-  font-size: 1.15rem;
-  color: var(--color-primary);
-  letter-spacing: -0.01em;
-  transition: color var(--transition-base);
-}
-
-.wordmarkSub {
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
-  margin-top: 2px;
-  transition: color var(--transition-base);
-}
-
-.header.transparent .wordmarkName {
-  color: #ffffff;
-}
-
-.header.transparent .wordmarkSub {
-  color: rgba(255, 255, 255, 0.8);
 }
 
 /* ── Desktop nav ──────────────────────────────────────────────── */
@@ -420,22 +387,8 @@ a.utilityItem:focus-visible {
 }
 
 @media (max-width: 600px) {
-  .wordmarkName {
-    font-size: 1rem;
-  }
-
-  .wordmarkSub {
-    font-size: 0.72rem;
-  }
-
   .logo {
     height: 40px;
-  }
-}
-
-@media (max-width: 380px) {
-  .wordmarkSub {
-    display: none;
   }
 }
 

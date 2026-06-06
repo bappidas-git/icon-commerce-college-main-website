@@ -68,6 +68,21 @@ CI, since the sandbox has no Chrome), `images.md` (production swap workflow +
 recommended dimensions per slot) and `deployment.md` (the `.htaccess` explained,
 env vars, PHP-host requirements), plus an index `README.md`.
 
+**Real brand logo + wordmark removal** — the first production asset swap, using
+the client-supplied logo. `src/utils/assets.js` now exports `LOGO`
+(`normal` for light backgrounds, `white` for dark) + `LOGO_SIZE` (441×74) as the
+single source. The Header swaps the variant by background (white over the hero,
+normal once solid — replacing the old `filter: brightness(0) invert(1)` trick),
+the Footer uses the white variant (its colour filter removed too), and the
+MobileDrawer / admin login / splash loader (`<picture>` with a dark-mode white
+source) / SEO + JSON-LD `logo` all point at the real asset. Because the wide
+lockup already includes the college name, the **separate wordmark text beside
+the logo was removed** from the Header, MobileDrawer and Footer (the `<img>`
+`alt` still carries the name for a11y), with the now-dead wordmark/brand-text
+CSS deleted. `res.cloudinary.com` is preconnected in `index.html`, and `<Img>`
+now skips the shimmer for `priority` images so the eager logo never flickers
+when its `src` swaps on scroll.
+
 ### Fixes — lead capture, admin notices/events & faculty filter
 
 Bugs found while testing the live site (reported with screenshots). Root-caused

@@ -90,9 +90,12 @@ const Img = forwardRef(
     const showFallback = erroredRef.current || !src;
     const resolvedSrc = showFallback ? resolveFallback(fallback) : src;
 
+    // Priority images load eagerly and should appear instantly — skip the
+    // shimmer entirely so they never flash a placeholder (and so swapping
+    // `src`, e.g. the header logo white⇄normal on scroll, doesn't flicker).
     const classNames = [
       styles.img,
-      status === 'loading' ? styles.loading : styles.loaded,
+      priority ? '' : status === 'loading' ? styles.loading : styles.loaded,
       className,
     ]
       .filter(Boolean)

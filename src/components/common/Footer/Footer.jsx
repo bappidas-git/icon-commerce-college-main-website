@@ -20,6 +20,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "@iconify/react";
 
 import Img from "../Img";
+import { LOGO, LOGO_SIZE } from "../../../utils/assets";
 
 import {
   collegeInfo,
@@ -38,7 +39,6 @@ import {
 } from "../../../utils/gtm";
 import styles from "./Footer.module.css";
 
-const LOGO_URL = "/images/placeholders/logo-icon-commerce.svg";
 const MAP_PLACEHOLDER = "/images/placeholders/map-location.svg";
 
 /** Returns true for absolute http(s) URLs (placeholder TODOs resolve to false). */
@@ -463,19 +463,13 @@ const Footer = () => {
                   aria-label={`${collegeInfo.name} — Home`}
                 >
                   <Img
-                    src={LOGO_URL}
-                    alt={`${collegeInfo.name} logo`}
+                    src={LOGO.white}
+                    alt={`${collegeInfo.name}`}
                     className={styles.logo}
-                    width="360"
-                    height="96"
+                    width={LOGO_SIZE.width}
+                    height={LOGO_SIZE.height}
                     fallback="logo-icon-commerce"
                   />
-                  <span className={styles.brandText}>
-                    <span className={styles.brandName}>{collegeInfo.name}</span>
-                    <span className={styles.brandSub}>
-                      {collegeInfo.assameseName}
-                    </span>
-                  </span>
                 </Link>
                 <p className={styles.tagline}>
                   {collegeInfo.taglineSecondary} Affiliated to{" "}

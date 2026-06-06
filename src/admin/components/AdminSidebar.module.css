@@ -3,14 +3,19 @@
    ============================================ */
 
 .sidebar {
-  width: 252px;
+  width: var(--admin-sidebar-width, 252px);
   flex-shrink: 0;
   background: linear-gradient(180deg, #1A2A52 0%, #111d3a 100%);
   color: #fff;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  /* Fixed, not sticky: the site-wide `overflow-x: hidden` on html/body
+     establishes a scroll container that breaks `position: sticky`, so the
+     sidebar scrolled away with the page. `fixed` pins it to the viewport;
+     `.main` is offset by the sidebar width on desktop so content clears it. */
+  position: fixed;
   top: 0;
+  left: 0;
   height: 100vh;
   z-index: 120;
 }

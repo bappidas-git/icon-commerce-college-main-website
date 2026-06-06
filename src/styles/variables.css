@@ -334,6 +334,7 @@
   --admin-bg: #F7F8FB;
   --admin-card-bg: #FFFFFF;
   --admin-border: #E6E9F0;
+  --admin-sidebar-width: 252px; /* fixed desktop sidebar width; .main offsets by this */
   --admin-text-primary: #14233D;
   --admin-text-secondary: #5B6678;
   --admin-text-muted: #8E9BAD;

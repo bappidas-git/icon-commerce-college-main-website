@@ -14,6 +14,17 @@ overflow guards, table scroll-wrappers, `clamp()` heroes and mobile-FAB handling
 already solid, so this pass focuses on motion-reduction, focus management and
 colour contrast. `npm run build` stays green.
 
+**Admin layout — fixed desktop sidebar**
+
+- **`src/admin/components/AdminSidebar.module.css` / `AdminLayout.module.css` /
+  `variables.css`** — the desktop admin sidebar scrolled away with the page,
+  leaving an empty gap at the bottom. It used `position: sticky`, which is
+  silently broken by the site-wide `overflow-x: hidden` on `html`/`body` (that
+  establishes a scroll container). Switched the sidebar to `position: fixed`
+  (immune to ancestor overflow) and offset `.main` by a new
+  `--admin-sidebar-width` (252px) token at ≥1025px so the content clears it. The
+  mobile (<1024px) overlay drawer already used `position: fixed` and is unchanged.
+
 **Animation — `prefers-reduced-motion` everywhere**
 
 - **`src/App.jsx`** — wrapped the app in `<MotionConfig reducedMotion="user">`.

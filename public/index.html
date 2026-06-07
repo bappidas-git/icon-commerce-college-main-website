@@ -116,14 +116,15 @@
          The hero is painted as a CSS background-image, which the browser
          discovers late (after JS renders). Preloading it here, at high
          priority, lets the fetch start during HTML parse so it owns the LCP.
-         PRODUCTION SWAP: when a real hero-campus photo replaces the
-         placeholder, update this href + `type` to match (see docs/images.md).
+         Points at the real campus photo on Cloudinary (res.cloudinary.com is
+         preconnected above). Keep this href + `type` in sync with the
+         `hero-campus` override in src/utils/assets.js (see docs/IMAGES.md).
          ========================================= -->
     <link
       rel="preload"
       as="image"
-      href="%PUBLIC_URL%/images/placeholders/hero-campus.svg"
-      type="image/svg+xml"
+      href="https://res.cloudinary.com/dn9gyaiik/image/upload/v1780835926/Campu_Image_y2ysdx.png"
+      type="image/png"
       fetchpriority="high"
     />
 

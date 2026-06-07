@@ -4,6 +4,31 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Real campus photo wired into every campus image slot
+
+The college supplied a real campus photograph (hosted on Cloudinary, the same
+account as the brand logo). It now replaces the labelled placeholder in **every
+"college campus" slot across the site**, via a single resolver change — no
+component edits.
+
+- **`src/utils/assets.js`** — added `CAMPUS_IMAGE` (the Cloudinary URL) and a
+  small `REAL` override map. `placeholder()` now checks `REAL` first, so the
+  three campus logical names — `hero-campus`, `about-college-building` and
+  `about-campus-aerial` — resolve to the real photo; every other slot keeps its
+  labelled placeholder. This is the "Option B — production swap" path the image
+  docs already described.
+- **Coverage.** Because all call sites funnel through `placeholder()`, the real
+  photo now appears on the **Home** hero + about band, the **Facilities** and
+  **Contact** page heroes, the **About** page hero + profile building, and the
+  **Leadership** page hero. `hero-students` / `hero-library` / course / dept
+  slots are untouched.
+- **`public/index.html`** — repointed the Home-hero LCP `preload` from the
+  `hero-campus.svg` placeholder to the real Cloudinary PNG (`type="image/png"`),
+  so the preload still matches the actual background-image fetch and keeps its
+  high-priority head start. `res.cloudinary.com` was already preconnected.
+- **`docs/IMAGES.md`** — documented the campus photo alongside the existing
+  "brand logo — already real" note.
+
 ### Hotfix — lead capture broken by a PHP parse error + API hardening
 
 **Root cause (leads).** `public/api/leads.php` could not be parsed by PHP, so

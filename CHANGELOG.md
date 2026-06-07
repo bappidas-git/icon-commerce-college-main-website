@@ -4,6 +4,29 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Real Home-section photos wired in (Vision/Mission, programmes, why-choose)
+
+The college supplied real photography for three Home sections (hosted on
+Cloudinary, the same account as the campus photo and brand logo). They now
+replace the labelled placeholders via the existing `REAL` resolver map — the
+"Option B — production swap" path — with no layout changes.
+
+- **`src/utils/assets.js`** — added six entries to the `REAL` override map:
+  `vision-mission`, the four programme images (`course-bcom`, `course-bba`,
+  `course-bca`, `course-ba`) and a new `why-choose-icc` name. The five existing
+  logical names resolve to the real assets with **no component edits**; added a
+  `whyChooseIcc` key to the `IMAGES` manifest for the new slot.
+- **`src/components/sections/WhyChoose/WhyChoose.jsx`** — repointed the "why
+  choose us" media from the shared `hero-students` placeholder to the dedicated
+  `why-choose-icc` photo. A separate name keeps this swap scoped to that one band
+  so the **Faculty / Admissions / Events / Gallery / Courses** page heroes (which
+  also use `hero-students`) are untouched.
+- **Coverage.** Vision &amp; Mission accent + all four programme cards on the
+  **Home** page now show real images; because the course images funnel through
+  `coursesData`, they also appear on the **Courses** cards and detail pages.
+- **`docs/IMAGES.md`** — documented these alongside the existing "campus photo /
+  brand logo — already real" notes.
+
 ### Real campus photo wired into every campus image slot
 
 The college supplied a real campus photograph (hosted on Cloudinary, the same

@@ -34,6 +34,26 @@ const REAL = {
   'hero-campus': CAMPUS_IMAGE,
   'about-college-building': CAMPUS_IMAGE,
   'about-campus-aerial': CAMPUS_IMAGE,
+
+  // Home-section photography — supplied by the college on the same Cloudinary
+  // account as CAMPUS_IMAGE / LOGO above. Each maps a logical placeholder name
+  // to its real asset, so the swap needs no component changes. The four course
+  // images also flow through `coursesData`, so they appear on the Courses cards
+  // and detail pages too, not just the Home programs teaser.
+  'vision-mission':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780838324/Vision_and_Mission_wdxw37.png',
+  'course-bcom':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bcom_xj6moc.png',
+  'course-bba':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-bba_rrxfn3.png',
+  'course-bca':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bca_wxgq8k.png',
+  'course-ba':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-ba_fvbgjm.png',
+  // Dedicated "why choose us" photo. A new logical name (not `hero-students`,
+  // which the page heroes share) so this swap stays scoped to that one band.
+  'why-choose-icc':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780840414/why-choose-icc_tirbx7.png',
 };
 
 /**
@@ -91,6 +111,7 @@ export const IMAGES = {
   aboutBuilding: placeholder('about-college-building'),
   aboutAerial: placeholder('about-campus-aerial'),
   visionMission: placeholder('vision-mission'),
+  whyChooseIcc: placeholder('why-choose-icc'),
 
   // Leadership
   principalMandiraSaha: placeholder('principal-dr-mandira-saha'),

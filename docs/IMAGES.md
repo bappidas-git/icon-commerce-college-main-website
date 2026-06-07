@@ -34,6 +34,14 @@ script generates). So there is **one resolver** to point at real files.
 > hero LCP preload in `index.html` points at the same URL. To change the campus
 > photo, edit `CAMPUS_IMAGE` (and the matching preload `href`).
 
+> **Home-section photos — already real.** The Vision &amp; Mission accent
+> (`vision-mission`), the four programme cards (`course-bcom`, `course-bba`,
+> `course-bca`, `course-ba`) and the "why choose us" band (`why-choose-icc`, a
+> dedicated name so the shared `hero-students` heroes stay untouched) are all
+> live via the same `REAL` map in `src/utils/assets.js`. The course names flow
+> through `coursesData`, so the real images also appear on the Courses cards and
+> detail pages. To change any of them, edit its URL in `REAL`.
+
 ---
 
 ## Option A — drop-in replace (simplest, no code)

@@ -61,11 +61,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $dataDir  = __DIR__ . '/data';
 $dataFile = $dataDir . '/notices.json';
 
-if (!is_dir($dataDir)) {
-    @mkdir($dataDir, 0755, true);
-    @file_put_contents($dataDir . '/.htaccess', "Require all denied\nDeny from all\n");
-    @file_put_contents($dataDir . '/index.html', '');
+// Ensure the JSON store directory exists AND is writable by the PHP/web-server
+// user — the #1 reason a fresh deploy fails to save (the build was uploaded but
+// api/data/ was missing or left non-writable, so every write returns a generic
+// 500). Create it group-writable, self-heal a too-strict mode, and report the
+// exact reason (see ?action=health and the `reason` field on a save failure).
+// Self-contained (no shared include) so this single file is all that must ship.
+function ensure_data_dir($dir) {
+    if (!is_dir($dir)) {
+        if (!@mkdir($dir, 0775, true) && !is_dir($dir)) {
+            return [false, "Could not create data directory ($dir) — its parent is not writable by the PHP/web-server user. Create api/data/ and chmod it to 0775."];
+        }
+        @chmod($dir, 0775);
+        @file_put_contents($dir . '/.htaccess', "Require all denied\nDeny from all\n");
+        @file_put_contents($dir . '/index.html', '');
+    }
+    if (!is_writable($dir)) {
+        @chmod($dir, 0775);
+    }
+    if (!is_writable($dir)) {
+        return [false, "Data directory ($dir) is not writable by the PHP/web-server user. chmod it to 0775 and make sure it is owned by the app user."];
+    }
+    return [true, ''];
 }
+
+list($dataDirOk, $dataDirReason) = ensure_data_dir($dataDir);
 
 // ----- Allowed notice categories (design-system §8) -----
 $ALLOWED_CATEGORIES = ['Admission', 'Examination', 'Event', 'General', 'Result', 'Holiday'];
@@ -84,12 +104,14 @@ $ALLOWED_CATEGORIES = ['Admission', 'Examination', 'Event', 'General', 'Result',
 //   3. The committed default below, which MUST match REACT_APP_LEADS_ADMIN_KEY
 //      in .env (and the default in leads.php). Change them together to lock the
 //      API down to a private key.
-$adminKey   = '';
+$adminKey       = '';
+$adminKeySource = 'none';
 $configFile = __DIR__ . '/config.php';
 if (file_exists($configFile)) {
     require_once $configFile;
     if (defined('ADMIN_API_KEY')) {
-        $adminKey = ADMIN_API_KEY;
+        $adminKey       = ADMIN_API_KEY;
+        $adminKeySource = 'config.php';
     }
 }
 if ($adminKey === '') {
@@ -98,13 +120,15 @@ if ($adminKey === '') {
         $envKey = getenv('ADMIN_API_KEY');
     }
     if ($envKey) {
-        $adminKey = $envKey;
+        $adminKey       = $envKey;
+        $adminKeySource = 'env';
     }
 }
 if ($adminKey === '') {
     // Default — keep in sync with REACT_APP_LEADS_ADMIN_KEY in .env and the
     // matching default in leads.php.
-    $adminKey = 'skdfjsdfweiormcnzxmzdlkfjds';
+    $adminKey       = 'skdfjsdfweiormcnzxmzdlkfjds';
+    $adminKeySource = 'default';
 }
 
 // ----- Helpers -----
@@ -230,6 +254,40 @@ if (!is_array($input)) $input = [];
 $action = $_GET['action'] ?? ($input['action'] ?? '');
 
 // ----- Routes -----
+
+// Health / self-diagnostics — PUBLIC, but never leaks the key VALUE. Open
+// /api/notices.php?action=health after a deploy to confirm the API runs, the
+// data dir is writable, AND (via admin_key_accepted) that the X-Admin-Key your
+// admin build sends matches the server — the two reasons "Add Notice" silently
+// fails (500 not-writable vs 401 key-mismatch).
+if ($action === 'health') {
+    $probeOk = false;
+    if ($dataDirOk) {
+        $probe   = $dataDir . '/.write-probe';
+        $probeOk = @file_put_contents($probe, '1') !== false;
+        if ($probeOk) {
+            @unlink($probe);
+        }
+    }
+    echo json_encode([
+        'ok'                 => $dataDirOk && $probeOk,
+        'endpoint'           => 'notices.php',
+        'php_version'        => PHP_VERSION,
+        'data_dir'           => $dataDir,
+        'data_dir_exists'    => is_dir($dataDir),
+        'data_dir_writable'  => $dataDirOk && is_writable($dataDir),
+        'write_probe_ok'     => $probeOk,
+        'records'            => count(load_notices($dataFile)),
+        'admin_key_present'  => $adminKey !== '',
+        'admin_key_source'   => $adminKeySource,
+        // True only if the caller sent a matching X-Admin-Key — lets the admin
+        // confirm REACT_APP_LEADS_ADMIN_KEY in the build matches the server.
+        'admin_key_accepted' => has_admin_key($adminKey),
+        'reason'             => $dataDirOk ? '' : $dataDirReason,
+    ]);
+    exit;
+}
+
 if ($method === 'GET' && ($action === '' || $action === 'list')) {
     $notices = load_notices($dataFile);
     // Public callers only see published notices; a valid admin key also reveals
@@ -246,6 +304,11 @@ if ($method === 'GET' && ($action === '' || $action === 'list')) {
 
 if ($method === 'POST' && $action === 'create') {
     require_admin_auth($adminKey);
+    if (!$dataDirOk) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Storage unavailable', 'reason' => $dataDirReason]);
+        exit;
+    }
     $notice = $input['notice'] ?? null;
     if (!is_array($notice)) {
         http_response_code(400);
@@ -273,7 +336,7 @@ if ($method === 'POST' && $action === 'create') {
     $notices[] = $notice;
     if (!save_notices($dataFile, $notices)) {
         http_response_code(500);
-        echo json_encode(['error' => 'Failed to save notice']);
+        echo json_encode(['error' => 'Failed to save notice', 'reason' => $dataDirReason ?: 'Could not write to the notices store.']);
         exit;
     }
     echo json_encode(['success' => true, 'notice' => $notice]);

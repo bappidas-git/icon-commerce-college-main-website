@@ -199,6 +199,45 @@ rebuild and redeploy. See [`../GTM_GUIDE.md`](../GTM_GUIDE.md).
 
 ---
 
+## 9. Troubleshooting — "leads / notices / events won't save"
+
+If the public enquiry form shows *"We couldn't submit your enquiry right now"*,
+or admin **Add Notice / Add Event** silently reverts after ~15s, the React app
+is fine — the **PHP API or its data store** is the problem. Every endpoint ships
+a built-in health check (no admin key needed). Open these on the **live** site:
+
+```
+https://YOUR-DOMAIN/api/leads.php?action=health
+https://YOUR-DOMAIN/api/notices.php?action=health
+https://YOUR-DOMAIN/api/events.php?action=health
+```
+
+A healthy response looks like (it never prints the key itself):
+
+```json
+{ "ok": true, "data_dir_writable": true, "write_probe_ok": true,
+  "admin_key_source": "default", "reason": "" }
+```
+
+| What you see at `?action=health` (or in the Network tab) | Cause | Fix |
+|---|---|---|
+| **404**, or the HTML page instead of JSON | The `api/` folder (or `.htaccess`) wasn't uploaded, or the host isn't executing PHP | Re-upload the **whole** `build/` incl. the hidden `.htaccess` and the `api/` tree; confirm the host runs PHP |
+| `"ok": false`, `"data_dir_writable": false` + a `reason` | `api/data/` isn't writable by the PHP user | `chmod 775 api/data` and make sure it's owned by the app/PHP user |
+| notices/events `"admin_key_accepted": false` (when you send the key) | The build's `REACT_APP_LEADS_ADMIN_KEY` ≠ the server's `ADMIN_API_KEY` | Make them match ([step 3](#the-admin-key)) and **rebuild** |
+| HTTP **500** with no JSON body | A PHP fatal/parse error in the endpoint | Check the host's PHP error log (a stray `*/` inside a `/* … */` comment, a bad `config.php`, etc.) |
+
+When a write fails, the API now returns the **specific reason** in the JSON body
+(visible in the browser **Network** tab), e.g.
+`{"error":"Failed to save lead","reason":"Data directory … is not writable …"}`,
+instead of a generic failure — so you can tell *exactly* what to fix.
+
+> **Watch out for hidden files.** A desktop file manager that hides dot-files can
+> silently drop `.htaccess`, and some "upload the folder" flows skip the `api/`
+> subtree. Prefer SFTP/SSH — or zip `build/`, upload the zip, and extract it on
+> the server — so the hidden files and the whole `api/` tree come along.
+
+---
+
 ## Updating a live site
 
 Rebuild and re-upload `build/`. **Do not** overwrite `api/config.php` or the

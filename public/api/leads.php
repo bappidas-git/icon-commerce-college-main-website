@@ -15,7 +15,7 @@
      state                   Home state (Assam + NE India + Other)
      message          (opt)  Free-text question
      + auto: lead_id, source, status, submitted_at, updated_at,
-             page_url, user_agent, utm_*/gclid, notes[], activity[]
+             page_url, user_agent, utm_* params, gclid, notes[], activity[]
    This endpoint is field-agnostic: it stores whatever the
    client sends, so adding/renaming fields needs no PHP change.
 
@@ -59,11 +59,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $dataDir  = __DIR__ . '/data';
 $dataFile = $dataDir . '/leads.json';
 
-if (!is_dir($dataDir)) {
-    @mkdir($dataDir, 0755, true);
-    @file_put_contents($dataDir . '/.htaccess', "Require all denied\nDeny from all\n");
-    @file_put_contents($dataDir . '/index.html', '');
+// Ensure the JSON store directory exists AND is writable by the PHP/web-server
+// user. This is the #1 reason a fresh deploy "submits" but never saves: the
+// build was uploaded but api/data/ was missing or left non-writable, so every
+// write (leads, notices, events) fails with a generic 500. We now create it
+// with group-writable perms, self-heal a too-strict mode, and report the exact
+// reason so the failure is diagnosable (see the ?action=health endpoint and the
+// `reason` field returned on a save failure).
+//
+// Returns [bool $ok, string $reason]. Kept self-contained (no shared include)
+// so this single endpoint file is the only thing that must reach the server.
+function ensure_data_dir($dir) {
+    if (!is_dir($dir)) {
+        if (!@mkdir($dir, 0775, true) && !is_dir($dir)) {
+            return [false, "Could not create data directory ($dir) — its parent is not writable by the PHP/web-server user. Create api/data/ and chmod it to 0775."];
+        }
+        @chmod($dir, 0775);
+        // Block direct HTTP access to the JSON store (Apache 2.4 + legacy 2.2).
+        @file_put_contents($dir . '/.htaccess', "Require all denied\nDeny from all\n");
+        @file_put_contents($dir . '/index.html', '');
+    }
+    if (!is_writable($dir)) {
+        @chmod($dir, 0775); // self-heal a restrictive umask if we own the dir
+    }
+    if (!is_writable($dir)) {
+        return [false, "Data directory ($dir) is not writable by the PHP/web-server user. chmod it to 0775 and make sure it is owned by the app user."];
+    }
+    return [true, ''];
 }
+
+list($dataDirOk, $dataDirReason) = ensure_data_dir($dataDir);
 
 // ----- Resolve the admin key used to gate list/update/delete -----
 //
@@ -85,12 +110,14 @@ if (!is_dir($dataDir)) {
 //      Cloudways application settings).
 //   3. The committed default below, which MUST match REACT_APP_LEADS_ADMIN_KEY
 //      in .env. Change BOTH together to lock the API down to a private key.
-$adminKey   = '';
+$adminKey       = '';
+$adminKeySource = 'none';
 $configFile = __DIR__ . '/config.php';
 if (file_exists($configFile)) {
     require_once $configFile;
     if (defined('ADMIN_API_KEY')) {
-        $adminKey = ADMIN_API_KEY;
+        $adminKey       = ADMIN_API_KEY;
+        $adminKeySource = 'config.php';
     }
 }
 if ($adminKey === '') {
@@ -99,12 +126,14 @@ if ($adminKey === '') {
         $envKey = getenv('ADMIN_API_KEY');
     }
     if ($envKey) {
-        $adminKey = $envKey;
+        $adminKey       = $envKey;
+        $adminKeySource = 'env';
     }
 }
 if ($adminKey === '') {
     // Default — keep in sync with REACT_APP_LEADS_ADMIN_KEY in .env.
-    $adminKey = 'skdfjsdfweiormcnzxmzdlkfjds';
+    $adminKey       = 'skdfjsdfweiormcnzxmzdlkfjds';
+    $adminKeySource = 'default';
 }
 
 // ----- Helpers -----
@@ -184,6 +213,36 @@ if (!is_array($input)) $input = [];
 $action = $_GET['action'] ?? ($input['action'] ?? '');
 
 // ----- Routes -----
+
+// Health / self-diagnostics — PUBLIC, but never leaks the key VALUE (only where
+// it was resolved from). Open /api/leads.php?action=health in a browser after a
+// deploy to confirm the API is running and the data dir is writable. This turns
+// an invisible "we couldn't submit your enquiry" 500 into a one-click diagnosis.
+if ($action === 'health') {
+    $probeOk = false;
+    if ($dataDirOk) {
+        $probe   = $dataDir . '/.write-probe';
+        $probeOk = @file_put_contents($probe, '1') !== false;
+        if ($probeOk) {
+            @unlink($probe);
+        }
+    }
+    echo json_encode([
+        'ok'                 => $dataDirOk && $probeOk,
+        'endpoint'           => 'leads.php',
+        'php_version'        => PHP_VERSION,
+        'data_dir'           => $dataDir,
+        'data_dir_exists'    => is_dir($dataDir),
+        'data_dir_writable'  => $dataDirOk && is_writable($dataDir),
+        'write_probe_ok'     => $probeOk,
+        'records'            => count(load_leads($dataFile)),
+        'admin_key_present'  => $adminKey !== '',
+        'admin_key_source'   => $adminKeySource,
+        'reason'             => $dataDirOk ? '' : $dataDirReason,
+    ]);
+    exit;
+}
+
 if ($method === 'GET' && ($action === '' || $action === 'list')) {
     require_admin_auth($adminKey);
     echo json_encode(['success' => true, 'leads' => load_leads($dataFile)]);
@@ -195,6 +254,11 @@ if ($method === 'POST' && $action === 'create') {
     if (!is_array($lead) || empty($lead['lead_id'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Invalid lead payload']);
+        exit;
+    }
+    if (!$dataDirOk) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Storage unavailable', 'reason' => $dataDirReason]);
         exit;
     }
     $leads = load_leads($dataFile);
@@ -215,7 +279,7 @@ if ($method === 'POST' && $action === 'create') {
     $leads[] = $lead;
     if (!save_leads($dataFile, $leads)) {
         http_response_code(500);
-        echo json_encode(['error' => 'Failed to save lead']);
+        echo json_encode(['error' => 'Failed to save lead', 'reason' => $dataDirReason ?: 'Could not write to the leads store.']);
         exit;
     }
     echo json_encode(['success' => true]);

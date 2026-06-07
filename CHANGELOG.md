@@ -4,6 +4,44 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Hotfix — lead capture broken by a PHP parse error + API hardening
+
+**Root cause (leads).** `public/api/leads.php` could not be parsed by PHP, so
+**every** request to it returned HTTP 500 and the public enquiry form showed
+*"We couldn't submit your enquiry right now"*. The culprit was the literal
+`utm_*/gclid` inside the file's opening `/* … */` doc-comment: the `*/` in
+`utm_*/` **closed the comment block early** (it had opened at the top of the
+file), so the remaining comment text was parsed as PHP — `syntax error,
+unexpected token ","` on line 18. Reproduced locally (`php -l` and a live
+`POST …?action=create` → 500); fixed by rewriting that line to `utm_* params,
+gclid` (no `*/`). After the fix the same request returns `{"success":true}`.
+This was a static code bug — it broke on *every* host, which is why a clean
+rebuild + redeploy didn't help.
+
+**API hardening (leads + notices + events).** To make the remaining, deploy-time
+failure modes diagnosable instead of silent:
+
+- **Writable data dir, self-healing.** Each endpoint now creates `api/data/`
+  group-writable (`0775`), re-`chmod`s a too-strict directory it owns, and on a
+  save failure returns the **exact reason** (e.g. *"Data directory … is not
+  writable …"*) in the JSON body instead of a generic 500.
+- **Health endpoint (`?action=health`, no auth).** `GET /api/{leads,notices,
+  events}.php?action=health` reports PHP version, whether `api/data/` exists and
+  is writable, a live write-probe result, record count, and where the admin key
+  resolved from (`config.php` / `env` / `default`) — **never the key value**.
+  notices/events also report `admin_key_accepted` so a build-vs-server key
+  mismatch is obvious. This turns an invisible deployment problem into a
+  one-URL check.
+- **New [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) §9 "Troubleshooting"** — a
+  symptom → cause → fix table built around the health endpoint (404/HTML =
+  `api/` or `.htaccess` not uploaded; `data_dir_writable:false` = `chmod 775`;
+  `admin_key_accepted:false` = key mismatch + rebuild; 500 = PHP error log),
+  plus a hidden-file/`.htaccess` upload warning.
+
+All four PHP files pass `php -l`; the React build stays green (`CI=false npm run
+build`) and `build/` still ships `api/`, `.htaccess` and the writable
+`api/data/` folder. No frontend/runtime behaviour changed.
+
 ### Phase 4.7 — Final build verification & handover
 
 Fortieth and final prompt of the rebuild (`prompts/40-final-build-verification.md`).

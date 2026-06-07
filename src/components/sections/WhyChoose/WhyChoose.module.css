@@ -26,7 +26,10 @@
 .image {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  /* Matches the real 16:9 students photo, so the whole group + campus shows
+     with no cropping. The split is vertically centered (see `.split`), so a
+     landscape photo sits balanced beside the taller six-reason grid. */
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
@@ -149,10 +152,6 @@
   .media {
     max-width: 560px;
     margin: 0 auto;
-  }
-
-  .image {
-    aspect-ratio: 16 / 10;
   }
 }
 

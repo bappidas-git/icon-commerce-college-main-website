@@ -4,28 +4,39 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
-### Real Home-section photos wired in (Vision/Mission, programmes, why-choose)
+### Real section photos wired in + reused site-wide, with responsive fit fixes
 
-The college supplied real photography for three Home sections (hosted on
-Cloudinary, the same account as the campus photo and brand logo). They now
-replace the labelled placeholders via the existing `REAL` resolver map — the
-"Option B — production swap" path — with no layout changes.
+The college supplied real photography (hosted on Cloudinary, the same account as
+the campus photo and brand logo). It replaces the labelled placeholders via the
+existing `REAL` resolver map — the "Option B — production swap" path — and each
+image is reused everywhere its logical name already appears, with the render
+boxes retuned to each photo's real aspect ratio so nothing crops or distorts on
+any device.
 
-- **`src/utils/assets.js`** — added six entries to the `REAL` override map:
-  `vision-mission`, the four programme images (`course-bcom`, `course-bba`,
-  `course-bca`, `course-ba`) and a new `why-choose-icc` name. The five existing
-  logical names resolve to the real assets with **no component edits**; added a
-  `whyChooseIcc` key to the `IMAGES` manifest for the new slot.
-- **`src/components/sections/WhyChoose/WhyChoose.jsx`** — repointed the "why
-  choose us" media from the shared `hero-students` placeholder to the dedicated
-  `why-choose-icc` photo. A separate name keeps this swap scoped to that one band
-  so the **Faculty / Admissions / Events / Gallery / Courses** page heroes (which
-  also use `hero-students`) are untouched.
-- **Coverage.** Vision &amp; Mission accent + all four programme cards on the
-  **Home** page now show real images; because the course images funnel through
-  `coursesData`, they also appear on the **Courses** cards and detail pages.
-- **`docs/IMAGES.md`** — documented these alongside the existing "campus photo /
-  brand logo — already real" notes.
+- **`src/utils/assets.js`** — added the real assets to the `REAL` override map.
+  The students-and-campus photo (16:9) is mapped to the **shared `hero-students`
+  slot**, so one URL covers the Home "why choose us" band **and** the page heroes
+  that use it — **Faculty / Admissions / Events / Gallery / Courses**. Also added
+  `vision-mission` (3:2) and the four programme illustrations `course-bcom` /
+  `course-bba` / `course-bca` / `course-ba` (4:3). All resolve through existing
+  logical names, so most call sites needed **no edits**.
+- **Reuse coverage.** `vision-mission` also renders on the **About** page (which
+  reuses the Vision & Mission section); the four course images flow through
+  `coursesData`, so they appear on the **Home** programs teaser, the **Courses**
+  cards and the **course detail** pages.
+- **`WhyChoose.jsx` + `.module.css`** — repointed the media back to the shared
+  `hero-students` name and changed the image box from `4 / 5` portrait to
+  `16 / 9` so the full group photo shows uncropped, centered beside the reasons
+  grid.
+- **`VisionMission.module.css`** — the accent now displays at its true `3 / 2`
+  ratio (centered, no longer stretched to the cards' height, which had clipped
+  the title and side icons) and is **no longer hidden on phones** — the real,
+  content-rich artwork shows full-width below the cards on every breakpoint.
+- **Course cards** keep the existing `16 / 10` media box: the illustrations sit
+  on a solid navy field, so the small top/bottom crop only trims margin — no
+  CSS change needed.
+- **`docs/IMAGES.md`** — documented the reuse alongside the existing "campus
+  photo / brand logo — already real" notes.
 
 ### Real campus photo wired into every campus image slot
 

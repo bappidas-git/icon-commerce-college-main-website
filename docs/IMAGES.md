@@ -34,13 +34,20 @@ script generates). So there is **one resolver** to point at real files.
 > hero LCP preload in `index.html` points at the same URL. To change the campus
 > photo, edit `CAMPUS_IMAGE` (and the matching preload `href`).
 
-> **Home-section photos — already real.** The Vision &amp; Mission accent
-> (`vision-mission`), the four programme cards (`course-bcom`, `course-bba`,
-> `course-bca`, `course-ba`) and the "why choose us" band (`why-choose-icc`, a
-> dedicated name so the shared `hero-students` heroes stay untouched) are all
-> live via the same `REAL` map in `src/utils/assets.js`. The course names flow
-> through `coursesData`, so the real images also appear on the Courses cards and
-> detail pages. To change any of them, edit its URL in `REAL`.
+> **Section photos — already real.** Several slots now point at real college
+> photography via the same `REAL` map in `src/utils/assets.js`, each reused
+> wherever its logical name appears:
+>
+> - **`hero-students`** — a real students-and-campus photo (16:9). It backs the
+>   Home "why choose us" band **and** the page heroes that share the name —
+>   Faculty, Admissions, Events, Gallery and Courses.
+> - **`vision-mission`** — the Vision &amp; Mission accent (3:2), shown on the
+>   Home page and the About page (which reuses the same section).
+> - **`course-bcom` / `course-bba` / `course-bca` / `course-ba`** — the four
+>   programme illustrations (4:3). They flow through `coursesData`, so they show
+>   on the Home programs teaser, the Courses cards and the course detail pages.
+>
+> To change any of them, edit its URL in `REAL`.
 
 ---
 

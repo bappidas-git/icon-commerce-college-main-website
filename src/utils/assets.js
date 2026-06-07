@@ -34,6 +34,30 @@ const REAL = {
   'hero-campus': CAMPUS_IMAGE,
   'about-college-building': CAMPUS_IMAGE,
   'about-campus-aerial': CAMPUS_IMAGE,
+
+  // Real students-and-campus photo (16:9). It IS the shared `hero-students`
+  // slot, so a single URL surfaces it on the Home "why choose us" band AND on
+  // every page hero that uses it — Faculty, Admissions, Events, Gallery and
+  // Courses — under the navy hero overlay.
+  'hero-students':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780840414/why-choose-icc_tirbx7.png',
+
+  // Home-section illustrations — supplied by the college on the same Cloudinary
+  // account as CAMPUS_IMAGE / LOGO above. Each maps a logical placeholder name
+  // to its real asset, so the swap needs no component changes. `vision-mission`
+  // (3:2) also renders on the About page, which reuses the same section; the four
+  // course images (4:3) flow through `coursesData`, so they appear on the Courses
+  // cards and detail pages too, not just the Home programs teaser.
+  'vision-mission':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780838324/Vision_and_Mission_wdxw37.png',
+  'course-bcom':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bcom_xj6moc.png',
+  'course-bba':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-bba_rrxfn3.png',
+  'course-bca':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bca_wxgq8k.png',
+  'course-ba':
+    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-ba_fvbgjm.png',
 };
 
 /**

@@ -3,8 +3,8 @@
    Icon Commerce College
    --------------------------------------------
    A split layout that distils the college USP into six reasons to choose ICC:
-   the `hero-students` placeholder with a floating gold stat callout on the left,
-   and a two-column grid of six icon "reason" cards on the right.
+   the real `hero-students` campus photo with a floating gold stat callout on the
+   left, and a two-column grid of six icon "reason" cards on the right.
 
    Following the HighlightsSection precedent, each reason renders as plain
    icon-card markup inside <Reveal>/<RevealGroup> (rather than the motion-driven
@@ -70,7 +70,7 @@ const WhyChoose = () => (
     aria-label="Why choose Icon Commerce College"
   >
     <div className={styles.split}>
-      {/* Media — students placeholder with a floating gold stat callout */}
+      {/* Media — students campus photo with a floating gold stat callout */}
       <Reveal className={styles.media} variant="slideInLeft">
         <figure className={styles.figure}>
           <Img

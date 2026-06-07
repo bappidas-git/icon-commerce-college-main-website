@@ -25,6 +25,15 @@ script generates). So there is **one resolver** to point at real files.
 > `res.cloudinary.com` is preconnected in `index.html`. To change the logo, edit
 > those two URLs. (A `logo-icon-commerce` placeholder still exists as a fallback.)
 
+> **Campus photo — already real.** The college campus photograph is live too,
+> via the same Cloudinary account, as `CAMPUS_IMAGE` in `src/utils/assets.js`.
+> A small `REAL` override map in that file points the three campus slots —
+> `hero-campus`, `about-college-building` and `about-campus-aerial` — at it, so
+> every campus hero/building image across the site (home hero, About, Facilities,
+> Contact, Leadership) uses the real photo without any component change. The Home
+> hero LCP preload in `index.html` points at the same URL. To change the campus
+> photo, edit `CAMPUS_IMAGE` (and the matching preload `href`).
+
 ---
 
 ## Option A — drop-in replace (simplest, no code)

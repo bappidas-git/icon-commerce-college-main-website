@@ -15,11 +15,35 @@
 const BASE_PATH = '/images/placeholders';
 
 /**
- * Resolve a logical placeholder name to its public URL.
- * Accepts names with or without an extension (`.jpg`/`.png`/`.svg`).
+ * Real campus photograph — supplied by the college and hosted on Cloudinary
+ * (the same account as the brand LOGO below). Like the logo, it's a real brand
+ * asset, so it's referenced by URL rather than kept as a labelled dev
+ * placeholder. Reused for every "college campus" image slot across the site.
+ */
+export const CAMPUS_IMAGE =
+  'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780835926/Campu_Image_y2ysdx.png';
+
+/**
+ * Production overrides: logical placeholder name → real asset URL. Checked
+ * before the generated SVG placeholders, so real photography wins without
+ * touching any component (the "Option B — production swap" path in
+ * docs/IMAGES.md). Add a name here as each real photo arrives; every other
+ * slot keeps its labelled placeholder.
+ */
+const REAL = {
+  'hero-campus': CAMPUS_IMAGE,
+  'about-college-building': CAMPUS_IMAGE,
+  'about-campus-aerial': CAMPUS_IMAGE,
+};
+
+/**
+ * Resolve a logical placeholder name to its public URL. Names with a real
+ * asset in `REAL` resolve to it; everything else falls back to the labelled
+ * `/images/placeholders/<name>.svg`. Accepts names with or without an
+ * extension (`.jpg`/`.png`/`.svg`).
  *
  * @param {string} name e.g. 'hero-campus', 'hero-campus.jpg'
- * @returns {string} e.g. '/images/placeholders/hero-campus.svg'
+ * @returns {string} the real campus URL, or e.g. '/images/placeholders/course-bcom.svg'
  */
 export function placeholder(name) {
   if (!name) return `${BASE_PATH}/og-default.svg`;
@@ -27,7 +51,7 @@ export function placeholder(name) {
     .trim()
     .replace(/^.*\//, '') // strip any leading path
     .replace(/\.(png|jpe?g|webp|svg)$/i, '');
-  return `${BASE_PATH}/${base}.svg`;
+  return REAL[base] || `${BASE_PATH}/${base}.svg`;
 }
 
 /**

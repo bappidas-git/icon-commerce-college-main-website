@@ -24,9 +24,9 @@
    • All photos are labelled placeholders (design-system §7).
    ============================================ */
 
-import { placeholder } from '../utils/assets';
+import { placeholder } from "../utils/assets";
 
-const FACULTY_IMG = placeholder('faculty-placeholder');
+const FACULTY_IMG = placeholder("faculty-placeholder");
 
 /**
  * @typedef {Object} FacultyMember
@@ -43,224 +43,254 @@ const FACULTY_IMG = placeholder('faculty-placeholder');
 export const facultyData = [
   // ---- Leadership & programme coordinators (highlight strip) ----
   {
-    name: 'Dr. Mandira Saha',
-    designation: 'Principal',
-    qualifications: 'M.Com., M.Phil., Ph.D.',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Dr. Mandira Saha",
+    designation: "Principal",
+    qualifications: "M.Com., M.Phil., Ph.D.",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782279558/Dr.-Mandira-Saha-copy_p9wzlv.png",
     featured: true,
   },
   {
-    name: 'Dr. Nilanjan Bhattacharjee',
-    designation: 'Academic Advisor',
-    qualifications: 'M.Com., M.B.A., Ph.D.',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Dr. Nilanjan Bhattacharjee",
+    designation: "Academic Advisor",
+    qualifications: "M.Com., M.B.A., Ph.D.",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782279562/Dr.-Nilanjan-Bhattacharjee-copy_vhf5nt.png",
     featured: true,
   },
   {
-    name: 'Dr. Rubi Das',
-    designation: 'Assistant Professor · Coordinator — B.Com / BBA',
-    qualifications: 'M.Com., M.Phil., B.Ed., SLET, Ph.D.',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Dr. Rubi Das",
+    designation: "Assistant Professor · Coordinator — B.Com / BBA",
+    qualifications: "M.Com., M.Phil., B.Ed., SLET, Ph.D.",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782279559/Dr.-Rubi-Das_qfgc9z.png",
     featured: true,
   },
   {
-    name: 'Pallabi Dutta',
-    designation: 'Assistant Professor · Coordinator — B.C.A.',
-    qualifications: 'M.A.',
-    department: 'Computer Application',
-    image: FACULTY_IMG,
+    name: "Pallabi Dutta",
+    designation: "Assistant Professor · Coordinator — B.C.A.",
+    qualifications: "M.A.",
+    department: "Computer Application",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782279559/Pallabi-Dutta_mtdctn.png",
     featured: true,
   },
   {
-    name: 'Santashri Barman',
-    designation: 'Assistant Professor · Coordinator — B.A.',
-    qualifications: 'M.A., SLET',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Santashri Barman",
+    designation: "Assistant Professor · Coordinator — B.A.",
+    qualifications: "M.A., SLET",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782279559/Santashri-Barman_uioc9x.png",
     featured: true,
   },
 
   // ---- Teaching staff ----
   {
-    name: 'Tridib Kr. Handique',
-    designation: 'Assistant Professor · Examination In-Charge',
-    qualifications: 'M.C.A.',
-    department: 'Computer Application',
-    image: FACULTY_IMG,
+    name: "Tridib Kr. Handique",
+    designation: "Assistant Professor · Examination In-Charge",
+    qualifications: "M.C.A.",
+    department: "Computer Application",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280508/Tridib-Kr.-Handique_vs0u8q.png",
   },
   {
-    name: 'Mandira Sharma',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Sc. (Gold Medalist), M.Phil.',
-    department: 'Science',
-    image: FACULTY_IMG,
+    name: "Mandira Sharma",
+    designation: "Assistant Professor",
+    qualifications: "M.Sc. (Gold Medalist), M.Phil.",
+    department: "Science",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280498/Mandira-Sharma_uez7tl.png",
   },
   {
-    name: 'Rikia Chakraborty',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Com., PGDBM',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Rikia Chakraborty",
+    designation: "Assistant Professor",
+    qualifications: "M.Com., PGDBM",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280502/Rikia-Chakraborty_vnjghi.png",
   },
   {
-    name: 'Kongkona Bhagawati',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Com., M.B.A.',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Kongkona Bhagawati",
+    designation: "Assistant Professor",
+    qualifications: "M.Com., M.B.A.",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280495/Kongkona-Bhagawati_yuj4pk.png",
   },
   {
-    name: 'Manas Kumar Chakraborty',
-    designation: 'Assistant Professor',
-    qualifications: 'M.C.A.',
-    department: 'Computer Application',
-    image: FACULTY_IMG,
+    name: "Manas Kumar Chakraborty",
+    designation: "Assistant Professor",
+    qualifications: "M.C.A.",
+    department: "Computer Application",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280497/Manas-Kumar-Chakraborty_kny1uu.png",
   },
   {
-    name: 'Saurav Bhattacharjee',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Sc. (Environmental Science), Tezpur University',
-    department: 'Science',
-    image: FACULTY_IMG,
+    name: "Saurav Bhattacharjee",
+    designation: "Assistant Professor",
+    qualifications: "M.Sc. (Environmental Science), Tezpur University",
+    department: "Science",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280506/Saurav-Bhattacharjee_mr3bd4.png",
   },
   {
-    name: 'Loveleena Bora',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., B.Ed., NET',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Loveleena Bora",
+    designation: "Assistant Professor",
+    qualifications: "M.A., B.Ed., NET",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280496/Loveleena-Bora_aecznr.png",
   },
   {
-    name: 'Dr. Antara Gayan',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., Ph.D.',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Dr. Antara Gayan",
+    designation: "Assistant Professor",
+    qualifications: "M.A., Ph.D.",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280492/Dr.-Antara-Gayan_k71zhj.png",
   },
   {
-    name: 'Badamon Shisha Shadap',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., DCA',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Badamon Shisha Shadap",
+    designation: "Assistant Professor",
+    qualifications: "M.A., DCA",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280496/Badamon-Shisha-Shadap_pcc3cd.png",
   },
   {
-    name: 'Mridusmita Deka',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Sc. (Economics)',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Mridusmita Deka",
+    designation: "Assistant Professor",
+    qualifications: "M.Sc. (Economics)",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280500/Mridusmita-Deka_bbs6zh.png",
   },
   {
-    name: 'Nivedita Bayan Baishya',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., M.Phil., B.Ed.',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Nivedita Bayan Baishya",
+    designation: "Assistant Professor",
+    qualifications: "M.A., M.Phil., B.Ed.",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280501/Nivedita-Bayan-Baishya_nwzbmr.png",
   },
   {
-    name: 'Sumit Kr. Routh',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Com., NET',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Sumit Kr. Routh",
+    designation: "Assistant Professor",
+    qualifications: "M.Com., NET",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280508/Sumit-Kr.-Routh_ahexw6.png",
   },
   {
-    name: 'Dipannita Chakraborty',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., B.Ed., LL.B.',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Dipannita Chakraborty",
+    designation: "Assistant Professor",
+    qualifications: "M.A., B.Ed., LL.B.",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280492/Dipannita-Chakraborty_qavpyx.png",
   },
   {
-    name: 'Kankana Sharma',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Com., B.Ed.',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Kankana Sharma",
+    designation: "Assistant Professor",
+    qualifications: "M.Com., B.Ed.",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280495/Kankana-Sharma_cgt1fw.png",
   },
   {
-    name: 'Ruma Das',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., B.Ed., NET, DCA',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Ruma Das",
+    designation: "Assistant Professor",
+    qualifications: "M.A., B.Ed., NET, DCA",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280504/Ruma-Das_giigww.png",
   },
   {
-    name: 'Sagarika Paul',
-    designation: 'Assistant Professor',
-    qualifications: 'M.B.A., NET',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Sagarika Paul",
+    designation: "Assistant Professor",
+    qualifications: "M.B.A., NET",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280505/Sagarika-Paul_bjzgfb.png",
   },
   {
-    name: 'Urbimala Hazarika',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Sc. (Computer Science)',
-    department: 'Computer Application',
-    image: FACULTY_IMG,
+    name: "Urbimala Hazarika",
+    designation: "Assistant Professor",
+    qualifications: "M.Sc. (Computer Science)",
+    department: "Computer Application",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280508/Urbimala-Hazarika_lipp2h.png",
   },
   {
-    name: 'Manisha Das',
-    designation: 'Assistant Professor',
-    qualifications: 'M.C.A., D.El.Ed.',
-    department: 'Computer Application',
-    image: FACULTY_IMG,
+    name: "Manisha Das",
+    designation: "Assistant Professor",
+    qualifications: "M.C.A., D.El.Ed.",
+    department: "Computer Application",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280500/Manisha-Das_dlzmt6.png",
   },
   {
-    name: 'Spondita Goswami',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., PDCA',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Spondita Goswami",
+    designation: "Assistant Professor",
+    qualifications: "M.A., PDCA",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280507/Spondita-Goswami_qpmlwa.png",
   },
   {
-    name: 'Namrata Sharma',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., SLET',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Namrata Sharma",
+    designation: "Assistant Professor",
+    qualifications: "M.A., SLET",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280500/Namrata-Sharma_ps6tv0.png",
   },
   {
-    name: 'Rimon Borah',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., SLET',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Rimon Borah",
+    designation: "Assistant Professor",
+    qualifications: "M.A., SLET",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280502/Rimon-Borah_xf0sfo.png",
   },
   {
-    name: 'Sadhna Kashyap',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., NET',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Sadhna Kashyap",
+    designation: "Assistant Professor",
+    qualifications: "M.A., NET",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280504/Sadhna-Kashyap_hcfi1f.png",
   },
   {
-    name: 'Chayanika Das',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., NET, SLET',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Chayanika Das",
+    designation: "Assistant Professor",
+    qualifications: "M.A., NET, SLET",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280492/Chayanika-Das_ly8ce3.png",
   },
   {
-    name: 'Rinkumani Baishya',
-    designation: 'Assistant Professor',
-    qualifications: 'M.A., M.Phil., SLET',
-    department: 'Arts',
-    image: FACULTY_IMG,
+    name: "Rinkumani Baishya",
+    designation: "Assistant Professor",
+    qualifications: "M.A., M.Phil., SLET",
+    department: "Arts",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280503/Rinkumani-Baishya_n46xn4.png",
   },
   {
     // Listed in the printed prospectus faculty roster; not on the latest website
     // staff table. Retained from the prospectus — TODO (client): confirm she is
     // still current teaching staff.
-    name: 'Dr. Urmimala Mahanta',
-    designation: 'Assistant Professor',
-    qualifications: 'M.Com., Ph.D.',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Dr. Urmimala Mahanta",
+    designation: "Assistant Professor",
+    qualifications: "M.Com., Ph.D.",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782280494/Dr.-Urmimala-Mahanta_cimyhl.png",
   },
 ];
 
@@ -271,19 +301,20 @@ export const facultyData = [
  */
 export const guestFaculty = [
   {
-    name: 'Biswajit Bhattacharya',
+    name: "Biswajit Bhattacharya",
     designation:
-      'Guest Faculty · Retd. Associate Professor & Former H.O.D. (Accountancy), Gauhati Commerce College',
-    qualifications: '', // Not stated in the prospectus.
-    department: 'Commerce',
+      "Guest Faculty · Retd. Associate Professor & Former H.O.D. (Accountancy), Gauhati Commerce College",
+    qualifications: "", // Not stated in the prospectus.
+    department: "Commerce",
     image: FACULTY_IMG,
   },
   {
-    name: 'Dr. Nripendra Nath Medhi',
-    designation: 'Guest Faculty · Retd. Assistant Professor (Dept. of Finance)',
-    qualifications: 'M.Com., LL.B., Ph.D.',
-    department: 'Commerce',
-    image: FACULTY_IMG,
+    name: "Dr. Nripendra Nath Medhi",
+    designation: "Guest Faculty · Retd. Assistant Professor (Dept. of Finance)",
+    qualifications: "M.Com., LL.B., Ph.D.",
+    department: "Commerce",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782283082/1777531135_z7qbf7.jpg",
   },
 ];
 

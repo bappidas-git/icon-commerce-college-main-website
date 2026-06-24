@@ -50,6 +50,12 @@
   box-shadow: var(--shadow-md);
 }
 
+@media screen and (max-width: 480px) {
+  .callout {
+    display: none !important;
+  }
+}
+
 .calloutIcon {
   grid-row: 1 / span 2;
   align-self: center;

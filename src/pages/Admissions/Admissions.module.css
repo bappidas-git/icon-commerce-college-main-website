@@ -1,8 +1,8 @@
 /* ============================================
    Admissions page styles — Icon Commerce College
-   How to Apply (numbered steps) · Eligibility cards · Fee tabs/tables ·
+   How to Apply (numbered steps) · Eligibility cards ·
    Documents & Scholarships · FAQ · navy CTA band.
-   Tokens from design-system §2–§4; fee table + CTA band mirror CourseDetail.
+   Tokens from design-system §2–§4; the CTA band mirrors CourseDetail.
    ============================================ */
 
 /* Screen-reader-only utility (table <caption>). */
@@ -186,124 +186,7 @@
 }
 
 /* ============================================
-   4 — Fee structure (tabs + tables)
-   ============================================ */
-.feeTabs {
-  max-width: 720px;
-  margin: 0 auto;
-}
-
-.feePanel {
-  padding-top: var(--space-5);
-}
-
-.feeTableWrap {
-  overflow-x: auto;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  -webkit-overflow-scrolling: touch;
-}
-
-.feeTable {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--color-surface);
-  font-size: var(--fs-base);
-}
-
-.feeTable thead th {
-  background: var(--color-primary);
-  color: #ffffff;
-  font-family: var(--font-heading);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-sm);
-  text-align: left;
-  padding: var(--space-3) var(--space-5);
-}
-
-.feeTable thead th:last-child,
-.feeTable tbody td,
-.feeTable tfoot td {
-  text-align: right;
-}
-
-.feeTable tbody th,
-.feeTable tfoot th {
-  text-align: left;
-  font-weight: var(--fw-regular);
-}
-
-.feeTable tbody th,
-.feeTable tbody td {
-  padding: var(--space-3) var(--space-5);
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text);
-}
-
-.feeTotal th,
-.feeTotal td {
-  padding: var(--space-4) var(--space-5);
-  background: var(--color-accent-soft);
-  font-family: var(--font-heading);
-  font-weight: var(--fw-bold);
-  color: var(--color-primary);
-}
-
-.feeFacts {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
-  margin: var(--space-5) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.feeFacts li {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-4);
-  border-radius: var(--radius-card);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-}
-
-.factLabel {
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-semibold);
-  letter-spacing: var(--ls-wide);
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.factValue {
-  font-family: var(--font-heading);
-  font-size: var(--fs-base);
-  font-weight: var(--fw-semibold);
-  color: var(--color-primary);
-}
-
-/* Footnote (fees N.B.) */
-.note {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
-  margin: var(--space-5) 0 0;
-  font-size: var(--fs-sm);
-  line-height: var(--lh-relaxed);
-  color: var(--color-text-muted);
-}
-
-.note svg {
-  flex-shrink: 0;
-  margin-top: 0.15em;
-  font-size: 1.1rem;
-  color: var(--color-accent-dark);
-}
-
-/* ============================================
-   5 + 6 — Documents & Scholarships
+   4 + 5 — Documents & Scholarships
    ============================================ */
 .docsGrid {
   display: grid;
@@ -423,7 +306,7 @@
 }
 
 /* ============================================
-   7 — FAQ answer copy
+   6 — FAQ answer copy
    ============================================ */
 .faqAnswer {
   margin: 0;
@@ -433,7 +316,7 @@
 }
 
 /* ============================================
-   8 — General Instructions & Student Information
+   7 — General Instructions & Student Information
    ============================================ */
 .infoTitle {
   display: inline-flex;
@@ -620,10 +503,6 @@
 
 @media (max-width: 560px) {
   .steps {
-    grid-template-columns: 1fr;
-  }
-
-  .feeFacts {
     grid-template-columns: 1fr;
   }
 

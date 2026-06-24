@@ -4,6 +4,46 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Removed all course fee information from the website
+
+At the client's request, every fee figure and fee-related display was removed
+from the public site. Fees are no longer the single-source-of-truth `coursesData`
+concern, so the data was dropped at the source and every consumer updated to
+match — no broken `course.fees` reads remain and `npm run build` is clean.
+
+- **`src/data/coursesData.js`** — removed the shared `FEES_BCOM_BA` /
+  `FEES_BCA_BBA` breakdown objects, the `fees` field on all four courses, and the
+  `fees` entry from the `Course` typedef.
+- **`src/pages/CourseDetail/CourseDetail.jsx`** — dropped the **Fees** tab and its
+  `FeesPanel` (fee table, monthly tuition, application fee, N.B. note), plus the
+  **1st-Sem Fees** and **Monthly Tuition** rows from the quick-facts side rail.
+- **`src/pages/Courses/Courses.jsx`** — removed the **1st-Sem Total Fees** and
+  **Monthly Tuition** comparison-table columns, the application-fee footnote, and
+  the now-unused `FEES_NOTE`; the table now compares Program · Duration ·
+  Eligibility.
+- **`src/pages/Admissions/Admissions.jsx`** — removed the entire **Fee Structure**
+  section (per-programme `FeeTable` tabs) and the unused `Tabs` import; the FAQ
+  subtitle no longer mentions fees.
+- **`src/components/sections/ProgramsSection/ProgramCard.jsx`** — removed the
+  "1st-semester fees" hint; the bottom actions now carry `margin-top:auto` so the
+  buttons stay aligned across cards.
+- **`src/data/admissionData.js`** — removed the "What are the fees" FAQ entry and
+  the `feesNote` field; the prospectus blurb no longer lists fees.
+- **`src/config/seo.js`** — removed the fees FAQ from the FAQPage schema and the
+  fee mentions in the Courses / Admissions meta descriptions.
+- **`src/utils/seo.js`** — removed the `Offer` (Application Fee) block from the
+  Course JSON-LD schema.
+- **Copy cleanup** — dropped passing "fees" mentions from `Footer.jsx`
+  (incl. the now-inaccurate "Admissions & Fees" terms paragraph, retitled
+  **Admissions**), `UnifiedLeadForm.jsx`, `ModalContext.jsx`, `Contact.jsx`,
+  `ThankYou.jsx` and the `UI Kit` demo FAQ.
+- **CSS** — removed the orphaned fee styles (`.feeTable*`, `.feeFacts`,
+  `.feeTotal`, `.feePanel`, `.feeTabs`, `.tableFee`, `.tableNote`, ProgramCard
+  `.fees*`, CourseDetail `.note`/`.factsStrong`) and resequenced the section
+  comments in the affected `*.module.css` files.
+- **`docs/CONTENT_GUIDE.md`** — removed the `fees` field row and the
+  "update fees" instructions.
+
 ### Real section photos wired in + reused site-wide, with responsive fit fixes
 
 The college supplied real photography (hosted on Cloudinary, the same account as

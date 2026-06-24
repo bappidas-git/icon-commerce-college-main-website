@@ -94,7 +94,7 @@ export const collegeInfo = {
 
 The four UG programs, plus the shared NEP-2020/FYUGP curriculum structure
 (`fyugpCurriculum`). Powers the Courses overview, each `/courses/:slug` detail
-page, and (for fees/eligibility) the Admissions page.
+page, and (for eligibility) the Admissions page.
 
 Each course object:
 
@@ -105,14 +105,9 @@ Each course object:
 | `summary`, `eligibility`, `eligibilityShort` | Descriptive copy + eligibility line. |
 | `highlights`, `careers` | Bullet lists (arrays of strings). |
 | `objectives`, `topics` | Optional (BCA uses them) — render only when present. |
-| `fees` | `{ rows:[{particular, amount}], total, tuitionMonthly, application, note }`. |
 | `documents` | Verification checklist (array of strings). |
 | `syllabusUrl` | GU syllabus PDF — currently a `TODO`; replace per programme. |
 | `image`, `badge` | `placeholder('course-bcom')`; optional ribbon (e.g. `'Most Popular'`). |
-
-To **update fees**, edit the shared `FEES_BCOM_BA` / `FEES_BCA_BBA` objects near the
-top (B.Com & B.A. share one; BCA & BBA share the other) so the figures stay
-consistent across cards, detail pages and admissions.
 
 To **add a course**, copy a full course object, give it a new unique `slug`, and
 add that slug to the menus in `navigation.js` and to `public/sitemap.xml`.

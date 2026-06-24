@@ -5,9 +5,9 @@
    The rich card used in the Home programs teaser (and reusable on /courses): a
    placeholder course image with a gold shortName badge (+ an optional
    "Most Popular" ribbon), the program name and duration, an optional
-   eligibility one-liner, the first three highlight ticks, a 1st-semester
-   "starting fees" hint, and two actions — "View Details" → /courses/:slug and
-   "Apply" → the global `apply-now` lead drawer pre-set to this program.
+   eligibility one-liner, the first three highlight ticks, and two actions —
+   "View Details" → /courses/:slug and "Apply" → the global `apply-now` lead
+   drawer pre-set to this program.
 
    Props:
      course           (object)  — a record from coursesData (required).
@@ -96,13 +96,6 @@ const ProgramCard = ({ course, source = 'home-programs', showEligibility = false
             </li>
           ))}
         </ul>
-
-        {/* Starting-fees hint — 1st-semester total (design-system §6) */}
-        <p className={styles.fees}>
-          <Icon icon="mdi:tag-outline" className={styles.feesIcon} aria-hidden="true" />
-          <span className={styles.feesValue}>{course.fees.total}</span>
-          <span className={styles.feesLabel}>1st-semester fees</span>
-        </p>
 
         {/* Actions — navy-outline "View Details" link + navy-filled "Apply" */}
         <div className={styles.actions}>

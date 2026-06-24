@@ -124,9 +124,9 @@ const UIKit = () => {
                   'Register on the Samarth portal (College Code 842), select Icon Commerce College and your stream, then complete verification.',
               },
               {
-                title: 'What are the fees?',
+                title: 'Which programmes are offered?',
                 content:
-                  'First-semester fees range from ₹10,900 to ₹11,000 depending on the programme. GU registration / exam fees are extra.',
+                  'Four UG programmes under NEP 2020 (FYUGP), affiliated to Gauhati University — B.Com, BBA, BCA and B.A.',
               },
             ]}
             defaultOpen={[0]}

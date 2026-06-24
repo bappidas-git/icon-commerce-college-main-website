@@ -8,13 +8,13 @@
 
      PageHero (shortName badge · duration · affiliation · breadcrumb · Apply CTA)
        → two-column body:
-           • sticky Tabs sub-nav — Overview · Eligibility · Fees · Curriculum · Careers
+           • sticky Tabs sub-nav — Overview · Eligibility · Curriculum · Careers
            • sticky side rail — quick facts + Apply / Prospectus / Talk to admissions
              + related programmes
        → navy bottom CTA (Samarth pill + Apply / Prospectus)
        → "Explore other programmes" ProgramCard grid.
 
-   Every figure (fees, eligibility, careers, curriculum) renders from data; the
+   Every figure (eligibility, careers, curriculum) renders from data; the
    detailed GU syllabus link is a TODO until the client supplies it, so the
    Curriculum tab shows a disabled "coming soon" button rather than a broken
    link or an embedded Drive viewer. Per-course SEO + the Course JSON-LD schema
@@ -144,54 +144,6 @@ const EligibilityPanel = ({ course }) => (
         </li>
       ))}
     </ul>
-  </Reveal>
-);
-
-const FeesPanel = ({ course }) => (
-  <Reveal className={styles.panelBlock} variant="fadeUp">
-    <div className={styles.feeTableWrap}>
-      <table className={styles.feeTable}>
-        <caption className={styles.srOnly}>
-          First-semester fee breakdown for {course.shortName}.
-        </caption>
-        <thead>
-          <tr>
-            <th scope="col">Particular</th>
-            <th scope="col">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {course.fees.rows.map((row) => (
-            <tr key={row.particular}>
-              <th scope="row">{row.particular}</th>
-              <td>{row.amount}</td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr className={styles.feeTotal}>
-            <th scope="row">1st-Semester Total</th>
-            <td>{course.fees.total}</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-
-    <ul className={styles.feeFacts}>
-      <li>
-        <span className={styles.factLabel}>Monthly tuition</span>
-        <span className={styles.factValue}>{course.fees.tuitionMonthly}</span>
-      </li>
-      <li>
-        <span className={styles.factLabel}>Application fee</span>
-        <span className={styles.factValue}>{course.fees.application}</span>
-      </li>
-    </ul>
-
-    <p className={styles.note}>
-      <Icon icon="mdi:information-outline" aria-hidden="true" />
-      <span>{course.fees.note}</span>
-    </p>
   </Reveal>
 );
 
@@ -326,11 +278,6 @@ const CourseDetail = () => {
       content: <EligibilityPanel course={course} />,
     },
     {
-      label: 'Fees',
-      icon: 'mdi:tag-outline',
-      content: <FeesPanel course={course} />,
-    },
-    {
       label: 'Curriculum',
       icon: 'mdi:book-open-variant',
       content: <CurriculumPanel course={course} />,
@@ -399,14 +346,6 @@ const CourseDetail = () => {
                   <div className={styles.factsRow}>
                     <dt>Eligibility</dt>
                     <dd>{course.eligibilityShort}</dd>
-                  </div>
-                  <div className={styles.factsRow}>
-                    <dt>1st-Sem Fees</dt>
-                    <dd className={styles.factsStrong}>{course.fees.total}</dd>
-                  </div>
-                  <div className={styles.factsRow}>
-                    <dt>Monthly Tuition</dt>
-                    <dd>{course.fees.tuitionMonthly}</dd>
                   </div>
                   <div className={styles.factsRow}>
                     <dt>Intake</dt>

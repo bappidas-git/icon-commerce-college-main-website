@@ -1,5 +1,5 @@
 /* ============================================
-   Admissions — admission process, eligibility, fees & prospectus (prompt 23)
+   Admissions — admission process, eligibility & prospectus (prompt 23)
    Icon Commerce College
    --------------------------------------------
    The full /admissions page:
@@ -8,12 +8,11 @@
        → How to Apply  — 4-step Samarth process + "Go to Samarth Portal"
                           (official URL) + "Apply / Enquire" drawer CTA
        → Eligibility   — general note + per-programme cards (from coursesData)
-       → Fee structure — accessible Tabs of per-programme fee tables (data)
        → Documents & Scholarships — verification checklist + scholarship note
        → Admission FAQ — Accordion + FAQPage JSON-LD (kept in sync via useSeo)
        → CTA band      — Apply / Download Prospectus (lead-gated) / Call
 
-   Every fee/eligibility figure renders from `coursesData` (single source of
+   Every eligibility figure renders from `coursesData` (single source of
    truth); the process, documents, scholarship note and FAQ come from
    `admissionData`. The prospectus download is lead-gated via <ProspectusButton>
    — it opens the lead drawer and only downloads after a successful submit.
@@ -28,7 +27,6 @@ import PageHero from '../../components/common/PageHero/PageHero';
 import Section from '../../components/common/Section/Section';
 import Container from '../../components/common/Container/Container';
 import Button from '../../components/common/Button/Button';
-import Tabs from '../../components/common/Tabs/Tabs';
 import Accordion from '../../components/common/Accordion/Accordion';
 import { Reveal, RevealGroup } from '../../components/common/Reveal/Reveal';
 import ProspectusButton from '../../components/common/ProspectusDownload/ProspectusButton';
@@ -47,57 +45,6 @@ const ADMISSION_SESSION = '2026-27';
 // at very narrow widths — it wraps at the space instead.
 const HERO_SESSION = ADMISSION_SESSION.replace('-', '‑');
 
-/* ------------------------------------------------------------------
-   Per-programme fee table (reused inside each Fees tab).
-   ------------------------------------------------------------------ */
-const FeeTable = ({ course }) => (
-  <div className={styles.feePanel}>
-    <div className={styles.feeTableWrap}>
-      <table className={styles.feeTable}>
-        <caption className={styles.srOnly}>
-          First-semester fee breakdown for {course.shortName}.
-        </caption>
-        <thead>
-          <tr>
-            <th scope="col">Particular</th>
-            <th scope="col">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {course.fees.rows.map((row) => (
-            <tr key={row.particular}>
-              <th scope="row">{row.particular}</th>
-              <td>{row.amount}</td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr className={styles.feeTotal}>
-            <th scope="row">1st-Semester Total</th>
-            <td>{course.fees.total}</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-
-    <ul className={styles.feeFacts}>
-      <li>
-        <span className={styles.factLabel}>Monthly tuition</span>
-        <span className={styles.factValue}>{course.fees.tuitionMonthly}</span>
-      </li>
-      <li>
-        <span className={styles.factLabel}>Application fee</span>
-        <span className={styles.factValue}>{course.fees.application}</span>
-      </li>
-    </ul>
-
-    <p className={styles.note}>
-      <Icon icon="mdi:information-outline" aria-hidden="true" />
-      <span>{course.fees.note}</span>
-    </p>
-  </div>
-);
-
 const Admissions = () => {
   // Apply per-route SEO meta and keep the FAQPage schema in sync with the FAQ
   // actually rendered on the page (overrides the default admissions faqs).
@@ -106,12 +53,6 @@ const Admissions = () => {
   const { openLeadDrawer } = useModal();
 
   const openApply = (source) => openLeadDrawer('apply-now', { source });
-
-  const feeTabs = coursesData.map((course) => ({
-    label: course.shortName,
-    icon: 'mdi:tag-outline',
-    content: <FeeTable course={course} />,
-  }));
 
   return (
     <>
@@ -201,21 +142,7 @@ const Admissions = () => {
         </RevealGroup>
       </Section>
 
-      {/* 4 — Fee structure (per-programme tabs) */}
-      <Section
-        bg="white"
-        container="default"
-        eyebrow="Fees"
-        title="Fee Structure"
-        subtitle="First-semester fees by programme. Select a programme to see the full breakdown."
-        aria-label="Fee structure"
-      >
-        <Reveal variant="fadeUp">
-          <Tabs tabs={feeTabs} align="center" className={styles.feeTabs} />
-        </Reveal>
-      </Section>
-
-      {/* 5 + 6 — Documents required & Scholarships */}
+      {/* 4 + 5 — Documents required & Scholarships */}
       <Section
         bg="light"
         container="wide"
@@ -262,13 +189,13 @@ const Admissions = () => {
         </div>
       </Section>
 
-      {/* 7 — Admission FAQ (Accordion + FAQPage schema) */}
+      {/* 6 — Admission FAQ (Accordion + FAQPage schema) */}
       <Section
         bg="white"
         container="narrow"
         eyebrow="Questions"
         title="Admission FAQ"
-        subtitle="Quick answers on eligibility, fees, dates, hostel and how to reach us."
+        subtitle="Quick answers on eligibility, dates, hostel and how to reach us."
         aria-label="Admission frequently asked questions"
       >
         <Reveal variant="fadeUp">
@@ -276,7 +203,7 @@ const Admissions = () => {
         </Reveal>
       </Section>
 
-      {/* 8 — General Instructions & Student Information */}
+      {/* 7 — General Instructions & Student Information */}
       <Section
         bg="light"
         container="narrow"
@@ -290,7 +217,7 @@ const Admissions = () => {
         </Reveal>
       </Section>
 
-      {/* 9 — CTA band (navy + gold glow) */}
+      {/* 8 — CTA band (navy + gold glow) */}
       <section className={styles.cta} aria-labelledby="admissions-cta-heading">
         <span className={styles.ctaGlow} aria-hidden="true" />
         <Container size="default">

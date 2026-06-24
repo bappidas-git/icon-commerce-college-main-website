@@ -39,7 +39,8 @@ import {
 } from "../../../utils/gtm";
 import styles from "./Footer.module.css";
 
-const MAP_PLACEHOLDER = "/images/placeholders/map-location.svg";
+const MAP_PLACEHOLDER =
+  "https://res.cloudinary.com/dn9gyaiik/image/upload/v1782278381/Icon-Commerce-College-On-Map_shbfdf.png";
 
 /** Returns true for absolute http(s) URLs (placeholder TODOs resolve to false). */
 const isHttpUrl = (value) => /^https?:\/\//i.test(String(value || ""));
@@ -128,10 +129,12 @@ const PrivacyPolicyContent = () => (
       <ul>
         <li>To respond to your admission enquiries and questions.</li>
         <li>
-          To share information about courses, fees, facilities and the
-          admission process — by phone, WhatsApp or email.
+          To share information about courses, fees, facilities and the admission
+          process — by phone, WhatsApp or email.
         </li>
-        <li>To improve our website and the guidance we provide to applicants.</li>
+        <li>
+          To improve our website and the guidance we provide to applicants.
+        </li>
       </ul>
     </section>
 
@@ -148,13 +151,17 @@ const PrivacyPolicyContent = () => (
       <ul>
         <li>Request a copy of the personal data we hold about you.</li>
         <li>Ask us to correct inaccurate information.</li>
-        <li>Ask us to delete your enquiry data, subject to legal obligations.</li>
+        <li>
+          Ask us to delete your enquiry data, subject to legal obligations.
+        </li>
       </ul>
     </section>
 
     <section className={styles.legalSection}>
       <h3>Contact</h3>
-      <p>For any privacy questions or data requests, contact the college office:</p>
+      <p>
+        For any privacy questions or data requests, contact the college office:
+      </p>
       <p>
         <strong>{collegeInfo.name}</strong>
         <br />
@@ -197,13 +204,11 @@ const TermsContent = () => (
     </section>
 
     <section className={styles.legalSection}>
-      <h3>Admissions &amp; Fees</h3>
+      <h3>Admissions</h3>
       <p>
         All admissions are subject to eligibility and the rules of Gauhati
         University and the Samarth admission portal (College Code{" "}
-        {collegeInfo.samarthCode}). Fees shown on this website are indicative;
-        university registration, enrolment and examination fees are extra and
-        subject to change. Fees paid are non-refundable.
+        {collegeInfo.samarthCode}).
       </p>
     </section>
 
@@ -436,7 +441,11 @@ const Footer = () => {
       };
 
   const handleDownloadProspectus = () => {
-    trackCTAClick("footer_download_prospectus", "footer", "Download Prospectus");
+    trackCTAClick(
+      "footer_download_prospectus",
+      "footer",
+      "Download Prospectus",
+    );
     openLeadDrawer("prospectus");
   };
 

@@ -158,40 +158,12 @@
   color: var(--color-accent);
 }
 
-/* ---------- Fees hint (pushed to the bottom so actions align across cards) ---------- */
-.fees {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: var(--space-1) var(--space-2);
-  margin: auto 0 var(--space-4);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-border);
-}
-
-.feesIcon {
-  align-self: center;
-  font-size: 1.05rem;
-  color: var(--color-accent-dark);
-}
-
-.feesValue {
-  font-family: var(--font-heading);
-  font-weight: var(--fw-bold);
-  font-size: var(--fs-lg);
-  color: var(--color-primary);
-}
-
-.feesLabel {
-  font-size: var(--fs-xs);
-  color: var(--color-text-muted);
-}
-
-/* ---------- Actions ---------- */
+/* ---------- Actions (pushed to the bottom so they align across cards) ---------- */
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3);
+  margin-top: auto;
 }
 
 .btnView,

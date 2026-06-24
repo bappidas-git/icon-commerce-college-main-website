@@ -185,32 +185,6 @@
   outline-offset: 2px;
 }
 
-/* 1st-semester total fee — emphasised. */
-.tableFee {
-  font-family: var(--font-heading);
-  font-weight: var(--fw-bold);
-  color: var(--color-primary);
-  white-space: nowrap;
-}
-
-/* Footnote (extra GU fees / application fee). */
-.tableNote {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
-  margin: var(--space-5) 0 0;
-  font-size: var(--fs-sm);
-  line-height: var(--lh-relaxed);
-  color: var(--color-text-muted);
-}
-
-.tableNote svg {
-  flex-shrink: 0;
-  margin-top: 0.15em;
-  font-size: 1.1rem;
-  color: var(--color-accent-dark);
-}
-
 /* ============================================
    5 — Admission CTA band (navy + gold glow)
    ============================================ */

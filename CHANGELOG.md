@@ -4,6 +4,84 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Fixed cramped CTA spacing + responsive polish across the site
+
+The course-detail "Ready to apply for …" CTA looked tightly packed because the
+spacing scale was **missing the `--space-7` token** — the scale jumped from
+`--space-6` (24px) straight to `--space-8` (32px). Five rules referenced the
+undefined `var(--space-7)`, and an undefined custom property invalidates the
+whole declaration, so those `margin-top`s silently collapsed to `0`. Defining
+the token restores the intended breathing room everywhere it was used, and a few
+device-specific spacing/placement issues found while auditing every page were
+fixed alongside it. `npm run build` stays clean.
+
+- **`src/styles/variables.css`** — added the missing **`--space-7: 1.75rem`**
+  (28px) between `--space-6` and `--space-8`. This single fix restores the
+  vertical rhythm of the **CourseDetail** bottom CTA (Samarth pill + Apply /
+  Prospectus buttons), the **Admissions** CTA (same pattern), and — highest
+  impact — the **`PageHero` CTA button**, whose `margin-top` was collapsed on
+  *every* page hero (About, Courses, Course detail, Departments, Faculty,
+  Facilities, Gallery, Admissions, Notices, Events, Contact).
+- **`src/components/common/MonthGrid/MonthGrid.module.css`** — the Events
+  calendar's 7-column day grid overflowed narrow phones: the global touch rule
+  (`button { min-width: 44px }`) forced the row wider than a 360px viewport,
+  causing horizontal scroll and a clipped last column. Added `min-width: 0` to
+  `.day` (cells stay fluid) and a `min-height: 44px` at ≤480px so each day keeps
+  a WCAG-sized tap target via height instead of width.
+- **`src/components/common/MobileDrawer/MobileDrawer.module.css`** — the mobile
+  submenu links (All Programs · B.Com · BBA · BCA · B.A · Departments …) sat at
+  ~32px tall, under the 40px touch-target guideline. Bumped `.subLink` vertical
+  padding from `--space-2` to `--space-3` (~40px) — the primary mobile nav.
+- **`src/components/common/Tabs/Tabs.module.css`** — the sticky sub-nav (Course
+  detail · Departments) pinned at `top: 80px` (`--header-height`), but below
+  1024px the utility bar is hidden and the header collapses to 64px, leaving a
+  ~16px strip of scrolling content above the pinned tabs. Pinned the tablist to
+  `top: 64px` on ≤1024px so it sits flush under the collapsed header.
+- **`src/pages/Departments/DepartmentCard.module.css`** — `.related` used
+  `align-items: center`, which floated the "Related programmes" label to the
+  vertical middle when its chips wrapped to two rows. Switched to
+  `align-items: flex-start` so the label aligns to the first chip row.
+
+### Removed all course fee information from the website
+
+At the client's request, every fee figure and fee-related display was removed
+from the public site. Fees are no longer the single-source-of-truth `coursesData`
+concern, so the data was dropped at the source and every consumer updated to
+match — no broken `course.fees` reads remain and `npm run build` is clean.
+
+- **`src/data/coursesData.js`** — removed the shared `FEES_BCOM_BA` /
+  `FEES_BCA_BBA` breakdown objects, the `fees` field on all four courses, and the
+  `fees` entry from the `Course` typedef.
+- **`src/pages/CourseDetail/CourseDetail.jsx`** — dropped the **Fees** tab and its
+  `FeesPanel` (fee table, monthly tuition, application fee, N.B. note), plus the
+  **1st-Sem Fees** and **Monthly Tuition** rows from the quick-facts side rail.
+- **`src/pages/Courses/Courses.jsx`** — removed the **1st-Sem Total Fees** and
+  **Monthly Tuition** comparison-table columns, the application-fee footnote, and
+  the now-unused `FEES_NOTE`; the table now compares Program · Duration ·
+  Eligibility.
+- **`src/pages/Admissions/Admissions.jsx`** — removed the entire **Fee Structure**
+  section (per-programme `FeeTable` tabs) and the unused `Tabs` import; the FAQ
+  subtitle no longer mentions fees.
+- **`src/components/sections/ProgramsSection/ProgramCard.jsx`** — removed the
+  "1st-semester fees" hint; the bottom actions now carry `margin-top:auto` so the
+  buttons stay aligned across cards.
+- **`src/data/admissionData.js`** — removed the "What are the fees" FAQ entry and
+  the `feesNote` field; the prospectus blurb no longer lists fees.
+- **`src/config/seo.js`** — removed the fees FAQ from the FAQPage schema and the
+  fee mentions in the Courses / Admissions meta descriptions.
+- **`src/utils/seo.js`** — removed the `Offer` (Application Fee) block from the
+  Course JSON-LD schema.
+- **Copy cleanup** — dropped passing "fees" mentions from `Footer.jsx`
+  (incl. the now-inaccurate "Admissions & Fees" terms paragraph, retitled
+  **Admissions**), `UnifiedLeadForm.jsx`, `ModalContext.jsx`, `Contact.jsx`,
+  `ThankYou.jsx` and the `UI Kit` demo FAQ.
+- **CSS** — removed the orphaned fee styles (`.feeTable*`, `.feeFacts`,
+  `.feeTotal`, `.feePanel`, `.feeTabs`, `.tableFee`, `.tableNote`, ProgramCard
+  `.fees*`, CourseDetail `.note`/`.factsStrong`) and resequenced the section
+  comments in the affected `*.module.css` files.
+- **`docs/CONTENT_GUIDE.md`** — removed the `fees` field row and the
+  "update fees" instructions.
+
 ### Real section photos wired in + reused site-wide, with responsive fit fixes
 
 The college supplied real photography (hosted on Cloudinary, the same account as

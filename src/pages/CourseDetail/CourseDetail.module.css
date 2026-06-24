@@ -1,7 +1,7 @@
 /* ============================================
    CourseDetail page styles — Icon Commerce College
    Hero meta pills · two-column body (sticky tabs + sticky rail) ·
-   tab panels (overview / eligibility / fees / curriculum / careers) ·
+   tab panels (overview / eligibility / curriculum / careers) ·
    navy bottom CTA · "explore other programmes" grid.
    Tokens from design-system §2–§4; CTA band mirrors the Courses page.
    ============================================ */
@@ -208,24 +208,6 @@
   color: var(--color-primary);
 }
 
-/* Footnote (fees N.B.) */
-.note {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
-  margin: var(--space-6) 0 0;
-  font-size: var(--fs-sm);
-  line-height: var(--lh-relaxed);
-  color: var(--color-text-muted);
-}
-
-.note svg {
-  flex-shrink: 0;
-  margin-top: 0.15em;
-  font-size: 1.1rem;
-  color: var(--color-accent-dark);
-}
-
 /* ============================================
    4 — Eligibility
    ============================================ */
@@ -288,82 +270,7 @@
 }
 
 /* ============================================
-   5 — Fees
-   ============================================ */
-.feeTableWrap {
-  overflow-x: auto;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  -webkit-overflow-scrolling: touch;
-}
-
-.feeTable {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--color-surface);
-  font-size: var(--fs-base);
-}
-
-.feeTable thead th {
-  background: var(--color-primary);
-  color: #ffffff;
-  font-family: var(--font-heading);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-sm);
-  text-align: left;
-  padding: var(--space-3) var(--space-5);
-}
-
-.feeTable thead th:last-child,
-.feeTable tbody td,
-.feeTable tfoot td {
-  text-align: right;
-}
-
-.feeTable tbody th,
-.feeTable tfoot th {
-  text-align: left;
-  font-weight: var(--fw-regular);
-}
-
-.feeTable tbody th,
-.feeTable tbody td {
-  padding: var(--space-3) var(--space-5);
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text);
-}
-
-.feeTotal th,
-.feeTotal td {
-  padding: var(--space-4) var(--space-5);
-  background: var(--color-accent-soft);
-  font-family: var(--font-heading);
-  font-weight: var(--fw-bold);
-  color: var(--color-primary);
-}
-
-.feeFacts {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
-  margin: var(--space-5) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.feeFacts li {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-4);
-  border-radius: var(--radius-card);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-}
-
-/* ============================================
-   6 — Curriculum
+   5 — Curriculum
    ============================================ */
 .componentGrid {
   display: grid;
@@ -483,7 +390,7 @@
 }
 
 /* ============================================
-   7 — Careers
+   6 — Careers
    ============================================ */
 .careerGrid {
   display: grid;
@@ -521,7 +428,7 @@
 }
 
 /* ============================================
-   8 — Side rail
+   7 — Side rail
    ============================================ */
 .railCard {
   padding: var(--space-6);
@@ -570,11 +477,6 @@
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
   color: var(--color-primary);
-}
-
-.factsRow .factsStrong {
-  font-size: var(--fs-base);
-  color: var(--color-accent-dark);
 }
 
 .railActions {
@@ -674,7 +576,7 @@
 }
 
 /* ============================================
-   9 — Bottom CTA band (navy + gold glow) — mirrors Courses page
+   8 — Bottom CTA band (navy + gold glow) — mirrors Courses page
    ============================================ */
 .cta {
   position: relative;
@@ -818,7 +720,7 @@
 }
 
 /* ============================================
-   10 — Explore other programmes grid
+   9 — Explore other programmes grid
    ============================================ */
 .exploreGrid {
   display: grid;
@@ -831,7 +733,7 @@
 }
 
 /* ============================================
-   11 — Responsive
+   10 — Responsive
    ============================================ */
 
 /* Tablet/desktop boundary: collapse to a single column; rail stacks below. */
@@ -853,8 +755,7 @@
   .ticks,
   .componentGrid,
   .exitList,
-  .careerGrid,
-  .feeFacts {
+  .careerGrid {
     grid-template-columns: 1fr;
   }
 
@@ -869,7 +770,7 @@
 }
 
 /* ============================================
-   12 — Reduced motion (drop hover transforms, §4)
+   11 — Reduced motion (drop hover transforms, §4)
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
   .componentCard:hover,

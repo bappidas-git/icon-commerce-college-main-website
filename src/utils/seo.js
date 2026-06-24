@@ -391,17 +391,6 @@ export function generateCourseSchema(course) {
         },
       },
     },
-    ...(course.fees &&
-      course.fees.application && {
-        offers: {
-          '@type': 'Offer',
-          category: 'Application Fee',
-          price: String(course.fees.application).replace(/[^\d.]/g, ''),
-          priceCurrency: 'INR',
-          availability: 'https://schema.org/InStock',
-          url: `${seoConfig.siteUrl}/admissions`,
-        },
-      }),
   };
 }
 

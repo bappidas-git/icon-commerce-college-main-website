@@ -722,9 +722,14 @@
 /* ============================================
    9 — Explore other programmes grid
    ============================================ */
+/* The three sibling programmes always render as a clean row of three on
+   desktop. (An `auto-fit minmax(300px,…)` track count drops to two at common
+   laptop widths once the section gutters are subtracted, which orphaned the
+   third card into a lopsided 2 + 1 wrap — see the responsive overrides below
+   for the tablet/phone collapse.) */
 .exploreGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: clamp(1.5rem, 3vw, 2.25rem);
 }
 
@@ -747,6 +752,11 @@
   .railRelated {
     display: none;
   }
+
+  /* Two-up on tablet (the third card wraps neatly beneath the first two). */
+  .exploreGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Two-up content grids → single column on small tablets / phones. */
@@ -755,7 +765,8 @@
   .ticks,
   .componentGrid,
   .exitList,
-  .careerGrid {
+  .careerGrid,
+  .exploreGrid {
     grid-template-columns: 1fr;
   }
 

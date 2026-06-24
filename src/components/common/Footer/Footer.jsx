@@ -57,12 +57,6 @@ const socialLinks = [
     url: collegeInfo.social.facebook,
   },
   {
-    id: "youtube",
-    icon: "mdi:youtube",
-    label: "YouTube",
-    url: collegeInfo.social.youtube,
-  },
-  {
     id: "instagram",
     icon: "mdi:instagram",
     label: "Instagram",
@@ -713,6 +707,17 @@ const Footer = () => {
                 &copy; {new Date().getFullYear()} {collegeInfo.name}. All rights
                 reserved.
               </p>
+              <p className={styles.credit}>
+                Designed &amp; Developed by{" "}
+                <a
+                  href="https://assamdigital.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.creditLink}
+                >
+                  Assam Digital
+                </a>
+              </p>
               <div className={styles.legalLinks}>
                 <button
                   type="button"
@@ -731,12 +736,6 @@ const Footer = () => {
                 >
                   Terms of Use
                 </button>
-                <span className={styles.linkDivider} aria-hidden="true">
-                  ·
-                </span>
-                <Link to="/admin/login" className={styles.adminLink}>
-                  Admin
-                </Link>
               </div>
             </div>
           </Container>

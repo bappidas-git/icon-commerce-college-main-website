@@ -13,6 +13,8 @@ import { CircularProgress, Box } from '@mui/material';
 import AdminSidebar from './AdminSidebar';
 import AdminTopbar from './AdminTopbar';
 import { syncLeadsFromServer } from '../utils/leadService';
+import { useAdminAuth } from '../context/AdminAuthContext';
+import { canAccessSettings } from '../navItems';
 import styles from './AdminLayout.module.css';
 
 const Dashboard = lazy(() => import('../pages/Dashboard'));
@@ -31,6 +33,8 @@ const PageLoader = () => (
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAdminAuth();
+  const settingsAllowed = canAccessSettings(user?.role);
 
   useEffect(() => {
     // Warm the in-memory cache from the shared server store (the single source
@@ -66,7 +70,12 @@ const AdminLayout = () => {
               <Route path="leads/:leadId" element={<LeadDetail />} />
               <Route path="notices" element={<Notices />} />
               <Route path="events" element={<Events />} />
-              <Route path="settings" element={<Settings />} />
+              {/* Settings is role-gated: barred roles (e.g. management) are
+                  bounced to the dashboard even via a direct URL. */}
+              <Route
+                path="settings"
+                element={settingsAllowed ? <Settings /> : <Navigate to="dashboard" replace />}
+              />
               <Route path="*" element={<Navigate to="dashboard" replace />} />
             </Routes>
           </Suspense>

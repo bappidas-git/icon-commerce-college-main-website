@@ -4,6 +4,43 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Header/footer fixes, social links, explore-grid + a restricted admin role
+
+A batch of UI fixes plus a second, scoped admin account.
+
+- **Samarth pill hover (`src/components/common/Header/Header.module.css`)** — the
+  utility-bar "Samarth Admission Portal" pill sits on a gold gradient, but the
+  global `a:hover` rule recoloured its label gold on hover, making the text
+  vanish. The hover rule now pins the label to `--color-primary-dark` so it stays
+  legible.
+- **Removed the footer "Admin" link (`Footer.jsx`)** — the discreet
+  `/admin/login` link (and its divider) is gone from the bottom bar. The admin
+  routes still work by direct URL; they're just no longer advertised on the site.
+- **Removed the YouTube social icon everywhere** — dropped from the header,
+  footer and contact-page social rows (`Header.jsx`, `Footer.jsx`,
+  `Contact.jsx`) and from `collegeInfo.social`, since the college has no YouTube
+  channel. (The unrelated Gallery video feature is untouched.)
+- **"Designed & Developed by Assam Digital" credit (`Footer.jsx` + CSS)** — added
+  to the centre of the bottom bar; "Assam Digital" links to
+  `https://assamdigital.com` in a new tab (`target="_blank"` + `rel="noopener"`).
+- **Real Facebook/Instagram URLs (`collegeInfo.js`)** — `social.facebook` and
+  `social.instagram` now point at the official pages, so every FB/IG icon
+  (header, footer, contact) opens the right profile in a new tab (the existing
+  `isHttpUrl()` guard + `target="_blank"` already handled the rest).
+- **"Explore other programmes" grid (`CourseDetail.module.css`)** — the three
+  sibling courses used an `auto-fit minmax(300px,…)` track list that drops to
+  **two columns** at common laptop widths once the section gutters are
+  subtracted, orphaning the third card into a lopsided 2 + 1 wrap. Switched to an
+  explicit `repeat(3, 1fr)` on desktop (→ 2-up on tablet, 1-up on phone) so all
+  three always render as a clean row.
+- **Restricted management admin account (`adminAuth.js`, `AdminAuthContext.jsx`,
+  `navItems.js`, `AdminSidebar.jsx`, `AdminLayout.jsx`)** — added a second login
+  `icc@management` with a `manager` role alongside the env-configured super-admin.
+  The manager sees Leads/Notices/Events/Dashboard but **not** Settings: the
+  sidebar item is filtered out (`navForRole`) and the `/admin/settings` route is
+  guarded (`canAccessSettings`), bouncing a direct visit back to the dashboard. A
+  missing role (legacy super-admin session) keeps full access.
+
 ### Real Departments page photography (hero + three stream bands)
 
 Swapped the labelled placeholders on `/departments` for the real photos supplied

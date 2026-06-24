@@ -51,7 +51,6 @@ const mapsEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(
 
 const socialLinks = [
   { id: 'facebook', icon: 'mdi:facebook', label: 'Facebook', url: collegeInfo.social.facebook },
-  { id: 'youtube', icon: 'mdi:youtube', label: 'YouTube', url: collegeInfo.social.youtube },
   { id: 'instagram', icon: 'mdi:instagram', label: 'Instagram', url: collegeInfo.social.instagram },
 ];
 

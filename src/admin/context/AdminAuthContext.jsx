@@ -29,11 +29,12 @@ export const AdminAuthProvider = ({ children }) => {
   }, []);
 
   const login = useCallback((username, password, rememberMe = false) => {
-    if (!validateCredentials(username, password)) {
+    const account = validateCredentials(username, password);
+    if (!account) {
       return { success: false, error: 'Invalid username or password' };
     }
 
-    const authData = setStoredAuth(username, rememberMe);
+    const authData = setStoredAuth(account.username, account.role, rememberMe);
     setUser(authData);
     return { success: true };
   }, []);

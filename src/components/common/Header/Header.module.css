@@ -125,6 +125,9 @@ a.utilityItem:hover {
 }
 
 .samarthPill:hover {
+  /* Keep the dark label legible on the gold pill — the global `a:hover` rule
+     otherwise recolours it gold, making the text vanish against the gradient. */
+  color: var(--color-primary-dark);
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(200, 160, 77, 0.35);
 }

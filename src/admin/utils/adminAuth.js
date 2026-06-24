@@ -32,9 +32,10 @@ export const getStoredAuth = () => {
 /**
  * Store auth data in localStorage
  */
-export const setStoredAuth = (username, rememberMe = false) => {
+export const setStoredAuth = (username, role, rememberMe = false) => {
   const data = {
     username,
+    role,
     token: generateToken(),
     loginTime: Date.now(),
     expiresAt: Date.now() + SESSION_TIMEOUT,
@@ -52,12 +53,34 @@ export const clearStoredAuth = () => {
 };
 
 /**
- * Validate credentials against env vars or defaults
+ * Admin accounts. The default super-admin (env-configurable) has the full
+ * admin surface; the management account can run the day-to-day site but is
+ * barred from the Settings module — both the sidebar item and the page are
+ * gated by role (see navItems.js / AdminLayout / AdminSidebar).
+ */
+const ADMIN_USERS = [
+  {
+    username: process.env.REACT_APP_ADMIN_USERNAME || 'admin',
+    password: process.env.REACT_APP_ADMIN_PASSWORD || 'icc@2026',
+    role: 'superadmin',
+  },
+  {
+    username: 'icc@management',
+    password: 'iCC@mgmt2026',
+    role: 'manager',
+  },
+];
+
+/**
+ * Validate credentials against the configured admin accounts.
+ * @returns {{username: string, role: string}|null} the matched account (without
+ *   its password) on success, or null when the credentials don't match.
  */
 export const validateCredentials = (username, password) => {
-  const validUsername = process.env.REACT_APP_ADMIN_USERNAME || 'admin';
-  const validPassword = process.env.REACT_APP_ADMIN_PASSWORD || 'icc@2026';
-  return username === validUsername && password === validPassword;
+  const match = ADMIN_USERS.find(
+    (user) => user.username === username && user.password === password,
+  );
+  return match ? { username: match.username, role: match.role } : null;
 };
 
 /**

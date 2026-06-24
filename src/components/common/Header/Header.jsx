@@ -176,10 +176,9 @@ const Header = ({ mobileMenuOpen = false, onMobileMenuToggle }) => {
     openLeadDrawer('apply-now');
   };
 
-  const { facebook, youtube, instagram } = collegeInfo.social;
+  const { facebook, instagram } = collegeInfo.social;
   const socialLinks = [
     { id: 'facebook', icon: 'mdi:facebook', label: 'Facebook', url: facebook },
-    { id: 'youtube', icon: 'mdi:youtube', label: 'YouTube', url: youtube },
     { id: 'instagram', icon: 'mdi:instagram', label: 'Instagram', url: instagram },
   ];
 

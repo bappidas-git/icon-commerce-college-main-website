@@ -22,7 +22,7 @@
  * @property {string[]} phones        Display phone numbers
  * @property {string} email
  * @property {string} mapsQuery       Google Maps search query
- * @property {{facebook:string, youtube:string, instagram:string}} social
+ * @property {{facebook:string, instagram:string}} social
  * @property {{days:string, time:string}} hours
  */
 
@@ -60,9 +60,8 @@ export const collegeInfo = {
   mapsQuery: 'Icon Commerce College, Rajgarh Road, Guwahati',
 
   social: {
-    facebook: 'TODO: official Facebook page URL',
-    youtube: 'TODO: YouTube channel URL (College Profile — ICON Commerce College)',
-    instagram: 'TODO: official Instagram URL',
+    facebook: 'https://www.facebook.com/iconcommercecollege.in',
+    instagram: 'https://www.instagram.com/icon_commerce_college',
   },
 
   hours: {

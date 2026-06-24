@@ -8,10 +8,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@iconify/react';
-import { ADMIN_NAV } from '../navItems';
+import { navForRole } from '../navItems';
+import { useAdminAuth } from '../context/AdminAuthContext';
 import styles from './AdminSidebar.module.css';
 
-const AdminSidebar = ({ open, onClose }) => (
+const AdminSidebar = ({ open, onClose }) => {
+  const { user } = useAdminAuth();
+  // Restricted roles (e.g. management) never see the Settings link.
+  const navItems = navForRole(user?.role);
+
+  return (
   <>
     {/* Mobile overlay */}
     <div
@@ -40,7 +46,7 @@ const AdminSidebar = ({ open, onClose }) => (
 
       {/* Nav */}
       <nav className={styles.nav}>
-        {ADMIN_NAV.map((item) => (
+        {navItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
@@ -62,6 +68,7 @@ const AdminSidebar = ({ open, onClose }) => (
       </div>
     </aside>
   </>
-);
+  );
+};
 
 export default AdminSidebar;

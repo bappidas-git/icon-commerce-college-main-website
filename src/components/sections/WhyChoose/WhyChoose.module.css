@@ -45,7 +45,7 @@
   column-gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
   border-radius: var(--radius-card);
-  background: var(--gradient-gold);
+  background: rgb(255, 187, 66, 0.6);
   color: var(--color-primary-dark);
   box-shadow: var(--shadow-md);
 }
@@ -95,8 +95,10 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-base),
-    box-shadow var(--transition-base), border-color var(--transition-base);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
 }
 
 /* Hover lift + gold accent (design-system §4). */

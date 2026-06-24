@@ -111,7 +111,7 @@ const Departments = () => {
         eyebrow="Academics"
         title="Departments"
         subtitle="Our academic departments across three streams — Arts · Commerce · Science."
-        image="hero-library"
+        image="dept-hero"
         breadcrumb={[{ label: "Departments" }]}
       />
 

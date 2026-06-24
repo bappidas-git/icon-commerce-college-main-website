@@ -4,6 +4,29 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Real Departments page photography (hero + three stream bands)
+
+Swapped the labelled placeholders on `/departments` for the real photos supplied
+by the college (hosted on the same Cloudinary account as the campus photo and
+logo). This goes through the documented **production-swap** path — the
+`REAL` override map in `src/utils/assets.js` — so the logical `dept-*`
+placeholder slots resolve to real assets with no data/component churn. Along the
+way it **fixes a broken hero**: the Departments `PageHero` had a full Cloudinary
+URL hardcoded inline, but `PageHero` resolves its `image` prop through
+`placeholder()`, which mangled the URL down to a non-existent
+`/images/placeholders/Department-Hero-Image_tfe1tw.svg`. Routing the hero through
+a logical name — like every other page — makes it actually render.
+
+- **`src/utils/assets.js`** — added four entries to the `REAL` map:
+  `dept-hero` (PageHero backdrop), `dept-arts`, `dept-commerce` and
+  `dept-science` (the stream intro bands). Because `departmentsData.js` already
+  calls `placeholder('dept-arts' | 'dept-commerce' | 'dept-science')` and
+  `IMAGES.dept*` resolve through the same map, the three section images swap with
+  no other changes.
+- **`src/pages/Departments/Departments.jsx`** — the hero now passes
+  `image="dept-hero"` (a logical name) instead of a hardcoded URL, matching the
+  convention used by every other page and restoring the hero background.
+
 ### Fixed cramped CTA spacing + responsive polish across the site
 
 The course-detail "Ready to apply for …" CTA looked tightly packed because the

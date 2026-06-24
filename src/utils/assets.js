@@ -58,6 +58,21 @@ const REAL = {
     "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bca_wxgq8k.png",
   "course-ba":
     "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-ba_fvbgjm.png",
+
+  // Departments page — real hero backdrop + per-stream photography supplied by
+  // the college (same Cloudinary account as CAMPUS_IMAGE / LOGO). Each maps an
+  // existing `dept-*` placeholder slot, so the /departments hero and the three
+  // stream intro bands swap to real photos with no component/data changes:
+  // `dept-hero` resolves the PageHero backdrop, while `dept-arts`/`dept-commerce`/
+  // `dept-science` flow through departmentsData into each stream band.
+  "dept-hero":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1782283002/Department-Hero-Image_tfe1tw.png",
+  "dept-arts":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1782284644/Arts-Section-Image_ibrur8.png",
+  "dept-commerce":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1782284649/Commerce-Section-Image_xqmttw.png",
+  "dept-science":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1782284648/Science-Section-Image_l52iom.png",
 };
 
 /**

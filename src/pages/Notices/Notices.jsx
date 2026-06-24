@@ -79,12 +79,12 @@ const Notices = () => {
 
   return (
     <>
-      {/* 1 — Hero */}
+      {/* 1 — Hero (shares the `dept-hero` backdrop, resolved via utils/assets) */}
       <PageHero
         eyebrow="Announcements"
         title="Notices & Announcements"
         subtitle="Official notices and announcements from Icon Commerce College — admissions, examinations and important updates."
-        image="hero-library"
+        image="dept-hero"
         breadcrumb={[{ label: 'Notices' }]}
       />
 

@@ -65,6 +65,9 @@ const REAL = {
   // stream intro bands swap to real photos with no component/data changes:
   // `dept-hero` resolves the PageHero backdrop, while `dept-arts`/`dept-commerce`/
   // `dept-science` flow through departmentsData into each stream band.
+  // `dept-hero` is also reused as the shared hero backdrop on the Notices page
+  // and the four Course-detail heroes (B.Com/BBA/BCA/B.A.), so a single URL
+  // drives all of them — the per-course `course-*` images still back the cards.
   "dept-hero":
     "https://res.cloudinary.com/dn9gyaiik/image/upload/v1782283002/Department-Hero-Image_tfe1tw.png",
   "dept-arts":

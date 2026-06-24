@@ -11,7 +11,7 @@
    so the labelled dev placeholders can be swapped for real photos later.
    ============================================ */
 
-import { placeholder } from '../utils/assets';
+import { placeholder } from "../utils/assets";
 
 /**
  * @typedef {Object} Facility
@@ -23,64 +23,64 @@ import { placeholder } from '../utils/assets';
 /** @type {Facility[]} */
 export const facilitiesData = [
   {
-    icon: 'mdi:account-tie-voice',
-    title: 'Qualified & Experienced Faculty',
+    icon: "mdi:account-tie-voice",
+    title: "Qualified & Experienced Faculty",
     description:
-      'A dedicated team of well-qualified, experienced teachers committed to student success and mentoring.',
+      "A dedicated team of well-qualified, experienced teachers committed to student success and mentoring.",
   },
   {
-    icon: 'mdi:bookshelf',
-    title: 'Digital Library',
+    icon: "mdi:bookshelf",
+    title: "Digital Library",
     description:
-      'A well-stocked library with reference books, a wide collection of journals and faculty-prepared study materials for study and research.',
+      "A well-stocked library with reference books, a wide collection of journals and faculty-prepared study materials for study and research.",
   },
   {
-    icon: 'mdi:desktop-classic',
-    title: 'Computer Lab',
+    icon: "mdi:desktop-classic",
+    title: "Computer Lab",
     description:
-      'A modern, internet-enabled computer laboratory supporting BCA practicals and digital skills.',
+      "A modern, internet-enabled computer laboratory supporting BCA practicals and digital skills.",
   },
   {
-    icon: 'mdi:monitor-dashboard',
-    title: 'Smart Classrooms',
+    icon: "mdi:monitor-dashboard",
+    title: "Smart Classrooms",
     description:
-      'Classrooms equipped with projectors and computers for interactive, PowerPoint-based smart learning.',
+      "Classrooms equipped with projectors and computers for interactive, PowerPoint-based smart learning.",
   },
   {
-    icon: 'mdi:google-classroom',
-    title: 'Online Classes (Google Meet)',
+    icon: "mdi:google-classroom",
+    title: "Online Classes (Google Meet)",
     description:
-      'Blended-learning support — online classes over Google Meet, with subject WhatsApp groups to clear doubts with teachers.',
+      "Blended-learning support — online classes over Google Meet, with subject WhatsApp groups to clear doubts with teachers.",
   },
   {
-    icon: 'mdi:silverware-fork-knife',
-    title: 'College Canteen',
+    icon: "mdi:silverware-fork-knife",
+    title: "College Canteen",
     description:
-      'An in-house canteen serving refreshments to students and staff at reasonable rates in a hygienic environment.',
+      "An in-house canteen serving refreshments to students and staff at reasonable rates in a hygienic environment.",
   },
   {
-    icon: 'mdi:wifi',
-    title: 'Free Wi-Fi / Internet',
+    icon: "mdi:wifi",
+    title: "Free Wi-Fi / Internet",
     description:
-      'Campus-wide Wi-Fi giving students free access to the internet for study and research.',
+      "Campus-wide Wi-Fi giving students free access to the internet for study and research.",
   },
   {
-    icon: 'mdi:soccer',
-    title: 'Playground',
+    icon: "mdi:soccer",
+    title: "Playground",
     description:
-      'An open playground for sports, the annual College Week and signature cricket tournaments.',
+      "An open playground for sports, the annual College Week and signature cricket tournaments.",
   },
   {
-    icon: 'mdi:water-check',
-    title: 'Purified Drinking Water',
+    icon: "mdi:water-check",
+    title: "Purified Drinking Water",
     description:
-      'Safe, purified drinking water stations available across the campus.',
+      "Safe, purified drinking water stations available across the campus.",
   },
   {
-    icon: 'mdi:hand-coin',
-    title: 'Government Scholarship Assistance',
+    icon: "mdi:hand-coin",
+    title: "Government Scholarship Assistance",
     description:
-      'Guidance and assistance for eligible students to access government scholarships.',
+      "Guidance and assistance for eligible students to access government scholarships.",
   },
 ];
 
@@ -103,48 +103,48 @@ export const facilitiesData = [
  */
 export const facilitySpotlights = [
   {
-    key: 'digital-library',
-    icon: 'mdi:bookshelf',
-    eyebrow: 'Digital Library',
-    title: 'A quiet, well-stocked space to read and research',
-    image: placeholder('facility-library'),
-    alt: 'The digital library at Icon Commerce College',
-    lead:
-      'Our library brings reference books, a varied collection of journals and faculty-prepared study materials together in one calm, focused space — so every student has the resources they need to read, study and research.',
+    key: "digital-library",
+    icon: "mdi:bookshelf",
+    eyebrow: "Digital Library",
+    title: "A quiet, well-stocked space to read and research",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782281793/Library_hnc3ni.png",
+    alt: "The digital library at Icon Commerce College",
+    lead: "Our library brings reference books, a varied collection of journals and faculty-prepared study materials together in one calm, focused space — so every student has the resources they need to read, study and research.",
     points: [
-      'Reference books, textbooks and journals across all four programmes',
-      'Study materials prepared by our experienced faculty members',
-      'A quiet reading area designed for focused, independent study',
+      "Reference books, textbooks and journals across all four programmes",
+      "Study materials prepared by our experienced faculty members",
+      "A quiet reading area designed for focused, independent study",
     ],
   },
   {
-    key: 'computer-lab',
-    icon: 'mdi:desktop-classic',
-    eyebrow: 'Computer Lab',
-    title: 'A modern, internet-enabled computing laboratory',
-    image: placeholder('facility-computer-lab'),
-    alt: 'The computer laboratory at Icon Commerce College',
-    lead:
-      'Our computer laboratory gives students hands-on access to modern, internet-enabled machines — supporting BCA practicals and building the digital skills every graduate needs today.',
+    key: "computer-lab",
+    icon: "mdi:desktop-classic",
+    eyebrow: "Computer Lab",
+    title: "A modern, internet-enabled computing laboratory",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782281788/Comp-lab_n0hr25.png",
+    alt: "The computer laboratory at Icon Commerce College",
+    lead: "Our computer laboratory gives students hands-on access to modern, internet-enabled machines — supporting BCA practicals and building the digital skills every graduate needs today.",
     points: [
-      'Internet-enabled workstations for practicals and projects',
-      'Dedicated support for the BCA programme and lab work',
-      'A space to build practical, job-ready digital skills',
+      "Internet-enabled workstations for practicals and projects",
+      "Dedicated support for the BCA programme and lab work",
+      "A space to build practical, job-ready digital skills",
     ],
   },
   {
-    key: 'sports-college-week',
-    icon: 'mdi:trophy-outline',
-    eyebrow: 'Sports & College Week',
-    title: 'An open ground for sport, culture and college spirit',
-    image: placeholder('facility-playground'),
-    alt: 'The playground and sports ground at Icon Commerce College',
-    lead:
-      'Beyond the classroom, our playground hosts the annual College Week and our signature cricket tournaments — bringing students together through games, culture and a healthy spirit of competition.',
+    key: "sports-college-week",
+    icon: "mdi:trophy-outline",
+    eyebrow: "Sports & College Week",
+    title: "An open ground for sport, culture and college spirit",
+    image:
+      "https://res.cloudinary.com/drx1zsmeq/image/upload/v1782281789/Play-ground_thqbgf.png",
+    alt: "The playground and sports ground at Icon Commerce College",
+    lead: "Beyond the classroom, our playground hosts the annual College Week and our signature cricket tournaments — bringing students together through games, culture and a healthy spirit of competition.",
     points: [
-      'Annual College Week — indoor & outdoor games, quiz, debate, art & literature',
-      'ICON Shield — annual cricket tournament in memory of Rupam Patgiri',
-      'ICON Trophy — annual cricket tournament in memory of Jadav Dutta',
+      "Annual College Week — indoor & outdoor games, quiz, debate, art & literature",
+      "ICON Shield — annual cricket tournament in memory of Rupam Patgiri",
+      "ICON Trophy — annual cricket tournament in memory of Jadav Dutta",
     ],
   },
 ];
@@ -163,19 +163,19 @@ export const facilitySpotlights = [
  */
 export const campusGlimpses = [
   {
-    image: placeholder('facility-smart-classroom'),
-    title: 'Smart Classrooms',
-    caption: 'Technology-enabled rooms for interactive, audio-visual learning.',
+    image: placeholder("facility-smart-classroom"),
+    title: "Smart Classrooms",
+    caption: "Technology-enabled rooms for interactive, audio-visual learning.",
   },
   {
-    image: placeholder('facility-canteen'),
-    title: 'College Canteen',
-    caption: 'A hygienic, affordable canteen serving fresh food on campus.',
+    image: placeholder("facility-canteen"),
+    title: "College Canteen",
+    caption: "A hygienic, affordable canteen serving fresh food on campus.",
   },
   {
-    image: placeholder('facility-wifi'),
-    title: 'Free Wi-Fi',
-    caption: 'Campus-wide Wi-Fi for study and research, free for students.',
+    image: placeholder("facility-wifi"),
+    title: "Free Wi-Fi",
+    caption: "Campus-wide Wi-Fi for study and research, free for students.",
   },
 ];
 

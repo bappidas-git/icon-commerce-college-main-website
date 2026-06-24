@@ -59,17 +59,8 @@ const STRUCTURE_FACTS = [
   },
 ];
 
-// Comparison-table columns (design-system §6 — exactly these five).
-const TABLE_COLUMNS = [
-  'Program',
-  'Duration',
-  'Eligibility',
-  '1st-Sem Total Fees',
-  'Monthly Tuition',
-];
-
-// The fee N.B. is identical across programmes (design-system §6) — show it once.
-const FEES_NOTE = coursesData[0].fees.note;
+// Comparison-table columns (design-system §6).
+const TABLE_COLUMNS = ['Program', 'Duration', 'Eligibility'];
 
 const Courses = () => {
   // /courses route SEO defaults + an ItemList schema of the four programmes.
@@ -118,7 +109,7 @@ const Courses = () => {
         container="wide"
         eyebrow="Programs"
         title="Choose your undergraduate path"
-        subtitle="Four UG programmes under the FYUGP framework — explore the details and fees, or apply in a click."
+        subtitle="Four UG programmes under the FYUGP framework — explore the details, or apply in a click."
         aria-label="Undergraduate programs"
       >
         <RevealGroup className={styles.cardGrid} stagger={0.08} amount={0.12}>
@@ -136,7 +127,7 @@ const Courses = () => {
         container="default"
         eyebrow="Compare"
         title="Programs at a glance"
-        subtitle="Duration, eligibility and fees side by side. Select a programme to see full details."
+        subtitle="Duration and eligibility side by side. Select a programme to see full details."
         aria-label="Programs comparison"
       >
         <Reveal variant="fadeUp">
@@ -150,7 +141,7 @@ const Courses = () => {
           >
             <table className={styles.table}>
               <caption className={styles.srOnly}>
-                First-semester fees and monthly tuition for all four UG programmes.
+                Duration and eligibility for all four UG programmes.
               </caption>
               <thead>
                 <tr>
@@ -171,22 +162,11 @@ const Courses = () => {
                     </th>
                     <td data-label="Duration">{course.duration}</td>
                     <td data-label="Eligibility">{course.eligibilityShort}</td>
-                    <td data-label="1st-Sem Total Fees" className={styles.tableFee}>
-                      {course.fees.total}
-                    </td>
-                    <td data-label="Monthly Tuition">{course.fees.tuitionMonthly}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </Reveal>
-
-        <Reveal as="p" className={styles.tableNote} variant="fadeUp">
-          <Icon icon="mdi:information-outline" aria-hidden="true" />
-          <span>
-            A one-time application fee of ₹300 applies to every programme. {FEES_NOTE}
-          </span>
         </Reveal>
       </Section>
 

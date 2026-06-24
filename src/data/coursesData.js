@@ -2,7 +2,7 @@
    coursesData.js — The 4 undergraduate programs
    Icon Commerce College
    --------------------------------------------
-   Pure data module. Fees, eligibility and breakdowns are the exact
+   Pure data module. Eligibility and programme breakdowns are the exact
    figures from design-system §6. Images reference §7 placeholder names.
    ============================================ */
 
@@ -90,36 +90,6 @@ export const fyugpCurriculum = {
   ],
 };
 
-/** Fee breakdown for B.Com / B.A. (total ₹10,900). */
-const FEES_BCOM_BA = {
-  rows: [
-    { particular: 'Admission Fee', amount: '₹5,500' },
-    { particular: 'Library Fee', amount: '₹800' },
-    { particular: 'ID-Card / Entry Fee', amount: '₹100' },
-    { particular: 'Miscellaneous', amount: '₹4,500' },
-  ],
-  total: '₹10,900',
-  tuitionMonthly: '₹1,800',
-  application: '₹300',
-  note:
-    'GU registration / enrolment / examination fees are extra and subject to change. All fees are non-refundable.',
-};
-
-/** Fee breakdown for BCA / BBA (total ₹11,000). */
-const FEES_BCA_BBA = {
-  rows: [
-    { particular: 'Admission Fee', amount: '₹5,500' },
-    { particular: 'Library Fee', amount: '₹900' },
-    { particular: 'ID-Card / Entry Fee', amount: '₹100' },
-    { particular: 'Miscellaneous', amount: '₹4,500' },
-  ],
-  total: '₹11,000',
-  tuitionMonthly: '₹2,000',
-  application: '₹300',
-  note:
-    'GU registration / enrolment / examination fees are extra and subject to change. All fees are non-refundable.',
-};
-
 /**
  * @typedef {Object} Course
  * @property {string} slug          URL slug: b-com | bba | bca | b-a
@@ -136,8 +106,6 @@ const FEES_BCA_BBA = {
  * @property {string[]} [objectives]    Programme objectives (BCA — from the prospectus)
  * @property {string[]} [topics]        Indicative topics covered (BCA — from the prospectus)
  * @property {string[]} careers
- * @property {{rows:{particular:string,amount:string}[], total:string,
- *            tuitionMonthly:string, application:string, note:string}} fees
  * @property {string[]} documents
  * @property {string} syllabusUrl    Detailed GU syllabus link (TODO until supplied)
  * @property {string} [badge]
@@ -172,7 +140,6 @@ export const coursesData = [
       'CA / CS / CMA aspirant',
       'Government & Public Sector',
     ],
-    fees: FEES_BCOM_BA,
     documents: COMMON_DOCUMENTS,
     syllabusUrl: SYLLABUS_TODO,
   },
@@ -201,7 +168,6 @@ export const coursesData = [
       'Entrepreneur / Startup Founder',
       'MBA aspirant',
     ],
-    fees: FEES_BCA_BBA,
     documents: COMMON_DOCUMENTS,
     syllabusUrl: SYLLABUS_TODO,
   },
@@ -254,7 +220,6 @@ export const coursesData = [
       'IT Support Specialist',
       'MCA aspirant',
     ],
-    fees: FEES_BCA_BBA,
     documents: COMMON_DOCUMENTS,
     syllabusUrl: SYLLABUS_TODO,
   },
@@ -284,7 +249,6 @@ export const coursesData = [
       'Social / NGO sector',
       'Postgraduate & research studies',
     ],
-    fees: FEES_BCOM_BA,
     documents: COMMON_DOCUMENTS,
     syllabusUrl: SYLLABUS_TODO,
   },

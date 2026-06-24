@@ -204,13 +204,11 @@ const TermsContent = () => (
     </section>
 
     <section className={styles.legalSection}>
-      <h3>Admissions &amp; Fees</h3>
+      <h3>Admissions</h3>
       <p>
         All admissions are subject to eligibility and the rules of Gauhati
         University and the Samarth admission portal (College Code{" "}
-        {collegeInfo.samarthCode}). Fees shown on this website are indicative;
-        university registration, enrolment and examination fees are extra and
-        subject to change. Fees paid are non-refundable.
+        {collegeInfo.samarthCode}).
       </p>
     </section>
 

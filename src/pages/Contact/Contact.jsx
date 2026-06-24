@@ -91,7 +91,7 @@ const Contact = () => {
               source="contact"
               formId="contact"
               title="Request a Callback"
-              subtitle="Tell us how we can help — admissions, fees, courses or a visit."
+              subtitle="Tell us how we can help — admissions, courses or a visit."
               submitButtonText="Send Message"
             />
           </Reveal>

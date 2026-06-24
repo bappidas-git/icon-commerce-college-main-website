@@ -107,7 +107,7 @@ export const seoConfig = {
       crumb: "Courses",
       title: "Courses & Programs (B.Com, BBA, BCA, B.A.) | Icon Commerce College",
       description:
-        "Explore the four UG programs at Icon Commerce College — B.Com, BBA, BCA and B.A. under NEP 2020 (FYUGP), affiliated to Gauhati University. Fees, eligibility and careers.",
+        "Explore the four UG programs at Icon Commerce College — B.Com, BBA, BCA and B.A. under NEP 2020 (FYUGP), affiliated to Gauhati University. Eligibility and careers.",
       keywords:
         "bcom course guwahati, bba course guwahati, bca course guwahati, ba course guwahati, fyugp programs, gauhati university ug courses",
     },
@@ -148,7 +148,7 @@ export const seoConfig = {
       title:
         "Admissions 2026-27 (Samarth, College Code 842) | Icon Commerce College",
       description:
-        "Apply to Icon Commerce College via the Samarth portal (College Code 842). Admission process, eligibility, fees and prospectus for B.Com, BBA, BCA and B.A. programs.",
+        "Apply to Icon Commerce College via the Samarth portal (College Code 842). Admission process, eligibility and prospectus for B.Com, BBA, BCA and B.A. programs.",
       keywords:
         "icon commerce college admission, samarth portal admission, college code 842, assam college admission, bcom bba bca ba admission guwahati, prospectus",
     },
@@ -216,11 +216,6 @@ export const seoConfig = {
       question: "How do I apply for admission?",
       answer:
         "Register on the Samarth portal (assamadmission.samarth.ac.in) using Icon Commerce College — College Code 842 — and select your preferred program. After verification you can complete admission at the college or online, and approved candidates receive a confirmation SMS.",
-    },
-    {
-      question: "What are the fees for the programs?",
-      answer:
-        "First-semester total fees are ₹10,900 for B.Com and B.A. and ₹11,000 for BCA and BBA, with monthly tuition of ₹1,800–₹2,000 and a ₹300 application fee. Gauhati University registration, enrolment and examination fees are extra and subject to change.",
     },
     {
       question: "Where is the college located?",

@@ -17,30 +17,33 @@
    route defaults (src/config/seo.js) plus an ItemList schema of departments.
    ============================================ */
 
-import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Icon } from '@iconify/react';
+import React, { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react";
 
-import useSeo from '../../components/common/SEO/useSeo';
-import PageHero from '../../components/common/PageHero/PageHero';
-import Section from '../../components/common/Section/Section';
-import Container from '../../components/common/Container/Container';
-import Button from '../../components/common/Button/Button';
-import Img from '../../components/common/Img';
-import { Reveal, RevealGroup } from '../../components/common/Reveal/Reveal';
+import useSeo from "../../components/common/SEO/useSeo";
+import PageHero from "../../components/common/PageHero/PageHero";
+import Section from "../../components/common/Section/Section";
+import Container from "../../components/common/Container/Container";
+import Button from "../../components/common/Button/Button";
+import Img from "../../components/common/Img";
+import { Reveal, RevealGroup } from "../../components/common/Reveal/Reveal";
 
-import DepartmentCard from './DepartmentCard';
-import { useModal } from '../../context/ModalContext';
-import { departmentsData } from '../../data/departmentsData';
-import { getCourseBySlug } from '../../data/coursesData';
-import { generateDepartmentListSchema } from '../../utils/seo';
-import styles from './Departments.module.css';
+import DepartmentCard from "./DepartmentCard";
+import { useModal } from "../../context/ModalContext";
+import { departmentsData } from "../../data/departmentsData";
+import { getCourseBySlug } from "../../data/coursesData";
+import { generateDepartmentListSchema } from "../../utils/seo";
+import styles from "./Departments.module.css";
 
 const { streams } = departmentsData;
 
 // Total department listings across all streams (Economics / English recur, so
 // this is a count of listings — it lines up with the "18+ Departments" stat).
-const TOTAL_COUNT = streams.reduce((sum, stream) => sum + stream.subjects.length, 0);
+const TOTAL_COUNT = streams.reduce(
+  (sum, stream) => sum + stream.subjects.length,
+  0,
+);
 
 // Department slugs are unique within a stream but Economics / English recur
 // across streams. A recurring slug is stream-qualified (e.g. "commerce-economics")
@@ -65,7 +68,7 @@ const resolveRelated = (relatedSlugs = []) =>
 
 // Filter chips: All + one per stream, each with its department count.
 const FILTERS = [
-  { key: 'all', label: 'All', count: TOTAL_COUNT },
+  { key: "all", label: "All", count: TOTAL_COUNT },
   ...streams.map((stream) => ({
     key: stream.key,
     label: stream.label,
@@ -76,9 +79,9 @@ const FILTERS = [
 // A stream-band hash (#arts) pre-selects that stream; a department hash keeps
 // "All" so the (unique) target card is mounted and scrolls into view.
 const getInitialStream = () => {
-  if (typeof window === 'undefined') return 'all';
-  const hash = window.location.hash.replace('#', '');
-  return streams.some((stream) => stream.key === hash) ? hash : 'all';
+  if (typeof window === "undefined") return "all";
+  const hash = window.location.hash.replace("#", "");
+  return streams.some((stream) => stream.key === hash) ? hash : "all";
 };
 
 const Departments = () => {
@@ -88,17 +91,17 @@ const Departments = () => {
   const { openLeadDrawer } = useModal();
   const [activeStream, setActiveStream] = useState(getInitialStream);
 
-  const isAll = activeStream === 'all';
+  const isAll = activeStream === "all";
   const activeLabel = useMemo(
-    () => FILTERS.find((filter) => filter.key === activeStream)?.label || 'All',
-    [activeStream]
+    () => FILTERS.find((filter) => filter.key === activeStream)?.label || "All",
+    [activeStream],
   );
   const shownCount = useMemo(
     () =>
       streams
         .filter((stream) => isAll || stream.key === activeStream)
         .reduce((sum, stream) => sum + stream.subjects.length, 0),
-    [activeStream, isAll]
+    [activeStream, isAll],
   );
 
   return (
@@ -108,8 +111,8 @@ const Departments = () => {
         eyebrow="Academics"
         title="Departments"
         subtitle="Our academic departments across three streams — Arts · Commerce · Science."
-        image="hero-library"
-        breadcrumb={[{ label: 'Departments' }]}
+        image="https://res.cloudinary.com/dn9gyaiik/image/upload/v1782283002/Department-Hero-Image_tfe1tw.png"
+        breadcrumb={[{ label: "Departments" }]}
       />
 
       {/* 2 — Intro + stream filter */}
@@ -132,7 +135,7 @@ const Departments = () => {
               <button
                 key={filter.key}
                 type="button"
-                className={`${styles.filter} ${isActive ? styles.filterActive : ''}`}
+                className={`${styles.filter} ${isActive ? styles.filterActive : ""}`}
                 aria-pressed={isActive}
                 onClick={() => setActiveStream(filter.key)}
               >
@@ -140,18 +143,20 @@ const Departments = () => {
                 <span className={styles.filterCount} aria-hidden="true">
                   {filter.count}
                 </span>
-                <span className={styles.srOnly}>{filter.count} departments</span>
+                <span className={styles.srOnly}>
+                  {filter.count} departments
+                </span>
               </button>
             );
           })}
         </div>
 
         <p className={styles.resultCount} role="status">
-          Showing <strong>{shownCount}</strong>{' '}
-          {shownCount === 1 ? 'department' : 'departments'}
+          Showing <strong>{shownCount}</strong>{" "}
+          {shownCount === 1 ? "department" : "departments"}
           {!isAll && (
             <>
-              {' '}
+              {" "}
               in <strong>{activeLabel}</strong>
             </>
           )}
@@ -176,10 +181,12 @@ const Departments = () => {
           >
             <Container size="wide">
               {/* Stream intro band — image + label + blurb (design-system §6.4) */}
-              <div className={`${styles.streamIntro} ${reversed ? styles.reversed : ''}`}>
+              <div
+                className={`${styles.streamIntro} ${reversed ? styles.reversed : ""}`}
+              >
                 <Reveal
                   className={styles.streamMedia}
-                  variant={reversed ? 'slideInRight' : 'slideInLeft'}
+                  variant={reversed ? "slideInRight" : "slideInLeft"}
                   amount={0.3}
                 >
                   <figure className={styles.streamFigure}>
@@ -194,28 +201,56 @@ const Departments = () => {
                   </figure>
                 </Reveal>
 
-                <RevealGroup className={styles.streamCopy} stagger={0.08} amount={0.3}>
-                  <Reveal as="p" className={styles.streamEyebrow} variant="fadeUp">
+                <RevealGroup
+                  className={styles.streamCopy}
+                  stagger={0.08}
+                  amount={0.3}
+                >
+                  <Reveal
+                    as="p"
+                    className={styles.streamEyebrow}
+                    variant="fadeUp"
+                  >
                     {stream.label} Stream
                   </Reveal>
-                  <Reveal as="h2" id={headingId} className={styles.streamHeading} variant="fadeUp">
+                  <Reveal
+                    as="h2"
+                    id={headingId}
+                    className={styles.streamHeading}
+                    variant="fadeUp"
+                  >
                     {stream.label}
                   </Reveal>
-                  <Reveal as="p" className={styles.streamBlurb} variant="fadeUp">
+                  <Reveal
+                    as="p"
+                    className={styles.streamBlurb}
+                    variant="fadeUp"
+                  >
                     {stream.blurb}
                   </Reveal>
-                  <Reveal as="p" className={styles.streamCount} variant="fadeUp">
+                  <Reveal
+                    as="p"
+                    className={styles.streamCount}
+                    variant="fadeUp"
+                  >
                     <Icon icon="mdi:bookshelf" aria-hidden="true" />
                     <span>
-                      {stream.subjects.length}{' '}
-                      {stream.subjects.length === 1 ? 'department' : 'departments'}
+                      {stream.subjects.length}{" "}
+                      {stream.subjects.length === 1
+                        ? "department"
+                        : "departments"}
                     </span>
                   </Reveal>
                 </RevealGroup>
               </div>
 
               {/* Department cards */}
-              <RevealGroup as="ul" className={styles.cardGrid} stagger={0.06} amount={0.1}>
+              <RevealGroup
+                as="ul"
+                className={styles.cardGrid}
+                stagger={0.06}
+                amount={0.1}
+              >
                 {stream.subjects.map((subject) => (
                   <Reveal
                     as="li"
@@ -255,9 +290,9 @@ const Departments = () => {
             </Reveal>
 
             <Reveal as="p" className={styles.ctaSubtitle} variant="fadeUp">
-              Tell us your interests and goals — our admission team will help you choose
-              the right stream and programme, and guide you through the Samarth admission
-              process.
+              Tell us your interests and goals — our admission team will help
+              you choose the right stream and programme, and guide you through
+              the Samarth admission process.
             </Reveal>
 
             <Reveal className={styles.ctaActions} variant="fadeUp">
@@ -265,7 +300,9 @@ const Departments = () => {
                 variant="primary"
                 size="large"
                 startIcon="mdi:chat-question-outline"
-                onClick={() => openLeadDrawer('enquiry', { source: 'departments-cta' })}
+                onClick={() =>
+                  openLeadDrawer("enquiry", { source: "departments-cta" })
+                }
               >
                 Talk to Us
               </Button>
@@ -273,7 +310,9 @@ const Departments = () => {
                 variant="outline"
                 size="large"
                 startIcon="mdi:file-download-outline"
-                onClick={() => openLeadDrawer('prospectus', { source: 'departments-cta' })}
+                onClick={() =>
+                  openLeadDrawer("prospectus", { source: "departments-cta" })
+                }
               >
                 Download Prospectus
               </Button>

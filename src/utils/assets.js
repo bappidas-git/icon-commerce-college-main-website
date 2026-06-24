@@ -12,7 +12,7 @@
    `/images/placeholders/hero-campus.svg`.
    ============================================ */
 
-const BASE_PATH = '/images/placeholders';
+const BASE_PATH = "/images/placeholders";
 
 /**
  * Real campus photograph — supplied by the college and hosted on Cloudinary
@@ -21,7 +21,7 @@ const BASE_PATH = '/images/placeholders';
  * placeholder. Reused for every "college campus" image slot across the site.
  */
 export const CAMPUS_IMAGE =
-  'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780835926/Campu_Image_y2ysdx.png';
+  "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780835926/Campu_Image_y2ysdx.png";
 
 /**
  * Production overrides: logical placeholder name → real asset URL. Checked
@@ -31,16 +31,16 @@ export const CAMPUS_IMAGE =
  * slot keeps its labelled placeholder.
  */
 const REAL = {
-  'hero-campus': CAMPUS_IMAGE,
-  'about-college-building': CAMPUS_IMAGE,
-  'about-campus-aerial': CAMPUS_IMAGE,
+  "hero-campus": CAMPUS_IMAGE,
+  "about-college-building": CAMPUS_IMAGE,
+  "about-campus-aerial": CAMPUS_IMAGE,
 
   // Real students-and-campus photo (16:9). It IS the shared `hero-students`
   // slot, so a single URL surfaces it on the Home "why choose us" band AND on
   // every page hero that uses it — Faculty, Admissions, Events, Gallery and
   // Courses — under the navy hero overlay.
-  'hero-students':
-    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780840414/why-choose-icc_tirbx7.png',
+  "hero-students":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780840414/why-choose-icc_tirbx7.png",
 
   // Home-section illustrations — supplied by the college on the same Cloudinary
   // account as CAMPUS_IMAGE / LOGO above. Each maps a logical placeholder name
@@ -48,16 +48,16 @@ const REAL = {
   // (3:2) also renders on the About page, which reuses the same section; the four
   // course images (4:3) flow through `coursesData`, so they appear on the Courses
   // cards and detail pages too, not just the Home programs teaser.
-  'vision-mission':
-    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780838324/Vision_and_Mission_wdxw37.png',
-  'course-bcom':
-    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bcom_xj6moc.png',
-  'course-bba':
-    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-bba_rrxfn3.png',
-  'course-bca':
-    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bca_wxgq8k.png',
-  'course-ba':
-    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-ba_fvbgjm.png',
+  "vision-mission":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780838324/Vision_and_Mission_wdxw37.png",
+  "course-bcom":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bcom_xj6moc.png",
+  "course-bba":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-bba_rrxfn3.png",
+  "course-bca":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839338/course-bca_wxgq8k.png",
+  "course-ba":
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780839337/course-ba_fvbgjm.png",
 };
 
 /**
@@ -73,8 +73,8 @@ export function placeholder(name) {
   if (!name) return `${BASE_PATH}/og-default.svg`;
   const base = String(name)
     .trim()
-    .replace(/^.*\//, '') // strip any leading path
-    .replace(/\.(png|jpe?g|webp|svg)$/i, '');
+    .replace(/^.*\//, "") // strip any leading path
+    .replace(/\.(png|jpe?g|webp|svg)$/i, "");
   return REAL[base] || `${BASE_PATH}/${base}.svg`;
 }
 
@@ -88,9 +88,9 @@ export function placeholder(name) {
  */
 export const LOGO = {
   normal:
-    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1777447286/icon-logo_ssglnp.png',
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1777447286/icon-logo_ssglnp.png",
   white:
-    'https://res.cloudinary.com/dn9gyaiik/image/upload/v1777456540/icon-logo-white_cgp9nr.png',
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1777456540/icon-logo-white_cgp9nr.png",
 };
 
 /** Intrinsic logo dimensions (both variants) for CLS-safe width/height. */
@@ -104,63 +104,67 @@ export const LOGO_SIZE = { width: 441, height: 74 };
 export const IMAGES = {
   // Brand
   logo: LOGO.normal,
-  favicon: placeholder('favicon'),
+  favicon: placeholder("favicon"),
 
   // Hero
-  heroCampus: placeholder('hero-campus'),
-  heroStudents: placeholder('hero-students'),
-  heroLibrary: placeholder('hero-library'),
+  heroCampus: placeholder("hero-campus"),
+  heroStudents: placeholder("hero-students"),
+  heroLibrary: "placeholder('hero-library')",
 
   // About
-  aboutBuilding: placeholder('about-college-building'),
-  aboutAerial: placeholder('about-campus-aerial'),
-  visionMission: placeholder('vision-mission'),
+  aboutBuilding: placeholder("about-college-building"),
+  aboutAerial: placeholder("about-campus-aerial"),
+  visionMission: placeholder("vision-mission"),
 
   // Leadership
-  principalMandiraSaha: placeholder('principal-dr-mandira-saha'),
-  presidentDipaliBora: placeholder('president-dipali-bora'),
-  advisorDebasishBora: placeholder('advisor-debasish-bora'),
-  rectorSawponDowerah: placeholder('rector-sawpon-dowerah'),
-  directorAcademicRajibDas: placeholder('director-academic-rajib-das'),
-  directorDipanjuBora: placeholder('director-dipanju-bora'),
-  academicAdvisorNilanjan: placeholder('academic-advisor-nilanjan-bhattacharjee'),
+  principalMandiraSaha: placeholder("principal-dr-mandira-saha"),
+  presidentDipaliBora: placeholder("president-dipali-bora"),
+  advisorDebasishBora: placeholder("advisor-debasish-bora"),
+  rectorSawponDowerah: placeholder("rector-sawpon-dowerah"),
+  directorAcademicRajibDas: placeholder("director-academic-rajib-das"),
+  directorDipanjuBora: placeholder("director-dipanju-bora"),
+  academicAdvisorNilanjan: placeholder(
+    "academic-advisor-nilanjan-bhattacharjee",
+  ),
 
   // Courses
-  courseBcom: placeholder('course-bcom'),
-  courseBba: placeholder('course-bba'),
-  courseBca: placeholder('course-bca'),
-  courseBa: placeholder('course-ba'),
+  courseBcom: placeholder("course-bcom"),
+  courseBba: placeholder("course-bba"),
+  courseBca: placeholder("course-bca"),
+  courseBa: placeholder("course-ba"),
 
   // Departments
-  deptArts: placeholder('dept-arts'),
-  deptCommerce: placeholder('dept-commerce'),
-  deptScience: placeholder('dept-science'),
+  deptArts: placeholder("dept-arts"),
+  deptCommerce: placeholder("dept-commerce"),
+  deptScience: placeholder("dept-science"),
 
   // Facilities
-  facilityLibrary: placeholder('facility-library'),
-  facilityComputerLab: placeholder('facility-computer-lab'),
-  facilityCanteen: placeholder('facility-canteen'),
-  facilityPlayground: placeholder('facility-playground'),
-  facilitySmartClassroom: placeholder('facility-smart-classroom'),
-  facilityWifi: placeholder('facility-wifi'),
+  facilityLibrary: placeholder("facility-library"),
+  facilityComputerLab: placeholder("facility-computer-lab"),
+  facilityCanteen: placeholder("facility-canteen"),
+  facilityPlayground: placeholder("facility-playground"),
+  facilitySmartClassroom: placeholder("facility-smart-classroom"),
+  facilityWifi: placeholder("facility-wifi"),
 
   // Faculty
-  facultyPlaceholder: placeholder('faculty-placeholder'),
+  facultyPlaceholder: placeholder("faculty-placeholder"),
 
   // Gallery (1–12)
-  gallery: Array.from({ length: 12 }, (_, i) => placeholder(`gallery-${i + 1}`)),
+  gallery: Array.from({ length: 12 }, (_, i) =>
+    placeholder(`gallery-${i + 1}`),
+  ),
 
   // Events
-  eventCollegeWeek: placeholder('event-college-week'),
-  eventCookingCompetition: placeholder('event-cooking-competition'),
-  eventIconShield: placeholder('event-icon-shield'),
-  eventIconTrophy: placeholder('event-icon-trophy'),
+  eventCollegeWeek: placeholder("event-college-week"),
+  eventCookingCompetition: placeholder("event-cooking-competition"),
+  eventIconShield: placeholder("event-icon-shield"),
+  eventIconTrophy: placeholder("event-icon-trophy"),
 
   // Misc
-  testimonialAvatar: placeholder('testimonial-avatar'),
-  prospectusCover: placeholder('prospectus-cover'),
-  mapLocation: placeholder('map-location'),
-  ogDefault: placeholder('og-default'),
+  testimonialAvatar: placeholder("testimonial-avatar"),
+  prospectusCover: placeholder("prospectus-cover"),
+  mapLocation: placeholder("map-location"),
+  ogDefault: placeholder("og-default"),
 };
 
 export default IMAGES;

@@ -3,8 +3,8 @@
    Icon Commerce College
    --------------------------------------------
    Pure data module. Steps, notes, documents, scholarships and the
-   admission FAQ come from design-system §6. Per-program eligibility and
-   fee figures live in `coursesData` (single source of truth) and are read
+   admission FAQ come from design-system §6. Per-program eligibility
+   figures live in `coursesData` (single source of truth) and are read
    straight from there by the Admissions page.
    ============================================ */
 
@@ -81,11 +81,6 @@ export const admissionFaqs = [
       'Register on the Samarth portal (assamadmission.samarth.ac.in) using College Code 842, select ICON COMMERCE COLLEGE and your preferred stream, and submit the form. After document verification you can complete admission at the college or online, and approved candidates receive a confirmation SMS.',
   },
   {
-    question: 'What are the fees for the programmes?',
-    answer:
-      'First-semester total fees are ₹10,900 for B.Com and B.A. and ₹11,000 for BCA and BBA, with monthly tuition of ₹1,800–₹2,000 and a one-time ₹300 application fee. Gauhati University registration, enrolment and examination fees are charged extra and are subject to change. All fees are non-refundable.',
-  },
-  {
     // TODO (client): confirm the exact 2026-27 admission opening / closing dates.
     question: 'When does admission for the 2026–27 session open?',
     answer:
@@ -108,7 +103,6 @@ export const admissionFaqs = [
  * @property {AdmissionStep[]} steps
  * @property {string[]} documents
  * @property {string} eligibilityNote
- * @property {string} feesNote
  * @property {string} scholarshipNote
  * @property {{question:string, answer:string}[]} faqs
  * @property {{title:string, description:string, cover:string, file:string}} prospectus
@@ -125,14 +119,12 @@ export const admissionData = {
   samarthUrl: collegeInfo.samarthUrl,
   eligibilityNote:
     'Open to candidates who have passed HS (10+2) from AHSEC or an equivalent board. Stream eligibility varies by program — B.A. Honours requires a minimum of 45% marks; BCA prefers Mathematics / Computer Science.',
-  feesNote:
-    'First-semester fees range from ₹10,900 (B.Com / B.A.) to ₹11,000 (BCA / BBA), plus a ₹300 application fee. GU registration / enrolment / examination fees are extra and subject to change. All fees are non-refundable.',
   scholarshipNote:
     'Students may be eligible for various Government-approved scholarship schemes, which the college helps facilitate. For details and assistance with applications, please contact the college’s Scholarship Nodal Officer through the admission office.',
   prospectus: {
     title: 'College Prospectus 2026-27',
     description:
-      'Download the official prospectus for complete details on programs, fees, faculty and campus life.',
+      'Download the official prospectus for complete details on programs, faculty and campus life.',
     cover: placeholder('prospectus-cover'),
     // Lead-gated download target (prompt 23). A placeholder PDF ships at this
     // path — TODO (client): replace public/prospectus/icon-commerce-college-prospectus.pdf

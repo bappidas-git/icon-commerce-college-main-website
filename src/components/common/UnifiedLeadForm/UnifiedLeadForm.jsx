@@ -114,7 +114,7 @@ const PrivacyPolicyContent = () => (
           <strong>Admission preferences:</strong> the program you are interested in and the state you are applying from.
         </li>
         <li>
-          <strong>Optional message:</strong> any question you choose to add about admission, courses, or fees.
+          <strong>Optional message:</strong> any question you choose to add about admission or courses.
         </li>
       </ul>
     </section>
@@ -126,7 +126,7 @@ const PrivacyPolicyContent = () => (
       <ul style={{ fontSize: "14px", lineHeight: 1.6, color: "#374151", paddingLeft: "20px", margin: 0 }}>
         <li style={{ marginBottom: "6px" }}>Provide guidance on Icon Commerce College's admission process.</li>
         <li style={{ marginBottom: "6px" }}>Contact you by phone, WhatsApp or email about your enquiry.</li>
-        <li>Share course, fee and facility details relevant to your enquiry.</li>
+        <li>Share course and facility details relevant to your enquiry.</li>
       </ul>
     </section>
 
@@ -921,7 +921,7 @@ const UnifiedLeadForm = ({
           <TextField
             inputRef={messageRef}
             fullWidth
-            placeholder="Any question about admission, hostel, or fees? (optional)"
+            placeholder="Any question about admission or hostel? (optional)"
             variant="outlined"
             value={formData.message}
             onChange={handleChange("message")}

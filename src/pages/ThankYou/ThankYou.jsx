@@ -52,7 +52,7 @@ const trustBadges = [
 const nextSteps = [
   "Keep your phone reachable — our admission team will call you shortly on the number you shared.",
   "Have your HS (Class 12) marksheet and registration/migration certificate handy.",
-  "Feel free to ask about programs, fees, facilities and the Samarth portal admission process.",
+  "Feel free to ask about programs, facilities and the Samarth portal admission process.",
 ];
 
 const ThankYou = () => {

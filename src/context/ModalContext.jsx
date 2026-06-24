@@ -33,7 +33,7 @@ export const DRAWER_TITLES = {
   },
   'enquiry': {
     title: 'Course Enquiry',
-    subtitle: 'Ask us about programs, fees & eligibility',
+    subtitle: 'Ask us about programs & eligibility',
     source: 'enquiry',
   },
   'prospectus': {

@@ -113,7 +113,9 @@
 
 .subLink {
   display: block;
-  padding: var(--space-2) var(--space-3);
+  /* Vertical padding bumped from --space-2 to --space-3 so each submenu link
+     clears a ~40px touch target (these are the primary mobile nav links). */
+  padding: var(--space-3);
   font-family: var(--font-body);
   font-weight: var(--fw-medium);
   font-size: 0.92rem;

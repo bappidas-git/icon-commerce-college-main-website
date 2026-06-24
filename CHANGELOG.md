@@ -4,6 +4,17 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Shared hero backdrop on Notices + Course-detail pages
+
+- **Notices & Course-detail heroes (`Notices.jsx`, `CourseDetail.jsx`)** — both
+  now use the `dept-hero` backdrop (the college-supplied "Department Hero" image
+  on Cloudinary) instead of the `hero-library` placeholder / per-course card
+  image, so the `/notices` hero and the four course heroes
+  (`/courses/b-com·bba·bca·b-a`) match the Departments hero. Only the PageHero
+  `image` prop changed; `coursesData` is untouched, so the per-course `course-*`
+  images still drive the Courses/Home cards. The shared reuse is documented on
+  the `dept-hero` entry in `utils/assets.js`.
+
 ### Header/footer fixes, social links, explore-grid + a restricted admin role
 
 A batch of UI fixes plus a second, scoped admin account.

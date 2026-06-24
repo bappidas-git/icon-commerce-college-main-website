@@ -291,13 +291,16 @@ const CourseDetail = () => {
 
   return (
     <>
-      {/* 1 — Hero (course.image is already a placeholder URL; PageHero resolves
-          it idempotently). Breadcrumb renders Home / Courses / <shortName>. */}
+      {/* 1 — Hero. Uses the shared `dept-hero` backdrop (resolved via
+          utils/assets) rather than the per-course card image, so every
+          course-detail hero matches the Departments and Notices heroes; the
+          per-course image keeps driving the course cards. Breadcrumb renders
+          Home / Courses / <shortName>. */}
       <PageHero
         eyebrow="Undergraduate Programme"
         title={course.name}
         subtitle={course.summary}
-        image={course.image}
+        image="dept-hero"
         breadcrumb={[{ label: 'Courses', to: '/courses' }, { label: course.shortName }]}
         cta={{
           label: `Apply for ${course.shortName}`,

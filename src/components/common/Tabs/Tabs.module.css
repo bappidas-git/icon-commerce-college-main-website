@@ -97,6 +97,16 @@
   padding-top: var(--space-2);
 }
 
+/* Below 1024px the utility bar is hidden and the header collapses to 64px
+   (Header.module.css), so pin the sticky tablist to that height instead of the
+   full --header-height (80px) — otherwise a ~16px strip of scrolling content
+   shows between the header and the pinned tabs. */
+@media (max-width: 1024px) {
+  .sticky .tablist {
+    top: 64px;
+  }
+}
+
 /* Panel */
 .panel {
   padding-top: var(--space-6);

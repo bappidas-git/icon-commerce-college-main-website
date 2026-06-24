@@ -129,6 +129,11 @@
   align-items: center;
   justify-content: center;
   aspect-ratio: 1 / 1;
+  /* The global touch rule (styles/responsive.css) sets `button { min-width: 44px }`,
+     which would force this 7-column grid wider than a phone viewport and cause
+     horizontal scroll. Keep cells fluid; the 44px tap target is guaranteed via
+     min-height on small screens (see Responsive below). */
+  min-width: 0;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   background: var(--color-bg);
@@ -195,6 +200,14 @@
 @media (max-width: 880px) {
   .calendar {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Phones: once the square day cells shrink below ~44px, guarantee a tappable
+   target via height (width stays fluid so the 7-column row never overflows). */
+@media (max-width: 480px) {
+  .day {
+    min-height: 44px;
   }
 }
 

@@ -4,6 +4,44 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Fixed cramped CTA spacing + responsive polish across the site
+
+The course-detail "Ready to apply for …" CTA looked tightly packed because the
+spacing scale was **missing the `--space-7` token** — the scale jumped from
+`--space-6` (24px) straight to `--space-8` (32px). Five rules referenced the
+undefined `var(--space-7)`, and an undefined custom property invalidates the
+whole declaration, so those `margin-top`s silently collapsed to `0`. Defining
+the token restores the intended breathing room everywhere it was used, and a few
+device-specific spacing/placement issues found while auditing every page were
+fixed alongside it. `npm run build` stays clean.
+
+- **`src/styles/variables.css`** — added the missing **`--space-7: 1.75rem`**
+  (28px) between `--space-6` and `--space-8`. This single fix restores the
+  vertical rhythm of the **CourseDetail** bottom CTA (Samarth pill + Apply /
+  Prospectus buttons), the **Admissions** CTA (same pattern), and — highest
+  impact — the **`PageHero` CTA button**, whose `margin-top` was collapsed on
+  *every* page hero (About, Courses, Course detail, Departments, Faculty,
+  Facilities, Gallery, Admissions, Notices, Events, Contact).
+- **`src/components/common/MonthGrid/MonthGrid.module.css`** — the Events
+  calendar's 7-column day grid overflowed narrow phones: the global touch rule
+  (`button { min-width: 44px }`) forced the row wider than a 360px viewport,
+  causing horizontal scroll and a clipped last column. Added `min-width: 0` to
+  `.day` (cells stay fluid) and a `min-height: 44px` at ≤480px so each day keeps
+  a WCAG-sized tap target via height instead of width.
+- **`src/components/common/MobileDrawer/MobileDrawer.module.css`** — the mobile
+  submenu links (All Programs · B.Com · BBA · BCA · B.A · Departments …) sat at
+  ~32px tall, under the 40px touch-target guideline. Bumped `.subLink` vertical
+  padding from `--space-2` to `--space-3` (~40px) — the primary mobile nav.
+- **`src/components/common/Tabs/Tabs.module.css`** — the sticky sub-nav (Course
+  detail · Departments) pinned at `top: 80px` (`--header-height`), but below
+  1024px the utility bar is hidden and the header collapses to 64px, leaving a
+  ~16px strip of scrolling content above the pinned tabs. Pinned the tablist to
+  `top: 64px` on ≤1024px so it sits flush under the collapsed header.
+- **`src/pages/Departments/DepartmentCard.module.css`** — `.related` used
+  `align-items: center`, which floated the "Related programmes" label to the
+  vertical middle when its chips wrapped to two rows. Switched to
+  `align-items: flex-start` so the label aligns to the first chip row.
+
 ### Removed all course fee information from the website
 
 At the client's request, every fee figure and fee-related display was removed

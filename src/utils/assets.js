@@ -97,6 +97,34 @@ export function placeholder(name) {
 }
 
 /**
+ * Resolve an admin-supplied image value that may be EITHER a full URL OR a
+ * logical placeholder name. Used for fields the college fills in from the admin
+ * panel (e.g. an Event's `image_url`), which can be a real hosted image OR — for
+ * backward compatibility with the bundled seed content — a labelled placeholder
+ * name like `event-college-week`.
+ *
+ *   • Full URLs (`https://…`, protocol-relative `//…`, a site-absolute `/path`
+ *     or a `data:` URI) are returned untouched.
+ *   • Anything else is treated as a placeholder name and routed through
+ *     placeholder() (so `event-college-week` → its labelled SVG / real asset).
+ *
+ * Returns '' when nothing usable was supplied, so callers can simply skip
+ * rendering the image.
+ *
+ * @param {string} value e.g. 'https://res.cloudinary.com/…/poster.png' or 'event-college-week'
+ * @returns {string} a usable <img src>, or '' when empty
+ */
+export function resolveImageSrc(value) {
+  if (!value) return "";
+  const v = String(value).trim();
+  if (!v) return "";
+  if (/^(https?:)?\/\//i.test(v) || v.startsWith("/") || v.startsWith("data:")) {
+    return v;
+  }
+  return placeholder(v);
+}
+
+/**
  * Real brand logo (hosted on Cloudinary). Two variants by background:
  *   normal — for LIGHT backgrounds (header when solid, mobile drawer, admin
  *            login, the splash loader)

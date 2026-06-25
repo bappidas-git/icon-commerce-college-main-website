@@ -19,6 +19,56 @@
   gap: 16px;
 }
 
+/* Attachment field + its live image preview, grouped a little tighter. */
+.imageField {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.imagePreview {
+  position: relative;
+  margin: 0;
+  border: 1px solid var(--admin-border, #E6E9F0);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--admin-bg, #F7F8FB);
+  line-height: 0;
+}
+
+.imagePreview img {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  background: var(--admin-bg, #F7F8FB);
+}
+
+.imagePreviewCaption {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(17, 29, 58, 0.78);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.imagePreviewError {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--admin-error, #D64545);
+}
+
 .toggles {
   display: flex;
   flex-direction: column;

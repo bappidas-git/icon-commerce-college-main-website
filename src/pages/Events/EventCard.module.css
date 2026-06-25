@@ -1,20 +1,20 @@
 /* ============================================
    EventCard styles — Icon Commerce College (prompt 24)
    --------------------------------------------
-   Navy date block + details. CSS-only hover lift (entrance owned by the page's
-   <Reveal>). Navy = structure, Gold = emphasis only (category badge, meta
-   icons). Past events read slightly muted.
+   Optional banner image on top of a navy date block + details. CSS-only hover
+   lift (entrance owned by the page's <Reveal>). Navy = structure, Gold =
+   emphasis only (category badge, meta icons). Past events read slightly muted.
    ============================================ */
 
 .card {
   display: flex;
-  gap: var(--space-5);
+  flex-direction: column;
   height: 100%;
-  padding: var(--space-5);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
+  overflow: hidden; /* clip the banner's top corners to the card radius */
   transition: transform var(--transition-base), box-shadow var(--transition-base),
     border-color var(--transition-base);
 }
@@ -25,12 +25,46 @@
   border-color: var(--color-accent);
 }
 
+/* Content row — navy date block + details. Carries the padding/gap the card
+   itself used to own, so an imageless card is visually identical to before. */
+.row {
+  display: flex;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  flex: 1 1 auto;
+}
+
+/* ---------- Banner image (only when the event has one) ---------- */
+.media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--color-primary-light);
+  overflow: hidden;
+}
+
+.mediaImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-base);
+}
+
+.hasMedia:hover .mediaImg {
+  transform: scale(1.03);
+}
+
 .past {
   background: var(--color-bg);
 }
 
 .past .dateBlock {
   background: var(--color-primary-light);
+}
+
+.past .mediaImg {
+  opacity: 0.9;
+  filter: saturate(0.85);
 }
 
 /* ---------- Date block ---------- */
@@ -127,7 +161,7 @@
 }
 
 @media (max-width: 460px) {
-  .card {
+  .row {
     gap: var(--space-4);
     padding: var(--space-4);
   }
@@ -144,6 +178,10 @@
 /* Reduced motion — drop hover transforms (§4). */
 @media (prefers-reduced-motion: reduce) {
   .card:hover {
+    transform: none;
+  }
+
+  .hasMedia:hover .mediaImg {
     transform: none;
   }
 }

@@ -17,6 +17,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Switch } fro
 import { Icon } from "@iconify/react";
 import { FormField } from "./ui";
 import { createEvent, updateEvent, EVENT_CATEGORIES } from "../utils/eventService";
+import { resolveImageSrc } from "../../utils/assets";
 import styles from "./EventFormDialog.module.css";
 
 const todayISO = () => new Date().toISOString().split("T")[0];
@@ -60,6 +61,7 @@ const EventFormDialog = ({ open, mode = "create", event = null, prefill = null, 
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
+  const [imagePreviewError, setImagePreviewError] = useState(false);
 
   // Reset the form each time the dialog opens (fresh for create — seeded with
   // any prefill, hydrated for edit) so a previous session never bleeds into the
@@ -70,6 +72,12 @@ const EventFormDialog = ({ open, mode = "create", event = null, prefill = null, 
     setErrors({});
     setSaving(false);
   }, [open, isEdit, event, prefill]);
+
+  // Re-attempt the live preview whenever the image value changes (and on open),
+  // so a fixed URL stops showing the "couldn't load" message.
+  useEffect(() => {
+    setImagePreviewError(false);
+  }, [form.image_url]);
 
   const setField = (key, value) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -246,20 +254,42 @@ const EventFormDialog = ({ open, mode = "create", event = null, prefill = null, 
               />
             </FormField>
 
-            <FormField
-              label="Image"
-              htmlFor="event-image"
-              hint="Optional placeholder name, e.g. event-college-week."
-            >
-              <input
-                id="event-image"
-                type="text"
-                value={form.image_url}
-                onChange={(e) => setField("image_url", e.target.value)}
-                placeholder="event-college-week"
-                maxLength={200}
-              />
-            </FormField>
+            <div className={styles.imageField}>
+              <FormField
+                label="Image"
+                htmlFor="event-image"
+                hint="Optional. Paste an image URL (https://…) or a placeholder name like event-college-week. Shown as a banner on the public Events page."
+              >
+                <input
+                  id="event-image"
+                  type="text"
+                  value={form.image_url}
+                  onChange={(e) => setField("image_url", e.target.value)}
+                  placeholder="https://… or event-college-week"
+                  maxLength={500}
+                />
+              </FormField>
+
+              {form.image_url.trim() &&
+                (imagePreviewError ? (
+                  <p className={styles.imagePreviewError}>
+                    <Icon icon="mdi:image-broken-variant" width={16} height={16} aria-hidden="true" />
+                    <span>Couldn’t load this image — check the URL.</span>
+                  </p>
+                ) : (
+                  <figure className={styles.imagePreview}>
+                    <img
+                      src={resolveImageSrc(form.image_url)}
+                      alt="Event banner preview"
+                      onError={() => setImagePreviewError(true)}
+                    />
+                    <figcaption className={styles.imagePreviewCaption}>
+                      <Icon icon="mdi:eye-outline" width={14} height={14} aria-hidden="true" />
+                      Preview
+                    </figcaption>
+                  </figure>
+                ))}
+            </div>
 
             <div className={styles.toggles}>
               <label className={styles.toggle}>

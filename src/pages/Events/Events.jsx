@@ -11,9 +11,11 @@
                           click a day to see that day's events
        → <EmptyState> when there are no events / no matches for the filter
 
-   Data comes from `useEvents()`, now wired to the live events.php store
-   (published-only, silent seed fallback) — same record shape. The category
-   filter applies to both views. SEO uses useSeo() with the /events defaults.
+   Data comes from `useEvents()`, wired to the live events.php store
+   (published-only). When the store is empty the hook returns [] so the
+   <EmptyState> below renders ("No events yet"); seed content only appears as a
+   dev fallback when the API can't be reached. The category filter applies to
+   both views. SEO uses useSeo() with the /events defaults.
    ============================================ */
 
 import React, { useMemo, useState } from 'react';

@@ -91,6 +91,7 @@ export const postToAdminApi = async (url, adminKey, action, body, label = "Admin
       },
       body: JSON.stringify(body),
       keepalive: true,
+      cache: "no-store",
     });
 
     // Read as text first so a 200 that is actually HTML (the SPA shell) can be

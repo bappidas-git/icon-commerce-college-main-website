@@ -141,6 +141,13 @@ RewriteRule ^ index.html [L]            # everything else → SPA
 - **`index.html`, `service-worker.js`, `manifest.json`** → `no-cache` so a new
   deploy is picked up on the next visit. *(This block is kept last so it overrides
   the generic rules.)*
+- **The `/api/*.php` endpoints** send their own `Cache-Control: no-store` (plus
+  `Pragma`/`Expires`) on every response, and the client cache-busts each list
+  read. A mutable data API must never be cached — if it is, an admin edit/delete
+  appears to "not stick" and deleted records reappear on reload. If your host has
+  a **reverse-proxy/CDN cache in front of the app (e.g. Cloudways' Varnish)**,
+  make sure it honours these headers (it should by default) or explicitly exclude
+  `/api/` from the page cache.
 
 ### Compression + security headers
 
@@ -225,6 +232,7 @@ A healthy response looks like (it never prints the key itself):
 | `"ok": false`, `"data_dir_writable": false` + a `reason` | `api/data/` isn't writable by the PHP user | `chmod 775 api/data` and make sure it's owned by the app/PHP user |
 | notices/events `"admin_key_accepted": false` (when you send the key) | The build's `REACT_APP_LEADS_ADMIN_KEY` ≠ the server's `ADMIN_API_KEY` | Make them match ([step 3](#the-admin-key)) and **rebuild** |
 | HTTP **500** with no JSON body | A PHP fatal/parse error in the endpoint | Check the host's PHP error log (a stray `*/` inside a `/* … */` comment, a bad `config.php`, etc.) |
+| Admin **edits/deletes "don't stick"**, deleted leads/notices/events **reappear on reload**, or a note added on one device doesn't show on another — but `health` is `ok` and the write returns `{"success":true}` | A **proxy/CDN/browser cache** is serving a stale `?action=list` (the write persisted; the read was cached) | The endpoints now send `no-store` and the client cache-busts every list read — redeploy the updated `api/*.php` **and** the new build. If a host page-cache (e.g. Cloudways **Varnish**) still caches it, purge it and exclude `/api/` from the cache |
 
 When a write fails, the API now returns the **specific reason** in the JSON body
 (visible in the browser **Network** tab), e.g.

@@ -4,6 +4,56 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Fix: Leads, Notices & Events now sync reliably across devices (no stale cache, empty = empty)
+
+The three admin modules looked broken in production even though the PHP API was
+correct: a deleted lead/notice/event **came back on reload**, **edits didn't
+stick**, **notes didn't appear on another device**, and after clearing all
+notices/events the public site **showed seed data again** instead of an empty
+state. Two distinct root causes — both now fixed and verified end-to-end against
+a live PHP server (22/22 CRUD assertions passing) plus a green `npm run build`.
+
+**1 — HTTP caching served stale list reads (the main cause).**
+The write (create/update/delete) always persisted, but the *next* `?action=list`
+read was answered from a cache — the browser's, or a reverse-proxy/CDN in front
+of the app (e.g. Cloudways' Varnish) — so the change appeared to "not take": the
+deleted row reappeared, the edit seemed ignored, a note added on one device never
+showed on another. The public `useNotices`/`useEvents` hooks already cache-busted
+via `fetchJson`, but the **admin** reads and the API responses did not.
+
+- **`public/api/leads.php`, `notices.php`, `events.php`** — every response now
+  sends `Cache-Control: no-store, no-cache, must-revalidate, max-age=0` +
+  `Pragma: no-cache` + `Expires: 0`. A mutable data API must never be cached;
+  this stops any proxy/CDN/browser from holding a stale list.
+- **`admin/utils/leadService.js`, `noticeService.js`, `eventService.js`** — the
+  `sync*FromServer()` list reads now cache-bust (`&_=<ts>` + `cache: "no-store"`),
+  matching the public hooks, so the admin panel always sees the live store.
+- **`admin/utils/apiClient.js`** — admin writes also send `cache: "no-store"`.
+
+**2 — Optimistic writes reconciled too slowly / silently.**
+Each admin mutation updated the UI optimistically and only reconciled with the
+server on the next 15 s poll, so a rejected write reverted confusingly later.
+Now every create/update/delete **re-syncs from the server immediately after the
+write lands** (debounced ~700 ms) and notifies all views: a successful write is
+confirmed (server-normalised fields, merged notes/activity picked up), and a
+write the server rejected — or that a stale cache had hidden — reverts on screen
+at once instead of after the poll. Added to all five lead mutations and the
+create/update/delete paths of notices and events.
+
+**3 — Empty store now shows a proper empty state, not seed data.**
+`useNotices`/`useEvents` substituted bundled **seed** content whenever the store
+was empty — so deleting every notice/event made the public site look like the
+deletions never happened. The hooks now treat a *successful* empty fetch as the
+truth and return `[]`, so the existing professional `<EmptyState>` ("No notices
+yet" / "No events yet") renders on `/notices`, `/events` and the Home board. Seed
+content now appears **only** as a dev fallback before the first successful fetch
+(e.g. no PHP backend running locally), never to mask a real, intentional empty
+store. (`hooks/useNotices.js`, `hooks/useEvents.js`.)
+
+**Docs.** `docs/DEPLOYMENT.md` gains a caching row in the troubleshooting table
+(symptom: "edits don't stick / deleted records reappear") and a note that the API
+ships `no-store` so a CDN/Varnish layer should leave `/api/` uncached.
+
 ### Fix: forms now only report success when the lead is actually saved (cross-device sync)
 
 A submitted enquiry sometimes never appeared in the admin panel on another

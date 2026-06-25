@@ -50,6 +50,18 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, X-Admin-Key');
 
+// This is a MUTABLE data API — its responses must NEVER be cached. Without these
+// headers a CDN / reverse-proxy (e.g. Cloudways' Varnish), a corporate proxy or
+// even the browser can serve a stale `?action=list` response after a create /
+// update / delete. That is the silent cause of "my edit didn't stick", "the lead
+// I deleted comes back on reload" and "notes don't show on another device": the
+// write succeeded, but the next list read was answered from cache. Sending
+// no-store on every response (paired with the client cache-buster) guarantees the
+// admin panel and public site always read the live store.
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;

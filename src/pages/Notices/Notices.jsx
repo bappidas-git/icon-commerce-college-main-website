@@ -10,10 +10,12 @@
          with a "Load more" pager
        → <EmptyState> when there are no notices, or no search/filter matches
 
-   Data comes from `useNotices()`, now wired to the live notices.php store
-   (published-only, silent seed fallback) — same record shape, so this page is
-   untouched. Sorting (pinned first, newest next) is owned by the hook; this page
-   only filters, searches and pages. SEO uses useSeo() with the /notices defaults.
+   Data comes from `useNotices()`, wired to the live notices.php store
+   (published-only). When the store is empty the hook returns [] so the
+   <EmptyState> below renders ("No notices yet"); seed content only appears as a
+   dev fallback when the API can't be reached. Sorting (pinned first, newest
+   next) is owned by the hook; this page only filters, searches and pages. SEO
+   uses useSeo() with the /notices defaults.
    ============================================ */
 
 import React, { useEffect, useMemo, useState } from 'react';

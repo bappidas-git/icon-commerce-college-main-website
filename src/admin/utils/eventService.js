@@ -133,6 +133,26 @@ const callEventsApi = (action, body) => {
   });
 };
 
+// After a write LANDS, reconcile the cache with the server so the optimistic
+// update converges to the truth in ≈1 round-trip instead of waiting for the next
+// 15s poll: a successful write is confirmed (and any server-side normalisation,
+// e.g. canonical timestamps, is picked up), while a write the server rejected —
+// or that a stale proxy cache hid — is reverted on screen immediately. Debounced
+// so a burst of writes (bulk delete/status) triggers a single reconcile. A
+// `skipped` result means no backend is configured (dev) — stay optimistic.
+let _reconcileTimer = null;
+const reconcileAfterWrite = (res) => {
+  if (res && res.skipped) return;
+  if (typeof window === "undefined") return;
+  if (_reconcileTimer) clearTimeout(_reconcileTimer);
+  _reconcileTimer = setTimeout(() => {
+    _reconcileTimer = null;
+    syncEventsFromServer().then((r) => {
+      if (!r.error && (r.added || r.updated || r.removed)) notifyEventsChanged();
+    });
+  }, 700);
+};
+
 // RFC 4122-ish id, with a fallback for the rare environment without crypto.
 const newId = () =>
   typeof crypto !== "undefined" && crypto.randomUUID
@@ -188,7 +208,14 @@ export const syncEventsFromServer = async () => {
     // Sending the key reveals drafts; without it the admin sees published only.
     if (EVENTS_ADMIN_KEY) headers["X-Admin-Key"] = EVENTS_ADMIN_KEY;
 
-    const response = await fetch(`${url}?action=list`, { method: "GET", headers });
+    // Cache-bust (unique `_` + no-store) so a CDN/proxy (Cloudways Varnish) or
+    // the browser can't answer this list read from a stale cache — that was the
+    // cause of deleted events reappearing and edits not "sticking" on reload.
+    const response = await fetch(`${url}?action=list&_=${Date.now()}`, {
+      method: "GET",
+      headers,
+      cache: "no-store",
+    });
     if (!response.ok) {
       return { synced: 0, added: 0, updated: 0, removed: 0, error: `Server returned ${response.status}` };
     }
@@ -286,7 +313,7 @@ export const createEvent = (data = {}) => {
   const event = normalizeEvent({ ...data }, true);
   _cache = [event, ..._cache];
   notifyEventsChanged();
-  callEventsApi("create", { event });
+  callEventsApi("create", { event }).then(reconcileAfterWrite);
   return event;
 };
 
@@ -309,7 +336,7 @@ export const updateEvent = (id, patch = {}) => {
   if (!updated) return null;
 
   notifyEventsChanged();
-  callEventsApi("update", { id, patch: { ...patch, updated_at: now } });
+  callEventsApi("update", { id, patch: { ...patch, updated_at: now } }).then(reconcileAfterWrite);
   return updated;
 };
 
@@ -319,7 +346,7 @@ export const updateEvent = (id, patch = {}) => {
 export const deleteEvent = (id) => {
   _cache = _cache.filter((e) => e.id !== id);
   notifyEventsChanged();
-  callEventsApi("delete", { ids: [id] });
+  callEventsApi("delete", { ids: [id] }).then(reconcileAfterWrite);
   return true;
 };
 
@@ -331,7 +358,7 @@ export const deleteEvents = (ids = []) => {
   _cache = _cache.filter((e) => !idSet.has(e.id));
   notifyEventsChanged();
   if (ids.length > 0) {
-    callEventsApi("delete", { ids });
+    callEventsApi("delete", { ids }).then(reconcileAfterWrite);
   }
   return true;
 };

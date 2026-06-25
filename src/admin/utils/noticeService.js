@@ -131,6 +131,26 @@ const callNoticesApi = (action, body) => {
   });
 };
 
+// After a write LANDS, reconcile the cache with the server so the optimistic
+// update converges to the truth in ≈1 round-trip instead of waiting for the next
+// 15s poll: a successful write is confirmed (and any server-side normalisation is
+// picked up), while a write the server rejected — or that a stale proxy cache
+// hid — is reverted on screen immediately. Debounced so a burst of writes
+// triggers a single reconcile. A `skipped` result means no backend is configured
+// (dev) — stay optimistic.
+let _reconcileTimer = null;
+const reconcileAfterWrite = (res) => {
+  if (res && res.skipped) return;
+  if (typeof window === "undefined") return;
+  if (_reconcileTimer) clearTimeout(_reconcileTimer);
+  _reconcileTimer = setTimeout(() => {
+    _reconcileTimer = null;
+    syncNoticesFromServer().then((r) => {
+      if (!r.error && (r.added || r.updated || r.removed)) notifyNoticesChanged();
+    });
+  }, 700);
+};
+
 // RFC 4122-ish id, with a fallback for the rare environment without crypto.
 const newId = () =>
   typeof crypto !== "undefined" && crypto.randomUUID
@@ -181,7 +201,14 @@ export const syncNoticesFromServer = async () => {
     // Sending the key reveals drafts; without it the admin sees published only.
     if (NOTICES_ADMIN_KEY) headers["X-Admin-Key"] = NOTICES_ADMIN_KEY;
 
-    const response = await fetch(`${url}?action=list`, { method: "GET", headers });
+    // Cache-bust (unique `_` + no-store) so a CDN/proxy (Cloudways Varnish) or
+    // the browser can't answer this list read from a stale cache — that was the
+    // cause of deleted notices reappearing and edits not "sticking" on reload.
+    const response = await fetch(`${url}?action=list&_=${Date.now()}`, {
+      method: "GET",
+      headers,
+      cache: "no-store",
+    });
     if (!response.ok) {
       return { synced: 0, added: 0, updated: 0, removed: 0, error: `Server returned ${response.status}` };
     }
@@ -263,7 +290,7 @@ export const createNotice = (data = {}) => {
   const notice = normalizeNotice({ ...data }, true);
   _cache = [notice, ..._cache];
   notifyNoticesChanged();
-  callNoticesApi("create", { notice });
+  callNoticesApi("create", { notice }).then(reconcileAfterWrite);
   return notice;
 };
 
@@ -286,7 +313,7 @@ export const updateNotice = (id, patch = {}) => {
   if (!updated) return null;
 
   notifyNoticesChanged();
-  callNoticesApi("update", { id, patch: { ...patch, updated_at: now } });
+  callNoticesApi("update", { id, patch: { ...patch, updated_at: now } }).then(reconcileAfterWrite);
   return updated;
 };
 
@@ -296,7 +323,7 @@ export const updateNotice = (id, patch = {}) => {
 export const deleteNotice = (id) => {
   _cache = _cache.filter((n) => n.id !== id);
   notifyNoticesChanged();
-  callNoticesApi("delete", { ids: [id] });
+  callNoticesApi("delete", { ids: [id] }).then(reconcileAfterWrite);
   return true;
 };
 
@@ -308,7 +335,7 @@ export const deleteNotices = (ids = []) => {
   _cache = _cache.filter((n) => !idSet.has(n.id));
   notifyNoticesChanged();
   if (ids.length > 0) {
-    callNoticesApi("delete", { ids });
+    callNoticesApi("delete", { ids }).then(reconcileAfterWrite);
   }
   return true;
 };

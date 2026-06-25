@@ -4,6 +4,46 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Fix: forms now only report success when the lead is actually saved (cross-device sync)
+
+A submitted enquiry sometimes never appeared in the admin panel on another
+device/browser. Root cause: the submit path trusted **any** HTTP 2xx as a
+success and swallowed JSON-parse errors, so when the API request returned the
+SPA's `index.html` with a `200` — which happens on a static-only host, or when
+the `/api/` tree / `.htaccess` wasn't deployed, or the host simply isn't
+executing PHP — the form showed *"Thank you!"* while **nothing was persisted**.
+The lead therefore never reached the server-side store and never synced to any
+admin device. Admin-side failures (a 401 admin-key mismatch, PHP down) were also
+invisible — the panel just showed an empty list. No data was ever stored in
+`localStorage`; the stores remain server-side REST (`/api/*.php`), the single
+source of truth.
+
+- **`utils/webhookSubmit.js`** — the lead create path now reads the response as
+  text, parses it itself, and only reports success on a genuine
+  `{ "success": true }` JSON body. A non-JSON `200` (the HTML SPA shell), a
+  non-2xx status, or a server `{ error, reason }` is reported honestly to the
+  applicant ("we couldn't save your enquiry…") and logged with an actionable
+  diagnostic pointing at `/api/leads.php?action=health`. This fixes **every**
+  public form at once — all of them funnel through this one function
+  (hero, lead drawer, contact, course pages, admissions, footer enquiry strip,
+  prospectus gate).
+- **`admin/utils/apiClient.js` (new)** — a shared `postToAdminApi()` that
+  verifies admin writes against the same JSON contract (never throws), plus a
+  tiny `emitAdminApiError()` / `onAdminApiError()` window-event channel.
+- **`admin/utils/leadService.js`, `noticeService.js`, `eventService.js`** — the
+  create/update/delete mirror calls now route through `postToAdminApi()` and
+  raise a global error toast when a write is rejected (wrong key, storage not
+  writable, PHP not executing), instead of silently reverting on the next 15 s
+  poll. Behaviour on success is unchanged; the optimistic update still applies
+  immediately.
+- **`admin/components/AdminLayout.jsx`** — mounts the global "your change didn't
+  save" error toast fed by `onAdminApiError()`.
+- **`admin/pages/LeadManagement.jsx` + `Dashboard.jsx`** — show a clear
+  connection-error banner when the leads store can't be read (e.g. a `401`
+  admin-key mismatch or PHP being down), so an empty table/dashboard explains
+  itself and points to the health endpoint + the Settings admin-key handshake,
+  rather than looking like "no leads yet".
+
 ### Shared hero backdrop on Notices + Course-detail pages
 
 - **Notices & Course-detail heroes (`Notices.jsx`, `CourseDetail.jsx`)** — both

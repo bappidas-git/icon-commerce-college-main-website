@@ -14,6 +14,7 @@
 
 import { getConfig } from "../../utils/webhookSubmit";
 import { describeStatusChange, normalizeStatus } from "./leadStatus";
+import { postToAdminApi, emitAdminApiError } from "./apiClient";
 
 // Shared secret used to authenticate against /api/leads.php admin actions.
 // Must match ADMIN_API_KEY in public/api/config.php (or the committed default
@@ -93,21 +94,22 @@ const getLeadsApiUrl = () => {
 };
 
 /**
- * Fire-and-forget admin call to the leads API. Re-syncs from the server once
- * the write completes so the cache reflects the server's merged copy.
+ * Mirror an admin mutation (status / note / conversion / delete) to the shared
+ * server store. Verifies the server actually accepted the write and raises a
+ * global error toast on failure, so an admin edit that didn't persist no longer
+ * reverts silently on the next poll.
  */
 const callLeadsApi = (action, body) => {
   const url = getLeadsApiUrl();
-  if (!url || !LEADS_ADMIN_KEY) return Promise.resolve();
-  return fetch(`${url}?action=${action}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Admin-Key": LEADS_ADMIN_KEY,
-    },
-    body: JSON.stringify(body),
-    keepalive: true,
-  }).catch((err) => console.error(`[LeadsAPI] ${action} failed:`, err));
+  if (!url || !LEADS_ADMIN_KEY) return Promise.resolve({ ok: false, skipped: true });
+  return postToAdminApi(url, LEADS_ADMIN_KEY, action, body, "LeadsAPI").then((res) => {
+    if (!res.ok) {
+      emitAdminApiError(
+        `Couldn't save your lead change to the server — ${res.error} The change may revert.`
+      );
+    }
+    return res;
+  });
 };
 
 /**

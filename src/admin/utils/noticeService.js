@@ -12,6 +12,8 @@
    notify), then reconciled by the next poll.
    ============================================ */
 
+import { postToAdminApi, emitAdminApiError } from "./apiClient";
+
 // Notices reuse the SAME shared secret as leads (REACT_APP_LEADS_ADMIN_KEY) —
 // notices.php resolves its admin key the same way, so the two endpoints always
 // agree. This value is compiled into the public bundle; it is not a real secret,
@@ -109,23 +111,24 @@ export const onNoticesChanged = (handler) => {
 export const getNoticesApiUrl = () => process.env.REACT_APP_NOTICES_API_URL || "/api/notices.php";
 
 /**
- * Fire-and-forget admin call to the notices API (create/update/delete). Writes
- * are gated by the admin key; without it the call is a no-op (the server would
- * reject it anyway), so the optimistic cache update is purely local until a key
- * is configured.
+ * Mirror an admin notice mutation (create/update/delete) to the shared server
+ * store. Writes are gated by the admin key; without it the call is a no-op (the
+ * server would reject it anyway), so the optimistic cache update is purely local
+ * until a key is configured. When a key IS present the write is verified, and a
+ * failure (wrong key, storage not writable, PHP not executing) raises a global
+ * error toast instead of silently reverting on the next 15s poll.
  */
 const callNoticesApi = (action, body) => {
   const url = getNoticesApiUrl();
-  if (!url || !NOTICES_ADMIN_KEY) return Promise.resolve();
-  return fetch(`${url}?action=${action}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Admin-Key": NOTICES_ADMIN_KEY,
-    },
-    body: JSON.stringify(body),
-    keepalive: true,
-  }).catch((err) => console.error(`[NoticesAPI] ${action} failed:`, err));
+  if (!url || !NOTICES_ADMIN_KEY) return Promise.resolve({ ok: false, skipped: true });
+  return postToAdminApi(url, NOTICES_ADMIN_KEY, action, body, "NoticesAPI").then((res) => {
+    if (!res.ok) {
+      emitAdminApiError(
+        `Couldn't save your notice to the server — ${res.error} It may not appear on the public site.`
+      );
+    }
+    return res;
+  });
 };
 
 // RFC 4122-ish id, with a fallback for the rare environment without crypto.

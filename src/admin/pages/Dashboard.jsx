@@ -104,6 +104,10 @@ const Dashboard = () => {
   const [events, setEvents] = useState(() => getEvents({ published: true }));
   const [refreshing, setRefreshing] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  // Visible connection error when the leads store can't be read (401 key
+  // mismatch / PHP down), so an empty dashboard explains itself instead of
+  // looking like "no activity yet".
+  const [connectionError, setConnectionError] = useState('');
 
   // ── Auto-refresh: initial server sync + cross-tab subscription + 15s poll ──
   // One shared loop hydrates leads, notices AND events from their server stores,
@@ -120,6 +124,7 @@ const Dashboard = () => {
 
     // Pull each store so submissions/posts made on other devices show up here.
     syncLeadsFromServer().then((r) => {
+      setConnectionError(r.error || '');
       if (changed(r)) refreshLeads();
     });
     syncNoticesFromServer().then((r) => {
@@ -228,6 +233,7 @@ const Dashboard = () => {
     setRefreshing(true);
     try {
       const result = await syncLeadsFromServer();
+      setConnectionError(result.error || '');
       setStats(getLeadStats());
       if (result.error) {
         setSnackbar({ open: true, message: `Refresh failed: ${result.error}`, severity: 'error' });
@@ -281,6 +287,21 @@ const Dashboard = () => {
           </>
         }
       />
+
+      {/* Connection error — the leads store couldn't be read, so the figures
+          below may be stale/empty. Surface it instead of showing silent zeros. */}
+      {connectionError && (
+        <Alert
+          severity="error"
+          icon={<Icon icon="mdi:cloud-alert" width={22} />}
+          sx={{ mb: 2 }}
+        >
+          Couldn't reach the leads server ({connectionError}). Submissions from
+          other devices may not be syncing. Open{' '}
+          <strong>/api/leads.php?action=health</strong> to diagnose, and confirm
+          the admin-key handshake in Settings.
+        </Alert>
+      )}
 
       {/* Stat tiles */}
       <div className={styles.statsGrid}>

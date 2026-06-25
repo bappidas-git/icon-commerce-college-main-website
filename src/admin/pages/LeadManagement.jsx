@@ -138,6 +138,12 @@ const LeadManagement = () => {
   // Manual refresh state
   const [refreshing, setRefreshing] = useState(false);
 
+  // Visible connection error when the server can't be READ (e.g. a 401 admin-key
+  // mismatch or PHP being down). Without this, a failed sync just left an empty
+  // table that looked like "no leads yet" — masking that enquiries from other
+  // devices weren't loading at all.
+  const [connectionError, setConnectionError] = useState("");
+
   // Load data
   const loadData = useCallback(() => {
     const filters = {
@@ -174,6 +180,7 @@ const LeadManagement = () => {
   // server is. We sync on mount, then poll on an interval below.
   useEffect(() => {
     syncLeadsFromServer().then((result) => {
+      setConnectionError(result.error || "");
       if (
         !result.error &&
         (result.added > 0 || result.updated > 0 || result.removed > 0)
@@ -193,6 +200,7 @@ const LeadManagement = () => {
     const poll = () => {
       if (document.visibilityState !== "visible") return;
       syncLeadsFromServer().then((result) => {
+        setConnectionError(result.error || "");
         if (
           !result.error &&
           (result.added > 0 || result.updated > 0 || result.removed > 0)
@@ -241,6 +249,7 @@ const LeadManagement = () => {
     setRefreshing(true);
     try {
       const result = await syncLeadsFromServer();
+      setConnectionError(result.error || "");
       loadData();
       if (result.error) {
         showSnackbar(`Refresh failed: ${result.error}`, "error");
@@ -521,6 +530,22 @@ const LeadManagement = () => {
           </>
         }
       />
+
+      {/* Connection error — the server couldn't be reached/read, so leads from
+          other devices may not be loading. Explains an empty table and points
+          to the fix (health endpoint + admin-key handshake). */}
+      {connectionError && (
+        <Alert
+          severity="error"
+          icon={<Icon icon="mdi:cloud-alert" width={22} />}
+          sx={{ mb: 2 }}
+        >
+          Couldn't load leads from the server ({connectionError}). New enquiries
+          submitted from other devices may not appear here. Open{" "}
+          <strong>/api/leads.php?action=health</strong> to diagnose, and confirm
+          the admin-key handshake in Settings.
+        </Alert>
+      )}
 
       {/* Stats Summary — shared StatTile kit (matches the Dashboard) */}
       {stats && (

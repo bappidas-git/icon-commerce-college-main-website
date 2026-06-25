@@ -9,10 +9,11 @@
 
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { CircularProgress, Box } from '@mui/material';
+import { CircularProgress, Box, Snackbar, Alert } from '@mui/material';
 import AdminSidebar from './AdminSidebar';
 import AdminTopbar from './AdminTopbar';
 import { syncLeadsFromServer } from '../utils/leadService';
+import { onAdminApiError } from '../utils/apiClient';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import { canAccessSettings } from '../navItems';
 import styles from './AdminLayout.module.css';
@@ -32,6 +33,11 @@ const PageLoader = () => (
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Global "your change didn't save" toast, raised by the lead/notice/event
+  // services when a write to the server fails (wrong admin key, storage not
+  // writable, PHP not executing). Without this, a failed write reverted on the
+  // next 15s poll with no explanation.
+  const [apiError, setApiError] = useState('');
   const location = useLocation();
   const { user } = useAdminAuth();
   const settingsAllowed = canAccessSettings(user?.role);
@@ -48,6 +54,9 @@ const AdminLayout = () => {
       }
     });
   }, []);
+
+  // Surface failed admin writes from any service as a single toast.
+  useEffect(() => onAdminApiError((message) => setApiError(message)), []);
 
   // Close the mobile drawer whenever the route changes.
   useEffect(() => {
@@ -81,6 +90,23 @@ const AdminLayout = () => {
           </Suspense>
         </main>
       </div>
+
+      {/* Global failed-write toast (lead/notice/event services). */}
+      <Snackbar
+        open={!!apiError}
+        autoHideDuration={8000}
+        onClose={() => setApiError('')}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          severity="error"
+          variant="filled"
+          onClose={() => setApiError('')}
+          sx={{ maxWidth: 480 }}
+        >
+          {apiError}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

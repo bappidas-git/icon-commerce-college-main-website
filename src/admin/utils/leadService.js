@@ -112,6 +112,27 @@ const callLeadsApi = (action, body) => {
   });
 };
 
+// After a write LANDS, reconcile the cache with the server so the optimistic
+// update converges to the truth in ≈1 round-trip instead of waiting for the next
+// 15s poll: a successful status change / note is confirmed (and the server's
+// merged notes + activity timeline are picked up across devices), while a write
+// the server rejected — or that a stale proxy cache hid — is reverted on screen
+// immediately. Debounced so a burst of writes (bulk status/delete) triggers a
+// single reconcile. A `skipped` result means the API/key isn't configured —
+// stay optimistic.
+let _reconcileTimer = null;
+const reconcileAfterWrite = (res) => {
+  if (res && res.skipped) return;
+  if (typeof window === "undefined") return;
+  if (_reconcileTimer) clearTimeout(_reconcileTimer);
+  _reconcileTimer = setTimeout(() => {
+    _reconcileTimer = null;
+    syncLeadsFromServer().then((r) => {
+      if (!r.error && (r.added || r.updated || r.removed)) notifyLeadsChanged();
+    });
+  }, 700);
+};
+
 /**
  * Normalise a raw server lead so the admin UI always has the fields it expects.
  *
@@ -182,9 +203,14 @@ export const syncLeadsFromServer = async () => {
   }
 
   try {
-    const response = await fetch(`${url}?action=list`, {
+    // Cache-bust (unique `_` + no-store) so a CDN/proxy (Cloudways Varnish) or
+    // the browser can't answer this list read from a stale cache — that was the
+    // cause of deleted leads reappearing and notes from another device not
+    // showing. The endpoint also sends no-store; this is the matching client half.
+    const response = await fetch(`${url}?action=list&_=${Date.now()}`, {
       method: "GET",
       headers: { "X-Admin-Key": LEADS_ADMIN_KEY },
+      cache: "no-store",
     });
     if (!response.ok) {
       return {
@@ -341,7 +367,7 @@ export const updateLeadStatus = (id, status) => {
       activity: updated.activity,
       updated_at: updated.updated_at,
     },
-  });
+  }).then(reconcileAfterWrite);
 
   return updated;
 };
@@ -379,7 +405,7 @@ export const addLeadNote = (id, noteText) => {
       activity: updated.activity,
       updated_at: updated.updated_at,
     },
-  });
+  }).then(reconcileAfterWrite);
 
   return updated;
 };
@@ -413,7 +439,7 @@ export const updateLeadConversion = (id, { conversion_value, conversion_type, co
       converted_at: updated.converted_at,
       updated_at: updated.updated_at,
     },
-  });
+  }).then(reconcileAfterWrite);
 
   return updated;
 };
@@ -425,7 +451,7 @@ export const deleteLead = (id) => {
   _cache = _cache.filter((l) => l.lead_id !== id);
   notifyLeadsChanged();
   // Mirror delete to the shared server store.
-  callLeadsApi("delete", { lead_ids: [id] });
+  callLeadsApi("delete", { lead_ids: [id] }).then(reconcileAfterWrite);
   return true;
 };
 
@@ -437,7 +463,7 @@ export const deleteLeads = (ids) => {
   _cache = _cache.filter((l) => !idSet.has(l.lead_id));
   notifyLeadsChanged();
   if (ids.length > 0) {
-    callLeadsApi("delete", { lead_ids: ids });
+    callLeadsApi("delete", { lead_ids: ids }).then(reconcileAfterWrite);
   }
   return true;
 };

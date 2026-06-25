@@ -16,8 +16,11 @@
        in parallel, with no waterfall.
      • Revalidate-on-focus.
      • Abort on unmount (AbortController).
-     • Falls back to bundled seedEvents when the request FAILS or the store is
-       EMPTY, silently, so the UI is never blank in dev.
+     • Falls back to bundled seedEvents ONLY when the request FAILS before a first
+       success (e.g. no PHP backend in dev), so the UI is never blank in dev. A
+       request that SUCCEEDS with an empty store returns [] so the page shows its
+       proper "No events yet" empty state — what an admin who has cleared the
+       calendar expects, NOT resurrected seed content.
 
    Also exposes `upcoming` / `past` split helpers (derived from the sorted list)
    for simple consumers. The list is exposed under BOTH `items` (the generic
@@ -50,8 +53,11 @@ function sortEvents(list) {
 // Pre-sorted seed fallback (computed once at module load).
 const SEED = sortEvents(seedEvents);
 
-// Last good server list for this SPA session — only the default (un-ranged)
-// query is cached, since that is what every current consumer uses.
+// Last known server list for this SPA session — `null` until the first
+// SUCCESSFUL default (un-ranged) fetch, then the server's list (which MAY be an
+// empty array once the admin clears the calendar). Only the default query is
+// cached, since that is what every current consumer uses. Seed is only shown
+// while this is still `null` (no successful fetch yet).
 let cachedEvents = null;
 
 /**
@@ -62,7 +68,9 @@ let cachedEvents = null;
 export default function useEvents({ from = '', to = '' } = {}) {
   const ranged = Boolean(from || to);
 
-  const [items, setItems] = useState(() => (ranged ? SEED : cachedEvents || SEED));
+  // `??` (not `||`) so a cached EMPTY array (calendar legitimately cleared)
+  // renders the empty state rather than falling through to seed.
+  const [items, setItems] = useState(() => (ranged ? SEED : cachedEvents ?? SEED));
   const [loading, setLoading] = useState(() => ranged || cachedEvents === null);
   const [error, setError] = useState(null);
 
@@ -84,16 +92,17 @@ export default function useEvents({ from = '', to = '' } = {}) {
       });
       if (!aliveRef.current || controller.signal.aborted) return;
       const list = Array.isArray(data?.events) ? sortEvents(data.events) : [];
-      // Cache the known store contents (default query only); an empty store
-      // falls back to seed (never blank), and clearing it stops a later
-      // transient failure from resurrecting a stale list.
-      if (!ranged) cachedEvents = list.length ? list : null;
-      setItems(list.length ? list : SEED);
+      // Cache the TRUTH from the server for the default query — even an empty
+      // array. An emptied calendar therefore shows the proper "No events yet"
+      // empty state (not seed); ranged queries aren't cached.
+      if (!ranged) cachedEvents = list;
+      setItems(list);
       setError(null);
     } catch (err) {
       if (err.name === 'AbortError' || !aliveRef.current) return;
-      // Transient failure: prefer the last good default list, else seed.
-      setItems(ranged ? SEED : cachedEvents || SEED);
+      // Transient failure: the default query prefers the last known server list
+      // (may be []), else seed; a ranged query has no cache, so seed.
+      setItems(ranged ? SEED : cachedEvents ?? SEED);
       setError(err);
     } finally {
       if (aliveRef.current && !controller.signal.aborted) setLoading(false);
@@ -102,7 +111,7 @@ export default function useEvents({ from = '', to = '' } = {}) {
 
   useEffect(() => {
     aliveRef.current = true;
-    if (!ranged && cachedEvents) setItems(cachedEvents); // instant paint
+    if (!ranged && cachedEvents !== null) setItems(cachedEvents); // instant paint (may be [])
     load();
 
     const onFocus = () => load();

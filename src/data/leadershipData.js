@@ -13,8 +13,6 @@
    Photos are labelled placeholders (design-system §7).
    ============================================ */
 
-import { placeholder } from "../utils/assets";
-
 /**
  * @typedef {Object} Leader
  * @property {string} name

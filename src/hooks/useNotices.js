@@ -17,10 +17,12 @@
      • Revalidate-on-focus: re-reads the store when the window regains focus, so a
        notice published in the admin tab shows up on the public tab without a
        manual reload.
-     • Falls back to the bundled seedNotices when the request FAILS or the store
-       is EMPTY, so the UI is never blank (and dev works with no PHP backend).
-       The degradation is silent — a missing endpoint in dev is expected, not an
-       error to log.
+     • Falls back to the bundled seedNotices ONLY when the request FAILS before a
+       first success (e.g. no PHP backend in dev) — so the UI is never blank in
+       dev. A request that SUCCEEDS with an empty store returns [] so the page
+       renders its proper "No notices yet" empty state: that is what an admin who
+       has deleted every notice expects, NOT resurrected seed content (the old
+       behaviour, which made the public site look like the deletions never took).
 
    The list is exposed under BOTH `items` (the generic shape the Notices page
    consumes, per prompt 24) and `notices` (kept for the Home NoticeBoard band) —
@@ -48,15 +50,19 @@ function sortNotices(list) {
 // Pre-sorted seed fallback (computed once at module load).
 const SEED = sortNotices(seedNotices);
 
-// Last good server list for this SPA session — null until the first successful,
-// non-empty fetch. Shared across every useNotices() instance.
+// Last known server list for this SPA session — `null` until the first
+// SUCCESSFUL fetch, then the server's list (which MAY be an empty array once the
+// admin clears the store). Shared across every useNotices() instance. Seed is
+// only ever shown while this is still `null` (no successful fetch yet).
 let cachedNotices = null;
 
 /**
  * @returns {{ items: Object[], notices: Object[], loading: boolean, error: (Error|null) }}
  */
 export default function useNotices() {
-  const [items, setItems] = useState(() => cachedNotices || SEED);
+  // `??` (not `||`) so a cached EMPTY array (store legitimately cleared) renders
+  // the empty state rather than falling through to seed.
+  const [items, setItems] = useState(() => cachedNotices ?? SEED);
   const [loading, setLoading] = useState(() => cachedNotices === null);
   const [error, setError] = useState(null);
 
@@ -78,17 +84,19 @@ export default function useNotices() {
       });
       if (!aliveRef.current || controller.signal.aborted) return;
       const list = Array.isArray(data?.notices) ? sortNotices(data.notices) : [];
-      // Cache reflects the known store contents: the list when non-empty, else
-      // null — so a store emptied in the admin shows seed here (never blank),
-      // and a later transient failure won't resurrect a stale list.
-      cachedNotices = list.length ? list : null;
-      setItems(list.length ? list : SEED);
+      // Cache the TRUTH from the server — even an empty array. An emptied store
+      // therefore shows the proper "No notices yet" empty state (not seed), and
+      // a later transient failure falls back to this known-empty list rather
+      // than resurrecting seed content.
+      cachedNotices = list;
+      setItems(list);
       setError(null);
     } catch (err) {
       if (err.name === 'AbortError' || !aliveRef.current) return;
       // Silent, expected degradation (e.g. no PHP backend in dev): prefer the
-      // last good list, else seed — so the page is never blank.
-      setItems(cachedNotices || SEED);
+      // last known server list (may be []), else seed — so dev is never blank
+      // but a real empty store is still honoured once we've seen the server.
+      setItems(cachedNotices ?? SEED);
       setError(err);
     } finally {
       if (aliveRef.current && !controller.signal.aborted) setLoading(false);
@@ -97,7 +105,7 @@ export default function useNotices() {
 
   useEffect(() => {
     aliveRef.current = true;
-    if (cachedNotices) setItems(cachedNotices); // instant paint, then revalidate
+    if (cachedNotices !== null) setItems(cachedNotices); // instant paint (may be []), then revalidate
     load();
 
     // Revalidate when the tab/window regains focus so a newly published notice

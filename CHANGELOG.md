@@ -4,6 +4,52 @@ All notable changes to the Icon Commerce College website project.
 
 ## [Unreleased]
 
+### Fix: Notice attachments & event images now show on the public site
+
+An admin could add an **Attachment URL** to a notice and an **Image** to an
+event, both were saved and synced correctly through the REST stores
+(`notices.php` / `events.php`), yet **neither ever appeared on the website**.
+Two front-end-only root causes — no API or storage change was needed, so the
+existing multi-device sync (server poll + cross-tab notify) carries the values
+straight through to these fixes.
+
+**1 — Notice attachment read the wrong field.**
+The admin form writes `attachment_url`, but `NoticeCard` read `notice.attachment`
+(a name nothing ever sets), so `resolveAttachment()` always returned `null` and
+the link never rendered.
+
+- **`pages/Notices/NoticeCard.jsx`** — now reads `attachment_url` (falling back
+  to the legacy `attachment` for older records). The attachment is **always
+  surfaced** when present (no longer hidden behind "Read more"): an image URL
+  renders as a responsive, clickable preview (`object-fit: contain`, capped
+  height, lazy-loaded, with a gold "View image" hint); a PDF or other file
+  renders as a labelled "View PDF / attachment" button. A broken image URL
+  falls back to the file-link style. "Read more" now governs the body text only.
+
+**2 — Event image was never rendered anywhere.**
+`EventCard` simply had no `<img>`, so `image_url` was dead data.
+
+- **`pages/Events/EventCard.jsx` + `.module.css`** — adds an optional **banner
+  image** above the card body (16:9, `object-fit: cover`, lazy-loaded, subtle
+  hover zoom, dimmed for past events). It only renders when the admin set an
+  image and it loads — a blank field or a broken URL silently keeps the original
+  imageless layout. The card became a column with the date-block/details row
+  below, so imageless cards look identical to before. This covers both the
+  Events **list** and the **calendar** day detail (both use `EventCard`).
+
+**Shared resolver + admin UX.**
+
+- **`utils/assets.js`** — new `resolveImageSrc()` accepts **either** a full URL
+  (what the admin pastes) **or** a labelled placeholder name (the bundled seed
+  content, e.g. `event-college-week`), so both work without per-component logic.
+- **`admin/components/EventFormDialog.jsx` / `NoticeFormDialog.jsx`** — the Image
+  / Attachment fields now accept a pasted URL, with clearer hints/placeholders
+  and a **live inline preview** (with a graceful "couldn't load this image"
+  message) so the admin can confirm the asset before saving.
+
+Both fields stay **optional** — nothing renders until the admin supplies a value.
+`npm run build` is green.
+
 ### Fix: Leads, Notices & Events now sync reliably across devices (no stale cache, empty = empty)
 
 The three admin modules looked broken in production even though the PHP API was

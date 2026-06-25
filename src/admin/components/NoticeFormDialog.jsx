@@ -13,9 +13,20 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Switch } fro
 import { Icon } from "@iconify/react";
 import { FormField } from "./ui";
 import { createNotice, updateNotice, NOTICE_CATEGORIES } from "../utils/noticeService";
+import { resolveImageSrc } from "../../utils/assets";
 import styles from "./NoticeFormDialog.module.css";
 
 const todayISO = () => new Date().toISOString().split("T")[0];
+
+// Extensions we can preview inline; a PDF / other file just keeps the URL field.
+const IMAGE_EXT = /\.(png|jpe?g|gif|webp|svg|avif|bmp)$/i;
+
+/** True when a trimmed attachment value is a URL pointing at a previewable image. */
+const isImageAttachment = (value) => {
+  const v = (value || "").trim();
+  if (!/^https?:\/\/|^\//.test(v)) return false;
+  return IMAGE_EXT.test(v.split(/[?#]/)[0]);
+};
 
 const emptyForm = () => ({
   title: "",
@@ -50,6 +61,7 @@ const NoticeFormDialog = ({ open, mode = "create", notice = null, onClose, onSav
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
+  const [previewError, setPreviewError] = useState(false);
 
   // Reset the form each time the dialog opens (fresh for create, hydrated for
   // edit) so a previous session never bleeds into the next.
@@ -59,6 +71,12 @@ const NoticeFormDialog = ({ open, mode = "create", notice = null, onClose, onSav
     setErrors({});
     setSaving(false);
   }, [open, isEdit, notice]);
+
+  // Re-attempt the live preview whenever the attachment value changes (and on
+  // open), so a corrected URL clears the "couldn't load" message.
+  useEffect(() => {
+    setPreviewError(false);
+  }, [form.attachment_url]);
 
   const setField = (key, value) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -176,20 +194,43 @@ const NoticeFormDialog = ({ open, mode = "create", notice = null, onClose, onSav
               />
             </FormField>
 
-            <FormField
-              label="Attachment URL"
-              htmlFor="notice-attachment"
-              hint="Optional link to a PDF or image."
-              error={errors.attachment_url}
-            >
-              <input
-                id="notice-attachment"
-                type="url"
-                value={form.attachment_url}
-                onChange={(e) => setField("attachment_url", e.target.value)}
-                placeholder="https://…"
-              />
-            </FormField>
+            <div className={styles.imageField}>
+              <FormField
+                label="Attachment URL"
+                htmlFor="notice-attachment"
+                hint="Optional link to a PDF or image. Shown on the public Notices page — images preview inline."
+                error={errors.attachment_url}
+              >
+                <input
+                  id="notice-attachment"
+                  type="url"
+                  value={form.attachment_url}
+                  onChange={(e) => setField("attachment_url", e.target.value)}
+                  placeholder="https://…"
+                />
+              </FormField>
+
+              {isImageAttachment(form.attachment_url) &&
+                !errors.attachment_url &&
+                (previewError ? (
+                  <p className={styles.imagePreviewError}>
+                    <Icon icon="mdi:image-broken-variant" width={16} height={16} aria-hidden="true" />
+                    <span>Couldn’t load this image — check the URL.</span>
+                  </p>
+                ) : (
+                  <figure className={styles.imagePreview}>
+                    <img
+                      src={resolveImageSrc(form.attachment_url)}
+                      alt="Attachment preview"
+                      onError={() => setPreviewError(true)}
+                    />
+                    <figcaption className={styles.imagePreviewCaption}>
+                      <Icon icon="mdi:eye-outline" width={14} height={14} aria-hidden="true" />
+                      Preview
+                    </figcaption>
+                  </figure>
+                ))}
+            </div>
 
             <div className={styles.toggles}>
               <label className={styles.toggle}>

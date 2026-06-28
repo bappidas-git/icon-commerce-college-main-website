@@ -40,7 +40,7 @@ const REAL = {
   // every page hero that uses it — Faculty, Admissions, Events, Gallery and
   // Courses — under the navy hero overlay.
   "hero-students":
-    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1780840414/why-choose-icc_tirbx7.png",
+    "https://res.cloudinary.com/dn9gyaiik/image/upload/v1782660422/Welcome_Image_ICC_czfv8y.png",
 
   // Home-section illustrations — supplied by the college on the same Cloudinary
   // account as CAMPUS_IMAGE / LOGO above. Each maps a logical placeholder name
@@ -118,7 +118,11 @@ export function resolveImageSrc(value) {
   if (!value) return "";
   const v = String(value).trim();
   if (!v) return "";
-  if (/^(https?:)?\/\//i.test(v) || v.startsWith("/") || v.startsWith("data:")) {
+  if (
+    /^(https?:)?\/\//i.test(v) ||
+    v.startsWith("/") ||
+    v.startsWith("data:")
+  ) {
     return v;
   }
   return placeholder(v);

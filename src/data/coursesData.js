@@ -6,18 +6,18 @@
    figures from design-system §6. Images reference §7 placeholder names.
    ============================================ */
 
-import { placeholder } from '../utils/assets';
+import { placeholder } from "../utils/assets";
 
-const LEVEL = 'Undergraduate (FYUGP, NEP 2020)';
-const DURATION = '3/4 Years (6/8 Semesters)';
-const AFFILIATION = 'Gauhati University';
+const LEVEL = "Undergraduate (FYUGP, NEP 2020)";
+const DURATION = "3/4 Years (6/8 Semesters)";
+const AFFILIATION = "Gauhati University";
 
 /** Common document-verification list (design-system §6). */
 const COMMON_DOCUMENTS = [
-  'HS (10+2) marksheet & pass certificate',
-  'Registration / Migration Certificate',
-  'Gap Certificate (affidavit) if applicable',
-  'Recent passport-size photographs',
+  "HS (10+2) marksheet & pass certificate",
+  "Registration / Migration Certificate",
+  "Gap Certificate (affidavit) if applicable",
+  "Recent passport-size photographs",
 ];
 
 /**
@@ -27,7 +27,7 @@ const COMMON_DOCUMENTS = [
  * rather than a clumsy embedded Drive viewer (prompt 18).
  */
 const SYLLABUS_TODO =
-  'TODO: Gauhati University FYUGP syllabus PDF URL (client to provide per programme)';
+  "TODO: Gauhati University FYUGP syllabus PDF URL (client to provide per programme)";
 
 /**
  * Shared NEP-2020 / FYUGP curriculum structure (Gauhati University). This is the
@@ -37,56 +37,56 @@ const SYLLABUS_TODO =
  */
 export const fyugpCurriculum = {
   summary:
-    'Under the NEP-2020 Four-Year Undergraduate Programme (FYUGP) of Gauhati University, the course is credit-based with a multiple-entry / multiple-exit design — roughly 120 credits across 6 semesters for the 3-year Degree, or 160 credits across 8 semesters for the 4-year Honours.',
+    "Under the NEP-2020 Four-Year Undergraduate Programme (FYUGP) of Gauhati University, the course is credit-based with a multiple-entry / multiple-exit design — roughly 120 credits across 6 semesters for the 3-year Degree, or 160 credits across 8 semesters for the 4-year Honours.",
   // Course categories that make up every FYUGP semester load.
   components: [
     {
-      icon: 'mdi:book-open-page-variant-outline',
-      title: 'Major (Core) courses',
-      text: 'In-depth, discipline-specific papers that form the backbone of the degree.',
+      icon: "mdi:book-open-page-variant-outline",
+      title: "Major (Core) courses",
+      text: "In-depth, discipline-specific papers that form the backbone of the degree.",
     },
     {
-      icon: 'mdi:book-plus-outline',
-      title: 'Minor courses',
-      text: 'A secondary discipline that broadens your academic profile.',
+      icon: "mdi:book-plus-outline",
+      title: "Minor courses",
+      text: "A secondary discipline that broadens your academic profile.",
     },
     {
-      icon: 'mdi:shape-outline',
-      title: 'Multidisciplinary (MDC)',
-      text: 'Courses beyond your main stream for a well-rounded foundation.',
+      icon: "mdi:shape-outline",
+      title: "Multidisciplinary (MDC)",
+      text: "Courses beyond your main stream for a well-rounded foundation.",
     },
     {
-      icon: 'mdi:translate',
-      title: 'Ability Enhancement (AEC)',
-      text: 'Language & communication courses — English and a Modern Indian Language.',
+      icon: "mdi:translate",
+      title: "Ability Enhancement (AEC)",
+      text: "Language & communication courses — English and a Modern Indian Language.",
     },
     {
-      icon: 'mdi:tools',
-      title: 'Skill Enhancement (SEC)',
-      text: 'Practical, employability-focused skill modules.',
+      icon: "mdi:tools",
+      title: "Skill Enhancement (SEC)",
+      text: "Practical, employability-focused skill modules.",
     },
     {
-      icon: 'mdi:leaf',
-      title: 'Value-Added (VAC)',
-      text: 'Environment, ethics and understanding-India type courses.',
+      icon: "mdi:leaf",
+      title: "Value-Added (VAC)",
+      text: "Environment, ethics and understanding-India type courses.",
     },
     {
-      icon: 'mdi:briefcase-check-outline',
-      title: 'Internship / Project',
-      text: 'Hands-on internship, field work or a project component.',
+      icon: "mdi:briefcase-check-outline",
+      title: "Internship / Project",
+      text: "Hands-on internship, field work or a project component.",
     },
     {
-      icon: 'mdi:flask-outline',
-      title: 'Research (4th year)',
-      text: 'A dedicated research component in the Honours-with-Research pathway.',
+      icon: "mdi:flask-outline",
+      title: "Research (4th year)",
+      text: "A dedicated research component in the Honours-with-Research pathway.",
     },
   ],
   // Multiple-entry / multiple-exit awards (NEP 2020).
   exits: [
-    { after: '1 Year (2 sem)', award: 'UG Certificate' },
-    { after: '2 Years (4 sem)', award: 'UG Diploma' },
-    { after: '3 Years (6 sem)', award: "Bachelor's Degree" },
-    { after: '4 Years (8 sem)', award: "Bachelor's (Honours / with Research)" },
+    { after: "1 Year (2 sem)", award: "UG Certificate" },
+    { after: "2 Years (4 sem)", award: "UG Diploma" },
+    { after: "3 Years (6 sem)", award: "Bachelor's Degree" },
+    { after: "4 Years (8 sem)", award: "Bachelor's (Honours / with Research)" },
   ],
 };
 
@@ -114,140 +114,141 @@ export const fyugpCurriculum = {
 /** @type {Course[]} */
 export const coursesData = [
   {
-    slug: 'b-com',
-    name: 'Bachelor of Commerce (B.Com.)',
-    shortName: 'B.Com.',
+    slug: "b-com",
+    name: "Bachelor of Commerce (B.Com.)",
+    shortName: "B.Com.",
     level: LEVEL,
     duration: DURATION,
     affiliation: AFFILIATION,
-    image: placeholder('course-bcom'),
-    badge: 'Most Popular',
+    image: placeholder("course-bcom"),
+    badge: "Most Popular",
     summary:
-      'A career-focused commerce degree covering accountancy, finance, taxation and business management — the flagship program at Icon Commerce College.',
+      "A career-focused commerce degree covering Accountancy, Finance, Human Resources Management, Marketing Management — the flagship program at Icon Commerce College.",
     eligibility:
-      'Passed HS (10+2) in any stream (Commerce / Science / Arts) under AHSEC or an equivalent board.',
-    eligibilityShort: 'HS (10+2) — any stream',
+      "Passed HS (10+2) in any stream (Commerce / Science / Arts) under AHSEC or an equivalent board.",
+    eligibilityShort: "HS (10+2) — any stream",
     highlights: [
-      'Accountancy, Finance & Taxation focus',
-      'Practical, industry-aligned curriculum',
-      'Foundation for CA / CS / CMA pathways',
-      'Tally & computerised accounting exposure',
+      "Accountancy, Finance & Taxation focus",
+      "Practical, industry-aligned curriculum",
+      "Foundation for CA / CS / CMA pathways",
+      "Tally & computerised accounting exposure",
     ],
     careers: [
-      'Accountant / Auditor',
-      'Banking & Financial Services',
-      'Tax Consultant',
-      'CA / CS / CMA aspirant',
-      'Government & Public Sector',
+      "Accountant / Auditor",
+      "Banking & Financial Services",
+      "Tax Consultant",
+      "CA / CS / CMA aspirant",
+      "Government & Public Sector",
     ],
     documents: COMMON_DOCUMENTS,
     syllabusUrl: SYLLABUS_TODO,
   },
   {
-    slug: 'bba',
-    name: 'Bachelor of Business Administration (BBA)',
-    shortName: 'BBA',
+    slug: "bba",
+    name: "Bachelor of Business Administration (BBA)",
+    shortName: "BBA",
     level: LEVEL,
     duration: DURATION,
     affiliation: AFFILIATION,
-    image: placeholder('course-bba'),
+    image: placeholder("course-bba"),
     summary:
-      'A management degree building leadership, marketing and entrepreneurial skills for the modern business world.',
-    eligibility: 'Passed HS (10+2) in any stream under AHSEC or an equivalent board.',
-    eligibilityShort: 'HS (10+2) — any stream',
+      "A management degree building leadership, marketing and entrepreneurial skills for the modern business world.",
+    eligibility:
+      "Passed HS (10+2) in any stream under AHSEC or an equivalent board.",
+    eligibilityShort: "HS (10+2) — any stream",
     highlights: [
-      'Management, Marketing & HR fundamentals',
-      'Entrepreneurship & leadership training',
-      'Case-study and project-based learning',
-      'Pathway to MBA',
+      "Management, Marketing & HR fundamentals",
+      "Entrepreneurship & leadership training",
+      "Case-study and project-based learning",
+      "Pathway to MBA",
     ],
     careers: [
-      'Business / Operations Manager',
-      'Marketing & Sales Executive',
-      'Human Resource Associate',
-      'Entrepreneur / Startup Founder',
-      'MBA aspirant',
+      "Business / Operations Manager",
+      "Marketing & Sales Executive",
+      "Human Resource Associate",
+      "Entrepreneur / Startup Founder",
+      "MBA aspirant",
     ],
     documents: COMMON_DOCUMENTS,
     syllabusUrl: SYLLABUS_TODO,
   },
   {
-    slug: 'bca',
-    name: 'Bachelor of Computer Applications (BCA)',
-    shortName: 'BCA',
+    slug: "bca",
+    name: "Bachelor of Computer Applications (BCA)",
+    shortName: "BCA",
     level: LEVEL,
     duration: DURATION,
     affiliation: AFFILIATION,
-    image: placeholder('course-bca'),
+    image: placeholder("course-bca"),
     summary:
-      'A computer-application degree covering programming, databases and web technologies for a career in IT and software.',
+      "A computer-application degree covering programming, databases and web technologies for a career in IT and software.",
     eligibility:
-      'Passed HS (10+2); Mathematics / Computer Science preferred. CSE / IT Diploma holders are also eligible.',
-    eligibilityShort: 'HS (10+2) — Maths / CS preferred',
+      "Passed HS (10+2); Mathematics / Computer Science preferred. CSE / IT Diploma holders are also eligible.",
+    eligibilityShort: "HS (10+2) — Maths / CS preferred",
     highlights: [
-      'Programming & Software Development',
-      'Databases, Networking & Web technologies',
-      'Hands-on computer-lab practicals',
-      'Pathway to MCA / IT careers',
+      "Programming & Software Development",
+      "Databases, Networking & Web technologies",
+      "Hands-on computer-lab practicals",
+      "Pathway to MCA / IT careers",
     ],
     // Programme objectives & indicative topics — sourced from the prospectus
     // (rendered only on the BCA detail page; the other programmes omit these).
     objectives: [
-      'Develop the ability to think critically, logically and analytically, and to apply current technical concepts and practices to build solutions in information technology.',
-      'Gain the knowledge and skills that prepare graduates for a broad range of roles across education, research, government, business and industry.',
-      'Build a structured foundation in core computer science, reinforced through hands-on sessions in the computer lab using a range of programming languages and tools.',
+      "Develop the ability to think critically, logically and analytically, and to apply current technical concepts and practices to build solutions in information technology.",
+      "Gain the knowledge and skills that prepare graduates for a broad range of roles across education, research, government, business and industry.",
+      "Build a structured foundation in core computer science, reinforced through hands-on sessions in the computer lab using a range of programming languages and tools.",
     ],
     topics: [
-      'Computer Fundamentals',
-      'Numerical Methods',
-      'Data Structures',
-      'Algorithms & Complexity Analysis',
-      'Software Engineering',
-      'Programming (C, C++, Java)',
-      'Computer Networking',
-      'Operating Systems & System Administration',
-      'Computer Architecture & Microprocessors',
-      'Web Technology',
-      'Computer Graphics',
-      'Database Management Systems (DBMS)',
-      'Advanced Web & Mobile Application',
-      'Animation & Data Mining',
+      "Computer Fundamentals",
+      "Numerical Methods",
+      "Data Structures",
+      "Algorithms & Complexity Analysis",
+      "Software Engineering",
+      "Programming (C, C++, Java)",
+      "Computer Networking",
+      "Operating Systems & System Administration",
+      "Computer Architecture & Microprocessors",
+      "Web Technology",
+      "Computer Graphics",
+      "Database Management Systems (DBMS)",
+      "Advanced Web & Mobile Application",
+      "Animation & Data Mining",
     ],
     careers: [
-      'Software Developer',
-      'Web / App Developer',
-      'System / Database Administrator',
-      'IT Support Specialist',
-      'MCA aspirant',
+      "Software Developer",
+      "Web / App Developer",
+      "System / Database Administrator",
+      "IT Support Specialist",
+      "MCA aspirant",
     ],
     documents: COMMON_DOCUMENTS,
     syllabusUrl: SYLLABUS_TODO,
   },
   {
-    slug: 'b-a',
-    name: 'Bachelor of Arts (B.A.)',
-    shortName: 'B.A.',
+    slug: "b-a",
+    name: "Bachelor of Arts (B.A.)",
+    shortName: "B.A.",
     level: LEVEL,
     duration: DURATION,
     affiliation: AFFILIATION,
-    image: placeholder('course-ba'),
+    image: placeholder("course-ba"),
     summary:
-      'A flexible humanities degree across languages, social sciences and education — strong grounding for teaching, civil services and research.',
+      "A flexible humanities degree across languages, social sciences and education — strong grounding for teaching, civil services and research.",
     eligibility:
-      'Passed HS (10+2) in any stream. Honours requires a minimum of 45% marks.',
-    eligibilityShort: 'HS (10+2) — any stream (Hons. ≥ 45%)',
+      "Passed HS (10+2) in any stream. Honours requires a minimum of 45% marks.",
+    eligibilityShort: "HS (10+2) — any stream (Hons. ≥ 45%)",
     highlights: [
-      'Wide choice of Arts subjects',
-      'Honours specialisation available',
-      'Foundation for B.Ed / Civil Services',
-      'Language & social-science depth',
+      "Wide choice of Arts subjects",
+      "Honours specialisation available",
+      "Foundation for B.Ed / Civil Services",
+      "Language & social-science depth",
     ],
     careers: [
-      'Teacher / Educator',
-      'Civil Services aspirant',
-      'Content & Media professional',
-      'Social / NGO sector',
-      'Postgraduate & research studies',
+      "Teacher / Educator",
+      "Civil Services aspirant",
+      "Content & Media professional",
+      "Social / NGO sector",
+      "Postgraduate & research studies",
     ],
     documents: COMMON_DOCUMENTS,
     syllabusUrl: SYLLABUS_TODO,
